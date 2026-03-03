@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hrací Karty - Prší</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=MedievalSharp&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --card-width: 825px;
+            /* 2.5 x 3.5 inches at 300 DPI */
+            --card-height: 1125px;
+            --bleed: 36px;
+            --safe-zone: 36px;
+            --card-radius: 40px;
+
+            /* Thematic colors */
+            --color-srdce: #8b0000;
+            /* Dark red */
+            --color-listy: #006400;
+            /* Dark green */
+            --color-zaludy: #b8860b;
+            /* Golden rod / Bronze */
+            --color-kule: #8b4513;
+            /* Saddle brown */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Cinzel', serif;
+        }
+
+        .card {
+            width: var(--card-width);
+            height: var(--card-height);
+            /* Clean classic white/cream base as requested by user */
+            background-color: #faf9f6;
+            background-image:
+                radial-gradient(ellipse at center, rgba(255, 255, 255, 0.9) 0%, rgba(240, 238, 230, 0.8) 100%),
+                url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.03"/%3E%3C/svg%3E');
+            border-radius: var(--card-radius);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Black border indicating cut line for preview */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 2px solid #000;
+            border-radius: var(--card-radius);
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        /* Main illustration area (for figures J, Q, K, A) */
+        .card-image {
+            position: absolute;
+            top: var(--bleed);
+            left: var(--bleed);
+            right: var(--bleed);
+            bottom: var(--bleed);
+            border-radius: calc(var(--card-radius) - var(--bleed)/2);
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .is-figure .card-image {
+            border: 4px solid #b8860b;
+            /* Common decorative gold border */
+            outline: 1px solid rgba(184, 134, 11, 0.4);
+            outline-offset: -8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.6) inset, 0 5px 15px rgba(0, 0, 0, 0.4);
+            background-color: #222;
+        }
+
+        /* Elegant inner border for number cards */
+        .is-number .card-image::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            right: 25px;
+            bottom: 25px;
+            /* Border color will overlap via specific class vars */
+            border: 2px solid var(--suit-border, #b8860b);
+            border-radius: 12px;
+            box-shadow:
+                inset 0 0 0 5px rgba(250, 250, 250, 0.3),
+                0 0 0 5px rgba(250, 250, 250, 0.3);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Dynamic Suit Borders */
+        .suit-srdce {
+            --suit-border: #cc0000;
+        }
+
+        .suit-listy {
+            --suit-border: #006600;
+        }
+
+        .suit-zaludy {
+            --suit-border: #b8860b;
+        }
+
+        .suit-kule {
+            --suit-border: #994c00;
+        }
+
+        /* Ornate corner dots for number cards */
+        .is-number .card-image::after {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            right: 25px;
+            bottom: 25px;
+            background:
+                radial-gradient(circle at 0 0, rgba(184, 134, 11, 1) 6px, transparent 7px),
+                radial-gradient(circle at 100% 0, rgba(184, 134, 11, 1) 6px, transparent 7px),
+                radial-gradient(circle at 0 100%, rgba(184, 134, 11, 1) 6px, transparent 7px),
+                radial-gradient(circle at 100% 100%, rgba(184, 134, 11, 1) 6px, transparent 7px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Index corners (Top Left and Bottom Right) - Hidden for authentic single-headed Mariáš */
+        .index {
+            display: none !important;
+        }
+
+        .index-top-left {
+            top: 45px;
+            left: 40px;
+        }
+
+        .index-bottom-right {
+            bottom: 45px;
+            right: 40px;
+            transform: rotate(180deg);
+        }
+
+        /* Drop shadows for SVG Suit Icons */
+        .suit-srdce .suit-icon {
+            filter: drop-shadow(0px 8px 12px rgba(120, 0, 0, 0.6)) drop-shadow(0px 2px 2px rgba(255, 255, 255, 0.5));
+        }
+
+        .suit-listy .suit-icon {
+            filter: drop-shadow(0px 8px 12px rgba(0, 80, 0, 0.6)) drop-shadow(0px 2px 2px rgba(255, 255, 255, 0.5));
+        }
+
+        .suit-zaludy .suit-icon {
+            filter: drop-shadow(0px 8px 12px rgba(139, 105, 20, 0.6)) drop-shadow(0px 2px 2px rgba(255, 255, 255, 0.5));
+        }
+
+        .suit-kule .suit-icon {
+            filter: drop-shadow(0px 8px 12px rgba(102, 41, 0, 0.6)) drop-shadow(0px 2px 2px rgba(255, 255, 255, 0.5));
+        }
+
+        .suit-icon {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .index-value {
+            font-size: 60px;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 5px;
+            color: #b8860b;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .index-suit {
+            width: 50px;
+            height: 50px;
+        }
+
+        /* Layout for Number Cards (7, 8, 9, 10) */
+        .number-card-layout {
+            position: absolute;
+            top: 150px;
+            left: 170px;
+            right: 170px;
+            bottom: 150px;
+            z-index: 10;
+        }
+
+        .pip {
+            position: absolute;
+            font-size: 130px;
+            width: 130px;
+            height: 130px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        /* Positioning Utils for Classic Poker pip layout */
+        .col-l {
+            left: 0;
+        }
+
+        .col-r {
+            right: 0;
+        }
+
+        .col-c {
+            left: 50%;
+            margin-left: -65px;
+        }
+
+        .row-1 {
+            top: 0;
+        }
+
+        .row-2 {
+            top: 33.33%;
+            margin-top: -65px;
+        }
+
+        .row-3 {
+            top: 66.66%;
+            margin-top: -65px;
+        }
+
+        .row-4 {
+            bottom: 0;
+        }
+
+        .row-1-5 {
+            top: 20%;
+            margin-top: -65px;
+        }
+
+        .row-c {
+            top: 50%;
+            margin-top: -65px;
+        }
+
+        .row-3-5 {
+            bottom: 20%;
+            margin-bottom: -65px;
+        }
+
+        .rot {
+            transform: rotate(180deg);
+        }
+
+        /* Title banner for Figures */
+        .figure-title {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 40px;
+            border: 2px solid #333;
+            border-radius: 20px;
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            white-space: nowrap;
+            display: none;
+            /* Only show on figures */
+        }
+
+        .is-figure .figure-title {
+            display: block;
+        }
+
+        .suit-srdce .figure-title {
+            border-color: var(--color-srdce);
+            color: var(--color-srdce);
+        }
+
+        .suit-listy .figure-title {
+            border-color: var(--color-listy);
+            color: var(--color-listy);
+        }
+
+        .suit-zaludy .figure-title {
+            border-color: var(--color-zaludy);
+            color: var(--color-zaludy);
+        }
+
+        .suit-kule .figure-title {
+            border-color: var(--color-kule);
+            color: var(--color-kule);
+        }
+
+        /* Central faint massive pip for number cards */
+        .background-pip {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 700px;
+            z-index: 1;
+            pointer-events: none;
+            display: none;
+
+            background: linear-gradient(135deg, #d4af37 0%, #8b6914 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0.12;
+            filter: drop-shadow(0 0 20px rgba(184, 134, 11, 0.2));
+        }
+
+        .is-number .background-pip {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Prsi SVG Suit Definitions -->
+    <svg width="0" height="0" style="position:absolute; width:0; height:0;">
+        <defs>
+            <radialGradient id="grad-srdce" cx="30%" cy="30%" r="70%">
+                <stop offset="0%" stop-color="#ff9999" />
+                <stop offset="40%" stop-color="#d40000" />
+                <stop offset="100%" stop-color="#7a0000" />
+            </radialGradient>
+            <g id="icon-srdce">
+                <path d="M50 95 C 50 95, 5 60, 5 30 C 5 10, 40 5, 50 30 C 60 5, 95 10, 95 30 C 95 60, 50 95, 50 95 Z"
+                    fill="url(#grad-srdce)" stroke="#400" stroke-width="2" />
+                <path d="M20 25 C 25 15, 35 15, 40 25" stroke="rgba(255,255,255,0.6)" stroke-width="3" fill="none"
+                    stroke-linecap="round" />
+            </g>
+
+            <radialGradient id="grad-listy" cx="30%" cy="30%" r="70%">
+                <stop offset="0%" stop-color="#7cfc00" />
+                <stop offset="40%" stop-color="#008000" />
+                <stop offset="100%" stop-color="#003300" />
+            </radialGradient>
+            <g id="icon-listy">
+                <path d="M50 95 C 90 60, 90 25, 50 5 C 10 25, 10 60, 50 95 Z" fill="url(#grad-listy)" stroke="#020"
+                    stroke-width="2" />
+                <path d="M50 5 L50 95" stroke="#003300" stroke-width="3" />
+                <path d="M50 40 C 60 45, 70 55, 75 65" stroke="#003300" stroke-width="2" fill="none" />
+                <path d="M50 60 C 60 65, 65 75, 70 85" stroke="#003300" stroke-width="2" fill="none" />
+                <path d="M50 50 C 40 55, 30 65, 25 75" stroke="#003300" stroke-width="2" fill="none" />
+                <path d="M25 65 C 30 55, 35 45, 40 35" stroke="rgba(255,255,255,0.6)" stroke-width="3" fill="none"
+                    stroke-linecap="round" />
+            </g>
+
+            <radialGradient id="grad-zaludy" cx="50%" cy="60%" r="60%">
+                <stop offset="0%" stop-color="#ffe066" />
+                <stop offset="40%" stop-color="#d4af37" />
+                <stop offset="100%" stop-color="#8b6914" />
+            </radialGradient>
+            <g id="icon-zaludy">
+                <path d="M25 65 C 25 20, 50 5, 50 5 C 50 5, 75 20, 75 65 Z" fill="url(#grad-zaludy)" stroke="#431"
+                    stroke-width="2" />
+                <path d="M15 65 C 15 85, 85 85, 85 65 Z" fill="#b8860b" stroke="#431" stroke-width="2" />
+                <path d="M30 65 L40 80 M50 65 L50 85 M70 65 L60 80" stroke="#431" stroke-width="2" fill="none" />
+                <path d="M50 80 L50 95" stroke="#5c3317" stroke-width="5" stroke-linecap="round" />
+                <path d="M30 55 Q 35 40 45 20" stroke="rgba(255,255,255,0.5)" stroke-width="2" fill="none"
+                    stroke-linecap="round" />
+            </g>
+
+            <radialGradient id="grad-kule" cx="30%" cy="30%" r="70%">
+                <stop offset="0%" stop-color="#ffcc66" />
+                <stop offset="40%" stop-color="#b85c00" />
+                <stop offset="100%" stop-color="#662900" />
+            </radialGradient>
+            <g id="icon-kule">
+                <circle cx="50" cy="55" r="40" fill="url(#grad-kule)" stroke="#310" stroke-width="2" />
+                <path d="M 15 65 Q 50 75 85 65" stroke-width="4" stroke="#4a2500" fill="none" />
+                <circle cx="50" cy="70" r="6" fill="#4a2500" />
+                <path d="M 40 15 C 40 -5, 60 -5, 60 15" stroke-width="6" stroke="#b85c00" fill="none" />
+                <path d="M 25 35 Q 35 25 50 25" stroke="rgba(255,255,255,0.7)" stroke-width="3" fill="none"
+                    stroke-linecap="round" />
+            </g>
+        </defs>
+    </svg>
+
+    <body>
+
+        <!-- Container that Puppeteer will target and modify based on data -->
+        <div id="card-container" class="card suit-srdce is-figure">
+
+            <!-- Top Left Index -->
+            <div class="index index-top-left">
+                <div class="index-value" id="val-tl">A</div>
+                <div class="index-suit" id="suit-tl">♥</div>
+            </div>
+
+            <!-- Main Image Area (For Figures) -->
+            <div class="card-image" id="card-bg"
+                style="background-image: url('../kvarteta-eshop/public/cards/placeholder.png');">
+                <!-- Used only for number cards: Layout of pips -->
+                <div id="number-layout" class="number-card-layout layout-7" style="display: none;">
+                    <!-- Filled dynamically by JS -->
+                </div>
+            </div>
+
+            <!-- Large faint background pip for number cards -->
+            <div class="background-pip" id="bg-pip">♥</div>
+
+            <!-- Figure Title Banner -->
+            <div class="figure-title" id="fig-title">Epický Drak</div>
+
+            <!-- Bottom Right Index -->
+            <div class="index index-bottom-right">
+                <div class="index-value" id="val-br">A</div>
+                <div class="index-suit" id="suit-br">♥</div>
+            </div>
+
+        </div>
+
+        <!-- Script to render a specific card based on parameters passed via URL/Puppeteer -->
+        <script>
+            function renderCard(data) {
+                const container = document.getElementById('card-container');
+
+                // 1. Reset classes
+                container.className = 'card';
+
+                // 2. Apply suit
+                container.classList.add(`suit-${data.suitClass}`); // srdce, listy, zaludy, kule
+
+                // 3. Set values and suits (SVGs injected)
+                document.getElementById('val-tl').textContent = data.value;
+                document.getElementById('val-br').textContent = data.value;
+
+                const suitSvg = `<svg class="suit-icon" viewBox="0 0 100 100"><use href="#icon-${data.suitClass}"/></svg>`;
+                document.getElementById('suit-tl').innerHTML = suitSvg;
+                document.getElementById('suit-br').innerHTML = suitSvg;
+                document.getElementById('bg-pip').innerHTML = suitSvg;
+
+                // 4. Handle Type (Figure vs Number)
+                const isFigure = ['J', 'Q', 'K', 'A'].includes(data.value);
+                const cardBg = document.getElementById('card-bg');
+                const layout = document.getElementById('number-layout');
+
+                if (isFigure || data.imageUrl) {
+                    container.classList.add(isFigure ? 'is-figure' : 'is-number');
+                    layout.style.display = 'none';
+                    cardBg.style.backgroundImage = `url('${data.imageUrl}')`;
+                    cardBg.style.backgroundColor = 'transparent';
+                    
+                    // If it's a cohesive number card, make it full bleed and remove internal ornaments
+                    if (!isFigure && data.imageUrl.startsWith('data:')) {
+                        cardBg.style.top = '0';
+                        cardBg.style.left = '0';
+                        cardBg.style.right = '0';
+                        cardBg.style.bottom = '0';
+                        cardBg.style.borderRadius = 'var(--card-radius)';
+                        container.classList.add('is-cohesive');
+                    }
+                    
+                    if (isFigure) {
+                        document.getElementById('fig-title').textContent = data.title;
+                    } else {
+                        document.getElementById('fig-title').style.display = 'none';
+                    }
+                } else {
+                    container.classList.add('is-number');
+                    // Reset positions for normal cards
+                    cardBg.style.top = 'var(--bleed)';
+                    cardBg.style.left = 'var(--bleed)';
+                    cardBg.style.right = 'var(--bleed)';
+                    cardBg.style.bottom = 'var(--bleed)';
+                    layout.style.display = 'block';
+                    cardBg.style.backgroundImage = 'none';
+                    cardBg.style.backgroundColor = 'transparent';
+
+                    const val = data.value;
+                    let pipHTML = '';
+
+                    // Thematic Dragon Background Watermark
+                    const suitColors = {
+                        'srdce': 'rgba(212, 0, 0, 0.04)',
+                        'listy': 'rgba(0, 128, 0, 0.04)',
+                        'zaludy': 'rgba(212, 175, 55, 0.06)',
+                        'kule': 'rgba(184, 92, 0, 0.06)'
+                    };
+                    const motifColor = suitColors[data.suitClass] || 'rgba(184,134,11,0.04)';
+
+                    pipHTML += `
+                        <div style="position:absolute; inset: 0; display:flex; justify-content:center; align-items:center; z-index:0; pointer-events:none; opacity:0.8;">
+                            <svg width="250" height="350" viewBox="0 0 100 100" style="color:${motifColor};">
+                                <path d="M50 5 L40 25 C20 20 10 40 20 60 C5 50 0 30 15 15 C5 30 5 50 20 70 C10 80 5 95 25 85 C15 90 15 100 35 90 C40 85 45 70 45 55 L50 75 L55 55 C55 70 60 85 65 90 C85 100 85 90 75 85 C95 95 90 80 80 70 C95 50 95 30 85 15 C100 30 95 50 80 60 C90 40 80 20 60 25 L50 5 Z" fill="currentColor"/>
+                            </svg>
+                        </div>
+                    `;
+
+                    // Central Dragon Motif (The potted plant replacement)
+                    if (data.motifUrl) {
+                        pipHTML += `<div style="position:absolute; bottom: 10%; left: 50%; width: 550px; height: 550px; transform: translateX(-50%); background-image: url('${data.motifUrl}'); background-size: contain; background-repeat: no-repeat; background-position: bottom center; z-index: 0; opacity: 1;"></div>`;
+                    }
+
+                    // Layouts
+                    if (val === '7' && data.suitClass === 'srdce') {
+                        // Bohemian 7: 1 top center, 3 in each side column
+                        // Widening columns slightly and moving them up to clear the main motif area
+                        const sideY = [28, 43, 58];
+                        pipHTML += `<div style="position:absolute; left: 50%; top: 13%; width: 130px; height: 130px; transform:translate(-50%, -50%); z-index:1;">${suitSvg}</div>`;
+                        sideY.forEach(y => {
+                            pipHTML += `<div style="position:absolute; left: 14%; top: ${y}%; width: 125px; height: 125px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
+                            pipHTML += `<div style="position:absolute; right: 14%; top: ${y}%; width: 125px; height: 125px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
+                        });
+                    }
+                    else if (val === '7') {
+                        // Standard fallback for other 7s if not yet defined
+                        const yOffsets = [40, 65, 90];
+                        pipHTML += `<div style="position:absolute; left: 50%; top: 15%; width: 110px; height: 110px; transform:translate(-50%, -50%); z-index:1;">${suitSvg}</div>`;
+                        yOffsets.forEach(y => {
+                            pipHTML += `<div style="position:absolute; left: 12%; top: ${y}%; width: 110px; height: 110px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
+                            pipHTML += `<div style="position:absolute; right: 12%; top: ${y}%; width: 110px; height: 110px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
+                        });
+                    }
+                    // Add other numbers 8, 9, 10 similarly...
+                    else if (val === '8') {
+                        const yOffsets = [20, 43, 66, 89];
+                        yOffsets.forEach(y => {
+                            pipHTML += `<div style="position:absolute; left: 12%; top: ${y}%; width: 110px; height: 110px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
+                            pipHTML += `<div style="position:absolute; right: 12%; top: ${y}%; width: 110px; height: 110px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
+                        });
+                    } else if (val === '9') {
+                        const yOffsets = [35, 54, 73, 92];
+                        pipHTML += `<div style="position:absolute; left: 50%; top: 15%; width: 110px; height: 110px; transform:translate(-50%, -50%); z-index:1;">${suitSvg}</div>`;
+                        yOffsets.forEach(y => {
+                            pipHTML += `<div style="position:absolute; left: 12%; top: ${y}%; width: 110px; height: 110px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
+                            pipHTML += `<div style="position:absolute; right: 12%; top: ${y}%; width: 110px; height: 110px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
+                        });
+                    } else if (val === '10') {
+                        const yOffsets = [32, 47, 62, 77, 92];
+                        pipHTML += `<div class="index-value" style="position:absolute; left: 50%; top: 14%; transform:translate(-50%, -50%); z-index:1; font-size:150px; margin:0; color:var(--suit-border); -webkit-text-stroke: 1px #888; text-shadow:2px 2px 5px rgba(0,0,0,0.2);">X</div>`;
+                        yOffsets.forEach(y => {
+                            pipHTML += `<div style="position:absolute; left: 12%; top: ${y}%; width: 110px; height: 110px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
+                            pipHTML += `<div style="position:absolute; right: 12%; top: ${y}%; width: 110px; height: 110px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
+                        });
+                    }
+
+                    layout.innerHTML = pipHTML;
+                }
+            }
+
+            // Expose to window for Puppeteer to call
+            window.renderCard = renderCard;
+
+            // Example for testing visually without Puppeteer:
+            // renderCard({ suitClass: 'zaludy', suitSymbol: '🌰', value: '8', imageUrl: '', title: ''});
+            // renderCard({ suitClass: 'srdce', suitSymbol: '♥', value: 'A', imageUrl: '../kvarteta-eshop/public/cards/drag_1.png', title: 'Vulcanus'});
+        </script>
+    </body>
+
+</html>

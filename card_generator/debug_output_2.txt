@@ -1,0 +1,91 @@
+Excel Headers: [
+  '#',
+  'Jméno',
+  'Barva',
+  'Český popis',
+  'Síla',
+  'Rozpětí (m)',
+  'Dosah (m)',
+  'Věk (let)',
+  'Rychlost (km/h)',
+  'Upravený Midjourney Prompt (Scale, Speed & Wings)',
+  'URL obrázku'
+]
+First Row Sample: {
+  '#': 1,
+  'Jméno': 'Vulkanus',
+  Barva: 'Červená',
+  'Český popis': 'Lávový kolos, jehož kůže je z roztavené horniny.',
+  'Síla': 99,
+  'Rozpětí (m)': 120,
+  'Dosah (m)': 150,
+  'Věk (let)': 5000,
+  'Rychlost (km/h)': 60,
+  'Upravený Midjourney Prompt (Scale, Speed & Wings)': 'Full body shot of a monumental, planet-sized dragon, wings so wide they cover the horizon, glowing lava veins, tiny castles at its feet for scale, hyper-realistic --ar 2:3',
+  'URL obrázku': 'https://cdn.midjourney.com/6ca8d3f0-680d-4b93-bb72-3065eb1333cb/0_2.png'
+}
+[THEME] Vulkanus -> FIRE
+[OK] Found exact: Vulkanus.png
+[THEME] Aeris -> AIR
+[OK] Found exact: Aeris.png
+[THEME] Kronos -> EARTH
+[OK] Found exact: Kronos.png
+[THEME] Blesk -> AIR
+[OK] Found exact: Blesk.png
+[THEME] Magmaton -> FIRE
+[OK] Found exact: Magmaton.png
+[THEME] Sonic -> AIR
+[OK] Found exact: Sonic.png
+[THEME] Astrál -> SHADOW
+[OK] Found exact: Astrál.png
+[THEME] Bazilišek -> EARTH
+[OK] Found exact: Bazilišek.png
+[THEME] Ostrý Hvizd -> AIR
+[OK] Found exact: Ostrý Hvizd.png
+[THEME] Ignis Rex -> FIRE
+[MATCH] Used override: Ignis rexx.png for Ignis Rex
+[THEME] Křišťál -> SHADOW
+[OK] Found exact: Křišťál.png
+[THEME] Nekromancer -> SHADOW
+[MATCH] Used override: Necromancer.png for Nekromancer
+[THEME] Mrakošlap -> AIR
+[OK] Found exact: Mrakošlap.png
+[THEME] Jedový Trn -> EARTH
+[OK] Found exact: Jedový Trn.png
+[THEME] Brontos -> EARTH
+[OK] Found exact: Brontos.png
+[THEME] Zlatý Zloděj -> FIRE
+[OK] Found exact: Zlatý Zloděj.png
+[THEME] Stařec z Hor -> EARTH
+[OK] Found exact: Stařec z Hor.png
+[THEME] Hydrus -> AIR
+[OK] Found exact: Hydrus.png
+[THEME] Stínový Běžec -> SHADOW
+[OK] Found exact: Stínový Běžec.png
+[THEME] Nebeský Poutník -> AIR
+[OK] Found exact: Nebeský Poutník.png
+[THEME] Runový Tesák -> SHADOW
+[OK] Found exact: Runový Tesák.png
+[THEME] Tornádo -> AIR
+[OK] Found exact: Tornádo.png
+[THEME] Železný Dráp -> EARTH
+[OK] Found exact: Železný Dráp.png
+[THEME] Bažináč -> EARTH
+[OK] Found exact: Bažináč.png
+[THEME] Hmyzí Král -> EARTH
+[OK] Found exact: Hmyzí Král.png
+[THEME] Chameleon -> EARTH
+[OK] Found exact: Chameleon.png
+[THEME] Popelavý Dech -> EARTH
+[OK] Found exact: Popelavý Dech.png
+[THEME] Moudré Oko -> EARTH
+[OK] Found exact: Moudré Oko.png
+[THEME] Vichřice -> AIR
+[OK] Found exact: Vichřice.png
+[THEME] Uhelný Běžec -> FIRE
+[OK] Found exact: Uhelný Běžec.png
+[THEME] Terrogor -> EARTH
+[OK] Found exact: Terrogor.png
+[THEME] Knihovník -> EARTH
+[OK] Found exact: Knihovník.png
+Generated 32 cards to /Users/air2024/Documents/Antigravity projekty/Kvarteta_vyšší bere/card_generator/all_cards.html

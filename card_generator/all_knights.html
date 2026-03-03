@@ -1,0 +1,907 @@
+
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Roztomilí rytíři - Kvarteta</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Roboto:ital,wght@0,400;0,700;1,400&display=swap');
+        
+        * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #111;
+            margin: 0; padding: 0;
+            display: block;
+        }
+
+        .main-container {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 5. Critical Optimization for Print - Skill Section 5 */
+        @media print {
+            body { background-color: white !important; }
+            .main-container { padding: 0 !important; display: block !important; width: 100% !important; height: 100% !important; }
+            
+            .page-grid { 
+                box-shadow: none !important; 
+                margin: 0 !important;
+                padding: 19mm 13mm !important; /* Fixed padding for manual duplex centering */
+                width: 210mm !important; 
+                height: 297mm !important;
+                display: grid !important;
+                grid-template-columns: repeat(3, 60mm) !important;
+                gap: 2mm !important;
+                page-break-after: always !important;
+                background: white !important;
+                position: relative !important;
+                align-content: start !important;
+            }
+            .page-grid:last-of-type { page-break-after: avoid !important; }
+            @page { size: A4 portrait; margin: 0; }
+            
+            /* Skill Rule: NO FILTERS, NO SHADOWS for print reliability */
+            .card { break-inside: avoid !important; box-shadow: none !important; border: 0.1mm solid #eee; }
+            .card-bg-blur-img { display: none !important; filter: none !important; }
+            .card-image-img { filter: none !important; }
+            .overlay-top { box-shadow: inset 0 10mm 15mm -10mm rgba(0,0,0,0.1) !important; background: none !important; }
+            .overlay-bottom { box-shadow: inset 0 -20mm 30mm -10mm rgba(0,0,0,0.4) !important; background: none !important; }
+            .hex-container { backdrop-filter: none !important; background: rgba(0, 0, 0, 0.2) !important; border: 0.1mm solid rgba(255,255,255,0.3) !important; }
+            .stat-value, .stat-label, .card-name, .card-desc, .id-badge { text-shadow: none !important; }
+            .registration-mark { display: block !important; }
+        }
+
+        .page-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 60mm);
+            grid-auto-rows: 85mm;
+            gap: 2mm;
+            width: 210mm; 
+            height: 297mm;
+            margin: 20px auto;
+            background: white;
+            box-shadow: 0 0 40px rgba(0,0,0,0.8);
+            page-break-after: always;
+            justify-content: center;
+            align-content: center;
+            position: relative;
+        }
+
+        /* Registration Marks */
+        .registration-mark {
+            position: absolute; width: 10mm; height: 10mm; display: none; z-index: 100;
+        }
+        .registration-mark::before, .registration-mark::after { content: ''; position: absolute; background: #aaa; }
+        .mark-h { top: 5mm; left: 0; width: 100%; height: 0.2mm; }
+        .mark-v { top: 0; left: 5mm; width: 0.2mm; height: 100%; }
+        .mark-tl { top: 5mm; left: 5mm; }
+        .mark-tr { top: 5mm; right: 5mm; }
+        .mark-bl { bottom: 5mm; left: 5mm; }
+        .mark-br { bottom: 5mm; right: 5mm; }
+
+        .card {
+            width: 60mm; height: 85mm; position: relative;
+            border-radius: 4mm;
+            overflow: hidden; background-color: #fff;
+        }
+
+        .card-bg-blur-img {
+            width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1;
+            object-fit: cover; filter: blur(12px) brightness(1.0); transform: scale(1.1);
+        }
+
+        .card-image-img {
+            width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 2;
+            object-fit: cover; filter: brightness(1.15) contrast(1.05);
+        }
+
+        .overlay-top {
+            position: absolute; top: 0; left: 0; right: 0; height: 100%; z-index: 3;
+            box-shadow: inset 0 15mm 20mm -10mm rgba(0,0,0,0.15); pointer-events: none;
+        }
+
+        .overlay-bottom {
+            position: absolute; bottom: 0; left: 0; right: 0; height: 100%; z-index: 3;
+            box-shadow: inset 0 -30mm 40mm -10mm rgba(0,0,0,0.4); pointer-events: none;
+        }
+
+        .hex-container {
+            position: absolute; z-index: 10; width: 14mm; height: 13mm; 
+            background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(2px);
+            border: 0.3mm solid rgba(255,255,255,0.3); 
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .stat-hex { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; }
+        .stat-value { font-family: 'Cinzel', serif; font-weight: 900; font-size: 3.2mm; line-height: 1; text-shadow: 0 1px 3px #000; }
+        .stat-label { font-size: 1.1mm; color: #ccc; margin-top: 0.4mm; letter-spacing: 0.2mm; }
+
+        .pos-tr { top: 1.5mm; right: 1.5mm; }
+        .pos-tl { top: 1.5mm; left: 1.5mm; }
+        .pos-br { bottom: 2mm; right: 1.5mm; }
+        .pos-bl { bottom: 2mm; left: 1.5mm; }
+
+        .footer-container { position: absolute; bottom: 1.5mm; left: 16mm; right: 16mm; text-align: center; z-index: 10; }
+        .group-name { font-size: 1.5mm; color: #fff; letter-spacing: 0.8mm; margin-bottom: 0.5mm; font-weight: 700; opacity: 0.6; }
+        .card-name { font-family: 'Cinzel', serif; font-size: 3.2mm; color: var(--theme-color); text-transform: uppercase; margin: 0; text-shadow: 0 2px 4px #000; letter-spacing: 0.1mm; line-height: 1.1; }
+        .card-desc { font-size: 1.8mm; color: #ccc; margin-top: 0.5mm; line-height: 1.2; text-shadow: 1px 1px 2px #000; font-weight: 400; }
+        .card-desc i { font-style: italic; opacity: 0.8; }
+
+        .id-badge {
+            position: absolute; top: 2.2mm; left: 50%; transform: translateX(-50%);
+            width: 8mm; height: 8mm; background: #000; border: 0.6mm solid var(--theme-color);
+            border-radius: 50%; color: var(--theme-color); display: flex; justify-content: center;
+            align-items: center; font-family: 'Cinzel', serif; font-weight: 900;
+            font-size: 3.8mm; z-index: 15; box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+
+    <div class="page-grid">
+        <div class="registration-mark mark-tl"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-tr"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-bl"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-br"><div class="mark-h"></div><div class="mark-v"></div></div>
+    
+    <div class="card" style="
+        --theme-color: #ffccdd;
+        --theme-dark: #b24a73;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Sir%20Pufi%CC%81k.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Sir%20Pufi%CC%81k.png" class="card-image-img" alt="Sir Pufík">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">1A</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">98</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">10</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">100</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">30</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Cukroví vládci</div>
+            <h1 class="card-name">Sir Pufík</h1>
+            <p class="card-desc"><i>Nejměkčí strážce Cukrového údolí.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #ffccdd;
+        --theme-dark: #b24a73;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Lord%20Karamel.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Lord%20Karamel.png" class="card-image-img" alt="Lord Karamel">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">1B</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">92</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">45</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">60</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">50</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Cukroví vládci</div>
+            <h1 class="card-name">Lord Karamel</h1>
+            <p class="card-desc"><i>Sladký hrdina, který se nikdy nepřilepí.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #ffccdd;
+        --theme-dark: #b24a73;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Baron%20Vlnka.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Baron%20Vlnka.png" class="card-image-img" alt="Baron Vlnka">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">1C</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">95</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">15</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">95</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">40</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Cukroví vládci</div>
+            <h1 class="card-name">Baron Vlnka</h1>
+            <p class="card-desc"><i>Pletený rytíř, co se nikdy nerozpáře.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #ffccdd;
+        --theme-dark: #b24a73;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Princ%20Pralinka.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Princ%20Pralinka.png" class="card-image-img" alt="Princ Pralinka">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">1D</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">89</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">55</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">40</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">35</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Cukroví vládci</div>
+            <h1 class="card-name">Princ Pralinka</h1>
+            <p class="card-desc"><i>Elegantní šlechtic z Dezertního stolku.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #c1ad80;
+        --theme-dark: #66532d;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Kapita%CC%81n%20Tlapka.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Kapita%CC%81n%20Tlapka.png" class="card-image-img" alt="Kapitán Tlapka">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">2A</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">100</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">70</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">20</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">85</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Zvířecí strážci</div>
+            <h1 class="card-name">Kapitán Tlapka</h1>
+            <p class="card-desc"><i>Nejvěrnější rytíř s nejvrtivějším ocasem.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #c1ad80;
+        --theme-dark: #66532d;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Squirelous%20Kra%CC%81tky%CC%81.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Squirelous%20Kra%CC%81tky%CC%81.png" class="card-image-img" alt="Squirelous Krátký">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">2B</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">85</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">30</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">15</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">95</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Zvířecí strážci</div>
+            <h1 class="card-name">Squirelous Krátký</h1>
+            <p class="card-desc"><i>Rychlý jako blesk, malý jako oříšek.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #c1ad80;
+        --theme-dark: #66532d;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Sir%20Jez%CC%8Curka.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Sir%20Jez%CC%8Curka.png" class="card-image-img" alt="Sir Ježurka">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">2C</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">88</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">65</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">5</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">60</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Zvířecí strážci</div>
+            <h1 class="card-name">Sir Ježurka</h1>
+            <p class="card-desc"><i>Nedotknutelný obránce záhonů s jahodami.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #c1ad80;
+        --theme-dark: #66532d;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Don%20Kr%CC%8Cec%CC%8Cek.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Don%20Kr%CC%8Cec%CC%8Cek.png" class="card-image-img" alt="Don Křeček">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">2D</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">96</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">40</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">85</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">80</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Zvířecí strážci</div>
+            <h1 class="card-name">Don Křeček</h1>
+            <p class="card-desc"><i>Hrdina, který se kutálí vstříc dobrodružství.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #9fe591;
+        --theme-dark: #36722a;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Va%CC%81nek%20Us%CC%8Caty%CC%81.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Va%CC%81nek%20Us%CC%8Caty%CC%81.png" class="card-image-img" alt="Vánek Ušatý">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">3A</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">94</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">35</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">90</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">100</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Hmyzí bojovníci</div>
+            <h1 class="card-name">Vánek Ušatý</h1>
+            <p class="card-desc"><i>Skáče výš než kdokoli jiný v brnění.</i></p>
+        </div>
+    </div>
+    </div>
+    <div class="page-grid">
+        <div class="registration-mark mark-tl"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-tr"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-bl"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-br"><div class="mark-h"></div><div class="mark-v"></div></div>
+    
+    <div class="card" style="
+        --theme-color: #9fe591;
+        --theme-dark: #36722a;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Ryti%CC%81r%CC%8C%20Rosa.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Ryti%CC%81r%CC%8C%20Rosa.png" class="card-image-img" alt="Rytíř Rosa">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">3B</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">82</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">25</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">70</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">5</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Hmyzí bojovníci</div>
+            <h1 class="card-name">Rytíř Rosa</h1>
+            <p class="card-desc"><i>Nejpomalejší, ale nejdůslednější hlídka.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #9fe591;
+        --theme-dark: #36722a;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Slec%CC%8Cna%20Pi%CC%81rko.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Slec%CC%8Cna%20Pi%CC%81rko.png" class="card-image-img" alt="Slečna Pírko">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">3C</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">80</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">50</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">80</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">90</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Hmyzí bojovníci</div>
+            <h1 class="card-name">Slečna Pírko</h1>
+            <p class="card-desc"><i>Moudrost schovaná v chomáčku peří.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #9fe591;
+        --theme-dark: #36722a;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Brouc%CC%8Cek%20Zbrojnos%CC%8C.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Brouc%CC%8Cek%20Zbrojnos%CC%8C.png" class="card-image-img" alt="Brouček Zbrojnoš">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">3D</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">86</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">60</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">30</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">75</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Hmyzí bojovníci</div>
+            <h1 class="card-name">Brouček Zbrojnoš</h1>
+            <p class="card-desc"><i>Malý puntíkatý tank v moři květin.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #ffb347;
+        --theme-dark: #cc6600;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Sir%20Knofli%CC%81k.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Sir%20Knofli%CC%81k.png" class="card-image-img" alt="Sir Knoflík">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">4A</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">89</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">40</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">88</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">30</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Hračkoví rytíři</div>
+            <h1 class="card-name">Sir Knoflík</h1>
+            <p class="card-desc"><i>Hrdina slepený z čisté dětské fantazie.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #ffb347;
+        --theme-dark: #cc6600;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Lego-la%CC%81s.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Lego-la%CC%81s.png" class="card-image-img" alt="Lego-lás">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">4B</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">70</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">85</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">15</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">40</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Hračkoví rytíři</div>
+            <h1 class="card-name">Lego-lás</h1>
+            <p class="card-desc"><i>Pevný jako skála, pokud na něj nešlápnete.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #ffb347;
+        --theme-dark: #cc6600;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Voja%CC%81c%CC%8Cek%20Olove%CC%8Cny%CC%81.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Voja%CC%81c%CC%8Cek%20Olove%CC%8Cny%CC%81.png" class="card-image-img" alt="Vojáček Olověný">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">4C</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">75</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">90</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">10</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">15</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Hračkoví rytíři</div>
+            <h1 class="card-name">Vojáček Olověný</h1>
+            <p class="card-desc"><i>Stojí pevně i na jedné noze.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #ffb347;
+        --theme-dark: #cc6600;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Jojo%20Ryti%CC%81r%CC%8C.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Jojo%20Ryti%CC%81r%CC%8C.png" class="card-image-img" alt="Jojo Rytíř">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">4D</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">81</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">55</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">40</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">95</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Hračkoví rytíři</div>
+            <h1 class="card-name">Jojo Rytíř</h1>
+            <p class="card-desc"><i>Hrdina, který se vždycky vrátí nahoru.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #b3ccff;
+        --theme-dark: #3c5a96;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Hve%CC%8Czdic%CC%8Cka%20Jasna%CC%81.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Hve%CC%8Czdic%CC%8Cka%20Jasna%CC%81.png" class="card-image-img" alt="Hvězdička Jasná">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">5A</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">97</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">20</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">100</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">100</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Snoví strážci</div>
+            <h1 class="card-name">Hvězdička Jasná</h1>
+            <p class="card-desc"><i>Svítí všem dětem na cestu do říše snů.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #b3ccff;
+        --theme-dark: #3c5a96;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Lord%20Pols%CC%8Cta%CC%81r%CC%8C.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Lord%20Pols%CC%8Cta%CC%81r%CC%8C.png" class="card-image-img" alt="Lord Polštář">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">5B</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">93</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">15</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">100</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">10</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Snoví strážci</div>
+            <h1 class="card-name">Lord Polštář</h1>
+            <p class="card-desc"><i>Šampion v nejtěžší váze prachového peří.</i></p>
+        </div>
+    </div>
+    </div>
+    <div class="page-grid">
+        <div class="registration-mark mark-tl"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-tr"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-bl"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-br"><div class="mark-h"></div><div class="mark-v"></div></div>
+    
+    <div class="card" style="
+        --theme-color: #b3ccff;
+        --theme-dark: #3c5a96;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Sni%CC%81lek%20Modry%CC%81.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Sni%CC%81lek%20Modry%CC%81.png" class="card-image-img" alt="Snílek Modrý">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">5C</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">88</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">75</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">90</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">85</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Snoví strážci</div>
+            <h1 class="card-name">Snílek Modrý</h1>
+            <p class="card-desc"><i>Cestovatel v nekonečných oceánech fantazie.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #b3ccff;
+        --theme-dark: #3c5a96;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Zvonilka%20Zbrojna%CC%81.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Zvonilka%20Zbrojna%CC%81.png" class="card-image-img" alt="Zvonilka Zbrojná">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">5D</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">91</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">30</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">80</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">95</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Snoví strážci</div>
+            <h1 class="card-name">Zvonilka Zbrojná</h1>
+            <p class="card-desc"><i>Její příchod vždycky jemně cinká.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #7eebe1;
+        --theme-dark: #1d8c83;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Sir%20Kapka.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Sir%20Kapka.png" class="card-image-img" alt="Sir Kapka">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">6A</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">84</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">45</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">100</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">80</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Mořští hrdinové</div>
+            <h1 class="card-name">Sir Kapka</h1>
+            <p class="card-desc"><i>Nejosvěživější hrdina pod hladinou moře.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #7eebe1;
+        --theme-dark: #1d8c83;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Admira%CC%81l%20Kachnic%CC%8Cka.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Admira%CC%81l%20Kachnic%CC%8Cka.png" class="card-image-img" alt="Admirál Kachnička">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">6B</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">96</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">35</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">10</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">60</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Mořští hrdinové</div>
+            <h1 class="card-name">Admirál Kachnička</h1>
+            <p class="card-desc"><i>Neohrožený vládce všech vln ve vaně.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #7eebe1;
+        --theme-dark: #1d8c83;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Ryti%CC%81r%CC%8C%20Kora%CC%81l.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Ryti%CC%81r%CC%8C%20Kora%CC%81l.png" class="card-image-img" alt="Rytíř Korál">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">6C</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">83</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">80</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">30</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">25</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Mořští hrdinové</div>
+            <h1 class="card-name">Rytíř Korál</h1>
+            <p class="card-desc"><i>Krása mořského dna zakovaná do zbroje.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #7eebe1;
+        --theme-dark: #1d8c83;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Ploutvic%CC%8Cka%20Chrabra%CC%81.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Ploutvic%CC%8Cka%20Chrabra%CC%81.png" class="card-image-img" alt="Ploutvička Chrabrá">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">6D</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">99</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">65</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">25</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">90</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Mořští hrdinové</div>
+            <h1 class="card-name">Ploutvička Chrabrá</h1>
+            <p class="card-desc"><i>Klouže do boje s úsměvem a hrdostí.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #ff6666;
+        --theme-dark: #b30000;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Sir%20Jahu%CC%8Adka.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Sir%20Jahu%CC%8Adka.png" class="card-image-img" alt="Sir Jahůdka">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">7A</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">95</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">30</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">70</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">45</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Ovocní bojovníci</div>
+            <h1 class="card-name">Sir Jahůdka</h1>
+            <p class="card-desc"><i>Nejsladší bojovník v celém ovocném salátu.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #ff6666;
+        --theme-dark: #b30000;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Lord%20Citron.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Lord%20Citron.png" class="card-image-img" alt="Lord Citron">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">7B</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">78</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">40</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">15</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">55</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Ovocní bojovníci</div>
+            <h1 class="card-name">Lord Citron</h1>
+            <p class="card-desc"><i>Trochu kyselý rytíř, ale s velkým srdcem.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #ff6666;
+        --theme-dark: #b30000;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Baron%20Boru%CC%8Avka.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Baron%20Boru%CC%8Avka.png" class="card-image-img" alt="Baron Borůvka">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">7C</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">87</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">25</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">90</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">70</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Ovocní bojovníci</div>
+            <h1 class="card-name">Baron Borůvka</h1>
+            <p class="card-desc"><i>Kutálející se kulička odvahy a vitamínů.</i></p>
+        </div>
+    </div>
+    </div>
+    <div class="page-grid">
+        <div class="registration-mark mark-tl"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-tr"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-bl"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-br"><div class="mark-h"></div><div class="mark-v"></div></div>
+    
+    <div class="card" style="
+        --theme-color: #ff6666;
+        --theme-dark: #b30000;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Princ%20Ananas.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Princ%20Ananas.png" class="card-image-img" alt="Princ Ananas">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">7D</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">79</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">85</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">5</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">35</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Ovocní bojovníci</div>
+            <h1 class="card-name">Princ Ananas</h1>
+            <p class="card-desc"><i>Drsný navenek, neuvěřitelně sladký uvnitř.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #e0c2ff;
+        --theme-dark: #5e329c;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Ryti%CC%81r%CC%8C%20S%CC%8Cmudla.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Ryti%CC%81r%CC%8C%20S%CC%8Cmudla.png" class="card-image-img" alt="Rytíř Šmudla">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">8A</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">85</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">50</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">10</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">60</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Drobní rytíři</div>
+            <h1 class="card-name">Rytíř Šmudla</h1>
+            <p class="card-desc"><i>Šťastný hrdina, který se nikdy nebojí bláta.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #e0c2ff;
+        --theme-dark: #5e329c;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Squire%20C%CC%8Ca%CC%81ra.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Squire%20C%CC%8Ca%CC%81ra.png" class="card-image-img" alt="Squire Čára">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">8B</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">74</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">20</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">5</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">85</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Drobní rytíři</div>
+            <h1 class="card-name">Squire Čára</h1>
+            <p class="card-desc"><i>Jednoduchý hrdina pro velmi složité časy.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #e0c2ff;
+        --theme-dark: #5e329c;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Baron%20v%20Na%CC%81prstku.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Baron%20v%20Na%CC%81prstku.png" class="card-image-img" alt="Baron v Náprstku">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">8C</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">92</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">40</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">10</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">75</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Drobní rytíři</div>
+            <h1 class="card-name">Baron v Náprstku</h1>
+            <p class="card-desc"><i>Velikost není překážkou pro ty největší činy.</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #e0c2ff;
+        --theme-dark: #5e329c;
+    ">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Sir%20Hajaja.png" class="card-bg-blur-img" alt="">
+        <img src="../kvarteta-eshop/Obra%CC%81zky%20roztomili%CC%81%20ryti%CC%81r%CC%8Ci/Sir%20Hajaja.png" class="card-image-img" alt="Sir Hajaja">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">8D</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">98</div><div class="stat-label">ROZTOMILOST</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">35</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">100</div><div class="stat-label">MĚKKOST</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">5</div><div class="stat-label">RYCHLOST</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">Drobní rytíři</div>
+            <h1 class="card-name">Sir Hajaja</h1>
+            <p class="card-desc"><i>Nejudatnější hrdina... ve svých snech.</i></p>
+        </div>
+    </div>
+    <div class="card" style="visibility: hidden;"></div><div class="card" style="visibility: hidden;"></div><div class="card" style="visibility: hidden;"></div><div class="card" style="visibility: hidden;"></div></div></div></body></html>

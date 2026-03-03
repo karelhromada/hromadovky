@@ -1,0 +1,271 @@
+.hero-section {
+    min-height: calc(100vh - var(--nav-height));
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content {
+    flex: 1;
+    z-index: 10;
+    max-width: 600px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 6px 16px;
+    background: rgba(197, 155, 39, 0.15);
+    /* light gold tint */
+    border: 1px solid rgba(197, 155, 39, 0.4);
+    color: var(--accent-gold-dark);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 24px;
+}
+
+.hero-title {
+    font-size: 4.5rem;
+    line-height: 1.1;
+    font-weight: 800;
+    margin-bottom: 24px;
+}
+
+.hero-description {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 40px;
+    font-weight: 300;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 16px;
+}
+
+.btn-primary {
+    padding: 16px 32px;
+    background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-dark));
+    color: #000;
+    font-weight: 800;
+    font-size: 1.1rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 25%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+    transform: skewX(-20deg) translateX(-300%);
+    transition: transform 0.6s ease;
+}
+
+.btn-primary:hover::before {
+    transform: skewX(-20deg) translateX(500%);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(212, 175, 55, 0.5);
+}
+
+.btn-secondary {
+    padding: 16px 32px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 1.1rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* 3D Visual Stage */
+.hero-visual {
+    flex: 1;
+    position: relative;
+    height: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1200px;
+}
+
+.hero-glow {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    filter: blur(40px);
+}
+
+.cards-stage {
+    position: relative;
+    width: 300px;
+    height: 420px;
+    transform-style: preserve-3d;
+    z-index: 10;
+    transition: transform 0.1s ease-out;
+}
+
+.hero-card {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    animation: levitate 6s ease-in-out infinite;
+    backface-visibility: hidden;
+}
+
+.hero-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+}
+
+/* Removed holographic-overlay to fix the unwanted gold diagonal stripe */
+
+/* Card positioning for carousel with 5 cards */
+.card-pos-0 {
+    transform: translateZ(100px) rotate(5deg) translateX(40px) translateY(20px);
+    background-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(20px);
+    border-color: var(--accent-gold);
+    z-index: 5;
+    opacity: 1;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15), 0 0 30px rgba(197, 155, 39, 0.3);
+}
+
+.card-pos-1 {
+    transform: translateZ(20px) rotate(15deg) translateX(120px) translateY(-20px) scale(0.9);
+    background-color: var(--glass-bg);
+    z-index: 4;
+    opacity: 0.8;
+}
+
+.card-pos-2 {
+    transform: translateZ(-50px) rotate(5deg) translateX(60px) translateY(-50px) scale(0.8);
+    background-color: var(--glass-bg);
+    z-index: 1;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.card-pos-3 {
+    transform: translateZ(-50px) rotate(-5deg) translateX(-60px) translateY(-50px) scale(0.8);
+    background-color: var(--glass-bg);
+    z-index: 1;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.card-pos-4 {
+    transform: translateZ(50px) rotate(-10deg) translateX(-80px) translateY(0px) scale(0.9);
+    background-color: var(--glass-bg);
+    z-index: 3;
+    opacity: 0.8;
+}
+
+.card-mock-content {
+    position: relative;
+    z-index: 10;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+}
+
+/* Animations */
+.animate-fade-in-up {
+    opacity: 0;
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+.delay-100 {
+    animation-delay: 0.1s;
+}
+
+.delay-200 {
+    animation-delay: 0.2s;
+}
+
+.delay-300 {
+    animation-delay: 0.3s;
+}
+
+/* Particles */
+.floating-particles {
+    position: absolute;
+    inset: -100px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--accent-gold);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--accent-gold);
+}
+
+.p1 {
+    top: 20%;
+    left: 10%;
+    animation: levitate 4s ease-in-out infinite;
+}
+
+.p2 {
+    top: 60%;
+    right: 20%;
+    animation: levitate 5s ease-in-out infinite 1s;
+}
+
+.p3 {
+    bottom: 10%;
+    left: 30%;
+    animation: levitate 6s ease-in-out infinite 2s;
+}
+
+@media (max-width: 992px) {
+    .hero-section {
+        flex-direction: column;
+        text-align: center;
+        padding-top: 100px;
+    }
+
+    .hero-actions {
+        justify-content: center;
+    }
+
+    .hero-visual {
+        margin-top: 60px;
+        height: 400px;
+    }
+}

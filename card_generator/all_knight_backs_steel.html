@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Roztomilí rytíři - Zadní strana (Ocelový plát)</title>
+    <style>
+        * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        
+        @page { size: A4 portrait; margin: 0; }
+        
+        body { 
+            background-color: #111; 
+            margin: 0; 
+            padding: 0; 
+        }
+
+        .main-container { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        @media print {
+            body { background-color: transparent !important; }
+            .main-container { padding: 0 !important; display: block !important; width: 100% !important; }
+            .page-grid { margin: 0 !important; box-shadow: none !important; }
+        }
+
+        .page-grid {
+            width: 210mm; 
+            height: 297mm; 
+            margin-bottom: 20mm;
+            background: #000; 
+            position: relative;
+            overflow: hidden; 
+            box-shadow: 0 0 30px rgba(0,0,0,0.7);
+            page-break-after: always;
+        }
+
+        .background-layer {
+            position: absolute; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Image rotation and 100% stretching to cover every pixel */
+        .background-image {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 297mm; /* Swapped for 90deg rotation */
+            height: 210mm; /* Swapped for 90deg rotation */
+            transform: translate(-50%, -50%) rotate(90deg);
+            background-image: url('knight_back_iron_steel.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            filter: brightness(0.7) contrast(1.1);
+        }
+
+        .marks-layer { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: 10; 
+            pointer-events: none; 
+        }
+
+        .mark { 
+            position: absolute; 
+            width: 10mm; 
+            height: 10mm; 
+        }
+
+        .mark::before, .mark::after { 
+            content: ''; 
+            position: absolute; 
+            background: #000; 
+        }
+
+        /* Thin crosses (0.1mm) */
+        .mark::before { 
+            top: 5mm; 
+            left: 0; 
+            width: 100%; 
+            height: 0.1mm; 
+        }
+        
+        .mark::after { 
+            left: 5mm; 
+            top: 0; 
+            width: 0.1mm; 
+            height: 100%; 
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        
+        <div class="page-grid">
+            <div class="background-layer">
+                <div class="background-image"></div>
+            </div>
+            <div class="marks-layer"><div class="mark" style="left: 8mm; top: 14mm;"></div>
+<div class="mark" style="left: 68mm; top: 14mm;"></div>
+<div class="mark" style="left: 70mm; top: 14mm;"></div>
+<div class="mark" style="left: 130mm; top: 14mm;"></div>
+<div class="mark" style="left: 132mm; top: 14mm;"></div>
+<div class="mark" style="left: 192mm; top: 14mm;"></div>
+<div class="mark" style="left: 8mm; top: 99mm;"></div>
+<div class="mark" style="left: 68mm; top: 99mm;"></div>
+<div class="mark" style="left: 70mm; top: 99mm;"></div>
+<div class="mark" style="left: 130mm; top: 99mm;"></div>
+<div class="mark" style="left: 132mm; top: 99mm;"></div>
+<div class="mark" style="left: 192mm; top: 99mm;"></div>
+<div class="mark" style="left: 8mm; top: 101mm;"></div>
+<div class="mark" style="left: 68mm; top: 101mm;"></div>
+<div class="mark" style="left: 70mm; top: 101mm;"></div>
+<div class="mark" style="left: 130mm; top: 101mm;"></div>
+<div class="mark" style="left: 132mm; top: 101mm;"></div>
+<div class="mark" style="left: 192mm; top: 101mm;"></div>
+<div class="mark" style="left: 8mm; top: 186mm;"></div>
+<div class="mark" style="left: 68mm; top: 186mm;"></div>
+<div class="mark" style="left: 70mm; top: 186mm;"></div>
+<div class="mark" style="left: 130mm; top: 186mm;"></div>
+<div class="mark" style="left: 132mm; top: 186mm;"></div>
+<div class="mark" style="left: 192mm; top: 186mm;"></div>
+<div class="mark" style="left: 8mm; top: 188mm;"></div>
+<div class="mark" style="left: 68mm; top: 188mm;"></div>
+<div class="mark" style="left: 70mm; top: 188mm;"></div>
+<div class="mark" style="left: 130mm; top: 188mm;"></div>
+<div class="mark" style="left: 132mm; top: 188mm;"></div>
+<div class="mark" style="left: 192mm; top: 188mm;"></div>
+<div class="mark" style="left: 8mm; top: 273mm;"></div>
+<div class="mark" style="left: 68mm; top: 273mm;"></div>
+<div class="mark" style="left: 70mm; top: 273mm;"></div>
+<div class="mark" style="left: 130mm; top: 273mm;"></div>
+<div class="mark" style="left: 132mm; top: 273mm;"></div>
+<div class="mark" style="left: 192mm; top: 273mm;"></div>
+</div>
+        </div>
+        
+        <div class="page-grid">
+            <div class="background-layer">
+                <div class="background-image"></div>
+            </div>
+            <div class="marks-layer"><div class="mark" style="left: 8mm; top: 14mm;"></div>
+<div class="mark" style="left: 68mm; top: 14mm;"></div>
+<div class="mark" style="left: 70mm; top: 14mm;"></div>
+<div class="mark" style="left: 130mm; top: 14mm;"></div>
+<div class="mark" style="left: 132mm; top: 14mm;"></div>
+<div class="mark" style="left: 192mm; top: 14mm;"></div>
+<div class="mark" style="left: 8mm; top: 99mm;"></div>
+<div class="mark" style="left: 68mm; top: 99mm;"></div>
+<div class="mark" style="left: 70mm; top: 99mm;"></div>
+<div class="mark" style="left: 130mm; top: 99mm;"></div>
+<div class="mark" style="left: 132mm; top: 99mm;"></div>
+<div class="mark" style="left: 192mm; top: 99mm;"></div>
+<div class="mark" style="left: 8mm; top: 101mm;"></div>
+<div class="mark" style="left: 68mm; top: 101mm;"></div>
+<div class="mark" style="left: 70mm; top: 101mm;"></div>
+<div class="mark" style="left: 130mm; top: 101mm;"></div>
+<div class="mark" style="left: 132mm; top: 101mm;"></div>
+<div class="mark" style="left: 192mm; top: 101mm;"></div>
+<div class="mark" style="left: 8mm; top: 186mm;"></div>
+<div class="mark" style="left: 68mm; top: 186mm;"></div>
+<div class="mark" style="left: 70mm; top: 186mm;"></div>
+<div class="mark" style="left: 130mm; top: 186mm;"></div>
+<div class="mark" style="left: 132mm; top: 186mm;"></div>
+<div class="mark" style="left: 192mm; top: 186mm;"></div>
+<div class="mark" style="left: 8mm; top: 188mm;"></div>
+<div class="mark" style="left: 68mm; top: 188mm;"></div>
+<div class="mark" style="left: 70mm; top: 188mm;"></div>
+<div class="mark" style="left: 130mm; top: 188mm;"></div>
+<div class="mark" style="left: 132mm; top: 188mm;"></div>
+<div class="mark" style="left: 192mm; top: 188mm;"></div>
+<div class="mark" style="left: 8mm; top: 273mm;"></div>
+<div class="mark" style="left: 68mm; top: 273mm;"></div>
+<div class="mark" style="left: 70mm; top: 273mm;"></div>
+<div class="mark" style="left: 130mm; top: 273mm;"></div>
+<div class="mark" style="left: 132mm; top: 273mm;"></div>
+<div class="mark" style="left: 192mm; top: 273mm;"></div>
+</div>
+        </div>
+        
+        <div class="page-grid">
+            <div class="background-layer">
+                <div class="background-image"></div>
+            </div>
+            <div class="marks-layer"><div class="mark" style="left: 8mm; top: 14mm;"></div>
+<div class="mark" style="left: 68mm; top: 14mm;"></div>
+<div class="mark" style="left: 70mm; top: 14mm;"></div>
+<div class="mark" style="left: 130mm; top: 14mm;"></div>
+<div class="mark" style="left: 132mm; top: 14mm;"></div>
+<div class="mark" style="left: 192mm; top: 14mm;"></div>
+<div class="mark" style="left: 8mm; top: 99mm;"></div>
+<div class="mark" style="left: 68mm; top: 99mm;"></div>
+<div class="mark" style="left: 70mm; top: 99mm;"></div>
+<div class="mark" style="left: 130mm; top: 99mm;"></div>
+<div class="mark" style="left: 132mm; top: 99mm;"></div>
+<div class="mark" style="left: 192mm; top: 99mm;"></div>
+<div class="mark" style="left: 8mm; top: 101mm;"></div>
+<div class="mark" style="left: 68mm; top: 101mm;"></div>
+<div class="mark" style="left: 70mm; top: 101mm;"></div>
+<div class="mark" style="left: 130mm; top: 101mm;"></div>
+<div class="mark" style="left: 132mm; top: 101mm;"></div>
+<div class="mark" style="left: 192mm; top: 101mm;"></div>
+<div class="mark" style="left: 8mm; top: 186mm;"></div>
+<div class="mark" style="left: 68mm; top: 186mm;"></div>
+<div class="mark" style="left: 70mm; top: 186mm;"></div>
+<div class="mark" style="left: 130mm; top: 186mm;"></div>
+<div class="mark" style="left: 132mm; top: 186mm;"></div>
+<div class="mark" style="left: 192mm; top: 186mm;"></div>
+<div class="mark" style="left: 8mm; top: 188mm;"></div>
+<div class="mark" style="left: 68mm; top: 188mm;"></div>
+<div class="mark" style="left: 70mm; top: 188mm;"></div>
+<div class="mark" style="left: 130mm; top: 188mm;"></div>
+<div class="mark" style="left: 132mm; top: 188mm;"></div>
+<div class="mark" style="left: 192mm; top: 188mm;"></div>
+<div class="mark" style="left: 8mm; top: 273mm;"></div>
+<div class="mark" style="left: 68mm; top: 273mm;"></div>
+<div class="mark" style="left: 70mm; top: 273mm;"></div>
+<div class="mark" style="left: 130mm; top: 273mm;"></div>
+<div class="mark" style="left: 132mm; top: 273mm;"></div>
+<div class="mark" style="left: 192mm; top: 273mm;"></div>
+</div>
+        </div>
+        
+        <div class="page-grid">
+            <div class="background-layer">
+                <div class="background-image"></div>
+            </div>
+            <div class="marks-layer"><div class="mark" style="left: 8mm; top: 14mm;"></div>
+<div class="mark" style="left: 68mm; top: 14mm;"></div>
+<div class="mark" style="left: 70mm; top: 14mm;"></div>
+<div class="mark" style="left: 130mm; top: 14mm;"></div>
+<div class="mark" style="left: 132mm; top: 14mm;"></div>
+<div class="mark" style="left: 192mm; top: 14mm;"></div>
+<div class="mark" style="left: 8mm; top: 99mm;"></div>
+<div class="mark" style="left: 68mm; top: 99mm;"></div>
+<div class="mark" style="left: 70mm; top: 99mm;"></div>
+<div class="mark" style="left: 130mm; top: 99mm;"></div>
+<div class="mark" style="left: 132mm; top: 99mm;"></div>
+<div class="mark" style="left: 192mm; top: 99mm;"></div>
+<div class="mark" style="left: 8mm; top: 101mm;"></div>
+<div class="mark" style="left: 68mm; top: 101mm;"></div>
+<div class="mark" style="left: 70mm; top: 101mm;"></div>
+<div class="mark" style="left: 130mm; top: 101mm;"></div>
+<div class="mark" style="left: 132mm; top: 101mm;"></div>
+<div class="mark" style="left: 192mm; top: 101mm;"></div>
+<div class="mark" style="left: 8mm; top: 186mm;"></div>
+<div class="mark" style="left: 68mm; top: 186mm;"></div>
+<div class="mark" style="left: 70mm; top: 186mm;"></div>
+<div class="mark" style="left: 130mm; top: 186mm;"></div>
+<div class="mark" style="left: 132mm; top: 186mm;"></div>
+<div class="mark" style="left: 192mm; top: 186mm;"></div>
+<div class="mark" style="left: 8mm; top: 188mm;"></div>
+<div class="mark" style="left: 68mm; top: 188mm;"></div>
+<div class="mark" style="left: 70mm; top: 188mm;"></div>
+<div class="mark" style="left: 130mm; top: 188mm;"></div>
+<div class="mark" style="left: 132mm; top: 188mm;"></div>
+<div class="mark" style="left: 192mm; top: 188mm;"></div>
+<div class="mark" style="left: 8mm; top: 273mm;"></div>
+<div class="mark" style="left: 68mm; top: 273mm;"></div>
+<div class="mark" style="left: 70mm; top: 273mm;"></div>
+<div class="mark" style="left: 130mm; top: 273mm;"></div>
+<div class="mark" style="left: 132mm; top: 273mm;"></div>
+<div class="mark" style="left: 192mm; top: 273mm;"></div>
+</div>
+        </div>
+        
+    </div>
+</body>
+</html>

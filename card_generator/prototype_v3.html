@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kvarteta - V3 Full Art</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Roboto+Condensed:wght@700&display=swap');
+
+        body {
+            background-color: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Roboto Condensed', sans-serif;
+        }
+
+        :root {
+            /* Standard Poker Size: 63.5mm x 88.9mm */
+            /* We use a large scale for display */
+            --card-width: 400px;
+            --card-height: 560px;
+            /* Approx aspect ratio 2.5/3.5 */
+            --border-radius: 20px;
+            --gold: #ffcc00;
+            --shadow-text: 2px 2px 4px rgba(0, 0, 0, 0.9);
+        }
+
+        .card {
+            width: var(--card-width);
+            height: var(--card-height);
+            position: relative;
+            border-radius: var(--border-radius);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+            border: 4px solid #111;
+        }
+
+        /* Full Background Image */
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        /* Overlays for readability */
+        .overlay-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 120px;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
+            z-index: 2;
+        }
+
+        .overlay-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 150px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.6) 40%, transparent 100%);
+            z-index: 2;
+        }
+
+        /* Name Badge */
+        .name-container {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .card-name {
+            font-family: 'Cinzel', serif;
+            font-size: 32px;
+            color: #fff;
+            text-transform: uppercase;
+            text-shadow: var(--shadow-text);
+            margin: 0;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.6), transparent);
+            padding: 5px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .card-desc {
+            font-size: 14px;
+            color: #ddd;
+            margin-top: 5px;
+            font-style: italic;
+            text-shadow: 1px 1px 2px black;
+            padding: 0 20px;
+        }
+
+        /* ID Badge */
+        .id-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 30px;
+            height: 30px;
+            background: var(--gold);
+            color: #000;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Cinzel', serif;
+            font-weight: 900;
+            font-size: 18px;
+            border: 2px solid #fff;
+            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Stats in Corners */
+        .stat-box {
+            position: absolute;
+            z-index: 10;
+            color: #fff;
+            text-shadow: var(--shadow-text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 5px 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(2px);
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .stat-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+        }
+
+        /* Positioning Stats */
+        /* Top Right: Strength */
+        .pos-tr {
+            top: 15px;
+            right: 15px;
+        }
+
+        /* Mid Left: Size/Ref? No, lets put corners */
+        /* Bottom Left (above name): Speed */
+        .pos-bl {
+            bottom: 100px;
+            left: 15px;
+        }
+
+        /* Bottom Right (above name): Range */
+        .pos-br {
+            bottom: 100px;
+            right: 15px;
+        }
+
+        /* Mid Right: Wingspan */
+        .pos-mr {
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+        }
+
+        /* Mid Left: Age */
+        .pos-ml {
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+        }
+
+        .icon {
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <img src="Obrázky draků/Vulkanus.png" class="card-image" alt="Vulkanus">
+
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+
+        <div class="id-badge">1</div>
+
+        <!-- Stats -->
+        <div class="stat-box pos-tr">
+            <span class="icon">⚔️</span>
+            <span class="stat-value">95</span>
+            <span class="stat-label">Síla</span>
+        </div>
+
+        <div class="stat-box pos-ml">
+            <span class="icon">⏳</span>
+            <span class="stat-value">1200</span>
+            <span class="stat-label">Let</span>
+        </div>
+
+        <div class="stat-box pos-mr">
+            <span class="icon">🦅</span>
+            <span class="stat-value">45m</span>
+            <span class="stat-label">Rozpětí</span>
+        </div>
+
+        <div class="stat-box pos-bl">
+            <span class="icon">💨</span>
+            <span class="stat-value">180</span>
+            <span class="stat-label">Rychlost</span>
+        </div>
+
+        <div class="stat-box pos-br">
+            <span class="icon">🎯</span>
+            <span class="stat-value">120m</span>
+            <span class="stat-label">Dosah</span>
+        </div>
+
+        <div class="name-container">
+            <h1 class="card-name">Vulkanus</h1>
+            <div class="card-desc">Obrovský ohnivý drak žijící v aktivních sopkách.</div>
+        </div>
+    </div>
+
+</body>
+
+</html>

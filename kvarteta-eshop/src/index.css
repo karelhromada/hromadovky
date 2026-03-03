@@ -1,0 +1,226 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+
+:root {
+  /* Joyful Light Background */
+  --bg-color: #fcfbfa;
+  /* Soft warm cream */
+  --bg-gradient: radial-gradient(circle at top right, #fffbf2, #f5f0e6);
+  --text-primary: #1e293b;
+  /* slate-800 for strong readable text */
+  --text-secondary: #475569;
+  /* slate-600 */
+
+  /* Accent Colors (Keep Gold, but slightly stronger for contrast) */
+  --accent-gold: #c59b27;
+  --accent-gold-light: #e0b84f;
+  --accent-gold-dark: #967315;
+
+  /* Joyful Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
+  --glass-hover: rgba(255, 255, 255, 0.95);
+
+  --font-family: 'Outfit', sans-serif;
+  --nav-height: 80px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  background: var(--bg-color);
+  background-image: var(--bg-gradient);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* Base utilities */
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 5%;
+}
+
+/* Glass panel utility */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: 24px;
+}
+
+/* Animations */
+@keyframes levitate {
+
+  0%,
+  100% {
+    translate: 0 0px;
+  }
+
+  50% {
+    translate: 0 -15px;
+  }
+}
+
+@keyframes holographic {
+  0% {
+    opacity: 0;
+    background-position: 200% center;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    background-position: -200% center;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes gradientBg {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* === Flowing Pastel Mesh Background === */
+.pastel-mesh-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -10;
+  overflow: hidden;
+  background: var(--bg-color);
+  /* Fallback */
+}
+
+.pastel-mesh-bg::before,
+.pastel-mesh-bg::after,
+.pastel-mesh-bg .blob {
+  content: '';
+  position: absolute;
+  width: 80vw;
+  height: 80vw;
+  background: radial-gradient(circle, rgba(235, 203, 116, 0.4) 0%, rgba(255, 255, 255, 0) 70%);
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: meshFlow 20s infinite ease-in-out alternate;
+}
+
+.pastel-mesh-bg::before {
+  top: -20vh;
+  left: -20vw;
+  background: radial-gradient(circle, rgba(255, 228, 181, 0.6) 0%, rgba(255, 255, 255, 0) 70%);
+  /* Moccasin / Peach */
+  animation-duration: 25s;
+}
+
+.pastel-mesh-bg::after {
+  bottom: -40vh;
+  right: -20vw;
+  background: radial-gradient(circle, rgba(162, 219, 219, 0.4) 0%, rgba(255, 255, 255, 0) 70%);
+  /* Soft Teal/Cyan */
+  animation-delay: -10s;
+  animation-duration: 22s;
+}
+
+.pastel-mesh-bg .blob {
+  top: 20vh;
+  left: 50vw;
+  background: radial-gradient(circle, rgba(255, 182, 193, 0.3) 0%, rgba(255, 255, 255, 0) 70%);
+  /* Soft Pink */
+  animation-delay: -5s;
+  animation-duration: 18s;
+}
+
+@keyframes meshFlow {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  33% {
+    transform: translate(15vw, -10vh) scale(1.1);
+  }
+
+  66% {
+    transform: translate(-10vw, 15vh) scale(0.9);
+  }
+
+  100% {
+    transform: translate(5vw, 5vh) scale(1.05);
+  }
+}
+
+/* Common text gradients */
+.text-gradient-gold {
+  background: linear-gradient(135deg, var(--accent-gold-light), var(--accent-gold), var(--accent-gold-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

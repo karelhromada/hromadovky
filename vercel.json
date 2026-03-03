@@ -1,0 +1,11 @@
+{
+    "buildCommand": "cd kvarteta-eshop && npm install && npm run build",
+    "outputDirectory": "kvarteta-eshop/dist",
+    "framework": "vite",
+    "rewrites": [
+        {
+            "source": "/(.*)",
+            "destination": "/"
+        }
+    ]
+}

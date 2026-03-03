@@ -23,7 +23,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleCart, cartCount }) => {
         <header className={`navbar ${scrolled ? 'scrolled glass-panel' : ''}`}>
             <div className="navbar-container container">
                 <div className="logo">
-                    <img src="/logo.jpg" alt="Hromadovky Logo" className="navbar-logo-img" />
+                    <img src="/logo.webp" alt="Hromadovky Logo" className="navbar-logo-img" />
                     <span className="text-gradient-gold">HROMADOVKY</span>
                     <span className="logo-subtitle">| karty plné příběhů</span>
                 </div>

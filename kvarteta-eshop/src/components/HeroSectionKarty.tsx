@@ -17,11 +17,11 @@ const HeroSectionKarty: React.FC = () => {
     }, []);
 
     const prsiHand = [
-        { id: 1, image: '/cards/prsi/prsi_srdce_10.png', classes: 'fanned-1', zIndex: 1 },
-        { id: 2, image: '/cards/prsi/prsi_srdce_J.png', classes: 'fanned-2', zIndex: 2 },
-        { id: 3, image: '/cards/prsi/prsi_srdce_A.png', classes: 'fanned-3', zIndex: 5 }, // Top card
-        { id: 4, image: '/cards/prsi/prsi_srdce_K.png', classes: 'fanned-4', zIndex: 4 },
-        { id: 5, image: '/cards/prsi/prsi_srdce_Q.png', classes: 'fanned-5', zIndex: 3 }
+        { id: 1, image: '/cards/prsi/prsi_srdce_10.webp', classes: 'fanned-1', zIndex: 1 },
+        { id: 2, image: '/cards/prsi/prsi_srdce_J.webp', classes: 'fanned-2', zIndex: 2 },
+        { id: 3, image: '/cards/prsi/prsi_srdce_A.webp', classes: 'fanned-3', zIndex: 5 }, // Top card
+        { id: 4, image: '/cards/prsi/prsi_srdce_K.webp', classes: 'fanned-4', zIndex: 4 },
+        { id: 5, image: '/cards/prsi/prsi_srdce_Q.webp', classes: 'fanned-5', zIndex: 3 }
     ];
 
     return (

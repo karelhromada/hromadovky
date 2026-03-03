@@ -9,11 +9,11 @@ interface ProductShowcaseProps {
 }
 
 const backgrounds = [
-    '/cards/card_back_pattern.png', '/cards/dragon_scales_seamless.png',
-    '/cards/dragon_scales_vibrant.png', '/cards/dragon_scales_metallic.png',
-    '/cards/dragon_scales_realistic_1.png', '/cards/dragon_scales_realistic_2.png',
-    '/cards/cat_fur_orange.png', '/cards/cat_fur_silver.png', '/cards/cat_fur_calico.png',
-    '/cards/sugar_glaze_pattern.png'
+    '/cards/card_back_pattern.webp', '/cards/dragon_scales_seamless.webp',
+    '/cards/dragon_scales_vibrant.webp', '/cards/dragon_scales_metallic.webp',
+    '/cards/dragon_scales_realistic_1.webp', '/cards/dragon_scales_realistic_2.webp',
+    '/cards/cat_fur_orange.webp', '/cards/cat_fur_silver.webp', '/cards/cat_fur_calico.webp',
+    '/cards/sugar_glaze_pattern.webp'
 ];
 
 const products = [
@@ -28,8 +28,8 @@ const products = [
             { id: 2, text: 'Unikátní drak pro každou kartu', icon: Trophy, color: '#fbbf24' }
         ],
         image: [
-            '/cards/prsi/prsi_srdce_A.png', '/cards/prsi/prsi_listy_K.png', '/cards/prsi/prsi_kule_Q.png', '/cards/prsi/prsi_zaludy_J.png',
-            '/cards/prsi/prsi_srdce_7.png', '/cards/prsi/prsi_listy_8.png', '/cards/prsi/prsi_kule_9.png', '/cards/prsi/prsi_zaludy_10.png'
+            '/cards/prsi/prsi_srdce_A.webp', '/cards/prsi/prsi_listy_K.webp', '/cards/prsi/prsi_kule_Q.webp', '/cards/prsi/prsi_zaludy_J.webp',
+            '/cards/prsi/prsi_srdce_7.webp', '/cards/prsi/prsi_listy_8.webp', '/cards/prsi/prsi_kule_9.webp', '/cards/prsi/prsi_zaludy_10.webp'
         ]
     },
     {
@@ -42,9 +42,9 @@ const products = [
             { id: 1, text: 'Bestseller', icon: Trophy, color: '#ffb703' }
         ],
         image: [
-            '/cards/dino_full_1.png', '/cards/dino_full_2.png', '/cards/dino_full_3.png', '/cards/dino_full_4.png',
-            '/cards/dino_full_5.png', '/cards/dino_full_6.png', '/cards/dino_full_7.png', '/cards/dino_full_8.png',
-            '/cards/dino_full_9.png', '/cards/dino_full_10.png'
+            '/cards/dino_full_1.webp', '/cards/dino_full_2.webp', '/cards/dino_full_3.webp', '/cards/dino_full_4.webp',
+            '/cards/dino_full_5.webp', '/cards/dino_full_6.webp', '/cards/dino_full_7.webp', '/cards/dino_full_8.webp',
+            '/cards/dino_full_9.webp', '/cards/dino_full_10.webp'
         ]
     },
     {
@@ -57,9 +57,9 @@ const products = [
             { id: 1, text: 'Roztomilé', icon: Star, color: '#d946ef' }
         ],
         image: [
-            '/cards/baby_full_1.png', '/cards/baby_full_2.png', '/cards/baby_full_3.png', '/cards/baby_full_4.png',
-            '/cards/baby_full_5.png', '/cards/baby_full_6.png', '/cards/baby_full_7.png', '/cards/baby_full_8.png',
-            '/cards/baby_full_9.png', '/cards/baby_full_10.png', '/cards/baby_full_11.png'
+            '/cards/baby_full_1.webp', '/cards/baby_full_2.webp', '/cards/baby_full_3.webp', '/cards/baby_full_4.webp',
+            '/cards/baby_full_5.webp', '/cards/baby_full_6.webp', '/cards/baby_full_7.webp', '/cards/baby_full_8.webp',
+            '/cards/baby_full_9.webp', '/cards/baby_full_10.webp', '/cards/baby_full_11.webp'
         ]
     },
     {
@@ -72,9 +72,9 @@ const products = [
             { id: 1, text: 'Premium', icon: Shield, color: '#ef4444' }
         ],
         image: [
-            '/cards/drag_full_1.png', '/cards/drag_full_2.png', '/cards/drag_full_3.png', '/cards/drag_full_4.png',
-            '/cards/drag_full_5.png', '/cards/drag_full_6.png', '/cards/drag_full_7.png', '/cards/drag_full_8.png',
-            '/cards/drag_full_9.png', '/cards/drag_full_10.png', '/cards/drag_full_11.png'
+            '/cards/drag_full_1.webp', '/cards/drag_full_2.webp', '/cards/drag_full_3.webp', '/cards/drag_full_4.webp',
+            '/cards/drag_full_5.webp', '/cards/drag_full_6.webp', '/cards/drag_full_7.webp', '/cards/drag_full_8.webp',
+            '/cards/drag_full_9.webp', '/cards/drag_full_10.webp', '/cards/drag_full_11.webp'
         ]
     },
     {
@@ -87,9 +87,9 @@ const products = [
             { id: 1, text: 'Horká novinka', icon: Sparkles, color: '#ffb703' }
         ],
         image: [
-            '/cards/knight_full_1.png', '/cards/knight_full_2.png', '/cards/knight_full_3.png', '/cards/knight_full_4.png',
-            '/cards/knight_full_5.png', '/cards/knight_full_6.png', '/cards/knight_full_7.png', '/cards/knight_full_8.png',
-            '/cards/knight_full_9.png', '/cards/knight_full_10.png'
+            '/cards/knight_full_1.webp', '/cards/knight_full_2.webp', '/cards/knight_full_3.webp', '/cards/knight_full_4.webp',
+            '/cards/knight_full_5.webp', '/cards/knight_full_6.webp', '/cards/knight_full_7.webp', '/cards/knight_full_8.webp',
+            '/cards/knight_full_9.webp', '/cards/knight_full_10.webp'
         ]
     },
     {
@@ -102,9 +102,9 @@ const products = [
             { id: 1, text: 'Populární', icon: Star, color: '#0ea5e9' }
         ],
         image: [
-            '/cards/cat_full_1.png', '/cards/cat_full_2.png', '/cards/cat_full_3.png', '/cards/cat_full_4.png',
-            '/cards/cat_full_5.png', '/cards/cat_full_6.png', '/cards/cat_full_7.png', '/cards/cat_full_8.png',
-            '/cards/cat_full_9.png', '/cards/cat_full_10.png'
+            '/cards/cat_full_1.webp', '/cards/cat_full_2.webp', '/cards/cat_full_3.webp', '/cards/cat_full_4.webp',
+            '/cards/cat_full_5.webp', '/cards/cat_full_6.webp', '/cards/cat_full_7.webp', '/cards/cat_full_8.webp',
+            '/cards/cat_full_9.webp', '/cards/cat_full_10.webp'
         ]
     }
 ];

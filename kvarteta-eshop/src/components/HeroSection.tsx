@@ -25,11 +25,11 @@ const HeroSection: React.FC = () => {
     }, []);
 
     const cards = [
-        { id: 1, image: '/cards/dino_full_5.png' },     // A cool dinosaur card
-        { id: 2, image: '/cards/baby_full_2.png' },     // A cute baby dragon card
-        { id: 3, image: '/cards/drag_full_11.png' },    // Kronos dragon card
-        { id: 4, image: '/cards/cat_full_1.png' },      // A warrior cat card
-        { id: 5, image: '/cards/baby_full_11.png' },    // Časíček baby dragon card
+        { id: 1, image: '/cards/dino_full_5.webp' },     // A cool dinosaur card
+        { id: 2, image: '/cards/baby_full_2.webp' },     // A cute baby dragon card
+        { id: 3, image: '/cards/drag_full_11.webp' },    // Kronos dragon card
+        { id: 4, image: '/cards/cat_full_1.webp' },      // A warrior cat card
+        { id: 5, image: '/cards/baby_full_11.webp' },    // Časíček baby dragon card
     ];
 
     return (

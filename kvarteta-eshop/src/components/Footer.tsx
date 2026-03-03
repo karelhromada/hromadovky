@@ -7,7 +7,7 @@ const Footer: React.FC = () => {
             <div className="container footer-content">
                 <div className="footer-brand">
                     <div className="logo mb-4 footer-logo-container">
-                        <img src="/logo.jpg" alt="Hromadovky Logo" className="footer-logo-img" />
+                        <img src="/logo.webp" alt="Hromadovky Logo" className="footer-logo-img" />
                         <span className="text-gradient-gold">HROMADOVKY</span>
                         <span className="logo-subtitle">| karty plné příběhů</span>
                     </div>

@@ -3,18 +3,18 @@ import { Upload, Sparkles } from 'lucide-react';
 import './CardCreator.css';
 
 const backgrounds = [
-    '/cards/card_back_pattern.png', '/cards/dragon_scales_seamless.png',
-    '/cards/neutral_back_gradient.png', '/cards/neutral_back_stars.png',
-    '/cards/dragon_scales_vibrant.png', '/cards/dragon_scales_metallic.png',
-    '/cards/dragon_scales_realistic_1.png', '/cards/dragon_scales_realistic_2.png',
-    '/cards/cat_fur_orange.png', '/cards/cat_fur_silver.png', '/cards/cat_fur_calico.png'
+    '/cards/card_back_pattern.webp', '/cards/dragon_scales_seamless.webp',
+    '/cards/neutral_back_gradient.webp', '/cards/neutral_back_stars.webp',
+    '/cards/dragon_scales_vibrant.webp', '/cards/dragon_scales_metallic.webp',
+    '/cards/dragon_scales_realistic_1.webp', '/cards/dragon_scales_realistic_2.webp',
+    '/cards/cat_fur_orange.webp', '/cards/cat_fur_silver.webp', '/cards/cat_fur_calico.webp'
 ];
 
 const frontImages = [
-    '/cards/baby_1.png', '/cards/baby_2.png', '/cards/baby_7.png',
-    '/cards/dino_1.png', '/cards/dino_2.png', '/cards/dino_5.png',
-    '/cards/drag_3.png', '/cards/drag_8.png',
-    '/cards/cat_4.png', '/cards/cat_7.png'
+    '/cards/baby_1.webp', '/cards/baby_2.webp', '/cards/baby_7.webp',
+    '/cards/dino_1.webp', '/cards/dino_2.webp', '/cards/dino_5.webp',
+    '/cards/drag_3.webp', '/cards/drag_8.webp',
+    '/cards/cat_4.webp', '/cards/cat_7.webp'
 ];
 
 const fontFamilies = [

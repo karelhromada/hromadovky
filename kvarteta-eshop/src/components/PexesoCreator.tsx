@@ -7,18 +7,18 @@ interface PexesoCreatorProps {
 }
 
 const backgrounds = [
-    { id: 'bg1', name: 'Zelené Šupiny', url: '/cards/dragon_scales_realistic_1.png' },
-    { id: 'bg2', name: 'Kovový Drak', url: '/cards/dragon_scales_metallic.png' },
-    { id: 'bg3', name: 'Krvavé Šupiny', url: '/cards/dragon_scales_vibrant.png' },
-    { id: 'bg4', name: 'Zlaté Šupiny', url: '/cards/dragon_scales_realistic_2.png' },
-    { id: 'bg8', name: 'Tajemný Vzor', url: '/cards/card_back_pattern.png' },
-    { id: 'bg9', name: 'Noční Obloha', url: '/cards/neutral_back_stars.png' },
-    { id: 'bg12', name: 'Zrzavý Kocour', url: '/cards/cat_fur_orange.png' },
-    { id: 'bg13', name: 'Stříbrná Srst', url: '/cards/cat_fur_silver.png' },
-    { id: 'bg_geo_blue', name: 'Modré Diamanty', url: '/cards/pexeso_back_blue_geo.png' },
-    { id: 'bg_geo_red', name: 'Červené Vzory', url: '/cards/pexeso_back_red_geo.png' },
-    { id: 'bg_linen', name: 'Klasické Plátno', url: '/cards/pexeso_back_linen.png' },
-    { id: 'bg_stars', name: 'Hvězdná Noc', url: '/cards/pexeso_back_stars.png' }
+    { id: 'bg1', name: 'Zelené Šupiny', url: '/cards/dragon_scales_realistic_1.webp' },
+    { id: 'bg2', name: 'Kovový Drak', url: '/cards/dragon_scales_metallic.webp' },
+    { id: 'bg3', name: 'Krvavé Šupiny', url: '/cards/dragon_scales_vibrant.webp' },
+    { id: 'bg4', name: 'Zlaté Šupiny', url: '/cards/dragon_scales_realistic_2.webp' },
+    { id: 'bg8', name: 'Tajemný Vzor', url: '/cards/card_back_pattern.webp' },
+    { id: 'bg9', name: 'Noční Obloha', url: '/cards/neutral_back_stars.webp' },
+    { id: 'bg12', name: 'Zrzavý Kocour', url: '/cards/cat_fur_orange.webp' },
+    { id: 'bg13', name: 'Stříbrná Srst', url: '/cards/cat_fur_silver.webp' },
+    { id: 'bg_geo_blue', name: 'Modré Diamanty', url: '/cards/pexeso_back_blue_geo.webp' },
+    { id: 'bg_geo_red', name: 'Červené Vzory', url: '/cards/pexeso_back_red_geo.webp' },
+    { id: 'bg_linen', name: 'Klasické Plátno', url: '/cards/pexeso_back_linen.webp' },
+    { id: 'bg_stars', name: 'Hvězdná Noc', url: '/cards/pexeso_back_stars.webp' }
 ];
 
 const dimensions = [
@@ -101,7 +101,7 @@ const PexesoCreator: React.FC<PexesoCreatorProps> = ({ onAddToCart }) => {
                 name: `Vlastní pexeso (${deckSize} karet) ${leaveDesignToUs ? '- Ilustrovaný design' : ''}`,
                 description: desc,
                 price: finalPrice,
-                image: leaveDesignToUs ? '/cards/magic_runes_1.png' : (photos[0]?.url || '/cards/placeholder.png'),
+                image: leaveDesignToUs ? '/cards/magic_runes_1.webp' : (photos[0]?.url || '/cards/placeholder.webp'),
                 themeColor: '#eab308',
                 size: `${selectedSize.label} (${selectedSize.desc})`
             });

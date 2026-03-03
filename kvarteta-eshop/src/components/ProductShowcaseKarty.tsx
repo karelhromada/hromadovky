@@ -15,9 +15,9 @@ const products = [
         description: 'Klasické herní hodnoty (10, J, Q, K, A) pro Vyšší bere a pohlcující noční obloha na luxusním rubu.',
         price: 349,
         themeColor: '#00d2ff',
-        images: ['/cards/neutral_back_stars.png', '/cards/neutral_back_stars.png', '/cards/neutral_back_stars.png'],
-        boxImage: '/cards/neutral_back_stars.png',
-        allCards: ['/cards/neutral_back_stars.png'] // Placeholder for preview
+        images: ['/cards/neutral_back_stars.webp', '/cards/neutral_back_stars.webp', '/cards/neutral_back_stars.webp'],
+        boxImage: '/cards/neutral_back_stars.webp',
+        allCards: ['/cards/neutral_back_stars.webp'] // Placeholder for preview
     },
     {
         id: 'karty-tema-draku',
@@ -25,16 +25,16 @@ const products = [
         description: 'Luxusní Dračí edice. Mariášové barvy reprezentující živly. Hodnoty 10, J, Q, K, A v klasickém čistém herním designu s plnou originální malbou draků.',
         price: 449, // Adjusted price for smaller deck
         themeColor: '#ff0033',
-        images: ['/cards/dragon_scales_realistic_1.png', '/cards/prsi/prsi_listy_A.png', '/cards/prsi/prsi_srdce_K.png'],
-        boxImage: '/cards/dragon_scales_realistic_1.png',
+        images: ['/cards/dragon_scales_realistic_1.webp', '/cards/prsi/prsi_listy_A.webp', '/cards/prsi/prsi_srdce_K.webp'],
+        boxImage: '/cards/dragon_scales_realistic_1.webp',
         isThematic: true,
         sampleValue: 'A',
         sampleSuit: '♥',
         allCards: [
-            '/cards/prsi/prsi_srdce_10.png', '/cards/prsi/prsi_srdce_J.png', '/cards/prsi/prsi_srdce_Q.png', '/cards/prsi/prsi_srdce_K.png', '/cards/prsi/prsi_srdce_A.png',
-            '/cards/prsi/prsi_listy_10.png', '/cards/prsi/prsi_listy_J.png', '/cards/prsi/prsi_listy_Q.png', '/cards/prsi/prsi_listy_K.png', '/cards/prsi/prsi_listy_A.png',
-            '/cards/prsi/prsi_zaludy_10.png', '/cards/prsi/prsi_zaludy_J.png', '/cards/prsi/prsi_zaludy_Q.png', '/cards/prsi/prsi_zaludy_K.png', '/cards/prsi/prsi_zaludy_A.png',
-            '/cards/prsi/prsi_kule_10.png', '/cards/prsi/prsi_kule_J.png', '/cards/prsi/prsi_kule_Q.png', '/cards/prsi/prsi_kule_K.png', '/cards/prsi/prsi_kule_A.png'
+            '/cards/prsi/prsi_srdce_10.webp', '/cards/prsi/prsi_srdce_J.webp', '/cards/prsi/prsi_srdce_Q.webp', '/cards/prsi/prsi_srdce_K.webp', '/cards/prsi/prsi_srdce_A.webp',
+            '/cards/prsi/prsi_listy_10.webp', '/cards/prsi/prsi_listy_J.webp', '/cards/prsi/prsi_listy_Q.webp', '/cards/prsi/prsi_listy_K.webp', '/cards/prsi/prsi_listy_A.webp',
+            '/cards/prsi/prsi_zaludy_10.webp', '/cards/prsi/prsi_zaludy_J.webp', '/cards/prsi/prsi_zaludy_Q.webp', '/cards/prsi/prsi_zaludy_K.webp', '/cards/prsi/prsi_zaludy_A.webp',
+            '/cards/prsi/prsi_kule_10.webp', '/cards/prsi/prsi_kule_J.webp', '/cards/prsi/prsi_kule_Q.webp', '/cards/prsi/prsi_kule_K.webp', '/cards/prsi/prsi_kule_A.webp'
         ]
     },
     {
@@ -43,9 +43,9 @@ const products = [
         description: 'Standardní figury (10-A) pro snadné hraní, ale se zadní stranou potaženou realistickou dračí šupinou.',
         price: 349,
         themeColor: '#ff0033',
-        images: ['/cards/dragon_scales_realistic_2.png', '/cards/dragon_scales_realistic_1.png', '/cards/dragon_scales_realistic_1.png'],
-        boxImage: '/cards/dragon_scales_realistic_1.png',
-        allCards: ['/cards/dragon_scales_realistic_1.png']
+        images: ['/cards/dragon_scales_realistic_2.webp', '/cards/dragon_scales_realistic_1.webp', '/cards/dragon_scales_realistic_1.webp'],
+        boxImage: '/cards/dragon_scales_realistic_1.webp',
+        allCards: ['/cards/dragon_scales_realistic_1.webp']
     },
     {
         id: 'karty-tema-dino',
@@ -53,12 +53,12 @@ const products = [
         description: 'Plně tematický líc. Každá karta (10, J, Q, K, A) je ztvárněna fantastickou ilustrací dinosaura.',
         price: 449,
         themeColor: '#ff8a00',
-        images: ['/cards/dino_full_4.png', '/cards/dino_full_5.png', '/cards/dino_full_2.png'],
-        boxImage: '/cards/dragon_scales_seamless.png',
+        images: ['/cards/dino_full_4.webp', '/cards/dino_full_5.webp', '/cards/dino_full_2.webp'],
+        boxImage: '/cards/dragon_scales_seamless.webp',
         isThematic: true,
         sampleValue: 'K',
         sampleSuit: '🔔',
-        allCards: ['/cards/dino_full_4.png', '/cards/dino_full_5.png', '/cards/dino_full_2.png']
+        allCards: ['/cards/dino_full_4.webp', '/cards/dino_full_5.webp', '/cards/dino_full_2.webp']
     },
     {
         id: 'karty-tema-kocky',
@@ -66,12 +66,12 @@ const products = [
         description: 'Každá hodnota (10-A) má unikátní malovanou kočičí tvář, avšak při zachování snadné čitelnosti znaků.',
         price: 449,
         themeColor: '#00d2ff',
-        images: ['/cards/cat_full_1.png', '/cards/cat_full_2.png', '/cards/cat_full_3.png'],
-        boxImage: '/cards/magic_runes_1.png',
+        images: ['/cards/cat_full_1.webp', '/cards/cat_full_2.webp', '/cards/cat_full_3.webp'],
+        boxImage: '/cards/magic_runes_1.webp',
         isThematic: true,
         sampleValue: 'Q',
         sampleSuit: '🍃',
-        allCards: ['/cards/cat_full_1.png', '/cards/cat_full_2.png', '/cards/cat_full_3.png']
+        allCards: ['/cards/cat_full_1.webp', '/cards/cat_full_2.webp', '/cards/cat_full_3.webp']
     }
 ];
 

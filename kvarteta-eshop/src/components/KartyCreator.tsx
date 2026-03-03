@@ -9,18 +9,18 @@ interface KartyCreatorProps {
 type PlayMode = 'classic' | 'thematic';
 
 const backgrounds = [
-    { id: 'bg1', name: 'Zelené šupiny', url: '/cards/dragon_scales_realistic_1.png' },
-    { id: 'bg2', name: 'Kovový drak', url: '/cards/dragon_scales_metallic.png' },
-    { id: 'bg3', name: 'Krvavé šupiny', url: '/cards/dragon_scales_vibrant.png' },
-    { id: 'bg4', name: 'Zlaté šupiny', url: '/cards/dragon_scales_realistic_2.png' },
-    { id: 'bg8', name: 'Tajemný vzor', url: '/cards/card_back_pattern.png' },
-    { id: 'bg9', name: 'Noční obloha', url: '/cards/neutral_back_stars.png' },
-    { id: 'bg12', name: 'Zrzavý kocour', url: '/cards/cat_fur_orange.png' },
-    { id: 'bg13', name: 'Stříbrná srst', url: '/cards/cat_fur_silver.png' },
-    { id: 'bg_geo_blue', name: 'Modré diamanty', url: '/cards/pexeso_back_blue_geo.png' },
-    { id: 'bg_geo_red', name: 'Červené vzory', url: '/cards/pexeso_back_red_geo.png' },
-    { id: 'bg_linen', name: 'Klasické plátno', url: '/cards/pexeso_back_linen.png' },
-    { id: 'bg_stars', name: 'Hvězdná noc', url: '/cards/pexeso_back_stars.png' }
+    { id: 'bg1', name: 'Zelené šupiny', url: '/cards/dragon_scales_realistic_1.webp' },
+    { id: 'bg2', name: 'Kovový drak', url: '/cards/dragon_scales_metallic.webp' },
+    { id: 'bg3', name: 'Krvavé šupiny', url: '/cards/dragon_scales_vibrant.webp' },
+    { id: 'bg4', name: 'Zlaté šupiny', url: '/cards/dragon_scales_realistic_2.webp' },
+    { id: 'bg8', name: 'Tajemný vzor', url: '/cards/card_back_pattern.webp' },
+    { id: 'bg9', name: 'Noční obloha', url: '/cards/neutral_back_stars.webp' },
+    { id: 'bg12', name: 'Zrzavý kocour', url: '/cards/cat_fur_orange.webp' },
+    { id: 'bg13', name: 'Stříbrná srst', url: '/cards/cat_fur_silver.webp' },
+    { id: 'bg_geo_blue', name: 'Modré diamanty', url: '/cards/pexeso_back_blue_geo.webp' },
+    { id: 'bg_geo_red', name: 'Červené vzory', url: '/cards/pexeso_back_red_geo.webp' },
+    { id: 'bg_linen', name: 'Klasické plátno', url: '/cards/pexeso_back_linen.webp' },
+    { id: 'bg_stars', name: 'Hvězdná noc', url: '/cards/pexeso_back_stars.webp' }
 ];
 
 const cardStyles = [
@@ -35,10 +35,10 @@ const cardStyles = [
 ];
 
 const themes = [
-    { id: 'theme-prsi-drag', name: 'Epická dračí edice', url: '/cards/prsi/prsi_srdce_K.png', color: '#ff0033', sampleValue: 'K', sampleSuit: '♥' },
-    { id: 'theme-dino', name: 'Dinosauři', url: '/cards/dino_1.png', color: '#ff8a00', sampleValue: 'A', sampleSuit: '🔔' },
-    { id: 'theme-baby', name: 'Baby dráčci', url: '/cards/baby_1.png', color: '#a100ff', sampleValue: 'J', sampleSuit: '🍃' },
-    { id: 'theme-cats', name: 'Bojovné kočky', url: '/cards/cat_1.png', color: '#00d2ff', sampleValue: 'Q', sampleSuit: '🌰' }
+    { id: 'theme-prsi-drag', name: 'Epická dračí edice', url: '/cards/prsi/prsi_srdce_K.webp', color: '#ff0033', sampleValue: 'K', sampleSuit: '♥' },
+    { id: 'theme-dino', name: 'Dinosauři', url: '/cards/dino_1.webp', color: '#ff8a00', sampleValue: 'A', sampleSuit: '🔔' },
+    { id: 'theme-baby', name: 'Baby dráčci', url: '/cards/baby_1.webp', color: '#a100ff', sampleValue: 'J', sampleSuit: '🍃' },
+    { id: 'theme-cats', name: 'Bojovné kočky', url: '/cards/cat_1.webp', color: '#00d2ff', sampleValue: 'Q', sampleSuit: '🌰' }
 ];
 
 const KartyCreator: React.FC<KartyCreatorProps> = ({ onAddToCart }) => {
@@ -72,7 +72,7 @@ const KartyCreator: React.FC<KartyCreatorProps> = ({ onAddToCart }) => {
             if (leaveDesignToUs) {
                 productName = `Plně Tematické Karty (AI na přání) - ${nameSuffix}`;
                 productDesc = `Zadání klienta (${customThemeStyle}): ${customThemeDesc}`;
-                productImage = '/cards/magic_runes_1.png'; // placeholder
+                productImage = '/cards/magic_runes_1.webp'; // placeholder
                 themeColor = '#a100ff';
             } else {
                 productName = `Tematické Karty - ${themeRef?.name} - ${nameSuffix}`;

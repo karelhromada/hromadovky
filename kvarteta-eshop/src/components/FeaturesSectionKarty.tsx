@@ -8,7 +8,7 @@ const features = [
         title: 'Odolné',
         subtitle: 'materiály',
         desc: 'Naše karty tiskneme na prémiový karetní karton s karetním lakem. Přežijí rodinné oslavy, dětské ruce i napínavé turnaje, aniž by se jim ohnuly rožky.',
-        images: ['/cards/dragon_scales_realistic_1.png'],
+        images: ['/cards/dragon_scales_realistic_1.webp'],
         imageAlt: 'Ukázka odolného materiálu karet'
     },
     {
@@ -17,10 +17,10 @@ const features = [
         subtitle: 'vizuály',
         desc: 'Každá edice má vlastní duši a nádherné, plně autorské ilustrace. Spojujeme tradiční herní zážitek s moderním uměním, které pozvedne každou partii.',
         images: [
-            '/cards/prsi/prsi_srdce_K.png',
-            '/cards/prsi/prsi_kule_A.png',
-            '/cards/prsi/prsi_listy_J.png',
-            '/cards/prsi/prsi_zaludy_Q.png'
+            '/cards/prsi/prsi_srdce_K.webp',
+            '/cards/prsi/prsi_kule_A.webp',
+            '/cards/prsi/prsi_listy_J.webp',
+            '/cards/prsi/prsi_zaludy_Q.webp'
         ],
         imageAlt: 'Ukázka autorských ilustrací hracích karet'
     },
@@ -30,12 +30,12 @@ const features = [
         subtitle: 'zadní strany',
         desc: 'Přizpůsobte si balíček svému stylu. Nabízíme desítky nádherných rubů od klasického plátna až po šupinaté dračí kůže a magickou noční oblohu.',
         images: [
-            '/cards/neutral_back_stars.png',
-            '/cards/card_back_pattern.png',
-            '/cards/pexeso_back_blue_geo.png',
-            '/cards/pexeso_back_red_geo.png',
-            '/cards/pexeso_back_linen.png',
-            '/cards/dragon_scales_metallic.png'
+            '/cards/neutral_back_stars.webp',
+            '/cards/card_back_pattern.webp',
+            '/cards/pexeso_back_blue_geo.webp',
+            '/cards/pexeso_back_red_geo.webp',
+            '/cards/pexeso_back_linen.webp',
+            '/cards/dragon_scales_metallic.webp'
         ],
         imageAlt: 'Ukázka zadní strany karet'
     },
@@ -45,10 +45,10 @@ const features = [
         subtitle: 'fotografie',
         desc: 'Vytvořte z karet dokonalý osobní dárek. V našem jednoduchém editoru si na karty snadno vložíte vlastní fotografie nebo firemní logo.',
         images: [
-            '/cards/prsi/prsi_kule_K.png',
-            '/cards/prsi/prsi_srdce_A.png',
-            '/cards/prsi/prsi_zaludy_10.png',
-            '/cards/prsi/prsi_listy_A.png'
+            '/cards/prsi/prsi_kule_K.webp',
+            '/cards/prsi/prsi_srdce_A.webp',
+            '/cards/prsi/prsi_zaludy_10.webp',
+            '/cards/prsi/prsi_listy_A.webp'
         ],
         imageAlt: 'Možnost personalizace hracích karet'
     }

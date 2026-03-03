@@ -2,9 +2,9 @@ import React, { useEffect, useState, useRef } from 'react';
 import './HeroSectionPexeso.css';
 
 const images = [
-    '/cards/dino_1.png', '/cards/baby_1.png',
-    '/cards/drag_1.png', '/cards/cat_1.png',
-    '/cards/baby_2.png', '/cards/dino_5.png'
+    '/cards/dino_1.webp', '/cards/baby_1.webp',
+    '/cards/drag_1.webp', '/cards/cat_1.webp',
+    '/cards/baby_2.webp', '/cards/dino_5.webp'
 ];
 
 interface MemoryCard {

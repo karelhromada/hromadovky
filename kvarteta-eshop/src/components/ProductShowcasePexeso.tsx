@@ -11,12 +11,12 @@ interface ProductShowcaseProps {
 }
 
 const backgrounds = [
-    '/cards/card_back_pattern.png', '/cards/dragon_scales_seamless.png',
-    '/cards/dragon_scales_vibrant.png', '/cards/dragon_scales_metallic.png',
-    '/cards/dragon_scales_realistic_1.png', '/cards/dragon_scales_realistic_2.png',
-    '/cards/cat_fur_orange.png', '/cards/cat_fur_silver.png', '/cards/cat_fur_calico.png',
-    '/cards/pexeso_back_blue_geo.png', '/cards/pexeso_back_red_geo.png',
-    '/cards/pexeso_back_linen.png', '/cards/pexeso_back_stars.png'
+    '/cards/card_back_pattern.webp', '/cards/dragon_scales_seamless.webp',
+    '/cards/dragon_scales_vibrant.webp', '/cards/dragon_scales_metallic.webp',
+    '/cards/dragon_scales_realistic_1.webp', '/cards/dragon_scales_realistic_2.webp',
+    '/cards/cat_fur_orange.webp', '/cards/cat_fur_silver.webp', '/cards/cat_fur_calico.webp',
+    '/cards/pexeso_back_blue_geo.webp', '/cards/pexeso_back_red_geo.webp',
+    '/cards/pexeso_back_linen.webp', '/cards/pexeso_back_stars.webp'
 ];
 
 const products = [
@@ -30,11 +30,11 @@ const products = [
             { id: 1, text: 'Bestseller', icon: Trophy, color: '#ffb703' }
         ],
         image: [
-            '/cards/dinosauri/Alosaurus.png', '/cards/dinosauri/Amargasaurus.png', '/cards/dinosauri/Ankylosaurus.png', '/cards/dinosauri/Argentinosaurus.png',
-            '/cards/dinosauri/Baryonix.png', '/cards/dinosauri/Brachiosaurus.png', '/cards/dinosauri/Diplodocus.png', '/cards/dinosauri/Giganotosaurus.png',
-            '/cards/dinosauri/Mosasaurus.png', '/cards/dinosauri/Pteranodon.png', '/cards/dinosauri/Quetzalcoatlus.png', '/cards/dinosauri/Spinosaurus.png',
-            '/cards/dinosauri/Stegosaurus.png', '/cards/dinosauri/Styrocaurus.png', '/cards/dinosauri/T-rex.png', '/cards/dinosauri/Triceratops.png',
-            '/cards/dinosauri/Utahoraptor.png', '/cards/dinosauri/Velociraptor.png'
+            '/cards/dinosauri/Alosaurus.webp', '/cards/dinosauri/Amargasaurus.webp', '/cards/dinosauri/Ankylosaurus.webp', '/cards/dinosauri/Argentinosaurus.webp',
+            '/cards/dinosauri/Baryonix.webp', '/cards/dinosauri/Brachiosaurus.webp', '/cards/dinosauri/Diplodocus.webp', '/cards/dinosauri/Giganotosaurus.webp',
+            '/cards/dinosauri/Mosasaurus.webp', '/cards/dinosauri/Pteranodon.webp', '/cards/dinosauri/Quetzalcoatlus.webp', '/cards/dinosauri/Spinosaurus.webp',
+            '/cards/dinosauri/Stegosaurus.webp', '/cards/dinosauri/Styrocaurus.webp', '/cards/dinosauri/T-rex.webp', '/cards/dinosauri/Triceratops.webp',
+            '/cards/dinosauri/Utahoraptor.webp', '/cards/dinosauri/Velociraptor.webp'
         ]
     },
     {
@@ -47,9 +47,9 @@ const products = [
             { id: 1, text: 'Roztomilé', icon: Star, color: '#d946ef' }
         ],
         image: [
-            '/cards/baby_2.png', '/cards/baby_1.png', '/cards/baby_3.png', '/cards/baby_4.png',
-            '/cards/baby_5.png', '/cards/baby_6.png', '/cards/baby_7.png', '/cards/baby_8.png',
-            '/cards/baby_full_1.png'
+            '/cards/baby_2.webp', '/cards/baby_1.webp', '/cards/baby_3.webp', '/cards/baby_4.webp',
+            '/cards/baby_5.webp', '/cards/baby_6.webp', '/cards/baby_7.webp', '/cards/baby_8.webp',
+            '/cards/baby_full_1.webp'
         ]
     },
     {
@@ -62,14 +62,14 @@ const products = [
             { id: 1, text: 'Premium', icon: Shield, color: '#ef4444' }
         ],
         image: [
-            '/cards/draci/Aeris.png', '/cards/draci/Astrál.png', '/cards/draci/Bazilišek.png', '/cards/draci/Blesk.png',
-            '/cards/draci/Bouře.png', '/cards/draci/Golem.png', '/cards/draci/Hlídač světů.png', '/cards/draci/Hydrus.png',
-            '/cards/draci/Ignis Rex.png', '/cards/draci/Jedový trn.png', '/cards/draci/Knihovník.png', '/cards/draci/Kronos.png',
-            '/cards/draci/Kříšťál.png', '/cards/draci/Lávový král.png', '/cards/draci/Magmaton.png', '/cards/draci/Moudré oko.png',
-            '/cards/draci/Mrakošlap.png', '/cards/draci/Nebeský poutník.png', '/cards/draci/Nekromancer.png', '/cards/draci/Ohnivý pásovec.png',
-            '/cards/draci/Ostrý hvizd.png', '/cards/draci/Otec podzimu.png', '/cards/draci/Popelavý dech.png', '/cards/draci/Sonic.png',
-            '/cards/draci/Stařec z hor.png', '/cards/draci/Stínový běžec.png', '/cards/draci/Terrogor.png', '/cards/draci/Tornádo.png',
-            '/cards/draci/Vesmírňák.png', '/cards/draci/Vichřice.png', '/cards/draci/Vulcanus.png', '/cards/draci/Větrný živel.png'
+            '/cards/draci/Aeris.webp', '/cards/draci/Astrál.webp', '/cards/draci/Bazilišek.webp', '/cards/draci/Blesk.webp',
+            '/cards/draci/Bouře.webp', '/cards/draci/Golem.webp', '/cards/draci/Hlídač světů.webp', '/cards/draci/Hydrus.webp',
+            '/cards/draci/Ignis Rex.webp', '/cards/draci/Jedový trn.webp', '/cards/draci/Knihovník.webp', '/cards/draci/Kronos.webp',
+            '/cards/draci/Kříšťál.webp', '/cards/draci/Lávový král.webp', '/cards/draci/Magmaton.webp', '/cards/draci/Moudré oko.webp',
+            '/cards/draci/Mrakošlap.webp', '/cards/draci/Nebeský poutník.webp', '/cards/draci/Nekromancer.webp', '/cards/draci/Ohnivý pásovec.webp',
+            '/cards/draci/Ostrý hvizd.webp', '/cards/draci/Otec podzimu.webp', '/cards/draci/Popelavý dech.webp', '/cards/draci/Sonic.webp',
+            '/cards/draci/Stařec z hor.webp', '/cards/draci/Stínový běžec.webp', '/cards/draci/Terrogor.webp', '/cards/draci/Tornádo.webp',
+            '/cards/draci/Vesmírňák.webp', '/cards/draci/Vichřice.webp', '/cards/draci/Vulcanus.webp', '/cards/draci/Větrný živel.webp'
         ]
     },
     {
@@ -82,9 +82,9 @@ const products = [
             { id: 1, text: 'Novinka', icon: Sparkles, color: '#0ea5e9' }
         ],
         image: [
-            '/cards/cat_1.png', '/cards/cat_2.png', '/cards/cat_3.png', '/cards/cat_4.png',
-            '/cards/cat_5.png', '/cards/cat_6.png', '/cards/cat_7.png', '/cards/cat_8.png',
-            '/cards/cat_full_1.png'
+            '/cards/cat_1.webp', '/cards/cat_2.webp', '/cards/cat_3.webp', '/cards/cat_4.webp',
+            '/cards/cat_5.webp', '/cards/cat_6.webp', '/cards/cat_7.webp', '/cards/cat_8.webp',
+            '/cards/cat_full_1.webp'
         ]
     },
     {
@@ -97,10 +97,10 @@ const products = [
             { id: 1, text: 'Divoká příroda', icon: Star, color: '#d97706' }
         ],
         image: [
-            '/cards/dravci/Bengálský tygr.png', '/cards/dravci/Hyeny.png', '/cards/dravci/Jaguár.png', '/cards/dravci/Lev.png',
-            '/cards/dravci/Medvěd grizzly.png', '/cards/dravci/Nilský krokodýl.png', '/cards/dravci/Polární medvěd.png', '/cards/dravci/Puma.png',
-            '/cards/dravci/Sněžný levhart.png', '/cards/dravci/Tygr usuryjský.png', '/cards/dravci/Varan komodský.png', '/cards/dravci/Vlci.png',
-            '/cards/dravci/gepard.png', '/cards/dravci/krokodýl.png', '/cards/dravci/Černý panter.png', '/cards/dravci/žralok bílý.png'
+            '/cards/dravci/Bengálský tygr.webp', '/cards/dravci/Hyeny.webp', '/cards/dravci/Jaguár.webp', '/cards/dravci/Lev.webp',
+            '/cards/dravci/Medvěd grizzly.webp', '/cards/dravci/Nilský krokodýl.webp', '/cards/dravci/Polární medvěd.webp', '/cards/dravci/Puma.webp',
+            '/cards/dravci/Sněžný levhart.webp', '/cards/dravci/Tygr usuryjský.webp', '/cards/dravci/Varan komodský.webp', '/cards/dravci/Vlci.webp',
+            '/cards/dravci/gepard.webp', '/cards/dravci/krokodýl.webp', '/cards/dravci/Černý panter.webp', '/cards/dravci/žralok bílý.webp'
         ]
     }
 ];
@@ -213,11 +213,11 @@ const ProductCardInteractive = ({ product, onAddToCartClick }: { product: any, o
                         // Generate a random stable back texture once per grid load
                         const backTexture = React.useMemo(() => {
                             // Assign different backs based on the product series name to keep it stable
-                            if (product.id.includes('kocky')) return '/cards/cat_fur_orange.png';
-                            if (product.id.includes('dinosauri')) return '/cards/dragon_scales_realistic_1.png';
-                            if (product.id.includes('dracci')) return '/cards/dragon_scales_realistic_2.png';
-                            if (product.id.includes('draci')) return '/cards/dragon_scales_vibrant.png';
-                            if (product.id.includes('dravci')) return '/cards/card_back_pattern.png';
+                            if (product.id.includes('kocky')) return '/cards/cat_fur_orange.webp';
+                            if (product.id.includes('dinosauri')) return '/cards/dragon_scales_realistic_1.webp';
+                            if (product.id.includes('dracci')) return '/cards/dragon_scales_realistic_2.webp';
+                            if (product.id.includes('draci')) return '/cards/dragon_scales_vibrant.webp';
+                            if (product.id.includes('dravci')) return '/cards/card_back_pattern.webp';
                             return backgrounds[index % backgrounds.length];
                         }, [product.id, index]);
 

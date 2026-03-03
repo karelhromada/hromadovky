@@ -78,7 +78,7 @@
 
 .pexeso-hero-card-front {
     /* The "back" of the physical card, face down */
-    background-image: url('/cards/dragon_scales_realistic_1.png');
+    background-image: url('/cards/dragon_scales_realistic_1.webp');
     background-color: var(--glass-bg);
 }
 

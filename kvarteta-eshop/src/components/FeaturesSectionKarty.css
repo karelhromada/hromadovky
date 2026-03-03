@@ -1,0 +1,198 @@
+/* Scroll-Driven Reveal Layout (Concept 2: Light & Gold) */
+
+.karty-scroll-section {
+    background-color: #fafcfb;
+    /* Very light creamy white */
+    padding: 120px 0;
+    overflow: hidden;
+    position: relative;
+    font-family: 'Inter', sans-serif;
+    /* assuming Inter is used on site */
+}
+
+/* Subtle background texture/pattern could go here, for now it's clean CSS */
+.karty-scroll-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+/* Header Area */
+.karty-scroll-main-heading {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #111827;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+}
+
+@media (min-width: 768px) {
+    .karty-scroll-main-heading {
+        font-size: 4.5rem;
+    }
+}
+
+.gold-accent-text {
+    background: linear-gradient(135deg, #d4af37 0%, #daa520 50%, #b8860b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+.karty-scroll-main-sub {
+    font-size: 1.25rem;
+    color: #4b5563;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.gold-divider-center {
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, #d4af37, #b8860b);
+    margin: 0 auto 32px auto;
+    border-radius: 2px;
+}
+
+/* List and Rows */
+.karty-scroll-list {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 120px;
+    margin-top: 80px;
+}
+
+.karty-scroll-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    position: relative;
+    z-index: 10;
+}
+
+@media (min-width: 1024px) {
+    .karty-scroll-row {
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 80px;
+    }
+
+    .karty-scroll-row.row-even {
+        flex-direction: row;
+        /* Image right */
+    }
+
+    .karty-scroll-row.row-odd {
+        flex-direction: row-reverse;
+        /* Image left */
+    }
+}
+
+/* Text Content Area */
+.karty-scroll-content {
+    flex: 1;
+    max-width: 500px;
+}
+
+.karty-scroll-number {
+    font-size: 5rem;
+    font-weight: 900;
+    color: #f3f4f6;
+    /* Very subtle light gray */
+    line-height: 1;
+    margin-bottom: -30px;
+    margin-left: -5px;
+    user-select: none;
+}
+
+.karty-scroll-title {
+    font-size: 2.5rem;
+    line-height: 1.1;
+    color: #111827;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 2;
+}
+
+@media (min-width: 768px) {
+    .karty-scroll-title {
+        font-size: 3.5rem;
+    }
+}
+
+.title-bold {
+    font-weight: 800;
+    display: block;
+}
+
+.title-light {
+    font-weight: 300;
+    color: #6b7280;
+    display: block;
+}
+
+.gold-divider-left {
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, #d4af37, #b8860b);
+    margin-bottom: 24px;
+    border-radius: 2px;
+}
+
+.karty-scroll-desc {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: #4b5563;
+}
+
+/* Image Area */
+.karty-scroll-image-wrap {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.karty-scroll-image-inner {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    aspect-ratio: 4 / 5;
+    border-radius: 24px;
+    background-color: #fff;
+    padding: 16px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+}
+
+.karty-scroll-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.karty-scroll-image-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, rgba(255, 255, 255, 0) 70%);
+    filter: blur(40px);
+    z-index: -1;
+}

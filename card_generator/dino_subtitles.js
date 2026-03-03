@@ -1,0 +1,37 @@
+const subtitles = {
+    // Dinosaurs
+    'Tyrannosaurus': 'Obávaný král predátorů',
+    'Spinosaurus': 'Gigantický říční masožravec',
+    'Giganotosaurus': 'Největší z dravých obrů',
+    'Allosaurus': 'Lítý lovec jury',
+    'Brachiosaurus': 'Vysoký žirafí ještěr',
+    'Diplodocus': 'Majitel bičovitého ocasu',
+    'Argentinosaurus': 'Kolosální hromotluk',
+    'Amargasaurus': 'Obr s trnitou hřívou',
+    'Triceratops': 'Trojrohý obrněný tank',
+    'Styracosaurus': 'Rohatý ceratops s límcem',
+    'Ankylosaurus': 'Chodící pravěká pevnost',
+    'Pachycephalosaurus': 'Mistr v trkání lebkou',
+    'Velociraptor': 'Rychlý a inteligentní lovec',
+    'Deinonychus': 'Dravec se smrtícím drápem',
+    'Utahraptor': 'Gigantický peřnatý raptor',
+    'Compsognathus': 'Podezřele hbitý prcek',
+    'Therizinosaurus': 'Podivín s obřími drápy',
+    'Deinocheirus': 'Záhadný kachnozobý obr',
+    'Carnotaurus': 'Masorubec s býčími rohy',
+    'Baryonyx': 'Specialista na rybolov',
+    'Pteranodon': 'Pán pravěkých nebes',
+    'Quetzalcoatlus': 'Největší letoun všech dob',
+    'Dimorphodon': 'Zubatý letecký postrach',
+    'Archaeopteryx': 'První ptačí průkopník',
+    'Mosasaurus': 'Hrůzovládce dávných moří',
+    'Plesiosaurus': 'Mořská nestvůra z hlubin',
+    'Liopleurodon': 'Vládce vodního teritoria',
+    'Ichthyosaurus': 'Rychlý ryboještěr moří',
+    'Stegosaurus': 'Obrněnec s pláty',
+    'Kentrosaurus': 'Ostnatý býložravec',
+    'Parasaurolophus': 'Majitel slavného hřebene',
+    'Iguanodon': 'Býložravec s palcovým bodcem'
+};
+
+module.exports = subtitles;

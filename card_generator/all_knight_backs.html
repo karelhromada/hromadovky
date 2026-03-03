@@ -1,0 +1,289 @@
+
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Roztomilí rytíři - Zadní strana (Ocelový plát)</title>
+    <style>
+        * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+        body {
+            background-color: #1a1a1a;
+            margin: 0;
+            padding: 0;
+            display: block;
+        }
+
+        .main-container {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @media print {
+            body { background-color: transparent !important; }
+            .main-container { padding: 0 !important; display: block !important; width: 100% !important; }
+            @page { size: A4 portrait; margin: 0; }
+        }
+
+        .page-grid {
+            width: 210mm; 
+            height: 297mm;
+            margin: 20px auto;
+            background: #111;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            page-break-after: always;
+        }
+
+        /* The background image stretched and rotated */
+        .background-layer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 297mm; /* Swapped for rotation */
+            height: 210mm; /* Swapped for rotation */
+            transform: translate(-50%, -50%) rotate(90deg);
+            background-image: url('knight_back_iron_steel.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            /* Darkening and sheen */
+            filter: brightness(0.6) contrast(1.2) saturate(0.8);
+            z-index: 1;
+        }
+
+        /* Grid of registration marks */
+        .marks-layer {
+            position: absolute;
+            top: 19mm; /* Start of first card row */
+            left: 13mm; /* Start of first card column */
+            width: 184mm; /* 3*60 + 2*2 */
+            height: 259mm; /* 3*85 + 2*2 */
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .mark {
+            position: absolute;
+            width: 10mm;
+            height: 10mm;
+            /* Thin dark cross */
+        }
+
+        .mark::before, .mark::after {
+            content: '';
+            position: absolute;
+            background: #000;
+        }
+
+        /* Horizontal line */
+        .mark::before {
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 0.1mm;
+            transform: translateY(-50%);
+        }
+
+        /* Vertical line */
+        .mark::after {
+            left: 50%;
+            top: 0;
+            width: 0.1mm;
+            height: 100%;
+            transform: translateX(-50%);
+        }
+
+        /* Position helpers */
+        .col-0 { left: -5mm; }
+        .col-1 { left: 55mm; } /* 60 - 5 */
+        .col-2 { left: 57mm; } /* 60 + 2 - 5 */
+        .col-3 { left: 117mm; } /* 60 + 2 + 60 - 5 */
+        .col-4 { left: 119mm; } /* 124 - 5 */
+        .col-5 { left: 179mm; } /* 184 - 5 */
+
+        /* Actually, let's just use absolute coordinates for simplicity */
+        /* Columns: 13, 13+60=73, 13+62=75, 13+122=135, 13+124=137, 13+184=197 */
+        /* Rows: 19, 19+85=104, 19+87=106, 19+172=191, 19+174=193, 19+259=278 */
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        
+        <div class="page-grid">
+            <div class="background-layer"></div>
+            
+            <!-- Registration Marks (Crosshairs) -->
+            <div class="mark" style="left: 8mm; top: 14mm;"></div>
+<div class="mark" style="left: 68mm; top: 14mm;"></div>
+<div class="mark" style="left: 70mm; top: 14mm;"></div>
+<div class="mark" style="left: 130mm; top: 14mm;"></div>
+<div class="mark" style="left: 132mm; top: 14mm;"></div>
+<div class="mark" style="left: 192mm; top: 14mm;"></div>
+<div class="mark" style="left: 8mm; top: 99mm;"></div>
+<div class="mark" style="left: 68mm; top: 99mm;"></div>
+<div class="mark" style="left: 70mm; top: 99mm;"></div>
+<div class="mark" style="left: 130mm; top: 99mm;"></div>
+<div class="mark" style="left: 132mm; top: 99mm;"></div>
+<div class="mark" style="left: 192mm; top: 99mm;"></div>
+<div class="mark" style="left: 8mm; top: 101mm;"></div>
+<div class="mark" style="left: 68mm; top: 101mm;"></div>
+<div class="mark" style="left: 70mm; top: 101mm;"></div>
+<div class="mark" style="left: 130mm; top: 101mm;"></div>
+<div class="mark" style="left: 132mm; top: 101mm;"></div>
+<div class="mark" style="left: 192mm; top: 101mm;"></div>
+<div class="mark" style="left: 8mm; top: 186mm;"></div>
+<div class="mark" style="left: 68mm; top: 186mm;"></div>
+<div class="mark" style="left: 70mm; top: 186mm;"></div>
+<div class="mark" style="left: 130mm; top: 186mm;"></div>
+<div class="mark" style="left: 132mm; top: 186mm;"></div>
+<div class="mark" style="left: 192mm; top: 186mm;"></div>
+<div class="mark" style="left: 8mm; top: 188mm;"></div>
+<div class="mark" style="left: 68mm; top: 188mm;"></div>
+<div class="mark" style="left: 70mm; top: 188mm;"></div>
+<div class="mark" style="left: 130mm; top: 188mm;"></div>
+<div class="mark" style="left: 132mm; top: 188mm;"></div>
+<div class="mark" style="left: 192mm; top: 188mm;"></div>
+<div class="mark" style="left: 8mm; top: 273mm;"></div>
+<div class="mark" style="left: 68mm; top: 273mm;"></div>
+<div class="mark" style="left: 70mm; top: 273mm;"></div>
+<div class="mark" style="left: 130mm; top: 273mm;"></div>
+<div class="mark" style="left: 132mm; top: 273mm;"></div>
+<div class="mark" style="left: 192mm; top: 273mm;"></div>
+
+        </div>
+        
+        <div class="page-grid">
+            <div class="background-layer"></div>
+            
+            <!-- Registration Marks (Crosshairs) -->
+            <div class="mark" style="left: 8mm; top: 14mm;"></div>
+<div class="mark" style="left: 68mm; top: 14mm;"></div>
+<div class="mark" style="left: 70mm; top: 14mm;"></div>
+<div class="mark" style="left: 130mm; top: 14mm;"></div>
+<div class="mark" style="left: 132mm; top: 14mm;"></div>
+<div class="mark" style="left: 192mm; top: 14mm;"></div>
+<div class="mark" style="left: 8mm; top: 99mm;"></div>
+<div class="mark" style="left: 68mm; top: 99mm;"></div>
+<div class="mark" style="left: 70mm; top: 99mm;"></div>
+<div class="mark" style="left: 130mm; top: 99mm;"></div>
+<div class="mark" style="left: 132mm; top: 99mm;"></div>
+<div class="mark" style="left: 192mm; top: 99mm;"></div>
+<div class="mark" style="left: 8mm; top: 101mm;"></div>
+<div class="mark" style="left: 68mm; top: 101mm;"></div>
+<div class="mark" style="left: 70mm; top: 101mm;"></div>
+<div class="mark" style="left: 130mm; top: 101mm;"></div>
+<div class="mark" style="left: 132mm; top: 101mm;"></div>
+<div class="mark" style="left: 192mm; top: 101mm;"></div>
+<div class="mark" style="left: 8mm; top: 186mm;"></div>
+<div class="mark" style="left: 68mm; top: 186mm;"></div>
+<div class="mark" style="left: 70mm; top: 186mm;"></div>
+<div class="mark" style="left: 130mm; top: 186mm;"></div>
+<div class="mark" style="left: 132mm; top: 186mm;"></div>
+<div class="mark" style="left: 192mm; top: 186mm;"></div>
+<div class="mark" style="left: 8mm; top: 188mm;"></div>
+<div class="mark" style="left: 68mm; top: 188mm;"></div>
+<div class="mark" style="left: 70mm; top: 188mm;"></div>
+<div class="mark" style="left: 130mm; top: 188mm;"></div>
+<div class="mark" style="left: 132mm; top: 188mm;"></div>
+<div class="mark" style="left: 192mm; top: 188mm;"></div>
+<div class="mark" style="left: 8mm; top: 273mm;"></div>
+<div class="mark" style="left: 68mm; top: 273mm;"></div>
+<div class="mark" style="left: 70mm; top: 273mm;"></div>
+<div class="mark" style="left: 130mm; top: 273mm;"></div>
+<div class="mark" style="left: 132mm; top: 273mm;"></div>
+<div class="mark" style="left: 192mm; top: 273mm;"></div>
+
+        </div>
+        
+        <div class="page-grid">
+            <div class="background-layer"></div>
+            
+            <!-- Registration Marks (Crosshairs) -->
+            <div class="mark" style="left: 8mm; top: 14mm;"></div>
+<div class="mark" style="left: 68mm; top: 14mm;"></div>
+<div class="mark" style="left: 70mm; top: 14mm;"></div>
+<div class="mark" style="left: 130mm; top: 14mm;"></div>
+<div class="mark" style="left: 132mm; top: 14mm;"></div>
+<div class="mark" style="left: 192mm; top: 14mm;"></div>
+<div class="mark" style="left: 8mm; top: 99mm;"></div>
+<div class="mark" style="left: 68mm; top: 99mm;"></div>
+<div class="mark" style="left: 70mm; top: 99mm;"></div>
+<div class="mark" style="left: 130mm; top: 99mm;"></div>
+<div class="mark" style="left: 132mm; top: 99mm;"></div>
+<div class="mark" style="left: 192mm; top: 99mm;"></div>
+<div class="mark" style="left: 8mm; top: 101mm;"></div>
+<div class="mark" style="left: 68mm; top: 101mm;"></div>
+<div class="mark" style="left: 70mm; top: 101mm;"></div>
+<div class="mark" style="left: 130mm; top: 101mm;"></div>
+<div class="mark" style="left: 132mm; top: 101mm;"></div>
+<div class="mark" style="left: 192mm; top: 101mm;"></div>
+<div class="mark" style="left: 8mm; top: 186mm;"></div>
+<div class="mark" style="left: 68mm; top: 186mm;"></div>
+<div class="mark" style="left: 70mm; top: 186mm;"></div>
+<div class="mark" style="left: 130mm; top: 186mm;"></div>
+<div class="mark" style="left: 132mm; top: 186mm;"></div>
+<div class="mark" style="left: 192mm; top: 186mm;"></div>
+<div class="mark" style="left: 8mm; top: 188mm;"></div>
+<div class="mark" style="left: 68mm; top: 188mm;"></div>
+<div class="mark" style="left: 70mm; top: 188mm;"></div>
+<div class="mark" style="left: 130mm; top: 188mm;"></div>
+<div class="mark" style="left: 132mm; top: 188mm;"></div>
+<div class="mark" style="left: 192mm; top: 188mm;"></div>
+<div class="mark" style="left: 8mm; top: 273mm;"></div>
+<div class="mark" style="left: 68mm; top: 273mm;"></div>
+<div class="mark" style="left: 70mm; top: 273mm;"></div>
+<div class="mark" style="left: 130mm; top: 273mm;"></div>
+<div class="mark" style="left: 132mm; top: 273mm;"></div>
+<div class="mark" style="left: 192mm; top: 273mm;"></div>
+
+        </div>
+        
+        <div class="page-grid">
+            <div class="background-layer"></div>
+            
+            <!-- Registration Marks (Crosshairs) -->
+            <div class="mark" style="left: 8mm; top: 14mm;"></div>
+<div class="mark" style="left: 68mm; top: 14mm;"></div>
+<div class="mark" style="left: 70mm; top: 14mm;"></div>
+<div class="mark" style="left: 130mm; top: 14mm;"></div>
+<div class="mark" style="left: 132mm; top: 14mm;"></div>
+<div class="mark" style="left: 192mm; top: 14mm;"></div>
+<div class="mark" style="left: 8mm; top: 99mm;"></div>
+<div class="mark" style="left: 68mm; top: 99mm;"></div>
+<div class="mark" style="left: 70mm; top: 99mm;"></div>
+<div class="mark" style="left: 130mm; top: 99mm;"></div>
+<div class="mark" style="left: 132mm; top: 99mm;"></div>
+<div class="mark" style="left: 192mm; top: 99mm;"></div>
+<div class="mark" style="left: 8mm; top: 101mm;"></div>
+<div class="mark" style="left: 68mm; top: 101mm;"></div>
+<div class="mark" style="left: 70mm; top: 101mm;"></div>
+<div class="mark" style="left: 130mm; top: 101mm;"></div>
+<div class="mark" style="left: 132mm; top: 101mm;"></div>
+<div class="mark" style="left: 192mm; top: 101mm;"></div>
+<div class="mark" style="left: 8mm; top: 186mm;"></div>
+<div class="mark" style="left: 68mm; top: 186mm;"></div>
+<div class="mark" style="left: 70mm; top: 186mm;"></div>
+<div class="mark" style="left: 130mm; top: 186mm;"></div>
+<div class="mark" style="left: 132mm; top: 186mm;"></div>
+<div class="mark" style="left: 192mm; top: 186mm;"></div>
+<div class="mark" style="left: 8mm; top: 188mm;"></div>
+<div class="mark" style="left: 68mm; top: 188mm;"></div>
+<div class="mark" style="left: 70mm; top: 188mm;"></div>
+<div class="mark" style="left: 130mm; top: 188mm;"></div>
+<div class="mark" style="left: 132mm; top: 188mm;"></div>
+<div class="mark" style="left: 192mm; top: 188mm;"></div>
+<div class="mark" style="left: 8mm; top: 273mm;"></div>
+<div class="mark" style="left: 68mm; top: 273mm;"></div>
+<div class="mark" style="left: 70mm; top: 273mm;"></div>
+<div class="mark" style="left: 130mm; top: 273mm;"></div>
+<div class="mark" style="left: 132mm; top: 273mm;"></div>
+<div class="mark" style="left: 192mm; top: 273mm;"></div>
+
+        </div>
+        
+    </div>
+</body>
+</html>

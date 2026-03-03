@@ -1,0 +1,37 @@
+const subtitles = {
+    // Baby Dragons
+    'Lávový Prcek': 'Ohnivý drak z vulkánu',
+    'Magmísek': 'Zrozena z tekuté lávy',
+    'Rudíček': 'Malý vládce plamenů',
+    'Uhlík': 'Žhnoucí dráček z popela',
+    'Obláčkový Špunt': 'Vzdušný jezdec na oblacích',
+    'Vzdušník': 'Pán nebeských proudů',
+    'Mrakáček': 'Chmýří mezi blesky',
+    'Plachťáček': 'Plachtí vysoko nad útesy',
+    'Brontík': 'Obrněný dráček z pralesa',
+    'Horalíček': 'Strážce kamenných štítů',
+    'Bažík': 'Pán temných močálů',
+    'Trníček': 'Jedovatý drak z pralesa',
+    'Runíček': 'Držitel prastarých kouzel',
+    'Časíček': 'Pán času a prostoru',
+    'Diamantík': 'Zářící krystalický tvor',
+    'Mudráček': 'Nejmoudřejší v knihovně',
+    'Bleskáček': 'Rychlý jako úder blesku',
+    'Sonicík': 'Nadzvukový nebeský letec',
+    'Vířík': 'Tornádo v dračí podobě',
+    'Křidélko': 'Mistr kaskadérských kousků',
+    'Stínek': 'Pán temných zákoutí',
+    'Hvězdínek': 'Dráček z noční oblohy',
+    'Kostíček': 'Přízračný kostlivý tvor',
+    'Tříhlavík': 'Zvědavé tři hlavy',
+    'Hmyzík': 'Zákeřný lesní tvor',
+    'Vlník': 'Pán vodních hlubin',
+    'Duhoš': 'Barevný zázrak přírody',
+    'Korunkáček': 'Královský drak',
+    'Zlaťoušek': 'Strážce zlatého pokladu',
+    'Drápek': 'Kovový drak z výhně',
+    'Popeláček': 'Zrozený v popelu',
+    'Obřík': 'Malý velký silák'
+};
+
+module.exports = subtitles;

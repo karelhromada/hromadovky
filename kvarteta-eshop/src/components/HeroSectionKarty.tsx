@@ -27,7 +27,7 @@ const HeroSectionKarty: React.FC = () => {
     return (
         <section id="hero" className="karty-hero-section container">
             <div className="karty-hero-content">
-                <div className="badge animate-fade-in-up">♦️ Dva herní zážitky</div>
+                <div className="badge animate-fade-in-up">♦️ Prémiové sady</div>
                 <h1 className="hero-title animate-fade-in-up delay-100">
                     Rozdejte ty nejlepší <br />
                     <span className="text-gradient-gold">hrací karty</span>
@@ -36,7 +36,7 @@ const HeroSectionKarty: React.FC = () => {
                     S tou nejlepší sadou (20 karet) na <strong>Vyšší bere nebo Mariáš</strong> vyhrajete každou rodinnou partii dřív, než protihráč řekne "stojím". Zvolte si <strong>klasiku s prémiovým rubem</strong>, nebo <strong>tematický balíček</strong> (např. Draci).
                 </p>
                 <div className="hero-actions animate-fade-in-up delay-300">
-                    <a href="#creator" className="btn-primary">Sestavit balíček</a>
+                    {/* <a href="#creator" className="btn-primary">Sestavit balíček</a> */}
                     <a href="#products" className="btn-secondary">Ukázkové sady</a>
                 </div>
             </div>

@@ -20,8 +20,8 @@ async function addSymbolsToCard() {
     try {
         console.log("Začínám kompozici znaku...");
 
-        // 1. Zmenšíme srdce 3x větší (270x270px)
-        const newSize = 270;
+        // 1. Zmenšíme srdce (nyní 450x450px)
+        const newSize = 450;
         const resizedSymbol = await sharp(symbolPath)
             .resize(newSize, newSize, { fit: 'inside' })
             .toBuffer();

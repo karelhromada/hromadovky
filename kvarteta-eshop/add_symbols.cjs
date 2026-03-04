@@ -5,11 +5,11 @@ const fs = require('fs');
 const cardsDir = path.join(__dirname, 'public', 'cards', 'carodejnice');
 
 // Obrázek srdce, který uživatel nahrál
-const symbolPath = path.join(cardsDir, 'znak_srdce.png');
+const symbolPath = path.join(cardsDir, 'znak_zelené.png');
 // Karta, na kterou to budeme aplikovat
-const cardPath = path.join(cardsDir, 'kral_srdce.png');
+const cardPath = path.join(cardsDir, 'kral_listy.png');
 // Výstupní soubor
-const outPath = path.join(cardsDir, 'kral_srdce_oznaceno.png');
+const outPath = path.join(cardsDir, 'kral_listy_oznaceno.png');
 
 async function addSymbolsToCard() {
     if (!fs.existsSync(symbolPath) || !fs.existsSync(cardPath)) {

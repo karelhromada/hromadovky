@@ -12,7 +12,7 @@ const products = [
     {
         id: 'karty-tema-draku',
         name: 'Epická dračí edice',
-        description: 'Luxusní Dračí edice. Mariášové barvy reprezentující živly. Hodnoty 10, J, Q, K, A v klasickém čistém herním designu s plnou originální malbou draků.',
+        description: 'Luxusní dračí edice. Mariášové barvy reprezentující živly. Hodnoty 10, J, Q, K, A v klasickém čistém herním designu s plnou originální malbou draků.',
         price: 449,
         themeColor: '#ff0033',
         images: ['/cards/dragon_scales_realistic_1.webp', '/cards/prsi/prsi_listy_A.webp', '/cards/prsi/prsi_srdce_K.webp'],
@@ -29,8 +29,8 @@ const products = [
     },
     {
         id: 'karty-tema-carodejnice',
-        name: 'Magické Čarodějnice',
-        description: 'Mysteriózní sady čarodějnic. Každá hodnota (Spodek, Svršek, Král, Eso) nabízí jedinečnou detailní ilustraci od učednic ohně až po královny lesa.',
+        name: 'Magické čarodějnice',
+        description: 'Mysteriózní sady čarodějnic. Každá hodnota (spodek, svršek, král, eso) nabízí jedinečnou detailní ilustraci od učednic ohně až po královny lesa.',
         price: 449,
         themeColor: '#ff4b4b',
         images: ['/cards/carodejnice/eso_srdce.png', '/cards/carodejnice/kral_listy_oznaceno.png', '/cards/carodejnice/svrsek_zaludy_oznaceno.png'],
@@ -83,7 +83,7 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
                 <span className="badge mb-4">Klasické hry</span>
                 <h2 className="section-title">Luxusní <span className="text-gradient-gold">balíčky</span></h2>
                 <p className="text-center text-secondary max-w-2xl mt-4">
-                    Naše exkluzivní Prší edice vás ohromí prémiovým zpracováním, odolností a luxusním vzhledem. Prohlédněte si všechny karty před nákupem!
+                    Naše exkluzivní edice pro prší vás ohromí prémiovým zpracováním, odolností a luxusním vzhledem. Prohlédněte si všechny karty rovnou zde na webu!
                 </p>
             </div>
 
@@ -112,11 +112,6 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
                                     border: `2px solid ${product.themeColor}80`
                                 }}
                             >
-                                <div className="absolute inset-0 bg-black/60 rounded-md flex items-center justify-center backdrop-blur-sm">
-                                    <span className="text-white font-bold opacity-90 text-xl" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>
-                                        {product.allCards?.length || 0} Karet
-                                    </span>
-                                </div>
                             </div>
                         </div>
 
@@ -196,7 +191,7 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
                         <div className="karty-modal-header">
                             <div>
                                 <h3 className="karty-modal-title">{selectedProductForPreview.name}</h3>
-                                <p className="karty-modal-subtitle">Sada obsahuje {selectedProductForPreview.allCards?.length || 0} karet · Detailní pohled</p>
+                                <p className="karty-modal-subtitle">Detailní pohled na balíček</p>
                             </div>
                             <div className="karty-modal-actions">
                                 <button

@@ -25,9 +25,6 @@ async function generateCards() {
         try {
             await sharp(witchPath)
                 .resize(709, 1004, { fit: 'cover', position: 'center' })
-                .composite([
-                    { input: framePath, blend: 'over' }
-                ])
                 .png()
                 .toFile(outPath);
 

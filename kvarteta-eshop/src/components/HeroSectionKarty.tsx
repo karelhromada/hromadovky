@@ -33,7 +33,7 @@ const HeroSectionKarty: React.FC = () => {
                     <span className="text-gradient-gold">hrací karty</span>
                 </h1>
                 <p className="hero-description animate-fade-in-up delay-200">
-                    S tou nejlepší sadou (20 karet) na <strong>Vyšší bere nebo Mariáš</strong> vyhrajete každou rodinnou partii dřív, než protihráč řekne "stojím". Zvolte si <strong>klasiku s prémiovým rubem</strong>, nebo <strong>tematický balíček</strong> (např. Draci).
+                    S těmito exkluzivními sadami pro <strong>Vyšší bere nebo Mariáš</strong> okouzlíte každou rodinnou partii. Zvolte si jeden z našich <strong>luxusních tematických balíčků</strong> (např. Epická dračí edice nebo Magické čarodějnice) s dechberoucím vizuálním zpracováním.
                 </p>
                 <div className="hero-actions animate-fade-in-up delay-300">
                     {/* <a href="#creator" className="btn-primary">Sestavit balíček</a> */}

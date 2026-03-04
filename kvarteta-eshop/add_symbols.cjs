@@ -20,9 +20,10 @@ async function addSymbolsToCard() {
     try {
         console.log("Začínám kompozici znaku...");
 
-        // 1. Nejprve zmenšíme nahráté srdce na rozumnou velikost pro roh karty (např. 80x80px)
+        // 1. Zmenšíme srdce 3x větší (270x270px)
+        const newSize = 270;
         const resizedSymbol = await sharp(symbolPath)
-            .resize(90, 90, { fit: 'inside' })
+            .resize(newSize, newSize, { fit: 'inside' })
             .toBuffer();
 
         // 2. Provedeme kompozici na samotnou kartu
@@ -34,6 +35,7 @@ async function addSymbolsToCard() {
 
         const cardImage = sharp(cardPath);
         const metadata = await cardImage.metadata();
+        const symbolMetadata = await sharp(resizedSymbol).metadata();
 
         const padding = 40; // Odsazení od kraje
 
@@ -41,9 +43,8 @@ async function addSymbolsToCard() {
             .composite([
                 // Levý horní roh
                 { input: resizedSymbol, top: padding, left: padding },
-                // Pravý horní roh (vypočítáme polohu: šířka karty - zmenšené srdce - odsazení)
-                // Šířka srdce = 90px (jelikož jsme dali resize s pad, je lepší vzít metadata zmenšeného symbolu, ale pro náš účel to bude 90)
-                { input: resizedSymbol, top: padding, left: metadata.width - 90 - padding }
+                // Pravý horní roh symetricky s ohledem na skutečnou odvozenou šířku symbolu
+                { input: resizedSymbol, top: padding, left: metadata.width - symbolMetadata.width - padding }
             ])
             .toFile(outPath);
 

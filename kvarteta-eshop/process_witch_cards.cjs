@@ -13,8 +13,9 @@ const colors = [
 async function processImage() {
     try {
         console.log("Reading image...");
-        // 1. Resize to target ratio 12:17 (e.g. 709x1004)
+        // 1. Trim outer white space and resize to target ratio 12:17 (e.g. 709x1004)
         const { data, info } = await sharp(inputPath)
+            .trim({ threshold: 245 }) // Trim white pixels from the outer edges
             .resize(709, 1004, { fit: 'fill' })
             .ensureAlpha()
             .raw()
@@ -43,8 +44,8 @@ async function processImage() {
                     // Luma (brightness)
                     const luma = 0.299 * r + 0.587 * g + 0.114 * b;
 
-                    // If pixel is very bright (white/cream) and inside the central zone, make it transparent
-                    if (luma > 230 && x > paddingX && x < width - paddingX && y > paddingY && y < height - paddingY) {
+                    // If pixel is very bright (white/cream), make it transparent regardless of position
+                    if (luma > 230) {
                         outBuffer[idx + 3] = 0; // Alpha = 0
                     } else {
                         // Apply tint to the dark areas based on luma

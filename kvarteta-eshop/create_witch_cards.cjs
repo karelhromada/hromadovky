@@ -2,23 +2,23 @@ const sharp = require('sharp');
 const path = require('path');
 const fs = require('fs');
 
-const publicDir = path.join(__dirname, 'public', 'cards');
+const inputDir = '/Users/air2024/.gemini/antigravity/brain/9926e9fd-1989-4bcf-a934-b9e4fa2c430e/';
+const outputDir = path.join(__dirname, 'public', 'cards', 'carodejnice');
 
 const pairs = [
-    { witch: 'witch_fire.png', frame: 'witch_frame_srdce.png', out: 'witch_card_srdce.png' },
-    { witch: 'witch_forest.png', frame: 'witch_frame_listy.png', out: 'witch_card_listy.png' },
-    { witch: 'witch_sand.png', frame: 'witch_frame_zaludy.png', out: 'witch_card_zaludy.png' },
-    { witch: 'witch_earth.png', frame: 'witch_frame_kule.png', out: 'witch_card_kule.png' }
+    { witch: 'witch_spodek_srdce_1772662115876.png', out: 'spodek_srdce.png' },
+    { witch: 'witch_spodek_listy_1772662153171.png', out: 'spodek_listy.png' },
+    { witch: 'witch_spodek_zaludy_1772662178634.png', out: 'spodek_zaludy.png' },
+    { witch: 'witch_spodek_kule_1772662207152.png', out: 'spodek_kule.png' }
 ];
 
 async function generateCards() {
     for (const pair of pairs) {
-        const witchPath = path.join(publicDir, pair.witch);
-        const framePath = path.join(publicDir, pair.frame);
-        const outPath = path.join(publicDir, pair.out);
+        const witchPath = path.join(inputDir, pair.witch);
+        const outPath = path.join(outputDir, pair.out);
 
-        if (!fs.existsSync(witchPath) || !fs.existsSync(framePath)) {
-            console.error(`Missing files for ${pair.out}`);
+        if (!fs.existsSync(witchPath)) {
+            console.error(`Missing files for ${pair.out}: ${witchPath}`);
             continue;
         }
 

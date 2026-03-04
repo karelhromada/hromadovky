@@ -5,10 +5,10 @@ const fs = require('fs');
 const cardsDir = path.join(__dirname, 'public', 'cards', 'carodejnice');
 
 const pairs = [
-    { symbol: 'znak_srdce.png', card: 'svrsek_srdce.png', out: 'svrsek_srdce_oznaceno.png' },
-    { symbol: 'znak_zelené.png', card: 'svrsek_listy.png', out: 'svrsek_listy_oznaceno.png' },
-    { symbol: 'znak_žaludy.png', card: 'svrsek_zaludy.png', out: 'svrsek_zaludy_oznaceno.png' },
-    { symbol: 'znak_kule.png', card: 'svrsek_kule.png', out: 'svrsek_kule_oznaceno.png' }
+    { symbol: 'znak_srdce.png', card: 'spodek_srdce.png', out: 'spodek_srdce_oznaceno.png' },
+    { symbol: 'znak_zelené.png', card: 'spodek_listy.png', out: 'spodek_listy_oznaceno.png' },
+    { symbol: 'znak_žaludy.png', card: 'spodek_zaludy.png', out: 'spodek_zaludy_oznaceno.png' },
+    { symbol: 'znak_kule.png', card: 'spodek_kule.png', out: 'spodek_kule_oznaceno.png' }
 ];
 
 async function addSymbolsToCard() {
@@ -38,12 +38,12 @@ async function addSymbolsToCard() {
             const symbolMetadata = await sharp(resizedSymbol).metadata();
 
             const paddingLeftRight = 45; // 15 + 30 od hrany
-            const paddingTop = 25; // odsazení shora
+            const paddingBottom = 25; // odsazení odspodu
 
             await cardImage
                 .composite([
-                    // Levý horní roh 
-                    { input: resizedSymbol, top: paddingTop, left: paddingLeftRight }
+                    // Levý dolní roh (top: výška karty - výška znaku - odsazení zespoda)
+                    { input: resizedSymbol, top: metadata.height - symbolMetadata.height - paddingBottom, left: paddingLeftRight }
                 ])
                 .toFile(outPath);
 

@@ -15,7 +15,7 @@ const HraciKartyPage: React.FC<HraciKartyPageProps> = ({ onAddToCart }) => {
             <HeroSectionKarty />
             <FeaturesSectionKarty />
             <ProductShowcaseKarty onAddToCart={onAddToCart} />
-            <KartyCreator onAddToCart={onAddToCart} />
+            {/* <KartyCreator onAddToCart={onAddToCart} /> */}
         </>
     );
 };

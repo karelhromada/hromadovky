@@ -35,6 +35,7 @@ const cardStyles = [
 ];
 
 const themes = [
+    { id: 'theme-witches', name: 'Magické Čarodějnice', url: '/cards/witch_card_srdce.png', color: '#ff4b4b', sampleValue: 'Q', sampleSuit: '♥' },
     { id: 'theme-prsi-drag', name: 'Epická dračí edice', url: '/cards/drag_full_1.webp', color: '#eab308', sampleValue: 'K', sampleSuit: '♥' },
     { id: 'theme-dino', name: 'Dinosauři', url: '/cards/dino_full_1.webp', color: '#eab308', sampleValue: 'A', sampleSuit: '🔔' },
     { id: 'theme-baby', name: 'Baby dráčci', url: '/cards/baby_full_1.webp', color: '#eab308', sampleValue: 'J', sampleSuit: '🍃' },

@@ -124,11 +124,11 @@ const KartyCreator: React.FC<KartyCreatorProps> = ({ onAddToCart }) => {
                         </div>
                         <div
                             className={`k-type-card ${playMode === 'thematic' ? 'active' : ''}`}
-                            style={playMode === 'thematic' ? { borderColor: '#00d2ff', boxShadow: '0 0 20px rgba(0, 210, 255, 0.2)' } : {}}
+                            style={playMode === 'thematic' ? { borderColor: 'var(--gold-primary)', boxShadow: '0 0 20px rgba(234, 179, 8, 0.2)' } : {}}
                             onClick={() => setPlayMode('thematic')}
                         >
-                            <div className="k-type-icon"><Sparkles size={40} className="text-blue-400" /></div>
-                            <div className="k-type-title text-blue-400">Plně Tematické (+ 150 Kč)</div>
+                            <div className="k-type-icon"><Sparkles size={40} style={{ color: 'var(--gold-primary)' }} /></div>
+                            <div className="k-type-title" style={{ color: 'var(--gold-primary)' }}>Plně Tematické (+ 150 Kč)</div>
                             <div className="k-type-desc">Zcela vymyšlené obrázky přední strany, např. Dinosauři. "Eso v srdcích" bude krásný obraz, avšak zachová rohové indexy pro hru.</div>
                         </div>
                     </div>
@@ -166,7 +166,7 @@ const KartyCreator: React.FC<KartyCreatorProps> = ({ onAddToCart }) => {
                         </>
                     ) : (
                         <>
-                            <div className="k-mode-intro blue animate-fade-in-up">
+                            <div className="k-mode-intro animate-fade-in-up">
                                 <p>
                                     Vyberte <strong>plně tematický svět</strong>, do kterého chcete nahlédnout. Každá karta ve vaší sadě ponese unikátní profesionální ilustraci z daného tématu, včetně čitelných hracích indexů v rozích.
                                 </p>
@@ -179,17 +179,17 @@ const KartyCreator: React.FC<KartyCreatorProps> = ({ onAddToCart }) => {
                                         cursor: 'pointer',
                                         padding: '24px',
                                         borderRadius: '16px',
-                                        border: !leaveDesignToUs ? '2px solid #00d2ff' : '1px solid var(--glass-border)',
-                                        background: !leaveDesignToUs ? 'rgba(0, 210, 255, 0.05)' : 'var(--glass-bg)',
+                                        border: !leaveDesignToUs ? '2px solid var(--gold-primary)' : '1px solid var(--glass-border)',
+                                        background: !leaveDesignToUs ? 'rgba(234, 179, 8, 0.05)' : 'var(--glass-bg)',
                                         transition: 'all 0.3s',
                                         display: 'flex',
                                         flexDirection: 'column',
                                         alignItems: 'center',
                                         textAlign: 'center',
-                                        boxShadow: !leaveDesignToUs ? '0 4px 15px rgba(0,210,255,0.1)' : 'none'
+                                        boxShadow: !leaveDesignToUs ? '0 4px 15px rgba(234, 179, 8, 0.1)' : 'none'
                                     }}
                                 >
-                                    <div style={{ padding: '16px', background: !leaveDesignToUs ? '#00d2ff' : 'rgba(0, 210, 255, 0.1)', borderRadius: '50%', marginBottom: '16px', color: !leaveDesignToUs ? '#fff' : '#00d2ff' }}>
+                                    <div style={{ padding: '16px', background: !leaveDesignToUs ? 'var(--gold-primary)' : 'rgba(234, 179, 8, 0.1)', borderRadius: '50%', marginBottom: '16px', color: !leaveDesignToUs ? '#000' : 'var(--gold-primary)' }}>
                                         <LayoutGrid size={32} />
                                     </div>
                                     <h4 style={{ fontSize: '1.2rem', fontWeight: 800, marginBottom: '8px', color: 'var(--text-primary)' }}>Vybrat z naší nabídky</h4>
@@ -202,17 +202,17 @@ const KartyCreator: React.FC<KartyCreatorProps> = ({ onAddToCart }) => {
                                         cursor: 'pointer',
                                         padding: '24px',
                                         borderRadius: '16px',
-                                        border: leaveDesignToUs ? '2px solid #00d2ff' : '1px solid var(--glass-border)',
-                                        background: leaveDesignToUs ? 'rgba(0, 210, 255, 0.05)' : 'var(--glass-bg)',
+                                        border: leaveDesignToUs ? '2px solid var(--gold-primary)' : '1px solid var(--glass-border)',
+                                        background: leaveDesignToUs ? 'rgba(234, 179, 8, 0.05)' : 'var(--glass-bg)',
                                         transition: 'all 0.3s',
                                         display: 'flex',
                                         flexDirection: 'column',
                                         alignItems: 'center',
                                         textAlign: 'center',
-                                        boxShadow: leaveDesignToUs ? '0 4px 15px rgba(0,210,255,0.1)' : 'none'
+                                        boxShadow: leaveDesignToUs ? '0 4px 15px rgba(234, 179, 8, 0.1)' : 'none'
                                     }}
                                 >
-                                    <div style={{ padding: '16px', background: leaveDesignToUs ? '#00d2ff' : 'rgba(0, 210, 255, 0.1)', borderRadius: '50%', marginBottom: '16px', color: leaveDesignToUs ? '#fff' : '#00d2ff' }}>
+                                    <div style={{ padding: '16px', background: leaveDesignToUs ? 'var(--gold-primary)' : 'rgba(234, 179, 8, 0.1)', borderRadius: '50%', marginBottom: '16px', color: leaveDesignToUs ? '#000' : 'var(--gold-primary)' }}>
                                         <Sparkles size={32} />
                                     </div>
                                     <h4 style={{ fontSize: '1.2rem', fontWeight: 800, marginBottom: '8px', color: 'var(--text-primary)' }}>Vygenerovat téma na přání (AI)</h4>
@@ -221,7 +221,7 @@ const KartyCreator: React.FC<KartyCreatorProps> = ({ onAddToCart }) => {
                             </div>
 
                             {leaveDesignToUs ? (
-                                <div className="form-section theme-cyan" style={{ border: '1px solid #00d2ff' }}>
+                                <div className="form-section theme-gold" style={{ border: '1px solid var(--gold-primary)' }}>
                                     <h4 className="form-section-title">Jaké téma si představujete?</h4>
 
                                     <div className="form-group" style={{ marginBottom: '20px' }}>
@@ -271,15 +271,6 @@ const KartyCreator: React.FC<KartyCreatorProps> = ({ onAddToCart }) => {
                                         >
                                             <div className="k-theme-preview-card">
                                                 <img src={theme.url} alt={theme.name} className="k-theme-preview-img" />
-                                                {/* Playing card overlay */}
-                                                <div className="k-theme-playing-overlay top-left">
-                                                    <span>{theme.sampleValue}</span>
-                                                    <span className="k-theme-playing-suit">{theme.sampleSuit}</span>
-                                                </div>
-                                                <div className="k-theme-playing-overlay bottom-right">
-                                                    <span>{theme.sampleValue}</span>
-                                                    <span className="k-theme-playing-suit">{theme.sampleSuit}</span>
-                                                </div>
                                             </div>
                                             <div className="k-theme-label-panel">
                                                 <span className="k-theme-label-text">{theme.name}</span>
@@ -299,14 +290,13 @@ const KartyCreator: React.FC<KartyCreatorProps> = ({ onAddToCart }) => {
 
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '2rem' }}>
                 <div style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
-                    Celková cena: <strong style={{ fontSize: '2rem', color: playMode === 'thematic' ? '#00d2ff' : 'var(--gold-primary)' }}>{getPrice()} Kč</strong>
+                    Celková cena: <strong style={{ fontSize: '2rem', color: 'var(--gold-primary)' }}>{getPrice()} Kč</strong>
                 </div>
                 <button
                     className="btn-primary btn-shine"
                     style={{
                         padding: '15px 40px',
-                        fontSize: '1.2rem',
-                        background: playMode === 'thematic' ? '#0ea5e9' : undefined
+                        fontSize: '1.2rem'
                     }}
                     onClick={handleAddToCart}
                 >

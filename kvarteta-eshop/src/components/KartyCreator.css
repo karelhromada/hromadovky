@@ -118,9 +118,9 @@
     color: var(--text-primary);
 }
 
-.k-mode-intro.blue {
-    background: rgba(0, 210, 255, 0.05);
-    border-left-color: #00d2ff;
+.k-mode-intro.gold {
+    background: rgba(234, 179, 8, 0.05);
+    border-left-color: var(--gold-primary);
 }
 
 /* Back Design Selection */
@@ -297,9 +297,9 @@
 }
 
 .k-theme-option.active {
-    border-color: #00d2ff;
+    border-color: var(--gold-primary);
     transform: scale(1.05);
-    box-shadow: 0 0 20px rgba(0, 210, 255, 0.3);
+    box-shadow: 0 0 20px rgba(234, 179, 8, 0.3);
 }
 
 .k-theme-preview-card {
@@ -319,35 +319,7 @@
     object-fit: cover;
 }
 
-.k-theme-playing-overlay {
-    position: absolute;
-    color: white;
-    font-weight: bold;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    line-height: 1;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9), 0 0 10px rgba(0, 0, 0, 0.5);
-    z-index: 2;
-}
 
-.k-theme-playing-overlay.top-left {
-    top: 10px;
-    left: 10px;
-    font-size: 1.2rem;
-}
-
-.k-theme-playing-overlay.bottom-right {
-    bottom: 10px;
-    right: 10px;
-    font-size: 1.2rem;
-    transform: rotate(180deg);
-}
-
-.k-theme-playing-suit {
-    font-size: 1.5em;
-    margin-top: 2px;
-}
 
 .k-theme-label-panel {
     position: absolute;
@@ -373,7 +345,7 @@
     position: absolute;
     top: 10px;
     right: 10px;
-    color: #00d2ff;
+    color: var(--gold-primary);
     background: rgba(0, 0, 0, 0.5);
     border-radius: 50%;
     z-index: 4;

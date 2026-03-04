@@ -35,10 +35,10 @@ const cardStyles = [
 ];
 
 const themes = [
-    { id: 'theme-prsi-drag', name: 'Epická dračí edice', url: '/cards/prsi/prsi_srdce_K.webp', color: '#ff0033', sampleValue: 'K', sampleSuit: '♥' },
-    { id: 'theme-dino', name: 'Dinosauři', url: '/cards/dino_1.webp', color: '#ff8a00', sampleValue: 'A', sampleSuit: '🔔' },
-    { id: 'theme-baby', name: 'Baby dráčci', url: '/cards/baby_1.webp', color: '#a100ff', sampleValue: 'J', sampleSuit: '🍃' },
-    { id: 'theme-cats', name: 'Bojovné kočky', url: '/cards/cat_1.webp', color: '#00d2ff', sampleValue: 'Q', sampleSuit: '🌰' }
+    { id: 'theme-prsi-drag', name: 'Epická dračí edice', url: '/cards/drag_full_1.webp', color: '#eab308', sampleValue: 'K', sampleSuit: '♥' },
+    { id: 'theme-dino', name: 'Dinosauři', url: '/cards/dino_full_1.webp', color: '#eab308', sampleValue: 'A', sampleSuit: '🔔' },
+    { id: 'theme-baby', name: 'Baby dráčci', url: '/cards/baby_full_1.webp', color: '#eab308', sampleValue: 'J', sampleSuit: '🍃' },
+    { id: 'theme-cats', name: 'Bojovné kočky', url: '/cards/cat_full_1.webp', color: '#eab308', sampleValue: 'Q', sampleSuit: '🌰' }
 ];
 
 const KartyCreator: React.FC<KartyCreatorProps> = ({ onAddToCart }) => {

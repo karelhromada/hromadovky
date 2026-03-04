@@ -1,7 +1,7 @@
 const sharp = require('sharp');
 const fs = require('fs');
 
-const inputPath = '/Users/air2024/.gemini/antigravity/brain/9926e9fd-1989-4bcf-a934-b9e4fa2c430e/witch_frame_base_1772660003950.png';
+const inputPath = '/Users/air2024/.gemini/antigravity/brain/9926e9fd-1989-4bcf-a934-b9e4fa2c430e/witch_frame_subtle_1772660806033.png';
 
 const colors = [
     { name: 'srdce', r: 180, g: 30, b: 30 }, // Red

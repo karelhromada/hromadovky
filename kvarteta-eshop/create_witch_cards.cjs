@@ -23,21 +23,9 @@ async function generateCards() {
         }
 
         try {
-            const witchResized = await sharp(witchPath)
-                .resize(660, 930, { fit: 'cover', position: 'center' })
-                .toBuffer();
-
-            // Background with cream color
-            await sharp({
-                create: {
-                    width: 709,
-                    height: 1004,
-                    channels: 4,
-                    background: { r: 250, g: 249, b: 246, alpha: 1 }
-                }
-            })
+            await sharp(witchPath)
+                .resize(709, 1004, { fit: 'cover', position: 'center' })
                 .composite([
-                    { input: witchResized, gravity: 'center' },
                     { input: framePath, blend: 'over' }
                 ])
                 .png()

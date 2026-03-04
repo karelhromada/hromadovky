@@ -21,10 +21,10 @@ const products = [
         sampleValue: 'A',
         sampleSuit: '♥',
         allCards: [
-            '/cards/prsi/prsi_srdce_10.webp', '/cards/prsi/prsi_srdce_J.webp', '/cards/prsi/prsi_srdce_Q.webp', '/cards/prsi/prsi_srdce_K.webp', '/cards/prsi/prsi_srdce_A.webp',
-            '/cards/prsi/prsi_listy_10.webp', '/cards/prsi/prsi_listy_J.webp', '/cards/prsi/prsi_listy_Q.webp', '/cards/prsi/prsi_listy_K.webp', '/cards/prsi/prsi_listy_A.webp',
-            '/cards/prsi/prsi_zaludy_10.webp', '/cards/prsi/prsi_zaludy_J.webp', '/cards/prsi/prsi_zaludy_Q.webp', '/cards/prsi/prsi_zaludy_K.webp', '/cards/prsi/prsi_zaludy_A.webp',
-            '/cards/prsi/prsi_kule_10.webp', '/cards/prsi/prsi_kule_J.webp', '/cards/prsi/prsi_kule_Q.webp', '/cards/prsi/prsi_kule_K.webp', '/cards/prsi/prsi_kule_A.webp'
+            '/cards/prsi/prsi_srdce_7.webp', '/cards/prsi/prsi_srdce_8.webp', '/cards/prsi/prsi_srdce_9.webp', '/cards/prsi/prsi_srdce_10.webp', '/cards/prsi/prsi_srdce_J.webp', '/cards/prsi/prsi_srdce_Q.webp', '/cards/prsi/prsi_srdce_K.webp', '/cards/prsi/prsi_srdce_A.webp',
+            '/cards/prsi/prsi_listy_7.webp', '/cards/prsi/prsi_listy_8.webp', '/cards/prsi/prsi_listy_9.webp', '/cards/prsi/prsi_listy_10.webp', '/cards/prsi/prsi_listy_J.webp', '/cards/prsi/prsi_listy_Q.webp', '/cards/prsi/prsi_listy_K.webp', '/cards/prsi/prsi_listy_A.webp',
+            '/cards/prsi/prsi_zaludy_7.webp', '/cards/prsi/prsi_zaludy_8.webp', '/cards/prsi/prsi_zaludy_9.webp', '/cards/prsi/prsi_zaludy_10.webp', '/cards/prsi/prsi_zaludy_J.webp', '/cards/prsi/prsi_zaludy_Q.webp', '/cards/prsi/prsi_zaludy_K.webp', '/cards/prsi/prsi_zaludy_A.webp',
+            '/cards/prsi/prsi_kule_7.webp', '/cards/prsi/prsi_kule_8.webp', '/cards/prsi/prsi_kule_9.webp', '/cards/prsi/prsi_kule_10.webp', '/cards/prsi/prsi_kule_J.webp', '/cards/prsi/prsi_kule_Q.webp', '/cards/prsi/prsi_kule_K.webp', '/cards/prsi/prsi_kule_A.webp'
         ]
     },
     {
@@ -114,7 +114,7 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
                             >
                                 <div className="absolute inset-0 bg-black/60 rounded-md flex items-center justify-center backdrop-blur-sm">
                                     <span className="text-white font-bold opacity-90 text-xl" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>
-                                        20 Karet
+                                        {product.allCards?.length || 0} Karet
                                     </span>
                                 </div>
                             </div>

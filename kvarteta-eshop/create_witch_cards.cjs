@@ -24,7 +24,7 @@ async function generateCards() {
 
         try {
             const witchResized = await sharp(witchPath)
-                .resize(580, 820, { fit: 'cover', position: 'center' })
+                .resize(660, 930, { fit: 'cover', position: 'center' })
                 .toBuffer();
 
             // Background with cream color

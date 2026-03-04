@@ -506,3 +506,34 @@
     background-repeat: no-repeat;
     background-color: #f8f9fa;
 }
+
+@media (max-width: 768px) {
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .product-image-container {
+        height: 300px;
+    }
+
+    .back-selection-modal {
+        max-width: 100vw;
+        width: 100%;
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        overflow-y: auto;
+    }
+
+    .back-selection-modal-overlay {
+        padding: 0;
+    }
+
+    .section-title {
+        font-size: 2.2rem;
+    }
+}

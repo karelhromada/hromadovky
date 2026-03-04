@@ -344,3 +344,43 @@
     height: 100vh !important;
     border-radius: 0 !important;
 }
+
+@media (max-width: 768px) {
+    .karty-product-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Modal Fullscreen Override */
+    .karty-modal-content {
+        max-width: 100vw;
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+        margin: 0;
+    }
+
+    .karty-modal-overlay {
+        padding: 0;
+    }
+
+    .karty-modal-header,
+    .karty-modal-body,
+    .karty-modal-footer,
+    .karty-modal-tabs {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .karty-modal-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .karty-deck-visual {
+        height: 200px;
+    }
+
+    .karty-deck-box {
+        width: 120px;
+        height: 170px;
+    }
+}

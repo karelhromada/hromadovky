@@ -234,3 +234,42 @@
 .back-preview-item:hover {
     transform: scale(1.05) translateZ(0);
 }
+
+@media (max-width: 768px) {
+    .ps-product-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .ps-image-container {
+        height: 300px;
+        padding: 20px;
+    }
+
+    .ps-info {
+        padding: 24px;
+    }
+
+    .ps-section-title {
+        font-size: 2.2rem;
+    }
+
+    /* Fullscreen modal on mobile */
+    .back-selection-modal {
+        max-width: 100vw;
+        width: 100%;
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        overflow-y: auto;
+    }
+
+    .backs-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+}

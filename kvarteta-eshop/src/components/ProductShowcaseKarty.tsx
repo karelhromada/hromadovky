@@ -125,35 +125,11 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
                                 className="karty-slide-card karty-slide-card-2"
                                 style={{ backgroundImage: `url('${product.images[2]}')` }}
                             >
-                                {product.isThematic && (
-                                    <>
-                                        <div className="karty-play-overlay top-left">
-                                            <span>{product.sampleValue}</span>
-                                            <span className="karty-play-suit">{product.sampleSuit}</span>
-                                        </div>
-                                        <div className="karty-play-overlay bottom-right">
-                                            <span>{product.sampleValue}</span>
-                                            <span className="karty-play-suit">{product.sampleSuit}</span>
-                                        </div>
-                                    </>
-                                )}
                             </div>
                             <div
                                 className="karty-slide-card karty-slide-card-1"
                                 style={{ backgroundImage: `url('${product.images[1]}')` }}
                             >
-                                {product.isThematic && (
-                                    <>
-                                        <div className="karty-play-overlay top-left">
-                                            <span>{product.sampleValue}</span>
-                                            <span className="karty-play-suit">{product.sampleSuit}</span>
-                                        </div>
-                                        <div className="karty-play-overlay bottom-right">
-                                            <span>{product.sampleValue}</span>
-                                            <span className="karty-play-suit">{product.sampleSuit}</span>
-                                        </div>
-                                    </>
-                                )}
                             </div>
 
                             {/* The Box itself (Top layer) */}

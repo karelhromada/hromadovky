@@ -151,37 +151,6 @@
 
 
 
-.karty-play-overlay {
-    position: absolute;
-    color: white;
-    font-weight: bold;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    line-height: 1;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9), 0 0 10px rgba(0, 0, 0, 0.5);
-    z-index: 5;
-    font-size: 1.2rem;
-}
-
-
-
-.karty-play-overlay.top-left {
-    top: 10px;
-    left: 10px;
-}
-
-.karty-play-overlay.bottom-right {
-    bottom: 10px;
-    right: 10px;
-    transform: rotate(180deg);
-}
-
-.karty-play-suit {
-    font-size: 1.5em;
-    margin-top: 2px;
-}
-
 /* Modal CSS to replace missing Tailwind utilities */
 .karty-modal-overlay {
     position: fixed;

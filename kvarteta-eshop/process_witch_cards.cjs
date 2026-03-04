@@ -13,74 +13,85 @@ const colors = [
 async function processImage() {
     try {
         console.log("Reading image...");
-        // 1. Trim outer white space and resize to target ratio 12:17 (e.g. 709x1004)
         const { data, info } = await sharp(inputPath)
-            .trim({ threshold: 245 }) // Trim white pixels from the outer edges
-            .resize(709, 1004, { fit: 'fill' })
             .ensureAlpha()
             .raw()
             .toBuffer({ resolveWithObject: true });
 
-        // data is a Buffer of raw RGBA pixels
         const width = info.width;
         const height = info.height;
 
-        console.log("Processing pixels for transparency...");
-        // Define center region bounds where we expect the content to be hollow
-        const paddingX = Math.floor(width * 0.15);
-        const paddingY = Math.floor(height * 0.15);
+        let minX = width, maxX = 0, minY = height, maxY = 0;
+
+        // 1. Zjistit přesný bounding box černého inkoustu (ignorovat tak okolní stíny AI obrázku)
+        for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+                const idx = (y * width + x) * 4;
+                const r = data[idx];
+                const g = data[idx + 1];
+                const b = data[idx + 2];
+                const luma = 0.299 * r + 0.587 * g + 0.114 * b;
+
+                if (luma < 100) { // Detekce pouze hodně tmavých objektů
+                    if (x < minX) minX = x;
+                    if (x > maxX) maxX = x;
+                    if (y < minY) minY = y;
+                    if (y > maxY) maxY = y;
+                }
+            }
+        }
+
+        // Pokud se nenašel tmavý inkoust, použijeme default
+        if (minX > maxX) { minX = 0; maxX = width; minY = 0; maxY = height; }
+
+        // Mírný okraj pro dýchání rámečku, nesmí jít úplně do kraje oříznutých pixelů
+        const pad = 15;
+        minX = Math.max(0, minX - pad);
+        maxX = Math.min(width - 1, maxX + pad);
+        minY = Math.max(0, minY - pad);
+        maxY = Math.min(height - 1, maxY + pad);
+
+        const cropWidth = maxX - minX;
+        const cropHeight = maxY - minY;
+
+        const croppedBuffer = await sharp(data, { raw: { width, height, channels: 4 } })
+            .extract({ left: minX, top: minY, width: cropWidth, height: cropHeight })
+            .raw()
+            .toBuffer();
 
         for (const c of colors) {
-            // Create a copy of the buffer for this color
-            const outBuffer = Buffer.from(data);
+            const outBuffer = Buffer.from(croppedBuffer);
 
-            for (let y = 0; y < height; y++) {
-                for (let x = 0; x < width; x++) {
-                    const idx = (y * width + x) * 4;
+            for (let y = 0; y < cropHeight; y++) {
+                for (let x = 0; x < cropWidth; x++) {
+                    const idx = (y * cropWidth + x) * 4;
                     const r = outBuffer[idx];
                     const g = outBuffer[idx + 1];
                     const b = outBuffer[idx + 2];
-
-                    // Luma (brightness)
                     const luma = 0.299 * r + 0.587 * g + 0.114 * b;
 
-                    // If pixel is very bright (white/cream), make it transparent regardless of position
-                    if (luma > 230) {
-                        outBuffer[idx + 3] = 0; // Alpha = 0
+                    if (luma > 200) {
+                        outBuffer[idx + 3] = 0; // Bílé a světlé části (i šedé stíny) jsou komplet průhledné
                     } else {
-                        // Apply tint to the dark areas based on luma
-                        // We map black (luma 0) to a dark version of the color,
-                        // and map mid-tones to the color itself.
-                        // For pure black/grey outlines, we tint them:
-                        // Multiply the luma by the target color to get a colored outline
-                        if (luma < 240) {
-                            const tintFactor = 1 - (luma / 255); // 1 = black, 0 = white
-
-                            // Blend original with the target color
-                            // The darker it is, the more of the target color it takes (multiplied by luma or a constant darkness)
-                            // A simple gradient: dark = dark color, light = light color or original
-
-                            outBuffer[idx] = Math.min(255, luma + (c.r - luma) * tintFactor * 0.5);
-                            outBuffer[idx + 1] = Math.min(255, luma + (c.g - luma) * tintFactor * 0.5);
-                            outBuffer[idx + 2] = Math.min(255, luma + (c.b - luma) * tintFactor * 0.5);
-                        }
+                        // Čím tmavší, tím více barvy a plnosti (antialiasing inkoustu)
+                        const darkness = Math.max(0, 200 - luma) / 200;
+                        outBuffer[idx] = c.r;
+                        outBuffer[idx + 1] = c.g;
+                        outBuffer[idx + 2] = c.b;
+                        outBuffer[idx + 3] = Math.floor(darkness * 255);
                     }
                 }
             }
 
             const outPath = `/tmp/frame_${c.name}.png`;
             await sharp(outBuffer, {
-                raw: {
-                    width: width,
-                    height: height,
-                    channels: 4
-                }
+                raw: { width: cropWidth, height: cropHeight, channels: 4 }
             })
+                // Výsledný inkoust roztáhneme přesně po hranách karty hracího balíčku
+                .resize(709, 1004, { fit: 'fill' })
                 .png()
                 .toFile(outPath);
 
-            console.log(`Saved ${outPath}`);
-            // Also save specifically inside the app public dir
             const appPath = `/Users/air2024/Documents/Antigravity projekty/Kvarteta_vyšší bere/kvarteta-eshop/public/cards/witch_frame_${c.name}.png`;
             fs.copyFileSync(outPath, appPath);
         }

@@ -10,20 +10,10 @@ interface ProductShowcaseKartyProps {
 
 const products = [
     {
-        id: 'karty-klasika-vesmir',
-        name: 'Noční klasika',
-        description: 'Klasické herní hodnoty (10, J, Q, K, A) pro Vyšší bere a pohlcující noční obloha na luxusním rubu.',
-        price: 349,
-        themeColor: '#00d2ff',
-        images: ['/cards/neutral_back_stars.webp', '/cards/neutral_back_stars.webp', '/cards/neutral_back_stars.webp'],
-        boxImage: '/cards/neutral_back_stars.webp',
-        allCards: ['/cards/neutral_back_stars.webp'] // Placeholder for preview
-    },
-    {
         id: 'karty-tema-draku',
         name: 'Epická dračí edice',
         description: 'Luxusní Dračí edice. Mariášové barvy reprezentující živly. Hodnoty 10, J, Q, K, A v klasickém čistém herním designu s plnou originální malbou draků.',
-        price: 449, // Adjusted price for smaller deck
+        price: 449,
         themeColor: '#ff0033',
         images: ['/cards/dragon_scales_realistic_1.webp', '/cards/prsi/prsi_listy_A.webp', '/cards/prsi/prsi_srdce_K.webp'],
         boxImage: '/cards/dragon_scales_realistic_1.webp',
@@ -38,40 +28,22 @@ const products = [
         ]
     },
     {
-        id: 'karty-klasika-draku',
-        name: 'Dračí kůže',
-        description: 'Standardní figury (10-A) pro snadné hraní, ale se zadní stranou potaženou realistickou dračí šupinou.',
-        price: 349,
-        themeColor: '#ff0033',
-        images: ['/cards/dragon_scales_realistic_2.webp', '/cards/dragon_scales_realistic_1.webp', '/cards/dragon_scales_realistic_1.webp'],
-        boxImage: '/cards/dragon_scales_realistic_1.webp',
-        allCards: ['/cards/dragon_scales_realistic_1.webp']
-    },
-    {
-        id: 'karty-tema-dino',
-        name: 'Tematické: Dinosauři',
-        description: 'Plně tematický líc. Každá karta (10, J, Q, K, A) je ztvárněna fantastickou ilustrací dinosaura.',
+        id: 'karty-tema-carodejnice',
+        name: 'Magické Čarodějnice',
+        description: 'Mysteriózní sady čarodějnic. Každá hodnota (Spodek, Svršek, Král, Eso) nabízí jedinečnou detailní ilustraci od učednic ohně až po královny lesa.',
         price: 449,
-        themeColor: '#ff8a00',
-        images: ['/cards/dino_full_4.webp', '/cards/dino_full_5.webp', '/cards/dino_full_2.webp'],
-        boxImage: '/cards/dragon_scales_seamless.webp',
+        themeColor: '#ff4b4b',
+        images: ['/cards/carodejnice/eso_srdce.png', '/cards/carodejnice/kral_listy_oznaceno.png', '/cards/carodejnice/svrsek_zaludy_oznaceno.png'],
+        boxImage: '/cards/carodejnice/kral_srdce_oznaceno.png',
         isThematic: true,
         sampleValue: 'K',
-        sampleSuit: '🔔',
-        allCards: ['/cards/dino_full_4.webp', '/cards/dino_full_5.webp', '/cards/dino_full_2.webp']
-    },
-    {
-        id: 'karty-tema-kocky',
-        name: 'Tematické: Kočky',
-        description: 'Každá hodnota (10-A) má unikátní malovanou kočičí tvář, avšak při zachování snadné čitelnosti znaků.',
-        price: 449,
-        themeColor: '#00d2ff',
-        images: ['/cards/cat_full_1.webp', '/cards/cat_full_2.webp', '/cards/cat_full_3.webp'],
-        boxImage: '/cards/magic_runes_1.webp',
-        isThematic: true,
-        sampleValue: 'Q',
-        sampleSuit: '🍃',
-        allCards: ['/cards/cat_full_1.webp', '/cards/cat_full_2.webp', '/cards/cat_full_3.webp']
+        sampleSuit: '♥',
+        allCards: [
+            '/cards/carodejnice/eso_srdce.png', '/cards/carodejnice/kral_srdce_oznaceno.png', '/cards/carodejnice/svrsek_srdce_oznaceno.png', '/cards/carodejnice/spodek_srdce_oznaceno.png',
+            '/cards/carodejnice/eso_listy.png', '/cards/carodejnice/kral_listy_oznaceno.png', '/cards/carodejnice/svrsek_listy_oznaceno.png', '/cards/carodejnice/spodek_listy_oznaceno.png',
+            '/cards/carodejnice/kral_zaludy_oznaceno.png', '/cards/carodejnice/svrsek_zaludy_oznaceno.png', '/cards/carodejnice/spodek_zaludy_oznaceno.png',
+            '/cards/carodejnice/kral_kule_oznaceno.png', '/cards/carodejnice/svrsek_kule_oznaceno.png', '/cards/carodejnice/spodek_kule_oznaceno.png'
+        ]
     }
 ];
 

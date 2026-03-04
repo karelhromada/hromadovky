@@ -6,10 +6,8 @@ const inputDir = '/Users/air2024/.gemini/antigravity/brain/9926e9fd-1989-4bcf-a9
 const outputDir = path.join(__dirname, 'public', 'cards', 'carodejnice');
 
 const pairs = [
-    { witch: 'witch_kral_srdce_1772662385067.png', out: 'kral_srdce.png' },
-    { witch: 'witch_kral_listy_1772662416944.png', out: 'kral_listy.png' },
-    { witch: 'witch_kral_zaludy_1772662449930.png', out: 'kral_zaludy.png' },
-    { witch: 'witch_kral_kule_1772662463226.png', out: 'kral_kule.png' }
+    { witch: 'witch_eso_srdce_1772662649462.png', out: 'eso_srdce.png' },
+    { witch: 'witch_eso_listy_1772662686208.png', out: 'eso_listy.png' }
 ];
 
 async function generateCards() {

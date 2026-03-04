@@ -137,6 +137,7 @@
         flex-direction: column;
         text-align: center;
         padding-top: 120px;
+        padding-bottom: 40px;
     }
 
     .pexeso-hero-actions {
@@ -158,5 +159,29 @@
     /* Hide some cards to maintain grid shape on mobile */
     .pexeso-hero-card-wrapper:nth-child(n+13) {
         display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .pexeso-hero-actions {
+        flex-direction: column;
+        display: flex;
+        gap: 12px;
+    }
+
+    .pexeso-grid-stage {
+        max-width: 280px;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pexeso-grid-stage {
+        max-width: 240px;
+        gap: 8px;
+    }
+
+    .pexeso-hero-visual {
+        height: 320px;
     }
 }

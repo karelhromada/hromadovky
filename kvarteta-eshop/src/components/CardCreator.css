@@ -27,6 +27,16 @@
     box-shadow: var(--glass-shadow);
 }
 
+@media (max-width: 768px) {
+    .creator-form {
+        padding: 1.25rem;
+    }
+
+    .form-section {
+        padding: 1rem !important;
+    }
+}
+
 .custom-photos-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -393,6 +403,17 @@
     flex-wrap: wrap;
     position: sticky;
     top: 100px;
+}
+
+@media (max-width: 991px) {
+    .creator-preview {
+        position: static;
+        margin-top: 40px;
+    }
+
+    .live-card-wrapper {
+        max-width: 200px !important;
+    }
 }
 
 /* Card sizing responsive trick using relative units for children */

@@ -129,6 +129,7 @@
         flex-direction: column;
         text-align: center;
         padding-top: 120px;
+        padding-bottom: 40px;
     }
 
     .karty-hero-actions {
@@ -144,5 +145,29 @@
 
     .poker-hand-stage {
         transform: scale(0.8) rotateX(10deg) !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .karty-hero-actions {
+        flex-direction: column;
+    }
+
+    .poker-hand-stage {
+        transform: scale(0.65) rotateX(10deg) !important;
+    }
+
+    .karty-hero-visual {
+        height: 350px;
+    }
+}
+
+@media (max-width: 480px) {
+    .poker-hand-stage {
+        transform: scale(0.55) rotateX(10deg) !important;
+    }
+
+    .karty-hero-visual {
+        height: 280px;
     }
 }

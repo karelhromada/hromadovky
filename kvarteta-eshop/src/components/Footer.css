@@ -81,3 +81,19 @@
     color: var(--text-secondary);
     font-size: 0.9rem;
 }
+
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .footer-links {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .footer {
+        padding-top: 40px;
+    }
+}

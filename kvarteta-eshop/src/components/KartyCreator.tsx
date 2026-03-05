@@ -18,10 +18,13 @@ const backgrounds = [
     { id: 'bg9', name: 'Noční obloha', url: '/cards/neutral_back_stars.webp' },
     { id: 'bg12', name: 'Zrzavý kocour', url: '/cards/cat_fur_orange.webp' },
     { id: 'bg13', name: 'Stříbrná srst', url: '/cards/cat_fur_silver.webp' },
+    { id: 'cat_calico', name: 'Tříbarevná srst', url: '/cards/cat_fur_calico.webp' },
     { id: 'bg_geo_blue', name: 'Modré diamanty', url: '/cards/pexeso_back_blue_geo.webp' },
     { id: 'bg_geo_red', name: 'Červené vzory', url: '/cards/pexeso_back_red_geo.webp' },
     { id: 'bg_linen', name: 'Klasické plátno', url: '/cards/pexeso_back_linen.webp' },
-    { id: 'bg_stars', name: 'Hvězdná noc', url: '/cards/pexeso_back_stars.webp' }
+    { id: 'bg_stars', name: 'Hvězdná noc', url: '/cards/pexeso_back_stars.webp' },
+    { id: 'drag_seamless', name: 'Dračí plátování', url: '/cards/dragon_scales_seamless.webp' },
+    { id: 'neutral_grad', name: 'Temný gradient', url: '/cards/neutral_back_gradient.webp' }
 ];
 
 const cardStyles = [

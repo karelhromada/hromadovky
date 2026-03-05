@@ -7,18 +7,22 @@ interface PexesoCreatorProps {
 }
 
 const backgrounds = [
-    { id: 'bg1', name: 'Zelené Šupiny', url: '/cards/dragon_scales_realistic_1.webp' },
-    { id: 'bg2', name: 'Kovový Drak', url: '/cards/dragon_scales_metallic.webp' },
-    { id: 'bg3', name: 'Krvavé Šupiny', url: '/cards/dragon_scales_vibrant.webp' },
-    { id: 'bg4', name: 'Zlaté Šupiny', url: '/cards/dragon_scales_realistic_2.webp' },
-    { id: 'bg8', name: 'Tajemný Vzor', url: '/cards/card_back_pattern.webp' },
-    { id: 'bg9', name: 'Noční Obloha', url: '/cards/neutral_back_stars.webp' },
-    { id: 'bg12', name: 'Zrzavý Kocour', url: '/cards/cat_fur_orange.webp' },
-    { id: 'bg13', name: 'Stříbrná Srst', url: '/cards/cat_fur_silver.webp' },
-    { id: 'bg_geo_blue', name: 'Modré Diamanty', url: '/cards/pexeso_back_blue_geo.webp' },
-    { id: 'bg_geo_red', name: 'Červené Vzory', url: '/cards/pexeso_back_red_geo.webp' },
-    { id: 'bg_linen', name: 'Klasické Plátno', url: '/cards/pexeso_back_linen.webp' },
-    { id: 'bg_stars', name: 'Hvězdná Noc', url: '/cards/pexeso_back_stars.webp' }
+    { id: 'bg_ruby_stars', name: 'Magické hvězdy', url: '/cards/neutral_back_ruby_formatted.png' },
+    { id: 'bg1', name: 'Zelené šupiny', url: '/cards/dragon_scales_realistic_1.webp' },
+    { id: 'bg2', name: 'Kovový drak', url: '/cards/dragon_scales_metallic.webp' },
+    { id: 'bg3', name: 'Krvavé šupiny', url: '/cards/dragon_scales_vibrant.webp' },
+    { id: 'bg4', name: 'Zlaté šupiny', url: '/cards/dragon_scales_realistic_2.webp' },
+    { id: 'bg8', name: 'Tajemný vzor', url: '/cards/card_back_pattern.webp' },
+    { id: 'bg9', name: 'Noční obloha', url: '/cards/neutral_back_stars.webp' },
+    { id: 'bg12', name: 'Zrzavý kocour', url: '/cards/cat_fur_orange.webp' },
+    { id: 'bg13', name: 'Stříbrná srst', url: '/cards/cat_fur_silver.webp' },
+    { id: 'cat_calico', name: 'Tříbarevná srst', url: '/cards/cat_fur_calico.webp' },
+    { id: 'bg_geo_blue', name: 'Modré diamanty', url: '/cards/pexeso_back_blue_geo.webp' },
+    { id: 'bg_geo_red', name: 'Červené vzory', url: '/cards/pexeso_back_red_geo.webp' },
+    { id: 'bg_linen', name: 'Klasické plátno', url: '/cards/pexeso_back_linen.webp' },
+    { id: 'bg_stars', name: 'Hvězdná noc', url: '/cards/pexeso_back_stars.webp' },
+    { id: 'drag_seamless', name: 'Dračí plátování', url: '/cards/dragon_scales_seamless.webp' },
+    { id: 'neutral_grad', name: 'Temný gradient', url: '/cards/neutral_back_gradient.webp' }
 ];
 
 const dimensions = [

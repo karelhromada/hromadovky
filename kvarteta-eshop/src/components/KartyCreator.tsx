@@ -9,6 +9,7 @@ interface KartyCreatorProps {
 type PlayMode = 'classic' | 'thematic';
 
 const backgrounds = [
+    { id: 'bg_ruby_stars', name: 'Magické hvězdy', url: '/cards/neutral_back_ruby_formatted.png' },
     { id: 'bg1', name: 'Zelené šupiny', url: '/cards/dragon_scales_realistic_1.webp' },
     { id: 'bg2', name: 'Kovový drak', url: '/cards/dragon_scales_metallic.webp' },
     { id: 'bg3', name: 'Krvavé šupiny', url: '/cards/dragon_scales_vibrant.webp' },

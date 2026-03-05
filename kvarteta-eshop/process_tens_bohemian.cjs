@@ -18,16 +18,7 @@ const leftPoints = [120, 220, 320, 420, 520].map(y => ({ cx: 175, cy: y }));
 const rightPoints = [120, 220, 320, 420, 520].map(y => ({ cx: 534, cy: y }));
 const allPoints = [...leftPoints, ...rightPoints];
 
-// SVG generator for X
-const svgX = Buffer.from(`
-    <svg width="200" height="150" xmlns="http://www.w3.org/2000/svg">
-        <text x="50%" y="60%" font-family="Times, serif" font-size="80" font-weight="bold" fill="white" stroke="black" stroke-width="3" text-anchor="middle" dominant-baseline="middle">X</text>
-    </svg>
-`);
-const xCx = 354;
-const xCy = 60;
-const xTop = Math.round(xCy - 75);
-const xLeft = Math.round(xCx - 100);
+// Removed SVG generator for X
 
 async function processBohemianTens() {
     const files = fs.readdirSync(destDir);
@@ -50,9 +41,10 @@ async function processBohemianTens() {
 
         const symbolPath = path.join(destDir, symbolFileName);
 
-        // Prepare symbol buffer
+        // Prepare symbol buffer with trim to match AKQJ sizes
         const symbolBuffer = await sharp(symbolPath)
-            .resize(symbolSize, symbolSize)
+            .trim()
+            .resize(symbolSize, symbolSize, { fit: 'inside' })
             .toBuffer();
 
         const compositingArray = allPoints.map(pt => ({
@@ -61,11 +53,7 @@ async function processBohemianTens() {
             left: Math.round(pt.cx - symbolSize / 2)
         }));
 
-        compositingArray.push({
-            input: svgX,
-            top: xTop,
-            left: xLeft
-        });
+        // Removed pushing of svgX to compositingArray
 
         // Translate suit name back
         let outSuit = card.suit;

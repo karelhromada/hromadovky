@@ -41,7 +41,8 @@
         .card {
             width: 60mm;
             height: 85mm;
-            border: 0.1mm solid #ccc; /* ořezová značka na spad */
+            border: 0.1mm solid #ccc;
+            /* ořezová značka na spad */
             position: relative;
             overflow: hidden;
             background: #000;
@@ -75,7 +76,8 @@
             }
 
             .card {
-                border: 0.2mm solid #999; /* jemné značky pro řezání */
+                border: 0.2mm solid #999;
+                /* jemné značky pro řezání */
             }
         }
 
@@ -112,7 +114,7 @@
     <script>
         // Prefix pro všechny cesty
         const prefix = "kvarteta-eshop/public/cards/carodejnice/";
-        
+
         const cards = [
             'sedmicka_srdce_oznaceno', 'osmicka_srdce_oznaceno', 'devitka_srdce_oznaceno', 'desitka_srdce_oznaceno', 'spodek_srdce_oznaceno', 'svrsek_srdce_oznaceno', 'kral_srdce_oznaceno', 'eso_srdce_oznaceno',
             'sedmicka_listy_oznaceno', 'osmicka_listy_oznaceno', 'devitka_listy_oznaceno', 'desitka_listy_oznaceno', 'spodek_listy_oznaceno', 'svrsek_listy_oznaceno', 'kral_listy_oznaceno', 'eso_listy_oznaceno',
@@ -120,16 +122,32 @@
             'sedmicka_zaludy_oznaceno', 'osmicka_zaludy_oznaceno', 'devitka_zaludy_oznaceno', 'desitka_zaludy_oznaceno', 'spodek_zaludy_oznaceno', 'svrsek_zaludy_oznaceno', 'kral_zaludy_oznaceno', 'eso_zaludy_oznaceno'
         ];
 
+        // Cesta k rubové straně
+        const backImage = "kvarteta-eshop/public/cards/neutral_back_stars.webp";
+
         let html = '';
         const cardsPerPage = 9;
-        
+
         for (let i = 0; i < cards.length; i += cardsPerPage) {
-            html += '<div class="page-grid">';
+            // LÍC - PŘEDNÍ STRANA
+            html += '<div class="page-grid page-front">';
             for (let j = 0; j < cardsPerPage; j++) {
                 if (i + j < cards.length) {
                     html += `<div class="card"><img src="${prefix}${cards[i + j]}.png"></div>`;
                 } else {
-                    // Prázdná karta pro zachování gridu (pokud by to nebylo násobkem 9)
+                    // Prázdná karta
+                    html += `<div class="card" style="background:#fff; border:none;"></div>`;
+                }
+            }
+            html += '</div>';
+
+            // RUB - ZADNÍ STRANA (ihned za front, aby se dala duplexně tisknout)
+            html += '<div class="page-grid page-back">';
+            for (let j = 0; j < cardsPerPage; j++) {
+                // Generujeme rub jen pokud na odpovídajícím místě ležela reálná líce (aby se neplýtvalo barvou)
+                if (i + j < cards.length) {
+                    html += `<div class="card"><img src="${backImage}"></div>`;
+                } else {
                     html += `<div class="card" style="background:#fff; border:none;"></div>`;
                 }
             }

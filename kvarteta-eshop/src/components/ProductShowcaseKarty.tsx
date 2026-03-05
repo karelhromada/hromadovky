@@ -39,10 +39,10 @@ const products = [
         sampleValue: 'K',
         sampleSuit: '♥',
         allCards: [
-            '/cards/carodejnice/eso_srdce_oznaceno.png', '/cards/carodejnice/kral_srdce_oznaceno.png', '/cards/carodejnice/svrsek_srdce_oznaceno.png', '/cards/carodejnice/spodek_srdce_oznaceno.png', '/cards/carodejnice/desitka_srdce_oznaceno.png',
-            '/cards/carodejnice/eso_listy_oznaceno.png', '/cards/carodejnice/kral_listy_oznaceno.png', '/cards/carodejnice/svrsek_listy_oznaceno.png', '/cards/carodejnice/spodek_listy_oznaceno.png', '/cards/carodejnice/desitka_listy_oznaceno.png',
-            '/cards/carodejnice/eso_zaludy_oznaceno.png', '/cards/carodejnice/kral_zaludy_oznaceno.png', '/cards/carodejnice/svrsek_zaludy_oznaceno.png', '/cards/carodejnice/spodek_zaludy_oznaceno.png', '/cards/carodejnice/desitka_zaludy_oznaceno.png',
-            '/cards/carodejnice/eso_kule_oznaceno.png', '/cards/carodejnice/kral_kule_oznaceno.png', '/cards/carodejnice/svrsek_kule_oznaceno.png', '/cards/carodejnice/spodek_kule_oznaceno.png', '/cards/carodejnice/desitka_kule_oznaceno.png'
+            '/cards/carodejnice/eso_srdce_oznaceno.png', '/cards/carodejnice/kral_srdce_oznaceno.png', '/cards/carodejnice/svrsek_srdce_oznaceno.png', '/cards/carodejnice/spodek_srdce_oznaceno.png', '/cards/carodejnice/desitka_srdce_oznaceno.png', '/cards/carodejnice/devitka_srdce_oznaceno.png', '/cards/carodejnice/osmicka_srdce_oznaceno.png',
+            '/cards/carodejnice/eso_listy_oznaceno.png', '/cards/carodejnice/kral_listy_oznaceno.png', '/cards/carodejnice/svrsek_listy_oznaceno.png', '/cards/carodejnice/spodek_listy_oznaceno.png', '/cards/carodejnice/desitka_listy_oznaceno.png', '/cards/carodejnice/devitka_listy_oznaceno.png', '/cards/carodejnice/osmicka_listy_oznaceno.png',
+            '/cards/carodejnice/eso_zaludy_oznaceno.png', '/cards/carodejnice/kral_zaludy_oznaceno.png', '/cards/carodejnice/svrsek_zaludy_oznaceno.png', '/cards/carodejnice/spodek_zaludy_oznaceno.png', '/cards/carodejnice/desitka_zaludy_oznaceno.png', '/cards/carodejnice/devitka_zaludy_oznaceno.png', '/cards/carodejnice/osmicka_zaludy_oznaceno.png',
+            '/cards/carodejnice/eso_kule_oznaceno.png', '/cards/carodejnice/kral_kule_oznaceno.png', '/cards/carodejnice/svrsek_kule_oznaceno.png', '/cards/carodejnice/spodek_kule_oznaceno.png', '/cards/carodejnice/desitka_kule_oznaceno.png', '/cards/carodejnice/devitka_kule_oznaceno.png', '/cards/carodejnice/osmicka_kule_oznaceno.png'
         ]
     }
 ];

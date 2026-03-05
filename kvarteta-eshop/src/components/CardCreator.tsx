@@ -4,6 +4,10 @@ import './CardCreator.css';
 
 const backgrounds = [
     '/cards/neutral_back_ruby_formatted.png',
+    '/cards/knight_back_iron_steel.webp',
+    '/cards/knight_back_crest.webp',
+    '/cards/knight_back_gate.webp',
+    '/cards/knight_back_pattern.webp',
     '/cards/dragon_scales_realistic_1.webp',
     '/cards/dragon_scales_metallic.webp',
     '/cards/dragon_scales_vibrant.webp',

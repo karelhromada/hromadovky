@@ -6,14 +6,13 @@ const brainDir = '/Users/air2024/.gemini/antigravity/brain/9926e9fd-1989-4bcf-a9
 const targetDir = path.join(__dirname, 'public/cards/princezny bez pozadi');
 
 const colors = {
-    'srdce': '#d32f2f', // Červená
-    'zelene': '#2e7d32' // Zelená
+    'kule': '#e65100',  // Oranžovo-hnědá (saddle brown)
+    'zaludy': '#fbc02d' // Zlatá (golden rod)
 };
 
 const cards = [
-    // Používám ty nové DYNAMICKÉ Spodky vygenerované právě teď (šermíř Srdce, elf. lukostřelec Zelená) místo statických
-    { in: 'princezny_spodek_kule_dynamik_1772729278384.png', out: 'spodek_srdce.png', sign: 'znak_srdce.png', color: colors.srdce },
-    { in: 'princezny_spodek_zelene_dynamik_1772730494622.png', out: 'spodek_zelene.png', sign: 'znak_zelené.png', color: colors.zelene }
+    { in: 'princezny_spodek_kule2_1772743834603.png', out: 'spodek_kule.png', sign: 'znak_kule.png', color: colors.kule },
+    { in: 'princezny_spodek_zaludy_1772743820750.png', out: 'spodek_zaludy.png', sign: 'znak_žaludy.png', color: colors.zaludy }
 ];
 
 async function processCards() {

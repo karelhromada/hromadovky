@@ -46,9 +46,13 @@ const features = [
         desc: 'Vytvořte z karet dokonalý osobní dárek. V našem jednoduchém editoru si na karty snadno vložíte vlastní fotografie nebo firemní logo.',
         images: [
             '/cards/prsi/prsi_kule_K.webp',
+            '/cards/carodejnice/eso_srdce_oznaceno.png',
             '/cards/prsi/prsi_srdce_A.webp',
+            '/cards/carodejnice/kral_listy_oznaceno.png',
             '/cards/prsi/prsi_zaludy_10.webp',
-            '/cards/prsi/prsi_listy_A.webp'
+            '/cards/carodejnice/devitka_srdce_oznaceno.png',
+            '/cards/prsi/prsi_listy_A.webp',
+            '/cards/carodejnice/sedmicka_zaludy_oznaceno.png'
         ],
         imageAlt: 'Možnost personalizace hracích karet'
     }

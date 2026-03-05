@@ -12,10 +12,10 @@ const suits = [
 ];
 
 const figures = [
-    { id: 'eso', name: 'Eso', coords: [{ left: 190, top: 100 }, { left: 479, top: 100 }] },
-    { id: 'kral', name: 'Král', coords: [{ left: 190, top: 100 }, { left: 479, top: 100 }] },
-    { id: 'svrsek', name: 'Svršek', coords: [{ left: 100, top: 100 }] },
-    { id: 'spodek', name: 'Spodek', coords: [{ left: 100, top: 844 }] }
+    { id: 'eso', name: 'Eso', coords: [{ left: 100, top: 100 }, { left: 389, top: 100 }] },
+    { id: 'kral', name: 'Král', coords: [{ left: 100, top: 100 }, { left: 389, top: 100 }] },
+    // { id: 'svrsek', name: 'Svršek', coords: [{ left: 100, top: 100 }] },
+    // { id: 'spodek', name: 'Spodek', coords: [{ left: 100, top: 844 }] }
 ];
 
 async function addSymbolsToCards() {

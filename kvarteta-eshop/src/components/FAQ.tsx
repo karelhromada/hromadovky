@@ -25,7 +25,7 @@ const faqs: FAQItem[] = [
     },
     {
         question: 'Mohu si karty navrhnout kompletně sám?',
-        answer: 'Ano! Náš jedinečný konfigurátor Vám umožní vybrat si od tvaru a rozložení statistik až po styl ilustrací úplně vše. Kreativitě se u nás meze nekladou!'
+        answer: 'Ano, s naším interaktivním konfigurátorem máte plnou volnost. Můžete si vybrat z desítek úchvatných ilustrací, přizpůsobit tvar karty i zvolit si zcela vlastní rozložení statistik. Vaší tvořivosti zkrátka nestojí nic v cestě!'
     },
     {
         question: 'Co když chci na karty vlastní fotky dětí a rodiny?',

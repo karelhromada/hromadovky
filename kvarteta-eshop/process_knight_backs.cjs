@@ -20,7 +20,6 @@ async function processImages() {
         if (fs.existsSync(inputPath)) {
             console.log(`Processing ${file.in}...`);
             await sharp(inputPath)
-                .rotate(90) // Apply the 90-deg rotation they had on the A4 template
                 .resize(709, 1004, {
                     fit: 'cover',
                     position: 'center'

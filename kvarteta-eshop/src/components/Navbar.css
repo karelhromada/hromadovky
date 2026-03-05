@@ -64,6 +64,7 @@
     letter-spacing: 1px;
 }
 
+.nav-link.active,
 .nav-link:hover {
     opacity: 1;
     color: var(--accent-gold);
@@ -81,6 +82,7 @@
     transition: width 0.3s ease;
 }
 
+.nav-link.active::after,
 .nav-link:hover::after {
     width: 100%;
 }

@@ -7,7 +7,7 @@ const features = [
         id: 'feat-1',
         title: 'Odolné',
         subtitle: 'materiály',
-        desc: 'Naše karty tiskneme na prémiový karetní karton s karetním lakem. Přežijí rodinné oslavy, dětské ruce i napínavé turnaje, aniž by se jim ohnuly rožky.',
+        desc: 'Naše karty tiskneme na prémiový papír a následně profesionálně oboustranně laminujeme a precizně řežeme. Přežijí rodinné oslavy, dětské ruce i napínavé turnaje, aniž by se jim ohnuly rožky.',
         images: ['/cards/dragon_scales_realistic_1.webp'],
         imageAlt: 'Ukázka odolného materiálu karet'
     },

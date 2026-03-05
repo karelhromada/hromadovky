@@ -6,7 +6,7 @@ const brainDir = '/Users/air2024/.gemini/antigravity/brain/9926e9fd-1989-4bcf-a9
 const targetDir = path.join(__dirname, 'public/cards/princezny bez pozadi');
 
 const colors = {
-    'kule': '#e65100',  // Oranžovo-hnědá (saddle brown)
+    'kule': '#795548',  // Hnědá - shodná s esy a králi
     'zaludy': '#fbc02d' // Zlatá (golden rod)
 };
 

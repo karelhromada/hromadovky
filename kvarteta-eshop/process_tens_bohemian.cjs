@@ -12,7 +12,7 @@ const tens = [
     { src: 'witch_desitka_kule_1772691240714.png', suit: 'kule' }
 ];
 
-const symbolSize = 100;
+const symbolSize = 130;
 
 const leftPoints = [120, 220, 320, 420, 520].map(y => ({ cx: 175, cy: y }));
 const rightPoints = [120, 220, 320, 420, 520].map(y => ({ cx: 534, cy: y }));

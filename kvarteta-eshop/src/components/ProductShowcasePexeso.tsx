@@ -89,7 +89,7 @@ const products = [
     },
     {
         id: 'pexeso-dravci',
-        name: 'Pexeso: Velcí dravci',
+        name: 'Pexeso: Velcí lovci',
         description: 'Odhalte sílu nejobávanějších dravců naší planety ve strhujícím pexesu pro odvážné.',
         price: 349,
         themeColor: '#8b5a2b',

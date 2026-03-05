@@ -60,6 +60,25 @@
             transform: translate(-50%, -50%);
         }
 
+        /* Aplikace BLEEDU (spadávky) na rubovou stranu */
+        /* Odstraníme obrys, aby se rub netiskl s ořezovou značkou líce */
+        .page-back .card {
+            border: none;
+            overflow: visible;
+            /* povolíme přetečení do sousedních mezer */
+            background: transparent;
+            z-index: 10;
+        }
+
+        /* Uměle roztáhneme velikost rubového obrazu o 4mm všemi směry do mezer. */
+        /* Tiskárnám to odpustí až 2mm nepřesnost posunu při oboustranném vtahování. */
+        .page-back .card img {
+            width: calc(100% + 4mm);
+            height: calc(100% + 4mm);
+            max-width: none;
+            z-index: 10;
+        }
+
         @media print {
             body {
                 background: none;
@@ -106,8 +125,14 @@
 
 <body>
     <div class="no-print">
-        <h1>Tiskový arch Čarodějnice (70.9 x 100.4 mm) - 8 karet na stránku</h1>
-        <p>Orientace: **Na šířku (Landscape)** | Měřítko: **100% (Skutečná velikost)**</p>
+        <h1>Tiskový arch Čarodějnice (70.9 x 100.4 mm)</h1>
+        <p style="color: #ca8a04; font-weight: bold; font-size: 16px;">
+            ⚠️ DŮLEŽITÉ PŘED TISKEM: V nastavení prohlížeče musíte vypnout okraje (Okraje: Žádné) a nastavit Měřítko
+            přesně na 100% (Výchozí).
+        </p>
+        <p>Rubové strany karet schválně mírně přetékají (tzv. Spadávka), aby vykryly nepřesnosti tiskárny. Karty
+            následně <b>stříhejte vždy jen podle Lícových stran</b> (mají jemné šedé značky).</p>
+        <p>Orientace: <b>Na šířku (Landscape)</b> | Tisk: <b>Oboustranně (Otáčet po delším okraji)</b></p>
         <button class="btn-print" onclick="window.print()">Vytisknout karty</button>
     </div>
 

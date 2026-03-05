@@ -16,7 +16,7 @@ const cards = [
     { in: 'princezny_8_srdce_1772744565454.png', out: 'osmicka_srdce.png', sign: 'znak_srdce.png', color: colors.srdce },
     { in: 'princezny_8_zelene_1772744579347.png', out: 'osmicka_zelene.png', sign: 'znak_zelené.png', color: colors.zelene },
     { in: 'princezny_8_kule_1772744593888.png', out: 'osmicka_kule.png', sign: 'znak_kule.png', color: colors.kule },
-    { in: 'princezny_8_zaludy_1772744607175.png', out: 'osmicka_zaludy.png', sign: 'znak_žaludy.png', color: colors.zaludy }
+    { in: 'princezny_8_zaludy_myska_1772744853053.png', out: 'osmicka_zaludy.png', sign: 'znak_žaludy.png', color: colors.zaludy }
 ];
 
 async function processCards() {

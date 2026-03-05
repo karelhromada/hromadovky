@@ -1,25 +1,21 @@
 const sharp = require('sharp');
 const path = require('path');
 
-const srcZaludy = '/Users/air2024/.gemini/antigravity/brain/9926e9fd-1989-4bcf-a934-b9e4fa2c430e/witch_eso_zaludy_1772690553579.png';
-const srcKule = '/Users/air2024/.gemini/antigravity/brain/9926e9fd-1989-4bcf-a934-b9e4fa2c430e/witch_eso_kule_1772690568090.png';
-
 const destDir = path.join(__dirname, 'public', 'cards', 'carodejnice');
 
 const pairs = [
-    { name: 'eso_zaludy', aiImage: srcZaludy, symbol: 'znak_žaludy.png' },
-    { name: 'eso_kule', aiImage: srcKule, symbol: 'znak_kule.png' }
+    { name: 'eso_srdce', aiImage: path.join(destDir, 'eso_srdce.png'), symbol: 'znak_srdce.png' },
+    { name: 'eso_listy', aiImage: path.join(destDir, 'eso_listy.png'), symbol: 'znak_zelené.png' }
 ];
 
 async function processAces() {
     for (const pair of pairs) {
         console.log(`Zpracovávám ${pair.name}...`);
 
-        // 1. Ořez a škálování zdrojového AI obrázku
-        const resizedPath = path.join(destDir, `${pair.name}.png`);
-        await sharp(pair.aiImage)
+        // 1. Ořez, škálování zdrojového obrázku a uložení do paměti jako buffer
+        const resizedBuffer = await sharp(pair.aiImage)
             .resize(709, 1004, { fit: 'cover' }) // ořez na střed s aspect ratio 12:17
-            .toFile(resizedPath);
+            .toBuffer();
 
         // 2. Přidání symbolů (dvakrát nahoře pro eso)
         const symbolPath = path.join(destDir, pair.symbol);
@@ -30,7 +26,7 @@ async function processAces() {
             .resize(symbolSize, symbolSize, { fit: 'inside' })
             .toBuffer();
 
-        const cardImage = sharp(resizedPath);
+        const cardImage = sharp(resizedBuffer);
         const metadata = await cardImage.metadata();
         const symbolMetadata = await sharp(resizedSymbol).metadata();
 

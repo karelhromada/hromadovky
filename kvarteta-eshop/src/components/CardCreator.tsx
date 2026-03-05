@@ -3,11 +3,22 @@ import { Upload, Sparkles } from 'lucide-react';
 import './CardCreator.css';
 
 const backgrounds = [
-    '/cards/card_back_pattern.webp', '/cards/dragon_scales_seamless.webp',
-    '/cards/neutral_back_gradient.webp', '/cards/neutral_back_stars.webp',
-    '/cards/dragon_scales_vibrant.webp', '/cards/dragon_scales_metallic.webp',
-    '/cards/dragon_scales_realistic_1.webp', '/cards/dragon_scales_realistic_2.webp',
-    '/cards/cat_fur_orange.webp', '/cards/cat_fur_silver.webp', '/cards/cat_fur_calico.webp'
+    '/cards/neutral_back_ruby_formatted.png',
+    '/cards/dragon_scales_realistic_1.webp',
+    '/cards/dragon_scales_metallic.webp',
+    '/cards/dragon_scales_vibrant.webp',
+    '/cards/dragon_scales_realistic_2.webp',
+    '/cards/card_back_pattern.webp',
+    '/cards/neutral_back_stars.webp',
+    '/cards/cat_fur_orange.webp',
+    '/cards/cat_fur_silver.webp',
+    '/cards/cat_fur_calico.webp',
+    '/cards/pexeso_back_blue_geo.webp',
+    '/cards/pexeso_back_red_geo.webp',
+    '/cards/pexeso_back_linen.webp',
+    '/cards/pexeso_back_stars.webp',
+    '/cards/dragon_scales_seamless.webp',
+    '/cards/neutral_back_gradient.webp'
 ];
 
 const frontImages = [

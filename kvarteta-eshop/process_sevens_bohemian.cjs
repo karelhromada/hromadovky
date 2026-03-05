@@ -8,8 +8,8 @@ const destDir = path.join(__dirname, 'public', 'cards', 'carodejnice');
 const sevens = [
     { src: 'witch_sedmicka_srdce_1772697143688.png', suit: 'srdce' },
     { src: 'witch_sedmicka_listy_1772697158164.png', suit: 'zelen' },
-    { src: 'witch_sedmicka_zaludy_1772697171931.png', suit: 'aludy' }
-    // kule chybí kvůli API limitu
+    { src: 'witch_sedmicka_zaludy_1772697171931.png', suit: 'aludy' },
+    { src: 'witch_sedmicka_kule_bg_1772713123748.png', suit: 'kule' }
 ];
 
 const symbolSize = 130;

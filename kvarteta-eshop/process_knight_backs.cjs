@@ -20,6 +20,9 @@ async function processImages() {
         if (fs.existsSync(inputPath)) {
             console.log(`Processing ${file.in}...`);
             await sharp(inputPath)
+                // Oříznutí vnitřního okraje: odřízneme přibližně 110px zleva/zprava a 40px shora/zdola
+                // z celkového formátu 640x640, abychom zničili ten tmavý rám "karty v obrázku"
+                .extract({ left: 110, top: 40, width: 420, height: 560 })
                 .resize(709, 1004, {
                     fit: 'cover',
                     position: 'center'

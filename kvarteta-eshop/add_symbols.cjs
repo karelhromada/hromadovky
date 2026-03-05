@@ -4,55 +4,60 @@ const fs = require('fs');
 
 const cardsDir = path.join(__dirname, 'public', 'cards', 'carodejnice');
 
-const pairs = [
-    { symbol: 'znak_srdce.png', card: 'spodek_srdce.png', out: 'spodek_srdce_oznaceno.png' },
-    { symbol: 'znak_zelené.png', card: 'spodek_listy.png', out: 'spodek_listy_oznaceno.png' },
-    { symbol: 'znak_žaludy.png', card: 'spodek_zaludy.png', out: 'spodek_zaludy_oznaceno.png' },
-    { symbol: 'znak_kule.png', card: 'spodek_kule.png', out: 'spodek_kule_oznaceno.png' }
+const suits = [
+    { id: 'srdce', symbolFile: 'znak_srdce.png' },
+    { id: 'listy', symbolFile: 'znak_zelené.png' },
+    { id: 'zaludy', symbolFile: 'znak_žaludy.png' },
+    { id: 'kule', symbolFile: 'znak_kule.png' }
 ];
 
-async function addSymbolsToCard() {
-    for (const pair of pairs) {
-        const symbolPath = path.join(cardsDir, pair.symbol);
-        const cardPath = path.join(cardsDir, pair.card);
-        const outPath = path.join(cardsDir, pair.out);
+const figures = [
+    { id: 'eso', name: 'Eso', coords: [{ left: 110, top: 100 }, { left: 599, top: 100 }] },
+    { id: 'kral', name: 'Král', coords: [{ left: 110, top: 100 }, { left: 599, top: 100 }] },
+    { id: 'svrsek', name: 'Svršek', coords: [{ left: 110, top: 100 }] },
+    { id: 'spodek', name: 'Spodek', coords: [{ left: 110, top: 904 }] }
+];
 
-        if (!fs.existsSync(symbolPath) || !fs.existsSync(cardPath)) {
-            console.error(`Nenalezeny vstupní soubory pro ${pair.card}! Zkontroluj '${pair.symbol}' a '${pair.card}'.`);
-            continue;
-        }
+async function addSymbolsToCards() {
+    for (const suit of suits) {
+        for (const figure of figures) {
+            const symbolPath = path.join(cardsDir, suit.symbolFile);
+            const cardPath = path.join(cardsDir, `${figure.id}_${suit.id}.png`);
+            const outPath = path.join(cardsDir, `${figure.id}_${suit.id}_oznaceno.png`);
 
-        try {
-            console.log("Začínám kompozici znaku...");
+            if (!fs.existsSync(symbolPath) || !fs.existsSync(cardPath)) {
+                console.error(`Nenalezeny vstupní soubory pro ${figure.id}_${suit.id}! Přeskakuji...`);
+                continue;
+            }
 
-            // Znak vlevo nahoře (bez rotace)
-            const newSize = 130;
-            const resizedSymbol = await sharp(symbolPath)
-                .trim()
-                .resize(newSize, newSize, { fit: 'inside' })
-                .toBuffer();
+            try {
+                console.log(`Zpracovávám: ${figure.id}_${suit.id}...`);
 
-            // 2. Provedeme kompozici na samotnou kartu
-            const cardImage = sharp(cardPath);
-            const metadata = await cardImage.metadata();
-            const symbolMetadata = await sharp(resizedSymbol).metadata();
+                // Příprava znaku
+                const newSize = 130;
+                const resizedSymbol = await sharp(symbolPath)
+                    .trim()
+                    .resize(newSize, newSize, { fit: 'inside' })
+                    .toBuffer();
 
-            const paddingLeftRight = 45; // 15 + 30 od hrany
-            const paddingBottom = 25; // odsazení odspodu
+                // Vybudování seznamu operací pro Sharp compositing (včetně více znaků pro A, K)
+                const composeOps = figure.coords.map(coord => ({
+                    input: resizedSymbol,
+                    top: coord.top,
+                    left: coord.left
+                }));
 
-            await cardImage
-                .composite([
-                    // Levý dolní roh (top: výška karty - výška znaku - odsazení zespoda)
-                    { input: resizedSymbol, top: metadata.height - symbolMetadata.height - paddingBottom, left: paddingLeftRight }
-                ])
-                .toFile(outPath);
+                await sharp(cardPath)
+                    .composite(composeOps)
+                    .toFile(outPath);
 
-            console.log("Hotovo! Výsledek uložen jako:", outPath);
+                console.log(`Úspěšně uloženo: ${outPath}`);
 
-        } catch (err) {
-            console.error(`Chyba během kompozice u ${pair.card}:`, err);
+            } catch (err) {
+                console.error(`Chyba během kompozice u ${figure.id}_${suit.id}:`, err);
+            }
         }
     }
 }
 
-addSymbolsToCard();
+addSymbolsToCards();

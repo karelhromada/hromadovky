@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tisk karet Čarodějnice - 60x85mm (3x3 Portrait)</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f0f0f0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        @page {
+            size: A4 portrait;
+            margin: 0;
+        }
+
+        .page-grid {
+            width: 210mm;
+            height: 297mm;
+            padding: 0;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: grid;
+            grid-template-columns: repeat(3, 60mm);
+            grid-template-rows: repeat(3, 85mm);
+            justify-content: center;
+            align-content: center;
+            page-break-after: always;
+            box-sizing: border-box;
+            gap: 5mm;
+        }
+
+        .page-grid:last-child {
+            page-break-after: avoid;
+        }
+
+        .card {
+            width: 60mm;
+            height: 85mm;
+            border: 0.1mm solid #ccc; /* ořezová značka na spad */
+            position: relative;
+            overflow: hidden;
+            background: #000;
+            box-sizing: border-box;
+            border-radius: 3mm;
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @media print {
+            body {
+                background: none;
+            }
+
+            .page-grid {
+                margin: 0;
+                box-shadow: none;
+                border: none;
+            }
+
+            .no-print {
+                display: none;
+            }
+
+            .card {
+                border: 0.2mm solid #999; /* jemné značky pro řezání */
+            }
+        }
+
+        .no-print {
+            text-align: center;
+            padding: 15px;
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .btn-print {
+            background: #ca8a04;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="no-print">
+        <h1>Tiskový arch Čarodějnice (60 x 85 mm) - 9 karet na stránku</h1>
+        <p>Orientace: **Na výšku (Portrait)** | Měřítko: **100% (Skutečná velikost)**</p>
+        <button class="btn-print" onclick="window.print()">Vytisknout karty</button>
+    </div>
+
+    <script>
+        // Prefix pro všechny cesty
+        const prefix = "kvarteta-eshop/public/cards/carodejnice/";
+        
+        const cards = [
+            'sedmicka_srdce_oznaceno', 'osmicka_srdce_oznaceno', 'devitka_srdce_oznaceno', 'desitka_srdce_oznaceno', 'spodek_srdce_oznaceno', 'svrsek_srdce_oznaceno', 'kral_srdce_oznaceno', 'eso_srdce_oznaceno',
+            'sedmicka_listy_oznaceno', 'osmicka_listy_oznaceno', 'devitka_listy_oznaceno', 'desitka_listy_oznaceno', 'spodek_listy_oznaceno', 'svrsek_listy_oznaceno', 'kral_listy_oznaceno', 'eso_listy_oznaceno',
+            'sedmicka_kule_oznaceno', 'osmicka_kule_oznaceno', 'devitka_kule_oznaceno', 'desitka_kule_oznaceno', 'spodek_kule_oznaceno', 'svrsek_kule_oznaceno', 'kral_kule_oznaceno', 'eso_kule_oznaceno',
+            'sedmicka_zaludy_oznaceno', 'osmicka_zaludy_oznaceno', 'devitka_zaludy_oznaceno', 'desitka_zaludy_oznaceno', 'spodek_zaludy_oznaceno', 'svrsek_zaludy_oznaceno', 'kral_zaludy_oznaceno', 'eso_zaludy_oznaceno'
+        ];
+
+        let html = '';
+        const cardsPerPage = 9;
+        
+        for (let i = 0; i < cards.length; i += cardsPerPage) {
+            html += '<div class="page-grid">';
+            for (let j = 0; j < cardsPerPage; j++) {
+                if (i + j < cards.length) {
+                    html += `<div class="card"><img src="${prefix}${cards[i + j]}.png"></div>`;
+                } else {
+                    // Prázdná karta pro zachování gridu (pokud by to nebylo násobkem 9)
+                    html += `<div class="card" style="background:#fff; border:none;"></div>`;
+                }
+            }
+            html += '</div>';
+        }
+        document.write(html);
+    </script>
+</body>
+
+</html>

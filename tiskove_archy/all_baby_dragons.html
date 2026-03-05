@@ -1,0 +1,893 @@
+
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Baby Dragon Cards</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Roboto:ital,wght@0,300;0,400;0,700;1,400&display=swap');
+        
+        * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+        :root {
+            --card-width: 60mm;
+            --card-height: 85mm;
+            --border-radius: 4mm;
+            --gold: #d4af37;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #333;
+            margin: 0;
+            padding: 0;
+            display: block;
+        }
+
+        .main-container {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @media print {
+            body { background-color: white !important; }
+            .main-container { padding: 0 !important; display: block !important; width: 100% !important; height: 100% !important; }
+            .page-grid { 
+                box-shadow: none !important; 
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 210mm !important; 
+                height: 297mm !important;
+                display: grid !important;
+                grid-template-columns: repeat(3, 60mm) !important;
+                gap: 2mm !important;
+                page-break-after: always !important;
+                background: white !important;
+                position: relative !important;
+                /* Centering logic for 3x60mm + 2x2mm = 184mm inside 210mm */
+                padding-left: 13mm !important;
+                padding-right: 13mm !important;
+                /* Vertical centering: 3x85mm + 2x2mm = 259mm inside 297mm */
+                padding-top: 19mm !important;
+                padding-bottom: 19mm !important;
+                align-content: start !important;
+            }
+            .page-grid:last-of-type {
+                page-break-after: avoid !important;
+            }
+            @page { size: A4 portrait; margin: 0; }
+            .card { break-inside: avoid !important; box-shadow: none !important; border: 0.1mm solid #eee; }
+            .card-bg-blur-img { display: none !important; filter: none !important; }
+            .card-image-img { filter: none !important; }
+            .overlay-top { box-shadow: inset 0 10mm 15mm -10mm rgba(0,0,0,0.1) !important; background: none !important; }
+            .overlay-bottom { box-shadow: inset 0 -20mm 30mm -10mm rgba(0,0,0,0.4) !important; background: none !important; }
+            .hex-container { backdrop-filter: none !important; background: rgba(0, 0, 0, 0.2) !important; border: 0.1mm solid rgba(255,255,255,0.3) !important; }
+            .stat-value, .stat-label, .card-name, .card-desc { text-shadow: none !important; }
+            .id-badge { box-shadow: none !important; text-shadow: none !important; }
+            .registration-mark { display: block !important; }
+        }
+
+        .page-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 60mm);
+            grid-auto-rows: 85mm;
+            gap: 2mm;
+            width: 210mm; 
+            height: 297mm;
+            margin: 20px auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            page-break-after: always;
+            justify-content: center;
+            align-content: center;
+            position: relative;
+        }
+
+        /* Registration Marks */
+        .registration-mark {
+            position: absolute;
+            width: 10mm;
+            height: 10mm;
+            display: none; /* Only show in print or debug */
+        }
+        .registration-mark::before, .registration-mark::after {
+            content: '';
+            position: absolute;
+            background: #ccc;
+        }
+        .mark-h { top: 5mm; left: 0; width: 100%; height: 0.1mm; }
+        .mark-v { top: 0; left: 5mm; width: 0.1mm; height: 100%; }
+
+        .mark-tl { top: 5mm; left: 5mm; }
+        .mark-tr { top: 5mm; right: 5mm; }
+        .mark-bl { bottom: 5mm; left: 5mm; }
+        .mark-br { bottom: 5mm; right: 5mm; }
+
+        .card {
+            width: 60mm;
+            height: 85mm;
+            position: relative;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            background-color: #fff;
+        }
+
+        .card-bg-blur-img {
+            width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1;
+            object-fit: cover; filter: blur(12px) brightness(1.0); transform: scale(1.1);
+        }
+
+        .card-image-img {
+            width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 2;
+            object-fit: cover;
+        }
+
+        .overlay-top {
+            position: absolute; top: 0; left: 0; right: 0; height: 100%; z-index: 3;
+            box-shadow: inset 0 15mm 20mm -10mm rgba(0,0,0,0.15); pointer-events: none;
+        }
+
+        .overlay-bottom {
+            position: absolute; bottom: 0; left: 0; right: 0; height: 100%; z-index: 3;
+            box-shadow: inset 0 -30mm 40mm -10mm rgba(0,0,0,0.4); pointer-events: none;
+        }
+
+        .hex-container {
+            position: absolute; z-index: 10; width: 14mm; height: 13mm; 
+            background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(2px);
+            border: 0.3mm solid rgba(255,255,255,0.3); 
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .stat-hex {
+            width: 100%; height: 100%; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; color: #fff;
+        }
+
+        .stat-value {
+            font-family: 'Cinzel', serif; font-weight: 900; font-size: 3.2mm; 
+            line-height: 1; text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+
+        .stat-label {
+            font-size: 1.3mm; color: #ddd;
+            margin-top: 0.5mm; transform: scaleX(0.75); white-space: nowrap;
+        }
+
+        .pos-tr { top: 1mm; right: 1mm; }
+        .pos-tl { top: 1mm; left: 1mm; }
+        .pos-br { bottom: 1.5mm; right: 1mm; }
+        .pos-bl { bottom: 1.5mm; left: 1mm; }
+
+        .name-container {
+            position: absolute; bottom: 2mm; left: 16mm; right: 16mm;
+            text-align: center; z-index: 10;
+        }
+
+        .card-name {
+            font-family: 'Cinzel', serif; font-size: 3.8mm; color: var(--gold);
+            text-transform: uppercase; margin: 0; text-shadow: 0 1px 2px #000;
+            letter-spacing: 0.3mm;
+        }
+
+        .card-desc {
+            font-size: 1.8mm; color: #ddd; margin-top: 0.5mm; font-style: italic;
+            text-shadow: 1px 1px 1px #000; line-height: 1.1;
+        }
+
+        .id-badge {
+            position: absolute; top: 1.5mm; left: 50%; transform: translateX(-50%);
+            width: 7.5mm; height: 7.5mm; background: #000; border: 0.5mm solid var(--gold);
+            border-radius: 50%; color: var(--gold); display: flex; justify-content: center;
+            align-items: center; font-family: 'Cinzel', serif; font-weight: 900;
+            font-size: 3.5mm; z-index: 15;
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+
+    <div class="page-grid">
+        <!-- Registration Marks -->
+        <div class="registration-mark mark-tl"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-tr"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-bl"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-br"><div class="mark-h"></div><div class="mark-v"></div></div>
+    
+    <div class="card" style="
+        --gold: #ff4444;
+        --gold-dark: #880000;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/La%CC%81vovy%CC%81%20prcek.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/La%CC%81vovy%CC%81%20prcek.png" class="card-image-img" alt="Lávový Prcek">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">1A</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">5</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">25</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">40</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">120</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Lávový Prcek</h1>
+            <p class="card-desc">Ohnivý drak z vulkánu</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #ff4444;
+        --gold-dark: #880000;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Magmi%CC%81sek.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Magmi%CC%81sek.png" class="card-image-img" alt="Magmísek">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">1B</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">5</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">28</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">18</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">170</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Magmísek</h1>
+            <p class="card-desc">Zrozena z tekuté lávy</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #ff4444;
+        --gold-dark: #880000;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Rudi%CC%81c%CC%8Cek.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Rudi%CC%81c%CC%8Cek.png" class="card-image-img" alt="Rudíček">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">1C</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">11</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">30</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">35</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">180</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Rudíček</h1>
+            <p class="card-desc">Malý vládce plamenů</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #ff4444;
+        --gold-dark: #880000;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Uhli%CC%81k.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Uhli%CC%81k.png" class="card-image-img" alt="Uhlík">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">1D</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">5</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">14</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">42</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">7</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Uhlík</h1>
+            <p class="card-desc">Žhnoucí dráček z popela</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #aaddff;
+        --gold-dark: #4488bb;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Obla%CC%81c%CC%8Ckovy%CC%81%20S%CC%8Cpunt.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Obla%CC%81c%CC%8Ckovy%CC%81%20S%CC%8Cpunt.png" class="card-image-img" alt="Obláčkový Špunt">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">2A</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">6</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">12</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">90</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">5</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Obláčkový Špunt</h1>
+            <p class="card-desc">Vzdušný jezdec na oblacích</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #aaddff;
+        --gold-dark: #4488bb;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Vzdus%CC%8Cni%CC%81k.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Vzdus%CC%8Cni%CC%81k.png" class="card-image-img" alt="Vzdušník">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">2B</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">6</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">14</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">55</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">7</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Vzdušník</h1>
+            <p class="card-desc">Pán nebeských proudů</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #aaddff;
+        --gold-dark: #4488bb;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Mraka%CC%81c%CC%8Cek.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Mraka%CC%81c%CC%8Cek.png" class="card-image-img" alt="Mrakáček">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">2C</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">8</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">19</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">80</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">90</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Mrakáček</h1>
+            <p class="card-desc">Chmýří mezi blesky</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #aaddff;
+        --gold-dark: #4488bb;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Placht%CC%8Ca%CC%81c%CC%8Cek.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Placht%CC%8Ca%CC%81c%CC%8Cek.png" class="card-image-img" alt="Plachťáček">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">2D</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">45</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">49</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">70</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">200</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Plachťáček</h1>
+            <p class="card-desc">Plachtí vysoko nad útesy</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #77dd77;
+        --gold-dark: #226622;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Bronti%CC%81c%CC%8Cek.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Bronti%CC%81c%CC%8Cek.png" class="card-image-img" alt="Brontík">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">3A</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">10</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">45</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">12</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">20</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Brontík</h1>
+            <p class="card-desc">Obrněný dráček z pralesa</p>
+        </div>
+    </div>
+    </div>
+    <div class="page-grid">
+        <!-- Registration Marks -->
+        <div class="registration-mark mark-tl"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-tr"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-bl"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-br"><div class="mark-h"></div><div class="mark-v"></div></div>
+    
+    <div class="card" style="
+        --gold: #77dd77;
+        --gold-dark: #226622;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Horali%CC%81c%CC%8Cek.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Horali%CC%81c%CC%8Cek.png" class="card-image-img" alt="Horalíček">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">3B</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">15</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">18</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">10</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">120</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Horalíček</h1>
+            <p class="card-desc">Strážce kamenných štítů</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #77dd77;
+        --gold-dark: #226622;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Baz%CC%8Ci%CC%81k.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Baz%CC%8Ci%CC%81k.png" class="card-image-img" alt="Bažík">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">3C</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">6</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">16</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">20</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">9</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Bažík</h1>
+            <p class="card-desc">Pán temných močálů</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #77dd77;
+        --gold-dark: #226622;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Trni%CC%81c%CC%8Cek.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Trni%CC%81c%CC%8Cek.png" class="card-image-img" alt="Trníček">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">3D</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">6</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">21</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">25</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">10</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Trníček</h1>
+            <p class="card-desc">Jedovatý drak z pralesa</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #ff99cc;
+        --gold-dark: #cc3366;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Runi%CC%81c%CC%8Cek.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Runi%CC%81c%CC%8Cek.png" class="card-image-img" alt="Runíček">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">4A</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">8</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">22</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">26</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">16</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Runíček</h1>
+            <p class="card-desc">Držitel prastarých kouzel</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #ff99cc;
+        --gold-dark: #cc3366;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/C%CC%8Casi%CC%81c%CC%8Cek.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/C%CC%8Casi%CC%81c%CC%8Cek.png" class="card-image-img" alt="Časíček">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">4B</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">4</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">18</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">22</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">190</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Časíček</h1>
+            <p class="card-desc">Pán času a prostoru</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #ff99cc;
+        --gold-dark: #cc3366;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Diamanti%CC%81k.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Diamanti%CC%81k.png" class="card-image-img" alt="Diamantík">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">4C</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">7</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">24</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">45</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">12</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Diamantík</h1>
+            <p class="card-desc">Zářící krystalický tvor</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #ff99cc;
+        --gold-dark: #cc3366;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Mudra%CC%81c%CC%8Cek.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Mudra%CC%81c%CC%8Cek.png" class="card-image-img" alt="Mudráček">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">4D</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">5</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">12</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">35</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">90</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Mudráček</h1>
+            <p class="card-desc">Nejmoudřejší v knihovně</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #ffeb3b;
+        --gold-dark: #c6a700;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Bleska%CC%81c%CC%8Cek.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Bleska%CC%81c%CC%8Cek.png" class="card-image-img" alt="Bleskáček">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">5A</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">7</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">20</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">85</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">6</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Bleskáček</h1>
+            <p class="card-desc">Rychlý jako úder blesku</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #ffeb3b;
+        --gold-dark: #c6a700;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Sonici%CC%81k.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Sonici%CC%81k.png" class="card-image-img" alt="Sonicík">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">5B</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">9</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">10</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">190</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">4</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Sonicík</h1>
+            <p class="card-desc">Nadzvukový nebeský letec</p>
+        </div>
+    </div>
+    </div>
+    <div class="page-grid">
+        <!-- Registration Marks -->
+        <div class="registration-mark mark-tl"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-tr"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-bl"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-br"><div class="mark-h"></div><div class="mark-v"></div></div>
+    
+    <div class="card" style="
+        --gold: #ffeb3b;
+        --gold-dark: #c6a700;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Vi%CC%81r%CC%8Ci%CC%81k.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Vi%CC%81r%CC%8Ci%CC%81k.png" class="card-image-img" alt="Vířík">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">5C</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">9</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">24</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">70</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">8</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Vířík</h1>
+            <p class="card-desc">Tornádo v dračí podobě</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #ffeb3b;
+        --gold-dark: #c6a700;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Kr%CC%8Cide%CC%81lko.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Kr%CC%8Cide%CC%81lko.png" class="card-image-img" alt="Křidélko">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">5D</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">7</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">24</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">80</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">6</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Křidélko</h1>
+            <p class="card-desc">Mistr kaskadérských kousků</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #d8b0ff;
+        --gold-dark: #6633aa;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Sti%CC%81nek.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Sti%CC%81nek.png" class="card-image-img" alt="Stínek">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">6A</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">6</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">27</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">48</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">11</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Stínek</h1>
+            <p class="card-desc">Pán temných zákoutí</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #d8b0ff;
+        --gold-dark: #6633aa;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Hve%CC%8Czdi%CC%81nek.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Hve%CC%8Czdi%CC%81nek.png" class="card-image-img" alt="Hvězdínek">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">6B</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">6</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">22</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">30</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">40</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Hvězdínek</h1>
+            <p class="card-desc">Dráček z noční oblohy</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #d8b0ff;
+        --gold-dark: #6633aa;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Kostic%CC%8Cek.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Kostic%CC%8Cek.png" class="card-image-img" alt="Kostíček">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">6C</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">9</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">22</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">28</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">600</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Kostíček</h1>
+            <p class="card-desc">Přízračný kostlivý tvor</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #d8b0ff;
+        --gold-dark: #6633aa;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Tr%CC%8Ci%CC%81hlavi%CC%81k.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Tr%CC%8Ci%CC%81hlavi%CC%81k.png" class="card-image-img" alt="Tříhlavík">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">6D</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">11</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">28</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">25</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">30</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Tříhlavík</h1>
+            <p class="card-desc">Zvědavé tři hlavy</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #00ffcc;
+        --gold-dark: #008866;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Hmyzi%CC%81k.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Hmyzi%CC%81k.png" class="card-image-img" alt="Hmyzík">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">7A</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">7</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">29</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">15</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">12</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Hmyzík</h1>
+            <p class="card-desc">Zákeřný lesní tvor</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #00ffcc;
+        --gold-dark: #008866;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Vlni%CC%81k.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Vlni%CC%81k.png" class="card-image-img" alt="Vlník">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">7B</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">7</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">23</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">32</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">14</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Vlník</h1>
+            <p class="card-desc">Pán vodních hlubin</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #00ffcc;
+        --gold-dark: #008866;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Duhos%CC%8C.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Duhos%CC%8C.png" class="card-image-img" alt="Duhoš">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">7C</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">8</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">18</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">34</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">10</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Duhoš</h1>
+            <p class="card-desc">Barevný zázrak přírody</p>
+        </div>
+    </div>
+    </div>
+    <div class="page-grid">
+        <!-- Registration Marks -->
+        <div class="registration-mark mark-tl"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-tr"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-bl"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-br"><div class="mark-h"></div><div class="mark-v"></div></div>
+    
+    <div class="card" style="
+        --gold: #00ffcc;
+        --gold-dark: #008866;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Korunka%CC%81c%CC%8Cek.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Korunka%CC%81c%CC%8Cek.png" class="card-image-img" alt="Korunkáček">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">7D</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">9</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">26</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">20</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">25</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Korunkáček</h1>
+            <p class="card-desc">Královský drak</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #c0c0c0;
+        --gold-dark: #606060;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Zlat%CC%8Cous%CC%8Cek.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Zlat%CC%8Cous%CC%8Cek.png" class="card-image-img" alt="Zlaťoušek">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">8A</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">4</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">8</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">65</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">3</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Zlaťoušek</h1>
+            <p class="card-desc">Strážce zlatého pokladu</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #c0c0c0;
+        --gold-dark: #606060;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Dra%CC%81pek.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Dra%CC%81pek.png" class="card-image-img" alt="Drápek">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">8B</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">7</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">26</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">38</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">13</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Drápek</h1>
+            <p class="card-desc">Kovový drak z výhně</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #c0c0c0;
+        --gold-dark: #606060;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Popela%CC%81c%CC%8Cek.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Popela%CC%81c%CC%8Cek.png" class="card-image-img" alt="Popeláček">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">8C</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">10</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">21</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">22</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">45</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Popeláček</h1>
+            <p class="card-desc">Zrozený v popelu</p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --gold: #c0c0c0;
+        --gold-dark: #606060;
+    ">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Obr%CC%8Ci%CC%81k.png" class="card-bg-blur-img" alt="">
+        <img src="Baby%20dra%CC%81c%CC%8Cci/Obr%CC%8Ci%CC%81k.png" class="card-image-img" alt="Obřík">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">8D</div>
+        
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">12</div><div class="stat-label">ROZPĚTÍ (m)</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">33</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">18</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">25</div><div class="stat-label">VĚK (let)</div></div></div>
+
+        <div class="name-container">
+            <h1 class="card-name">Obřík</h1>
+            <p class="card-desc">Malý velký silák</p>
+        </div>
+    </div>
+    <div class="card" style="visibility: hidden;"></div><div class="card" style="visibility: hidden;"></div><div class="card" style="visibility: hidden;"></div><div class="card" style="visibility: hidden;"></div></div></div></body></html>

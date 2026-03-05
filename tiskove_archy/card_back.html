@@ -1,0 +1,191 @@
+
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Kvarteta - Zadní strana</title>
+    <style>
+        * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+        body {
+            background-color: #333;
+            margin: 0;
+            padding: 0;
+            display: block;
+        }
+
+        .main-container {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @media print {
+            body { background-color: white !important; }
+            .main-container { padding: 0 !important; display: block !important; width: 100% !important; height: 100% !important; }
+            .page-grid { 
+                box-shadow: none !important; 
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 210mm !important; 
+                height: 297mm !important;
+                display: grid !important;
+                grid-template-columns: repeat(3, 60mm) !important;
+                gap: 2mm !important;
+                page-break-after: always !important;
+                background: white !important;
+                position: relative !important;
+                /* Centering logic for 3x60mm + 2x2mm = 184mm inside 210mm */
+                padding-left: 13mm !important;
+                padding-right: 13mm !important;
+                /* Vertical centering: 3x85mm + 2x2mm = 259mm inside 297mm */
+                padding-top: 19mm !important;
+                padding-bottom: 19mm !important;
+                align-content: start !important;
+            }
+            .page-grid:last-of-type {
+                page-break-after: avoid !important;
+            }
+            @page { size: A4 portrait; margin: 0; }
+            .registration-mark { display: block !important; }
+        }
+
+        .page-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 60mm);
+            grid-auto-rows: 85mm;
+            gap: 2mm;
+            width: 210mm; 
+            height: 297mm;
+            margin: 20px auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            page-break-after: always;
+            justify-content: center;
+            align-content: center;
+            position: relative;
+        }
+
+        /* Bleed / Margin helper for back side */
+        .card-container {
+            width: 60mm;
+            height: 85mm;
+            position: relative;
+            /* No overflow hidden here to allow bleed */
+        }
+
+        .card-back {
+            position: absolute;
+            /* Bleed: extend by 2mm on each side */
+            top: -2mm;
+            left: -2mm;
+            width: 64mm;
+            height: 89mm;
+            background-image: url('dragon_scales_seamless.png');
+            background-size: 30mm; /* Tile size */
+            background-repeat: repeat;
+            background-position: center;
+            z-index: 1;
+        }
+
+        /* Registration Marks */
+        .registration-mark {
+            position: absolute;
+            width: 10mm;
+            height: 10mm;
+            display: none;
+        }
+        .registration-mark::before, .registration-mark::after {
+            content: '';
+            position: absolute;
+            background: #ccc;
+        }
+        .mark-h { top: 5mm; left: 0; width: 100%; height: 0.1mm; }
+        .mark-v { top: 0; left: 5mm; width: 0.1mm; height: 100%; }
+
+        .mark-tl { top: 5mm; left: 5mm; }
+        .mark-tr { top: 5mm; right: 5mm; }
+        .mark-bl { bottom: 5mm; left: 5mm; }
+        .mark-br { bottom: 5mm; right: 5mm; }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- 4 Pages for 32+ cards -->
+        
+        <div class="page-grid">
+            <!-- Registration Marks -->
+            <div class="registration-mark mark-tl"><div class="mark-h"></div><div class="mark-v"></div></div>
+            <div class="registration-mark mark-tr"><div class="mark-h"></div><div class="mark-v"></div></div>
+            <div class="registration-mark mark-bl"><div class="mark-h"></div><div class="mark-v"></div></div>
+            <div class="registration-mark mark-br"><div class="mark-h"></div><div class="mark-v"></div></div>
+
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+        </div>
+        
+        <div class="page-grid">
+            <!-- Registration Marks -->
+            <div class="registration-mark mark-tl"><div class="mark-h"></div><div class="mark-v"></div></div>
+            <div class="registration-mark mark-tr"><div class="mark-h"></div><div class="mark-v"></div></div>
+            <div class="registration-mark mark-bl"><div class="mark-h"></div><div class="mark-v"></div></div>
+            <div class="registration-mark mark-br"><div class="mark-h"></div><div class="mark-v"></div></div>
+
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+        </div>
+        
+        <div class="page-grid">
+            <!-- Registration Marks -->
+            <div class="registration-mark mark-tl"><div class="mark-h"></div><div class="mark-v"></div></div>
+            <div class="registration-mark mark-tr"><div class="mark-h"></div><div class="mark-v"></div></div>
+            <div class="registration-mark mark-bl"><div class="mark-h"></div><div class="mark-v"></div></div>
+            <div class="registration-mark mark-br"><div class="mark-h"></div><div class="mark-v"></div></div>
+
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+        </div>
+        
+        <div class="page-grid">
+            <!-- Registration Marks -->
+            <div class="registration-mark mark-tl"><div class="mark-h"></div><div class="mark-v"></div></div>
+            <div class="registration-mark mark-tr"><div class="mark-h"></div><div class="mark-v"></div></div>
+            <div class="registration-mark mark-bl"><div class="mark-h"></div><div class="mark-v"></div></div>
+            <div class="registration-mark mark-br"><div class="mark-h"></div><div class="mark-v"></div></div>
+
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+            <div class="card-container"><div class="card-back"></div></div>
+        </div>
+        
+    </div>
+</body>
+</html>

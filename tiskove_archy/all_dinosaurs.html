@@ -1,0 +1,939 @@
+
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Dinosauři - Kvarteta</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Roboto:ital,wght@0,400;0,700;1,400&display=swap');
+        
+        * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #111;
+            margin: 0; padding: 0;
+            display: block;
+        }
+
+        .main-container {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 5. Critical Optimization for Print - Skill Section 5 */
+        @media print {
+            body { background-color: white !important; }
+            .main-container { padding: 0 !important; display: block !important; width: 100% !important; height: 100% !important; }
+            
+            .page-grid { 
+                box-shadow: none !important; 
+                margin: 0 !important;
+                padding: 19mm 13mm !important; /* Fixed padding for manual duplex centering */
+                width: 210mm !important; 
+                height: 297mm !important;
+                display: grid !important;
+                grid-template-columns: repeat(3, 60mm) !important;
+                gap: 2mm !important;
+                page-break-after: always !important;
+                background: white !important;
+                position: relative !important;
+                align-content: start !important;
+            }
+            .page-grid:last-of-type { page-break-after: avoid !important; }
+            @page { size: A4 portrait; margin: 0; }
+            
+            /* Skill Rule: NO FILTERS, NO SHADOWS for print reliability */
+            .card { break-inside: avoid !important; box-shadow: none !important; border: 0.1mm solid #eee; }
+            .card-bg-blur-img { display: none !important; filter: none !important; }
+            .card-image-img { filter: none !important; }
+            .overlay-top { box-shadow: inset 0 10mm 15mm -10mm rgba(0,0,0,0.05) !important; background: none !important; }
+            .overlay-bottom { box-shadow: inset 0 -20mm 30mm -10mm rgba(0,0,0,0.2) !important; background: none !important; }
+            .hex-container { backdrop-filter: none !important; background: rgba(0, 0, 0, 0.2) !important; border: 0.1mm solid rgba(255,255,255,0.3) !important; }
+            .stat-value, .stat-label, .card-name, .card-desc, .id-badge { text-shadow: none !important; }
+            .registration-mark { display: block !important; }
+        }
+
+        .page-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 60mm);
+            grid-auto-rows: 85mm;
+            gap: 2mm;
+            width: 210mm; 
+            height: 297mm;
+            margin: 20px auto;
+            background: white;
+            box-shadow: 0 0 40px rgba(0,0,0,0.8);
+            page-break-after: always;
+            justify-content: center;
+            align-content: center;
+            position: relative;
+        }
+
+        /* Registration Marks */
+        .registration-mark {
+            position: absolute; width: 10mm; height: 10mm; display: none; z-index: 100;
+        }
+        .registration-mark::before, .registration-mark::after { content: ''; position: absolute; background: #aaa; }
+        .mark-h { top: 5mm; left: 0; width: 100%; height: 0.2mm; }
+        .mark-v { top: 0; left: 5mm; width: 0.2mm; height: 100%; }
+        .mark-tl { top: 5mm; left: 5mm; }
+        .mark-tr { top: 5mm; right: 5mm; }
+        .mark-bl { bottom: 5mm; left: 5mm; }
+        .mark-br { bottom: 5mm; right: 5mm; }
+
+        .card {
+            width: 60mm; height: 85mm; position: relative;
+            border-radius: 4mm;
+            overflow: hidden; background-color: #fff;
+        }
+
+        .card-bg-blur-img {
+            width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1;
+            object-fit: cover; filter: blur(12px) brightness(1.0); transform: scale(1.1);
+        }
+
+        .card-image-img {
+            width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 2;
+            object-fit: cover;
+        }
+
+        .overlay-top {
+            position: absolute; top: 0; left: 0; right: 0; height: 100%; z-index: 3;
+            box-shadow: inset 0 15mm 20mm -10mm rgba(0,0,0,0.1); pointer-events: none;
+        }
+
+        .overlay-bottom {
+            position: absolute; bottom: 0; left: 0; right: 0; height: 100%; z-index: 3;
+            box-shadow: inset 0 -30mm 40mm -10mm rgba(0,0,0,0.2); pointer-events: none;
+        }
+
+        .hex-container {
+            position: absolute; z-index: 10; width: 14mm; height: 13mm; 
+            background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(2px);
+            border: 0.3mm solid rgba(255,255,255,0.3); 
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .stat-hex { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; }
+        .stat-value { font-family: 'Cinzel', serif; font-weight: 900; font-size: 3.2mm; line-height: 1; text-shadow: 0 1px 3px #000; }
+        .stat-label { font-size: 1.1mm; color: #ccc; margin-top: 0.4mm; letter-spacing: 0.2mm; }
+
+        .pos-tr { top: 1.5mm; right: 1.5mm; }
+        .pos-tl { top: 1.5mm; left: 1.5mm; }
+        .pos-br { bottom: 2mm; right: 1.5mm; }
+        .pos-bl { bottom: 2mm; left: 1.5mm; }
+
+        .footer-container { position: absolute; bottom: 1.5mm; left: 16mm; right: 16mm; text-align: center; z-index: 10; }
+        .group-name { font-size: 1.5mm; color: #fff; letter-spacing: 1.5mm; text-transform: uppercase; margin-bottom: 0.5mm; font-weight: 700; opacity: 0.6; }
+        .card-name { font-family: 'Cinzel', serif; font-size: var(--name-font-size, 3.2mm); color: var(--theme-color); margin: 0; text-shadow: 0 2px 4px #000; letter-spacing: 0.1mm; line-height: 1.1; }
+        .card-desc { font-size: 1.8mm; color: #ccc; margin-top: 0.5mm; line-height: 1.2; text-shadow: 1px 1px 2px #000; font-weight: 400; }
+        .card-desc i { font-style: italic; opacity: 0.8; }
+
+        .id-badge {
+            position: absolute; top: 2.2mm; left: 50%; transform: translateX(-50%);
+            width: 8mm; height: 8mm; background: #000; border: 0.6mm solid var(--theme-color);
+            border-radius: 50%; color: var(--theme-color); display: flex; justify-content: center;
+            align-items: center; font-family: 'Cinzel', serif; font-weight: 900;
+            font-size: 3.8mm; z-index: 15; box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+
+    <div class="page-grid">
+        <div class="registration-mark mark-tl"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-tr"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-bl"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-br"><div class="mark-h"></div><div class="mark-v"></div></div>
+    
+    <div class="card" style="
+        --theme-color: #ff4444;
+        --theme-dark: #880000;
+        --name-font-size: 2.8mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Tyrannosaurus%20-%20Rex.png" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Tyrannosaurus%20-%20Rex.png" class="card-image-img" alt="Tyrannosaurus">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">1A</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">97</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">12</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">8000</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">27</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">PREDÁTOŘI</div>
+            <h1 class="card-name">Tyrannosaurus</h1>
+            <p class="card-desc"><i>Obávaný král predátorů</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #ff4444;
+        --theme-dark: #880000;
+        --name-font-size: 3.2mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Spinosaurus.png" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Spinosaurus.png" class="card-image-img" alt="Spinosaurus">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">1B</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">99</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">15</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">7000</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">15</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">PREDÁTOŘI</div>
+            <h1 class="card-name">Spinosaurus</h1>
+            <p class="card-desc"><i>Gigantický říční masožravec</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #ff4444;
+        --theme-dark: #880000;
+        --name-font-size: 2.5mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Giganotosaurus.png" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Giganotosaurus.png" class="card-image-img" alt="Giganotosaurus">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">1C</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">96</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">13</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">8500</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">30</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">PREDÁTOŘI</div>
+            <h1 class="card-name">Giganotosaurus</h1>
+            <p class="card-desc"><i>Největší z dravých obrů</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #ff4444;
+        --theme-dark: #880000;
+        --name-font-size: 3.2mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Allosaurus.png" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Allosaurus.png" class="card-image-img" alt="Allosaurus">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">1D</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">85</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">9</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">2000</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">35</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">PREDÁTOŘI</div>
+            <h1 class="card-name">Allosaurus</h1>
+            <p class="card-desc"><i>Lítý lovec jury</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #77dd77;
+        --theme-dark: #226622;
+        --name-font-size: 2.8mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Brachiosaurus.png" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Brachiosaurus.png" class="card-image-img" alt="Brachiosaurus">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">2A</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">70</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">25</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">55000</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">10</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">OBŘI</div>
+            <h1 class="card-name">Brachiosaurus</h1>
+            <p class="card-desc"><i>Vysoký žirafí ještěr</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #77dd77;
+        --theme-dark: #226622;
+        --name-font-size: 3.2mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Diplodocus.png" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Diplodocus.png" class="card-image-img" alt="Diplodocus">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">2B</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">65</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">27</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">15000</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">12</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">OBŘI</div>
+            <h1 class="card-name">Diplodocus</h1>
+            <p class="card-desc"><i>Majitel bičovitého ocasu</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #77dd77;
+        --theme-dark: #226622;
+        --name-font-size: 2.5mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Argentinosaurus.png" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Argentinosaurus.png" class="card-image-img" alt="Argentinosaurus">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">2C</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">95</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">35</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">80000</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">8</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">OBŘI</div>
+            <h1 class="card-name">Argentinosaurus</h1>
+            <p class="card-desc"><i>Kolosální hromotluk</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #77dd77;
+        --theme-dark: #226622;
+        --name-font-size: 2.8mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Amargasaurus.png" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Amargasaurus.png" class="card-image-img" alt="Amargasaurus">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">2D</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">55</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">10</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">3000</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">15</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">OBŘI</div>
+            <h1 class="card-name">Amargasaurus</h1>
+            <p class="card-desc"><i>Obr s trnitou hřívou</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #cccccc;
+        --theme-dark: #666666;
+        --name-font-size: 3.2mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Triceratops.png" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Triceratops.png" class="card-image-img" alt="Triceratops">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">3A</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">90</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">9</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">10000</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">25</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">OBRNĚNÍ</div>
+            <h1 class="card-name">Triceratops</h1>
+            <p class="card-desc"><i>Trojrohý obrněný tank</i></p>
+        </div>
+    </div>
+    </div>
+    <div class="page-grid">
+        <div class="registration-mark mark-tl"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-tr"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-bl"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-br"><div class="mark-h"></div><div class="mark-v"></div></div>
+    
+    <div class="card" style="
+        --theme-color: #cccccc;
+        --theme-dark: #666666;
+        --name-font-size: 2.8mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Styracosaurus.jpg" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Styracosaurus.jpg" class="card-image-img" alt="Styracosaurus">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">3B</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">82</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">6</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">3000</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">20</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">OBRNĚNÍ</div>
+            <h1 class="card-name">Styracosaurus</h1>
+            <p class="card-desc"><i>Rohatý ceratops s límcem</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #cccccc;
+        --theme-dark: #666666;
+        --name-font-size: 2.8mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Ankylosaurus.jpg" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Ankylosaurus.jpg" class="card-image-img" alt="Ankylosaurus">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">3C</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">92</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">8</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">6000</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">10</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">OBRNĚNÍ</div>
+            <h1 class="card-name">Ankylosaurus</h1>
+            <p class="card-desc"><i>Chodící pravěká pevnost</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #cccccc;
+        --theme-dark: #666666;
+        --name-font-size: 2.1mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Pachycephalosaurus.jpg" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Pachycephalosaurus.jpg" class="card-image-img" alt="Pachycephalosaurus">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">3D</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">60</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">5</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">500</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">30</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">OBRNĚNÍ</div>
+            <h1 class="card-name">Pachycephalosaurus</h1>
+            <p class="card-desc"><i>Mistr v trkání lebkou</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #ff9800;
+        --theme-dark: #e65100;
+        --name-font-size: 2.8mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Velociraptor.png" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Velociraptor.png" class="card-image-img" alt="Velociraptor">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">4A</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">50</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">2</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">20</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">45</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">DRAVCI</div>
+            <h1 class="card-name">Velociraptor</h1>
+            <p class="card-desc"><i>Rychlý a inteligentní lovec</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #ff9800;
+        --theme-dark: #e65100;
+        --name-font-size: 3.2mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Deinonychus.png" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Deinonychus.png" class="card-image-img" alt="Deinonychus">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">4B</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">65</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">3</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">70</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">40</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">DRAVCI</div>
+            <h1 class="card-name">Deinonychus</h1>
+            <p class="card-desc"><i>Dravec se smrtícím drápem</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #ff9800;
+        --theme-dark: #e65100;
+        --name-font-size: 3.2mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Utahraptor.png" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Utahraptor.png" class="card-image-img" alt="Utahraptor">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">4C</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">88</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">6</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">500</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">35</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">DRAVCI</div>
+            <h1 class="card-name">Utahraptor</h1>
+            <p class="card-desc"><i>Gigantický peřnatý raptor</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #ff9800;
+        --theme-dark: #e65100;
+        --name-font-size: 2.8mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Compsognathus.jpg" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Compsognathus.jpg" class="card-image-img" alt="Compsognathus">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">4D</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">15</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">1</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">3</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">50</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">DRAVCI</div>
+            <h1 class="card-name">Compsognathus</h1>
+            <p class="card-desc"><i>Podezřele hbitý prcek</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #d8b0ff;
+        --theme-dark: #6633aa;
+        --name-font-size: 2.5mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Therizinosaurus.jpg" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Therizinosaurus.jpg" class="card-image-img" alt="Therizinosaurus">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">5A</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">88</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">10</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">5000</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">20</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">EXOTIČTÍ</div>
+            <h1 class="card-name">Therizinosaurus</h1>
+            <p class="card-desc"><i>Podivín s obřími drápy</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #d8b0ff;
+        --theme-dark: #6633aa;
+        --name-font-size: 2.8mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Deinocheirus.jpg" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Deinocheirus.jpg" class="card-image-img" alt="Deinocheirus">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">5B</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">82</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">11</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">6500</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">25</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">EXOTIČTÍ</div>
+            <h1 class="card-name">Deinocheirus</h1>
+            <p class="card-desc"><i>Záhadný kachnozobý obr</i></p>
+        </div>
+    </div>
+    </div>
+    <div class="page-grid">
+        <div class="registration-mark mark-tl"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-tr"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-bl"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-br"><div class="mark-h"></div><div class="mark-v"></div></div>
+    
+    <div class="card" style="
+        --theme-color: #d8b0ff;
+        --theme-dark: #6633aa;
+        --name-font-size: 3.2mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Carnotaurus.jpg" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Carnotaurus.jpg" class="card-image-img" alt="Carnotaurus">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">5C</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">85</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">8</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">1500</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">50</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">EXOTIČTÍ</div>
+            <h1 class="card-name">Carnotaurus</h1>
+            <p class="card-desc"><i>Masorubec s býčími rohy</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #d8b0ff;
+        --theme-dark: #6633aa;
+        --name-font-size: 3.2mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Baryonyx.jpg" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Baryonyx.jpg" class="card-image-img" alt="Baryonyx">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">5D</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">75</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">10</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">2000</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">30</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">EXOTIČTÍ</div>
+            <h1 class="card-name">Baryonyx</h1>
+            <p class="card-desc"><i>Specialista na rybolov</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #aaddff;
+        --theme-dark: #4488bb;
+        --name-font-size: 3.2mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Pteranodon.jpg" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Pteranodon.jpg" class="card-image-img" alt="Pteranodon">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">6A</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">40</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">6</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">50</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">60</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">LETCI</div>
+            <h1 class="card-name">Pteranodon</h1>
+            <p class="card-desc"><i>Pán pravěkých nebes</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #aaddff;
+        --theme-dark: #4488bb;
+        --name-font-size: 2.5mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Quetzalcoatlus.jpg" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Quetzalcoatlus.jpg" class="card-image-img" alt="Quetzalcoatlus">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">6B</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">70</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">11</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">250</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">80</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">LETCI</div>
+            <h1 class="card-name">Quetzalcoatlus</h1>
+            <p class="card-desc"><i>Největší letoun všech dob</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #aaddff;
+        --theme-dark: #4488bb;
+        --name-font-size: 3.2mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Dimorphodon.jpg" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Dimorphodon.jpg" class="card-image-img" alt="Dimorphodon">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">6C</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">30</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">2</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">2</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">50</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">LETCI</div>
+            <h1 class="card-name">Dimorphodon</h1>
+            <p class="card-desc"><i>Zubatý letecký postrach</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #aaddff;
+        --theme-dark: #4488bb;
+        --name-font-size: 2.8mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Archaeopteryx.jpg" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Archaeopteryx.jpg" class="card-image-img" alt="Archaeopteryx">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">6D</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">20</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">1</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">1</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">30</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">LETCI</div>
+            <h1 class="card-name">Archaeopteryx</h1>
+            <p class="card-desc"><i>První ptačí průkopník</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #00ccff;
+        --theme-dark: #004488;
+        --name-font-size: 3.2mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Mosasaurus.jpg" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Mosasaurus.jpg" class="card-image-img" alt="Mosasaurus">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">7A</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">97</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">17</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">20000</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">40</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">MOŘŠTÍ</div>
+            <h1 class="card-name">Mosasaurus</h1>
+            <p class="card-desc"><i>Hrůzovládce dávných moří</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #00ccff;
+        --theme-dark: #004488;
+        --name-font-size: 2.8mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Plesiosaurus.jpg" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Plesiosaurus.jpg" class="card-image-img" alt="Plesiosaurus">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">7B</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">60</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">4</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">500</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">15</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">MOŘŠTÍ</div>
+            <h1 class="card-name">Plesiosaurus</h1>
+            <p class="card-desc"><i>Mořská nestvůra z hlubin</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #00ccff;
+        --theme-dark: #004488;
+        --name-font-size: 2.8mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Liopleurodon.jpg" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Liopleurodon.jpg" class="card-image-img" alt="Liopleurodon">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">7C</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">94</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">7</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">3000</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">35</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">MOŘŠTÍ</div>
+            <h1 class="card-name">Liopleurodon</h1>
+            <p class="card-desc"><i>Vládce vodního teritoria</i></p>
+        </div>
+    </div>
+    </div>
+    <div class="page-grid">
+        <div class="registration-mark mark-tl"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-tr"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-bl"><div class="mark-h"></div><div class="mark-v"></div></div>
+        <div class="registration-mark mark-br"><div class="mark-h"></div><div class="mark-v"></div></div>
+    
+    <div class="card" style="
+        --theme-color: #00ccff;
+        --theme-dark: #004488;
+        --name-font-size: 2.8mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Ichthyosaurus.jpg" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Ichthyosaurus.jpg" class="card-image-img" alt="Ichthyosaurus">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">7D</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">45</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">2</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">100</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">45</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">MOŘŠTÍ</div>
+            <h1 class="card-name">Ichthyosaurus</h1>
+            <p class="card-desc"><i>Rychlý ryboještěr moří</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #b07d4b;
+        --theme-dark: #5d3a1a;
+        --name-font-size: 3.2mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Stegosaurus.jpg" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Stegosaurus.jpg" class="card-image-img" alt="Stegosaurus">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">8A</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">80</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">9</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">5000</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">15</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">BYLOŽRAVCI</div>
+            <h1 class="card-name">Stegosaurus</h1>
+            <p class="card-desc"><i>Obrněnec s pláty</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #b07d4b;
+        --theme-dark: #5d3a1a;
+        --name-font-size: 2.8mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Kentrosaurus.jpg" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Kentrosaurus.jpg" class="card-image-img" alt="Kentrosaurus">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">8B</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">75</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">5</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">1000</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">20</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">BYLOŽRAVCI</div>
+            <h1 class="card-name">Kentrosaurus</h1>
+            <p class="card-desc"><i>Ostnatý býložravec</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #b07d4b;
+        --theme-dark: #5d3a1a;
+        --name-font-size: 2.5mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Parasaurolophus.jpg" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Parasaurolophus.jpg" class="card-image-img" alt="Parasaurolophus">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">8C</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">50</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">10</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">3000</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">30</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">BYLOŽRAVCI</div>
+            <h1 class="card-name">Parasaurolophus</h1>
+            <p class="card-desc"><i>Majitel slavného hřebene</i></p>
+        </div>
+    </div>
+    
+    <div class="card" style="
+        --theme-color: #b07d4b;
+        --theme-dark: #5d3a1a;
+        --name-font-size: 3.2mm;
+    ">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Iguanodon.jpg" class="card-bg-blur-img" alt="">
+        <img src="Obra%CC%81zky%20dinosauru%CC%8A/Iguanodon.jpg" class="card-image-img" alt="Iguanodon">
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+        <div class="id-badge">8D</div>
+        
+        <!-- Stats in corners (Hexagons) - Skill Section 4 -->
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">60</div><div class="stat-label">SÍLA</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">9</div><div class="stat-label">DÉLKA (m)</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">4000</div><div class="stat-label">VÁHA (kg)</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">25</div><div class="stat-label">RYCHLOST (km/h)</div></div></div>
+
+        <div class="footer-container">
+            <div class="group-name">BYLOŽRAVCI</div>
+            <h1 class="card-name">Iguanodon</h1>
+            <p class="card-desc"><i>Býložravec s palcovým bodcem</i></p>
+        </div>
+    </div>
+    <div class="card" style="visibility: hidden;"></div><div class="card" style="visibility: hidden;"></div><div class="card" style="visibility: hidden;"></div><div class="card" style="visibility: hidden;"></div></div></div></body></html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tisk zadních stran - Emerald (62x105mm)</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f0f0f0;
+            font-family: 'Inter', sans-serif;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        @page {
+            size: A4 portrait;
+            margin: 0;
+        }
+
+        .page-grid {
+            width: 210mm;
+            height: 297mm;
+            padding: 0;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: grid;
+            grid-template-columns: repeat(2, 88mm);
+            grid-template-rows: repeat(2, 120mm);
+            justify-content: center;
+            align-content: center;
+            page-break-after: always;
+            box-sizing: border-box;
+            gap: 5mm;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-grid:last-child {
+            page-break-after: avoid;
+        }
+
+        /* Full page background layer for seamless edges */
+        .background-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 210mm;
+            height: 297mm;
+            display: flex;
+            flex-wrap: wrap;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .background-layer img {
+            width: 70mm;
+            /* Large tiles for better texture detail */
+            height: 70mm;
+            display: block;
+            object-fit: cover;
+        }
+
+        .card-container {
+            width: 88mm;
+            height: 120mm;
+            position: relative;
+            z-index: 10;
+            border: 0.1mm solid rgba(255, 255, 255, 0.2);
+            box-sizing: border-box;
+            border-radius: 4mm;
+        }
+
+        @media print {
+            body {
+                background: none;
+            }
+
+            .page-grid {
+                margin: 0;
+                box-shadow: none;
+                border: none;
+            }
+
+            .no-print {
+                display: none;
+            }
+
+            .card-container {
+                border: 0.1mm solid rgba(255, 255, 255, 0.4);
+            }
+
+            /* Extra jas a sytost do tiskárny (pomoc proti efektu matné laminace) */
+            .background-layer img {
+                filter: brightness(1.15) contrast(1.10) saturate(1.10) !important;
+            }
+        }
+
+        .no-print {
+            text-align: center;
+            padding: 20px;
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .btn-print {
+            background: #065f46;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="no-print">
+        <h1>Tisk zadních stran (Emerald) - 88 x 120 mm (4 na stránku)</h1>
+        <p>Orientace: **Na výšku (Portrait)** | Měřítko: **100% (Skutečná velikost)**</p>
+        <button class="btn-print" onclick="window.print()">Vytisknout zadní strany</button>
+    </div>
+
+    <div id="pages-container"></div>
+
+    <script>
+        const totalCards = 32;
+        const cardsPerPage = 4;
+        const totalPages = Math.ceil(totalCards / cardsPerPage);
+        const container = document.getElementById('pages-container');
+
+        for (let p = 0; p < totalPages; p++) {
+            const page = document.createElement('div');
+            page.className = 'page-grid';
+
+            // Add background tiles for the whole page
+            const bgLayer = document.createElement('div');
+            bgLayer.className = 'background-layer';
+            for (let i = 0; i < 15; i++) { // covering the A4
+                img.src = '../card_generator/dragon_scales_realistic_1.png';
+                bgLayer.appendChild(img);
+            }
+            page.appendChild(bgLayer);
+
+            // Add card containers for alignment during cutting
+            for (let j = 0; j < cardsPerPage; j++) {
+                const card = document.createElement('div');
+                card.className = 'card-container';
+                page.appendChild(card);
+            }
+
+            container.appendChild(page);
+        }
+    </script>
+</body>
+
+</html>

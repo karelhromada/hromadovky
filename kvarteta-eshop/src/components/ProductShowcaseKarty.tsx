@@ -176,8 +176,11 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
 
                         {/* Tabs Navigation */}
                         <div className="karty-modal-tabs">
-                            {['Všechny', 'Srdce', 'Kule', 'Žaludy', 'Listy'].map(tab => {
-                                const searchStr = tab === 'Žaludy' ? 'zaludy' : tab.toLowerCase();
+                            {['Všechny', 'Srdce', 'Kule', 'Žaludy', 'Listy', 'Zelené'].map(tab => {
+                                let searchStr = tab.toLowerCase();
+                                if (tab === 'Žaludy') searchStr = 'zaludy';
+                                if (tab === 'Zelené') searchStr = 'zelen';
+
                                 const hasCardsForTab = tab === 'Všechny' || selectedProductForPreview.allCards?.some((url: string) => url.toLowerCase().includes(searchStr));
                                 if (!hasCardsForTab) return null;
 
@@ -195,8 +198,11 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
 
                         <div className="karty-modal-body">
                             <div className="karty-modal-suit-groups">
-                                {(activeTab === 'Všechny' ? ['Srdce', 'Kule', 'Žaludy', 'Listy'] : [activeTab]).map(suitTab => {
-                                    const matchStr = suitTab === 'Žaludy' ? 'zaludy' : suitTab.toLowerCase();
+                                {(activeTab === 'Všechny' ? ['Srdce', 'Kule', 'Žaludy', 'Listy', 'Zelené'] : [activeTab]).map(suitTab => {
+                                    let matchStr = suitTab.toLowerCase();
+                                    if (suitTab === 'Žaludy') matchStr = 'zaludy';
+                                    if (suitTab === 'Zelené') matchStr = 'zelen';
+
                                     const suitCards = selectedProductForPreview.allCards?.filter((url: string) => url.toLowerCase().includes(matchStr));
 
                                     if (!suitCards || suitCards.length === 0) return null;

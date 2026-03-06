@@ -39,7 +39,7 @@ export const kartyProducts = [
     },
     {
         id: 'karty-tema-princezny',
-        name: 'Princezny bez pozadí',
+        name: 'Život na zámku',
         description: 'Pohádková edice s princeznami, princi a roztomilými zvířátky. Jemné pastelové barvy a minimalistický design na čistě bílém pozadí.',
         price: 449,
         themeColor: '#ff66b2', // Růžová

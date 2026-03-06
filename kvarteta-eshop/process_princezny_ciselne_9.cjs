@@ -13,8 +13,8 @@ const colors = {
 };
 
 const cards = [
-    { in: 'princezny_9_srdce_1772744358918.png', out: 'devitka_srdce.png', sign: 'znak_srdce.png', color: colors.srdce },
-    { in: 'princezny_9_zelene_1772744372632.png', out: 'devitka_zelene.png', sign: 'znak_zelené.png', color: colors.zelene },
+    { in: 'princezny_9_srdce_1772744358918.png', out: 'devitka_srdce.png', sign: 'znak_srdce.png', color: colors.srdce, scale: 0.8 },
+    { in: 'princezny_9_zelene_1772744372632.png', out: 'devitka_zelene.png', sign: 'znak_zelené.png', color: colors.zelene, scale: 0.8 },
     { in: 'princezny_9_kule_1772744386089.png', out: 'devitka_kule.png', sign: 'znak_kule.png', color: colors.kule },
     { in: 'princezny_9_zaludy_1772744404006.png', out: 'devitka_zaludy.png', sign: 'znak_žaludy.png', color: colors.zaludy }
 ];
@@ -61,8 +61,37 @@ async function processCards() {
             const middleX = Math.floor((709 - 100) / 2); // 304
             composites.push({ input: signBuffer, top: 45, left: middleX });
 
-            await sharp(inputPath)
-                .flatten({ background: { r: 255, g: 255, b: 255 } })
+            // Zmenšení nebo zvětšení obrázku, pokud je zadáno scale
+            let baseImg = sharp(inputPath).flatten({ background: { r: 255, g: 255, b: 255 } });
+            if (card.scale && card.scale !== 1) {
+                const meta = await baseImg.metadata();
+                if (card.scale < 1) {
+                    const padRatio = ((1 / card.scale) - 1) / 2;
+                    const padHor = Math.floor(meta.width * padRatio);
+                    const padVer = Math.floor(meta.height * padRatio);
+
+                    baseImg = sharp(await baseImg.extend({
+                        top: padVer, bottom: padVer, left: padHor, right: padHor,
+                        background: { r: 255, g: 255, b: 255, alpha: 1 }
+                    }).toBuffer());
+                } else if (card.scale > 1) {
+                    const targetWidth = Math.round(meta.width * card.scale);
+                    const targetHeight = Math.round(meta.height * card.scale);
+
+                    const left = Math.round((targetWidth - meta.width) / 2);
+                    const top = Math.round((targetHeight - meta.height) / 2);
+
+                    baseImg = sharp(await baseImg.resize(targetWidth, targetHeight).extract({
+                        left: left,
+                        top: top,
+                        width: meta.width,
+                        height: meta.height
+                    }).toBuffer());
+                }
+            }
+
+            // Vytvoreni finalni karty
+            await baseImg
                 .resize({
                     width: 709,
                     height: 1004,

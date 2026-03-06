@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo } from 'react';
 import type { CartItem } from '../App';
 import './ProductShowcase.css';
 
-import { Star, Sparkles, Trophy, Shield } from 'lucide-react';
 
 interface ProductShowcaseProps {
     onAddToCart: (product: Omit<CartItem, 'quantity'>) => void;
@@ -16,98 +15,7 @@ const backgrounds = [
     '/cards/sugar_glaze_pattern.webp'
 ];
 
-const products = [
-    {
-        id: 'prsi-draci',
-        name: 'Prší: Dračí edice',
-        description: 'Klasických 32 karet v unikátním dračím provedení. Ručně generované ilustrace pro každou kartu (7, 8, 9, 10, spodek, svršek, král, eso).',
-        price: 399,
-        themeColor: '#ca8a04',
-        badges: [
-            { id: 1, text: 'Nové Prší', icon: Sparkles, color: '#fbbf24' },
-            { id: 2, text: 'Unikátní drak pro každou kartu', icon: Trophy, color: '#fbbf24' }
-        ],
-        image: [
-            '/cards/prsi/prsi_srdce_A.webp', '/cards/prsi/prsi_listy_K.webp', '/cards/prsi/prsi_kule_Q.webp', '/cards/prsi/prsi_zaludy_J.webp',
-            '/cards/prsi/prsi_srdce_7.webp', '/cards/prsi/prsi_listy_8.webp', '/cards/prsi/prsi_kule_9.webp', '/cards/prsi/prsi_zaludy_10.webp'
-        ]
-    },
-    {
-        id: 'kvarteto-dinosauri',
-        name: 'Kvarteto: Dinosauři',
-        description: 'Poznejte prehistorické obry v luxusní sběratelské edici. 32 nádherně ilustrovaných karet s unikátními statistikami.',
-        price: 349,
-        themeColor: '#ff8a00',
-        badges: [
-            { id: 1, text: 'Bestseller', icon: Trophy, color: '#ffb703' }
-        ],
-        image: [
-            '/cards/dino_full_1.webp', '/cards/dino_full_2.webp', '/cards/dino_full_3.webp', '/cards/dino_full_4.webp',
-            '/cards/dino_full_5.webp', '/cards/dino_full_6.webp', '/cards/dino_full_7.webp', '/cards/dino_full_8.webp',
-            '/cards/dino_full_9.webp', '/cards/dino_full_10.webp'
-        ]
-    },
-    {
-        id: 'kvarteto-dracci',
-        name: 'Kvarteto: Baby dráčci',
-        description: 'Roztomilí a silní Baby dráčci v prémiové úpravě. Perfektní pro dětské hráče i sběratele.',
-        price: 349,
-        themeColor: '#a100ff',
-        badges: [
-            { id: 1, text: 'Roztomilé', icon: Star, color: '#d946ef' }
-        ],
-        image: [
-            '/cards/baby_full_1.webp', '/cards/baby_full_2.webp', '/cards/baby_full_3.webp', '/cards/baby_full_4.webp',
-            '/cards/baby_full_5.webp', '/cards/baby_full_6.webp', '/cards/baby_full_7.webp', '/cards/baby_full_8.webp',
-            '/cards/baby_full_9.webp', '/cards/baby_full_10.webp', '/cards/baby_full_11.webp'
-        ]
-    },
-    {
-        id: 'kvarteto-draci',
-        name: 'Kvarteto: Draci',
-        description: 'Mocní a legendární Draci přinášejí do hry epické souboje. Nejmocnější bytosti v prémiovém provedení.',
-        price: 349,
-        themeColor: '#ff0033',
-        badges: [
-            { id: 1, text: 'Premium', icon: Shield, color: '#ef4444' }
-        ],
-        image: [
-            '/cards/drag_full_1.webp', '/cards/drag_full_2.webp', '/cards/drag_full_3.webp', '/cards/drag_full_4.webp',
-            '/cards/drag_full_5.webp', '/cards/drag_full_6.webp', '/cards/drag_full_7.webp', '/cards/drag_full_8.webp',
-            '/cards/drag_full_9.webp', '/cards/drag_full_10.webp', '/cards/drag_full_11.webp'
-        ]
-    },
-    {
-        id: 'kvarteto-rytiri',
-        name: 'Kvarteto: Roztomilí rytíři',
-        description: 'Šlechetní a neuvěřitelně sladcí rytíři v brnění z marshmallow, karamelu i hvězdného prachu. Unikátní herní zážitek.',
-        price: 389,
-        themeColor: '#ffccdd',
-        badges: [
-            { id: 1, text: 'Horká novinka', icon: Sparkles, color: '#ffb703' }
-        ],
-        image: [
-            '/cards/knight_full_1.webp', '/cards/knight_full_2.webp', '/cards/knight_full_3.webp', '/cards/knight_full_4.webp',
-            '/cards/knight_full_5.webp', '/cards/knight_full_6.webp', '/cards/knight_full_7.webp', '/cards/knight_full_8.webp',
-            '/cards/knight_full_9.webp', '/cards/knight_full_10.webp'
-        ]
-    },
-    {
-        id: 'kvarteto-kocky',
-        name: 'Kvarteto: Kočky bojovnice',
-        description: 'Odvážné, mrštné a nebezpečně roztomilé kočičí válečnice. Získejte celou kočičí armádu.',
-        price: 349,
-        themeColor: '#00d2ff',
-        badges: [
-            { id: 1, text: 'Populární', icon: Star, color: '#0ea5e9' }
-        ],
-        image: [
-            '/cards/cat_full_1.webp', '/cards/cat_full_2.webp', '/cards/cat_full_3.webp', '/cards/cat_full_4.webp',
-            '/cards/cat_full_5.webp', '/cards/cat_full_6.webp', '/cards/cat_full_7.webp', '/cards/cat_full_8.webp',
-            '/cards/cat_full_9.webp', '/cards/cat_full_10.webp'
-        ]
-    }
-];
+import { kvartetaProducts as products } from '../data/products';
 
 // --- Internal Components ---
 const ProductCardInteractive = ({ product, onAddToCartClick }: { product: any, onAddToCartClick: (product: any) => void }) => {

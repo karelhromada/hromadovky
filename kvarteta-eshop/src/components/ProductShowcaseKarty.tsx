@@ -8,44 +8,7 @@ interface ProductShowcaseKartyProps {
     onAddToCart?: (item: Omit<CartItem, 'quantity'>) => void;
 }
 
-const products = [
-    {
-        id: 'karty-tema-draku',
-        name: 'Epická dračí edice',
-        description: 'Luxusní dračí edice. Mariášové barvy reprezentující živly. Hodnoty 10, J, Q, K, A v klasickém čistém herním designu s plnou originální malbou draků.',
-        price: 449,
-        themeColor: '#ff0033',
-        images: ['/cards/dragon_scales_realistic_1.webp', '/cards/prsi/prsi_listy_A.webp', '/cards/prsi/prsi_srdce_K.webp'],
-        boxImage: '/cards/dragon_scales_realistic_1.webp',
-        isThematic: true,
-        sampleValue: 'A',
-        sampleSuit: '♥',
-        allCards: [
-            '/cards/prsi/prsi_srdce_7.webp', '/cards/prsi/prsi_srdce_8.webp', '/cards/prsi/prsi_srdce_9.webp', '/cards/prsi/prsi_srdce_10.webp', '/cards/prsi/prsi_srdce_J.webp', '/cards/prsi/prsi_srdce_Q.webp', '/cards/prsi/prsi_srdce_K.webp', '/cards/prsi/prsi_srdce_A.webp',
-            '/cards/prsi/prsi_listy_7.webp', '/cards/prsi/prsi_listy_8.webp', '/cards/prsi/prsi_listy_9.webp', '/cards/prsi/prsi_listy_10.webp', '/cards/prsi/prsi_listy_J.webp', '/cards/prsi/prsi_listy_Q.webp', '/cards/prsi/prsi_listy_K.webp', '/cards/prsi/prsi_listy_A.webp',
-            '/cards/prsi/prsi_zaludy_7.webp', '/cards/prsi/prsi_zaludy_8.webp', '/cards/prsi/prsi_zaludy_9.webp', '/cards/prsi/prsi_zaludy_10.webp', '/cards/prsi/prsi_zaludy_J.webp', '/cards/prsi/prsi_zaludy_Q.webp', '/cards/prsi/prsi_zaludy_K.webp', '/cards/prsi/prsi_zaludy_A.webp',
-            '/cards/prsi/prsi_kule_7.webp', '/cards/prsi/prsi_kule_8.webp', '/cards/prsi/prsi_kule_9.webp', '/cards/prsi/prsi_kule_10.webp', '/cards/prsi/prsi_kule_J.webp', '/cards/prsi/prsi_kule_Q.webp', '/cards/prsi/prsi_kule_K.webp', '/cards/prsi/prsi_kule_A.webp'
-        ]
-    },
-    {
-        id: 'karty-tema-carodejnice',
-        name: 'Magické čarodějnice',
-        description: 'Mysteriózní sady čarodějnic. Každá hodnota (spodek, svršek, král, eso) nabízí jedinečnou detailní ilustraci od učednic ohně až po královny lesa.',
-        price: 449,
-        themeColor: '#ff4b4b',
-        images: ['/cards/carodejnice/eso_srdce_oznaceno.png', '/cards/carodejnice/kral_listy_oznaceno.png', '/cards/carodejnice/svrsek_zaludy_oznaceno.png'],
-        boxImage: '/cards/carodejnice/kral_srdce_oznaceno.png',
-        isThematic: true,
-        sampleValue: 'K',
-        sampleSuit: '♥',
-        allCards: [
-            '/cards/carodejnice/eso_srdce_oznaceno.png', '/cards/carodejnice/kral_srdce_oznaceno.png', '/cards/carodejnice/svrsek_srdce_oznaceno.png', '/cards/carodejnice/spodek_srdce_oznaceno.png', '/cards/carodejnice/desitka_srdce_oznaceno.png', '/cards/carodejnice/devitka_srdce_oznaceno.png', '/cards/carodejnice/osmicka_srdce_oznaceno.png', '/cards/carodejnice/sedmicka_srdce_oznaceno.png',
-            '/cards/carodejnice/eso_listy_oznaceno.png', '/cards/carodejnice/kral_listy_oznaceno.png', '/cards/carodejnice/svrsek_listy_oznaceno.png', '/cards/carodejnice/spodek_listy_oznaceno.png', '/cards/carodejnice/desitka_listy_oznaceno.png', '/cards/carodejnice/devitka_listy_oznaceno.png', '/cards/carodejnice/osmicka_listy_oznaceno.png', '/cards/carodejnice/sedmicka_listy_oznaceno.png',
-            '/cards/carodejnice/eso_zaludy_oznaceno.png', '/cards/carodejnice/kral_zaludy_oznaceno.png', '/cards/carodejnice/svrsek_zaludy_oznaceno.png', '/cards/carodejnice/spodek_zaludy_oznaceno.png', '/cards/carodejnice/desitka_zaludy_oznaceno.png', '/cards/carodejnice/devitka_zaludy_oznaceno.png', '/cards/carodejnice/osmicka_zaludy_oznaceno.png', '/cards/carodejnice/sedmicka_zaludy_oznaceno.png',
-            '/cards/carodejnice/eso_kule_oznaceno.png', '/cards/carodejnice/kral_kule_oznaceno.png', '/cards/carodejnice/svrsek_kule_oznaceno.png', '/cards/carodejnice/spodek_kule_oznaceno.png', '/cards/carodejnice/desitka_kule_oznaceno.png', '/cards/carodejnice/devitka_kule_oznaceno.png', '/cards/carodejnice/osmicka_kule_oznaceno.png', '/cards/carodejnice/sedmicka_kule_oznaceno.png'
-        ]
-    }
-];
+import { kartyProducts as products } from '../data/products';
 
 const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart }) => {
     const [selectedProductForPreview, setSelectedProductForPreview] = useState<any | null>(null);

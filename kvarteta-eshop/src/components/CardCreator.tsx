@@ -148,6 +148,68 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
     const mainTextColor = getMainTextColor(useCustomPhotos ? previewSlot : cardData.idBadge);
     const safeFontFamily = ['other', 'unknown'].includes(cardData.fontFamily) ? "'Outfit', sans-serif" : cardData.fontFamily;
 
+    const renderCardPreview = (isBack: boolean, extraWrapperStyles: any = {}, isMini: boolean = false) => {
+        if (isBack) {
+            return (
+                <div className={`live-card-wrapper back-card-preview`} style={{ '--theme-color': mainTextColor, fontFamily: safeFontFamily, ...extraWrapperStyles } as any}>
+                    <div className="live-card" style={isMini ? { width: '100%', height: '100%' } : {}}>
+                        <img src={cardData.bgImage} className="card-image-main" style={{ filter: 'none', ...(isMini ? { width: '100%', height: '100%', objectFit: 'cover', borderRadius: '16px' } : {}) }} alt="back design" />
+                    </div>
+                </div>
+            );
+        }
+
+        const layout = useCustomPhotos ? (customStatLayouts[previewSlot] || cardData.statLayout) : cardData.statLayout;
+        const bgImage = useCustomPhotos && customPhotos[previewSlot] ? customPhotos[previewSlot] : cardData.frontImage;
+        const idText = useCustomPhotos ? previewSlot : cardData.idBadge;
+        const titleText = useCustomPhotos ? (customCardNames[previewSlot] || 'NÁZEV KARTY') : 'NÁZEV KARTY';
+
+        return (
+            <div className="live-card-wrapper" style={{ '--theme-color': mainTextColor, fontFamily: safeFontFamily, ...extraWrapperStyles } as any}>
+                <div className={`live-card ${isMini ? '' : 'front-card-preview'} has-layout-${layout}`} style={{ backgroundImage: `url('${bgImage}')`, backgroundSize: 'cover', backgroundPosition: 'center', border: 'none', overflow: 'hidden' }}>
+                    <div className="card-overlay-bottom" style={{ boxShadow: 'inset 0 -130px 150px -20px rgba(0, 0, 0, 0.2)', zIndex: isMini ? 2 : undefined }}></div>
+
+                    <div className={`card-id-badge ${layout === 'corners' ? '' : 'pos-tl'}`} style={{ background: '#f8f9fa', color: '#111', zIndex: isMini ? 15 : undefined }}>
+                        {idText}
+                    </div>
+
+                    {!hideStats && layout !== 'corners' && (
+                        <div className="card-header-info" style={{ zIndex: isMini ? 10 : undefined }}>
+                            <h1 className="card-hero-name" style={{ color: mainTextColor, fontFamily: safeFontFamily }}>
+                                {titleText}
+                            </h1>
+                        </div>
+                    )}
+
+                    {/* Hexagons */}
+                    {!hideStats && (
+                        <div className={`stats-layout-wrapper layout-${layout}`} style={{ zIndex: isMini ? 10 : undefined }}>
+                            {[0, 1, 2, 3].map(i => (
+                                <div key={i} className={`card-hex pos-${['tl', 'tr', 'bl', 'br'][i]} shape-${cardData.statShape}`}>
+                                    <div className="card-hex-inner">
+                                        <div className="card-stat-val">{useCustomPhotos ? (customStats[previewSlot]?.[i] ?? cardData.stats[i].value) : cardData.stats[i].value}</div>
+                                        <div className="card-stat-lbl">{cardData.stats[i].label}</div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    <div className="card-footer-info" style={{ zIndex: isMini ? 10 : undefined }}>
+                        {(!hideStats && layout === 'corners') && (
+                            <h1 className="card-hero-name" style={{ color: mainTextColor, fontFamily: safeFontFamily }}>
+                                {titleText}
+                            </h1>
+                        )}
+                        {useCustomPhotos && customDescriptions[previewSlot] && (
+                            <p className="card-hero-desc" style={{ fontFamily: safeFontFamily }}><i>{customDescriptions[previewSlot]}</i></p>
+                        )}
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
     return (
         <section id="creator" className="creator-section container">
             <div className="section-header">
@@ -647,74 +709,10 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
 
                 <div className="creator-preview">
                     {/* Přední strana */}
-                    <div className="live-card-wrapper" style={{
-                        '--theme-color': mainTextColor,
-                        fontFamily: safeFontFamily
-                    } as any}>
-                        <div className={`live-card front-card-preview has-layout-${useCustomPhotos ? (customStatLayouts[previewSlot] || cardData.statLayout) : cardData.statLayout}`} style={{ backgroundImage: `url('${useCustomPhotos && customPhotos[previewSlot] ? customPhotos[previewSlot] : cardData.frontImage}')`, backgroundSize: 'cover', backgroundPosition: 'center', border: 'none', overflow: 'hidden' }}>
-                            <div className="card-overlay-bottom" style={{ boxShadow: 'inset 0 -130px 150px -20px rgba(0, 0, 0, 0.2)' }}></div>
-
-                            <div className={`card-id-badge ${((useCustomPhotos ? customStatLayouts[previewSlot] : null) || cardData.statLayout) === 'corners' ? '' : 'pos-tl'}`} style={{ background: '#f8f9fa', color: '#111' }}>
-                                {useCustomPhotos ? previewSlot : cardData.idBadge}
-                            </div>
-
-                            {!hideStats && ((useCustomPhotos ? customStatLayouts[previewSlot] : null) || cardData.statLayout) !== 'corners' && (
-                                <div className="card-header-info">
-                                    <h1 className="card-hero-name" style={{ color: mainTextColor, fontFamily: safeFontFamily }}>
-                                        {useCustomPhotos ? (customCardNames[previewSlot] || 'NÁZEV KARTY') : 'NÁZEV KARTY'}
-                                    </h1>
-                                </div>
-                            )}
-
-                            {/* Hexagons */}
-                            {!hideStats && (
-                                <div className={`stats-layout-wrapper layout-${useCustomPhotos ? (customStatLayouts[previewSlot] || cardData.statLayout) : cardData.statLayout}`}>
-                                    <div className={`card-hex pos-tl shape-${cardData.statShape}`}>
-                                        <div className="card-hex-inner">
-                                            <div className="card-stat-val">{useCustomPhotos ? (customStats[previewSlot]?.[0] ?? cardData.stats[0].value) : cardData.stats[0].value}</div>
-                                            <div className="card-stat-lbl">{cardData.stats[0].label}</div>
-                                        </div>
-                                    </div>
-                                    <div className={`card-hex pos-tr shape-${cardData.statShape}`}>
-                                        <div className="card-hex-inner">
-                                            <div className="card-stat-val">{useCustomPhotos ? (customStats[previewSlot]?.[1] ?? cardData.stats[1].value) : cardData.stats[1].value}</div>
-                                            <div className="card-stat-lbl">{cardData.stats[1].label}</div>
-                                        </div>
-                                    </div>
-                                    <div className={`card-hex pos-bl shape-${cardData.statShape}`}>
-                                        <div className="card-hex-inner">
-                                            <div className="card-stat-val">{useCustomPhotos ? (customStats[previewSlot]?.[2] ?? cardData.stats[2].value) : cardData.stats[2].value}</div>
-                                            <div className="card-stat-lbl">{cardData.stats[2].label}</div>
-                                        </div>
-                                    </div>
-                                    <div className={`card-hex pos-br shape-${cardData.statShape}`}>
-                                        <div className="card-hex-inner">
-                                            <div className="card-stat-val">{useCustomPhotos ? (customStats[previewSlot]?.[3] ?? cardData.stats[3].value) : cardData.stats[3].value}</div>
-                                            <div className="card-stat-lbl">{cardData.stats[3].label}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-
-                            <div className="card-footer-info">
-                                {!hideStats && ((useCustomPhotos ? customStatLayouts[previewSlot] : null) || cardData.statLayout) === 'corners' && (
-                                    <h1 className="card-hero-name" style={{ color: mainTextColor, fontFamily: safeFontFamily }}>
-                                        {useCustomPhotos ? (customCardNames[previewSlot] || 'NÁZEV KARTY') : 'NÁZEV KARTY'}
-                                    </h1>
-                                )}
-                                {useCustomPhotos && customDescriptions[previewSlot] && (
-                                    <p className="card-hero-desc" style={{ fontFamily: safeFontFamily }}><i>{customDescriptions[previewSlot]}</i></p>
-                                )}
-                            </div>
-                        </div>
-                    </div>
+                    {renderCardPreview(false)}
 
                     {/* Zadní strana */}
-                    <div className="live-card-wrapper back-card-preview" style={{ '--theme-color': mainTextColor, fontFamily: safeFontFamily } as any}>
-                        <div className="live-card">
-                            <img src={cardData.bgImage} className="card-image-main" style={{ filter: 'none' }} alt="back design" />
-                        </div>
-                    </div>
+                    {renderCardPreview(true)}
                 </div>
             </div>
 
@@ -752,62 +750,12 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
                                 }}>
                                     {/* Front Card Mini Preview */}
                                     <div style={{ backfaceVisibility: 'hidden', width: '100%' }}>
-                                        <div className="live-card-wrapper" style={{ '--theme-color': mainTextColor, fontFamily: safeFontFamily, margin: 0, boxShadow: '0 20px 40px rgba(0,0,0,0.3)' } as any}>
-                                            <div className={`live-card has-layout-${useCustomPhotos ? (customStatLayouts[previewSlot] || cardData.statLayout) : cardData.statLayout}`} style={{ backgroundImage: `url('${useCustomPhotos && customPhotos[previewSlot] ? customPhotos[previewSlot] : cardData.frontImage}')`, backgroundSize: 'cover', backgroundPosition: 'center', border: 'none', overflow: 'hidden' }}>
-                                                <div className="card-overlay-bottom" style={{ boxShadow: 'inset 0 -130px 150px -20px rgba(0, 0, 0, 0.2)', zIndex: 2 }}></div>
-                                                <div className={`card-id-badge ${(useCustomPhotos ? (customStatLayouts[previewSlot] || cardData.statLayout) : cardData.statLayout) === 'corners' ? '' : 'pos-tl'}`} style={{ background: '#f8f9fa', color: '#111', zIndex: 15 }}>{useCustomPhotos ? previewSlot : cardData.idBadge}</div>
-                                                {(useCustomPhotos ? (customStatLayouts[previewSlot] || cardData.statLayout) : cardData.statLayout) !== 'corners' && (
-                                                    <div className="card-header-info" style={{ zIndex: 10 }}>
-                                                        <h1 className="card-hero-name" style={{ color: mainTextColor, fontFamily: safeFontFamily }}>{useCustomPhotos ? (customCardNames[previewSlot] || 'NÁZEV KARTY') : 'NÁZEV KARTY'}</h1>
-                                                    </div>
-                                                )}
-                                                {!hideStats && (
-                                                    <div className={`stats-layout-wrapper layout-${useCustomPhotos ? (customStatLayouts[previewSlot] || cardData.statLayout) : cardData.statLayout}`} style={{ zIndex: 10 }}>
-                                                        <div className={`card-hex pos-tl shape-${cardData.statShape}`}>
-                                                            <div className="card-hex-inner">
-                                                                <div className="card-stat-val">{useCustomPhotos ? (customStats[previewSlot]?.[0] ?? cardData.stats[0].value) : cardData.stats[0].value}</div>
-                                                                <div className="card-stat-lbl">{cardData.stats[0].label}</div>
-                                                            </div>
-                                                        </div>
-                                                        <div className={`card-hex pos-tr shape-${cardData.statShape}`}>
-                                                            <div className="card-hex-inner">
-                                                                <div className="card-stat-val">{useCustomPhotos ? (customStats[previewSlot]?.[1] ?? cardData.stats[1].value) : cardData.stats[1].value}</div>
-                                                                <div className="card-stat-lbl">{cardData.stats[1].label}</div>
-                                                            </div>
-                                                        </div>
-                                                        <div className={`card-hex pos-bl shape-${cardData.statShape}`}>
-                                                            <div className="card-hex-inner">
-                                                                <div className="card-stat-val">{useCustomPhotos ? (customStats[previewSlot]?.[2] ?? cardData.stats[2].value) : cardData.stats[2].value}</div>
-                                                                <div className="card-stat-lbl">{cardData.stats[2].label}</div>
-                                                            </div>
-                                                        </div>
-                                                        <div className={`card-hex pos-br shape-${cardData.statShape}`}>
-                                                            <div className="card-hex-inner">
-                                                                <div className="card-stat-val">{useCustomPhotos ? (customStats[previewSlot]?.[3] ?? cardData.stats[3].value) : cardData.stats[3].value}</div>
-                                                                <div className="card-stat-lbl">{cardData.stats[3].label}</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                )}
-                                                <div className="card-footer-info" style={{ zIndex: 10 }}>
-                                                    {(useCustomPhotos ? (customStatLayouts[previewSlot] || cardData.statLayout) : cardData.statLayout) === 'corners' && (
-                                                        <h1 className="card-hero-name" style={{ color: mainTextColor, fontFamily: safeFontFamily }}>{useCustomPhotos ? (customCardNames[previewSlot] || 'NÁZEV KARTY') : 'NÁZEV KARTY'}</h1>
-                                                    )}
-                                                    {useCustomPhotos && customDescriptions[previewSlot] && (
-                                                        <p className="card-hero-desc" style={{ fontFamily: safeFontFamily }}><i>{customDescriptions[previewSlot]}</i></p>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </div>
+                                        {renderCardPreview(false, { margin: 0, boxShadow: '0 20px 40px rgba(0,0,0,0.3)' }, true)}
                                     </div>
 
                                     {/* Back Card Preview */}
                                     <div style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)', position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', height: '100%' }}>
-                                        <div className="live-card-wrapper back-card-preview" style={{ '--theme-color': mainTextColor, fontFamily: safeFontFamily, margin: 0, boxShadow: '0 20px 40px rgba(0,0,0,0.3)', width: '100%', height: '100%' } as any}>
-                                            <div className="live-card" style={{ width: '100%', height: '100%' }}>
-                                                <img src={cardData.bgImage} className="card-image-main" style={{ filter: 'none', width: '100%', height: '100%', objectFit: 'cover', borderRadius: '16px' }} alt="back design" />
-                                            </div>
-                                        </div>
+                                        {renderCardPreview(true, { margin: 0, boxShadow: '0 20px 40px rgba(0,0,0,0.3)', width: '100%', height: '100%' }, true)}
                                     </div>
                                 </div>
                             </div>

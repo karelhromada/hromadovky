@@ -59,20 +59,6 @@ export const kartyProducts = [
 
 export const kvartetaProducts = [
     {
-        id: 'prsi-draci',
-        name: 'Prší: Dračí edice',
-        description: 'Klasických 32 karet v unikátním dračím provedení. Ručně generované ilustrace pro každou kartu (7, 8, 9, 10, spodek, svršek, král, eso).',
-        price: 399,
-        themeColor: '#ca8a04',
-        badges: [
-            { id: 1, text: 'Nové Prší', icon: Sparkles, color: '#fbbf24' }
-        ],
-        image: [
-            '/cards/prsi/prsi_srdce_A.webp', '/cards/prsi/prsi_listy_K.webp', '/cards/prsi/prsi_kule_Q.webp', '/cards/prsi/prsi_zaludy_J.webp',
-            '/cards/prsi/prsi_srdce_7.webp', '/cards/prsi/prsi_listy_8.webp', '/cards/prsi/prsi_kule_9.webp', '/cards/prsi/prsi_zaludy_10.webp'
-        ]
-    },
-    {
         id: 'kvarteto-dinosauri',
         name: 'Kvarteto: Dinosauři',
         description: 'Poznejte prehistorické obry v luxusní sběratelské edici. 32 nádherně ilustrovaných karet s unikátními statistikami.',

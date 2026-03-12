@@ -104,7 +104,7 @@ const cardData = {
 
     // SADA 8: Bájní netvoři (Tyrkysová)
     "minotaurus_kvarteto_1773332802337.png": { name: "8A - MÍNOTAURUS", desc: "Krvavý řezník z Labyrintu", stats: [95, 10, 50, 85] },
-    "bazilisek_kvarteto_1773332819283.png": { name: "8B - BAZILIŠEK", desc: "Jedovatý král hadů", stats: [60, 30, 95, 80] },
+    "bazilisek_v2_kvarteto_1773333084369.png": { name: "8B - BAZILIŠEK", desc: "Smrtící kohoutí netvor", stats: [60, 30, 95, 80] },
     "kraken_kvarteto_1773332833372.png": { name: "8C - KRAKEN", desc: "Pohlcuje celé lodě", stats: [100, 70, 40, 95] },
     "mantikora_kvarteto_1773332852801.png": { name: "8D - MANTIKORA", desc: "Krvežíznivá mýtická šelma", stats: [80, 60, 90, 75] }
 };

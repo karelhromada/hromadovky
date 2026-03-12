@@ -25,24 +25,24 @@ const HeroSection: React.FC = () => {
     }, []);
 
     const cards = [
-        { id: 1, image: '/cards/dino_full_5.webp' },     // A cool dinosaur card
-        { id: 2, image: '/cards/baby_full_2.webp' },     // A cute baby dragon card
-        { id: 3, image: '/cards/drag_full_11.webp' },    // Kronos dragon card
-        { id: 4, image: '/cards/cat_full_1.webp' },      // A warrior cat card
-        { id: 5, image: '/cards/baby_full_11.webp' },    // Časíček baby dragon card
+        { id: 1, image: '/cards/mytologie/zeus_karta_1773232441103.png' },     // Zlaty Zeus (Sada 1)
+        { id: 2, image: '/cards/mytologie/thor_karta_1773232978954.png' },     // Zeleny Thor (Sada 2)
+        { id: 3, image: '/cards/mytologie/hades_karta_1773232474069.png' },    // Modry Hades (Sada 3)
+        { id: 4, image: '/cards/mytologie/freya_karta_1773233012935.png' },    // Stribrna Freya (Sada 4)
+        { id: 5, image: '/cards/mytologie/fenrir_karta_1773233163130.png' },   // Zlaty Fenrir (Sada 1 E)
     ];
 
     return (
         <section id="hero" className="hero-section container">
             <div className="hero-content">
-                <div className="badge animate-fade-in-up">🌟 Nová edice: Baby dráčci a dinosauři</div>
+                <div className="badge animate-fade-in-up">🔥 Nová edice: Mytologie a Bohové</div>
                 <h1 className="hero-title animate-fade-in-up delay-100">
                     Objevte kouzla karet a pexes, <br />
                     která vyprávějí své <span className="text-gradient-gold">vlastní příběhy</span>
                 </h1>
                 <p className="hero-description animate-fade-in-up delay-200">
-                    Nádherně vytvořené karetní sady s prémiovým designem pro celou rodinu.
-                    Unikátní statistiky, úžasné ilustrace a desítky hodin zábavy čekají jen na vás.
+                    Nádherně vytvořené karetní sady s prémiovým skleněným designem pro celou rodinu.
+                    Unikátní statistiky, úžasné ilustrace z mytologie a desítky hodin zábavy čekají jen na vás.
                 </p>
                 <div className="hero-actions animate-fade-in-up delay-300">
                     <a href="#products" className="btn-primary">Prozkoumat sady</a>

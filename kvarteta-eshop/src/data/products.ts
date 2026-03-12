@@ -75,7 +75,7 @@ export const kvartetaProducts = [
             '/cards/mytologie/fenrir_karta_1773233163130.png', '/cards/mytologie/jormungandr_karta_1773331719629.png', '/cards/mytologie/valkyra_karta_1773331735922.png', '/cards/mytologie/ymir_karta_1773331768521.png',
             '/cards/mytologie/ra_karta_1773332186294.png', '/cards/mytologie/anubis_karta_1773332202104.png', '/cards/mytologie/horus_karta_1773332218750.png', '/cards/mytologie/bastet_karta_1773332236278.png',
             '/cards/mytologie/beowulf_karta_1773332496331.png', '/cards/mytologie/grendel_karta_1773332517229.png', '/cards/mytologie/grendel_mother_karta_1773332529832.png', '/cards/mytologie/fire_dragon_karta_1773332546606.png',
-            '/cards/mytologie/minotaurus_karta_1773332802337.png', '/cards/mytologie/bazilisek_karta_1773332819283.png', '/cards/mytologie/kraken_karta_1773332833372.png', '/cards/mytologie/mantikora_karta_1773332852801.png'
+            '/cards/mytologie/minotaurus_karta_1773332802337.png', '/cards/mytologie/bazilisek_v2_karta_1773333084369.png', '/cards/mytologie/kraken_karta_1773332833372.png', '/cards/mytologie/mantikora_karta_1773332852801.png'
         ]
     },
     {

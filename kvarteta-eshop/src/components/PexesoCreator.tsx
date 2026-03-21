@@ -145,7 +145,7 @@ const PexesoCreator: React.FC<PexesoCreatorProps> = ({ onAddToCart }) => {
                         >
                             <div className="size-icon"><Layers size={24} /></div>
                             <div className="size-title">16 Karet</div>
-                            <div className="size-desc">8 unikátních fofografií<br />Ideální pro nejmenší</div>
+                            <div className="size-desc">8 unikátních fotografií<br />Ideální pro nejmenší</div>
                             <div className="size-price">249 Kč</div>
                         </div>
                         <div
@@ -155,7 +155,7 @@ const PexesoCreator: React.FC<PexesoCreatorProps> = ({ onAddToCart }) => {
                             <div className="size-badge">Nejpopulárnější</div>
                             <div className="size-icon"><LayoutGrid size={24} /></div>
                             <div className="size-title">32 Karet</div>
-                            <div className="size-desc">16 unikátních fofografií<br />Zlatý standard</div>
+                            <div className="size-desc">16 unikátních fotografií<br />Zlatý standard</div>
                             <div className="size-price">399 Kč</div>
                         </div>
                         <div
@@ -164,7 +164,7 @@ const PexesoCreator: React.FC<PexesoCreatorProps> = ({ onAddToCart }) => {
                         >
                             <div className="size-icon"><Diamond size={24} /></div>
                             <div className="size-title">64 Karet</div>
-                            <div className="size-desc">32 unikátních fofografií<br />Pro opravdové mistry paměti</div>
+                            <div className="size-desc">32 unikátních fotografií<br />Pro opravdové mistry paměti</div>
                             <div className="size-price">599 Kč</div>
                         </div>
                     </div>

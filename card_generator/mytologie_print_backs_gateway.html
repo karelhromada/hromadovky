@@ -1,0 +1,356 @@
+
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Mytologie - Tisková šablona (Zadní strany)</title>
+    <style>
+        * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        
+        @page { size: A4 portrait; margin: 0; }
+        
+        body { 
+            background-color: #333; 
+            margin: 0; 
+            padding: 0; 
+            font-family: sans-serif;
+        }
+
+        .main-container { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        @media print {
+            body { background-color: transparent !important; }
+            .main-container { padding: 0 !important; display: block !important; width: 100% !important; }
+            .page-grid { margin: 0 auto !important; box-shadow: none !important; }
+        }
+
+        .page-grid {
+            width: 210mm; 
+            height: 297mm; 
+            background: white; 
+            position: relative;
+            overflow: hidden; 
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            page-break-after: always;
+        }
+
+        /* 
+           Layout dimensions:
+           - Card: 60x85mm
+           - Gap: 2mm
+           - 3x3 grid: Total width 3*60 + 2*2 = 184mm
+           - Centering on A4 (210mm): (210 - 184) / 2 = 13mm left/right margin
+           - Total height: 3*85 + 2*2 = 259mm
+           - Centering on A4 (297mm): (297 - 259) / 2 = 19mm top/bottom margin
+        */
+
+        .cards-container {
+            position: absolute;
+            top: 19mm;
+            left: 13mm;
+            width: 184mm;
+            height: 259mm;
+            display: grid;
+            grid-template-columns: repeat(3, 60mm);
+            grid-template-rows: repeat(3, 85mm);
+            gap: 2mm;
+            z-index: 5;
+        }
+
+        .card-slot {
+            position: relative;
+            width: 60mm;
+            height: 85mm;
+            /* Bleed should NOT be overflow hidden on the container, 
+               but the card itself should bleed into the gap */
+        }
+
+        .card-back {
+            position: absolute;
+            /* 2.5mm bleed on each side to be safe (total 5mm extra) */
+            top: -2.5mm;
+            left: -2.5mm;
+            width: 65mm;
+            height: 90mm;
+            background-image: url('mytologie_back_3_gateway.png');
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+            /* Optional: subtle border to see where it should be cut */
+            /* border: 0.1mm solid rgba(0,0,0,0.1); */
+        }
+
+        /* Registration Marks */
+        .marks-layer { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: 10; 
+            pointer-events: none; 
+        }
+
+        .mark { 
+            position: absolute; 
+            width: 10mm; 
+            height: 10mm; 
+        }
+
+        .mark::before, .mark::after { 
+            content: ''; 
+            position: absolute; 
+            background: #000; 
+            opacity: 0.5;
+        }
+
+        /* Thin crosses (0.1mm) */
+        .mark::before { 
+            top: 5mm; 
+            left: 0; 
+            width: 100%; 
+            height: 0.1mm; 
+        }
+        
+        .mark::after { 
+            left: 5mm; 
+            top: 0; 
+            width: 0.1mm; 
+            height: 100%; 
+        }
+
+        /* Positioning of marks at cut lines */
+        /* Columns: 13, 73, 75, 135, 137, 197 */
+        /* Rows: 19, 104, 106, 191, 193, 278 */
+
+        .id-label {
+            position: absolute;
+            bottom: 5mm;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 8pt;
+            color: #666;
+            z-index: 20;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Page 1 -->
+        <div class="page-grid">
+            <div class="cards-container">
+                <!-- 9 cards per page -->
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+            </div>
+            <div class="marks-layer">
+                <!-- Generated marks will be here -->
+                <div class="mark" style="left: 8mm; top: 14mm;"></div>
+<div class="mark" style="left: 68mm; top: 14mm;"></div>
+<div class="mark" style="left: 70mm; top: 14mm;"></div>
+<div class="mark" style="left: 130mm; top: 14mm;"></div>
+<div class="mark" style="left: 132mm; top: 14mm;"></div>
+<div class="mark" style="left: 192mm; top: 14mm;"></div>
+<div class="mark" style="left: 8mm; top: 99mm;"></div>
+<div class="mark" style="left: 68mm; top: 99mm;"></div>
+<div class="mark" style="left: 70mm; top: 99mm;"></div>
+<div class="mark" style="left: 130mm; top: 99mm;"></div>
+<div class="mark" style="left: 132mm; top: 99mm;"></div>
+<div class="mark" style="left: 192mm; top: 99mm;"></div>
+<div class="mark" style="left: 8mm; top: 101mm;"></div>
+<div class="mark" style="left: 68mm; top: 101mm;"></div>
+<div class="mark" style="left: 70mm; top: 101mm;"></div>
+<div class="mark" style="left: 130mm; top: 101mm;"></div>
+<div class="mark" style="left: 132mm; top: 101mm;"></div>
+<div class="mark" style="left: 192mm; top: 101mm;"></div>
+<div class="mark" style="left: 8mm; top: 186mm;"></div>
+<div class="mark" style="left: 68mm; top: 186mm;"></div>
+<div class="mark" style="left: 70mm; top: 186mm;"></div>
+<div class="mark" style="left: 130mm; top: 186mm;"></div>
+<div class="mark" style="left: 132mm; top: 186mm;"></div>
+<div class="mark" style="left: 192mm; top: 186mm;"></div>
+<div class="mark" style="left: 8mm; top: 188mm;"></div>
+<div class="mark" style="left: 68mm; top: 188mm;"></div>
+<div class="mark" style="left: 70mm; top: 188mm;"></div>
+<div class="mark" style="left: 130mm; top: 188mm;"></div>
+<div class="mark" style="left: 132mm; top: 188mm;"></div>
+<div class="mark" style="left: 192mm; top: 188mm;"></div>
+<div class="mark" style="left: 8mm; top: 273mm;"></div>
+<div class="mark" style="left: 68mm; top: 273mm;"></div>
+<div class="mark" style="left: 70mm; top: 273mm;"></div>
+<div class="mark" style="left: 130mm; top: 273mm;"></div>
+<div class="mark" style="left: 132mm; top: 273mm;"></div>
+<div class="mark" style="left: 192mm; top: 273mm;"></div>
+
+            </div>
+            <div class="id-label">Mytologie - Zadní strana: Brána do světa bohů - Strana 1</div>
+        </div>
+        <!-- Repeat for Page 2, 3, 4 (total 36 cards, standard deck has 32) -->
+        <div class="page-grid">
+            <div class="cards-container">
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+            </div>
+            <div class="marks-layer"><div class="mark" style="left: 8mm; top: 14mm;"></div>
+<div class="mark" style="left: 68mm; top: 14mm;"></div>
+<div class="mark" style="left: 70mm; top: 14mm;"></div>
+<div class="mark" style="left: 130mm; top: 14mm;"></div>
+<div class="mark" style="left: 132mm; top: 14mm;"></div>
+<div class="mark" style="left: 192mm; top: 14mm;"></div>
+<div class="mark" style="left: 8mm; top: 99mm;"></div>
+<div class="mark" style="left: 68mm; top: 99mm;"></div>
+<div class="mark" style="left: 70mm; top: 99mm;"></div>
+<div class="mark" style="left: 130mm; top: 99mm;"></div>
+<div class="mark" style="left: 132mm; top: 99mm;"></div>
+<div class="mark" style="left: 192mm; top: 99mm;"></div>
+<div class="mark" style="left: 8mm; top: 101mm;"></div>
+<div class="mark" style="left: 68mm; top: 101mm;"></div>
+<div class="mark" style="left: 70mm; top: 101mm;"></div>
+<div class="mark" style="left: 130mm; top: 101mm;"></div>
+<div class="mark" style="left: 132mm; top: 101mm;"></div>
+<div class="mark" style="left: 192mm; top: 101mm;"></div>
+<div class="mark" style="left: 8mm; top: 186mm;"></div>
+<div class="mark" style="left: 68mm; top: 186mm;"></div>
+<div class="mark" style="left: 70mm; top: 186mm;"></div>
+<div class="mark" style="left: 130mm; top: 186mm;"></div>
+<div class="mark" style="left: 132mm; top: 186mm;"></div>
+<div class="mark" style="left: 192mm; top: 186mm;"></div>
+<div class="mark" style="left: 8mm; top: 188mm;"></div>
+<div class="mark" style="left: 68mm; top: 188mm;"></div>
+<div class="mark" style="left: 70mm; top: 188mm;"></div>
+<div class="mark" style="left: 130mm; top: 188mm;"></div>
+<div class="mark" style="left: 132mm; top: 188mm;"></div>
+<div class="mark" style="left: 192mm; top: 188mm;"></div>
+<div class="mark" style="left: 8mm; top: 273mm;"></div>
+<div class="mark" style="left: 68mm; top: 273mm;"></div>
+<div class="mark" style="left: 70mm; top: 273mm;"></div>
+<div class="mark" style="left: 130mm; top: 273mm;"></div>
+<div class="mark" style="left: 132mm; top: 273mm;"></div>
+<div class="mark" style="left: 192mm; top: 273mm;"></div>
+</div>
+            <div class="id-label">Mytologie - Zadní strana: Brána do světa bohů - Strana 2</div>
+        </div>
+        <div class="page-grid">
+            <div class="cards-container">
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+            </div>
+            <div class="marks-layer"><div class="mark" style="left: 8mm; top: 14mm;"></div>
+<div class="mark" style="left: 68mm; top: 14mm;"></div>
+<div class="mark" style="left: 70mm; top: 14mm;"></div>
+<div class="mark" style="left: 130mm; top: 14mm;"></div>
+<div class="mark" style="left: 132mm; top: 14mm;"></div>
+<div class="mark" style="left: 192mm; top: 14mm;"></div>
+<div class="mark" style="left: 8mm; top: 99mm;"></div>
+<div class="mark" style="left: 68mm; top: 99mm;"></div>
+<div class="mark" style="left: 70mm; top: 99mm;"></div>
+<div class="mark" style="left: 130mm; top: 99mm;"></div>
+<div class="mark" style="left: 132mm; top: 99mm;"></div>
+<div class="mark" style="left: 192mm; top: 99mm;"></div>
+<div class="mark" style="left: 8mm; top: 101mm;"></div>
+<div class="mark" style="left: 68mm; top: 101mm;"></div>
+<div class="mark" style="left: 70mm; top: 101mm;"></div>
+<div class="mark" style="left: 130mm; top: 101mm;"></div>
+<div class="mark" style="left: 132mm; top: 101mm;"></div>
+<div class="mark" style="left: 192mm; top: 101mm;"></div>
+<div class="mark" style="left: 8mm; top: 186mm;"></div>
+<div class="mark" style="left: 68mm; top: 186mm;"></div>
+<div class="mark" style="left: 70mm; top: 186mm;"></div>
+<div class="mark" style="left: 130mm; top: 186mm;"></div>
+<div class="mark" style="left: 132mm; top: 186mm;"></div>
+<div class="mark" style="left: 192mm; top: 186mm;"></div>
+<div class="mark" style="left: 8mm; top: 188mm;"></div>
+<div class="mark" style="left: 68mm; top: 188mm;"></div>
+<div class="mark" style="left: 70mm; top: 188mm;"></div>
+<div class="mark" style="left: 130mm; top: 188mm;"></div>
+<div class="mark" style="left: 132mm; top: 188mm;"></div>
+<div class="mark" style="left: 192mm; top: 188mm;"></div>
+<div class="mark" style="left: 8mm; top: 273mm;"></div>
+<div class="mark" style="left: 68mm; top: 273mm;"></div>
+<div class="mark" style="left: 70mm; top: 273mm;"></div>
+<div class="mark" style="left: 130mm; top: 273mm;"></div>
+<div class="mark" style="left: 132mm; top: 273mm;"></div>
+<div class="mark" style="left: 192mm; top: 273mm;"></div>
+</div>
+            <div class="id-label">Mytologie - Zadní strana: Brána do světa bohů - Strana 3</div>
+        </div>
+        <div class="page-grid">
+            <div class="cards-container">
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+                <div class="card-slot"><div class="card-back"></div></div>
+            </div>
+            <div class="marks-layer"><div class="mark" style="left: 8mm; top: 14mm;"></div>
+<div class="mark" style="left: 68mm; top: 14mm;"></div>
+<div class="mark" style="left: 70mm; top: 14mm;"></div>
+<div class="mark" style="left: 130mm; top: 14mm;"></div>
+<div class="mark" style="left: 132mm; top: 14mm;"></div>
+<div class="mark" style="left: 192mm; top: 14mm;"></div>
+<div class="mark" style="left: 8mm; top: 99mm;"></div>
+<div class="mark" style="left: 68mm; top: 99mm;"></div>
+<div class="mark" style="left: 70mm; top: 99mm;"></div>
+<div class="mark" style="left: 130mm; top: 99mm;"></div>
+<div class="mark" style="left: 132mm; top: 99mm;"></div>
+<div class="mark" style="left: 192mm; top: 99mm;"></div>
+<div class="mark" style="left: 8mm; top: 101mm;"></div>
+<div class="mark" style="left: 68mm; top: 101mm;"></div>
+<div class="mark" style="left: 70mm; top: 101mm;"></div>
+<div class="mark" style="left: 130mm; top: 101mm;"></div>
+<div class="mark" style="left: 132mm; top: 101mm;"></div>
+<div class="mark" style="left: 192mm; top: 101mm;"></div>
+<div class="mark" style="left: 8mm; top: 186mm;"></div>
+<div class="mark" style="left: 68mm; top: 186mm;"></div>
+<div class="mark" style="left: 70mm; top: 186mm;"></div>
+<div class="mark" style="left: 130mm; top: 186mm;"></div>
+<div class="mark" style="left: 132mm; top: 186mm;"></div>
+<div class="mark" style="left: 192mm; top: 186mm;"></div>
+<div class="mark" style="left: 8mm; top: 188mm;"></div>
+<div class="mark" style="left: 68mm; top: 188mm;"></div>
+<div class="mark" style="left: 70mm; top: 188mm;"></div>
+<div class="mark" style="left: 130mm; top: 188mm;"></div>
+<div class="mark" style="left: 132mm; top: 188mm;"></div>
+<div class="mark" style="left: 192mm; top: 188mm;"></div>
+<div class="mark" style="left: 8mm; top: 273mm;"></div>
+<div class="mark" style="left: 68mm; top: 273mm;"></div>
+<div class="mark" style="left: 70mm; top: 273mm;"></div>
+<div class="mark" style="left: 130mm; top: 273mm;"></div>
+<div class="mark" style="left: 132mm; top: 273mm;"></div>
+<div class="mark" style="left: 192mm; top: 273mm;"></div>
+</div>
+            <div class="id-label">Mytologie - Zadní strana: Brána do světa bohů - Strana 4</div>
+        </div>
+    </div>
+</body>
+</html>

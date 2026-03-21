@@ -24,7 +24,7 @@ const products = [
         id: 'pexeso-dinosauri',
         name: 'Pexeso: Dinosauři',
         description: 'Poznejte prehistorické obry v luxusní sběratelské edici. 32 nádherně ilustrovaných karet s unikátními statistikami.',
-        price: 349,
+        price: 199,
         themeColor: '#ff8a00',
         badges: [
             { id: 1, text: 'Bestseller', icon: Trophy, color: '#ffb703' }
@@ -41,7 +41,7 @@ const products = [
         id: 'pexeso-dracci',
         name: 'Pexeso: Baby dráčci',
         description: 'Roztomilí dráčci v pexesu pro nejmenší i velké. 64 karet pro trénink paměti.',
-        price: 249,
+        price: 199,
         themeColor: '#a100ff',
         badges: [
             { id: 1, text: 'Roztomilé', icon: Star, color: '#d946ef' }
@@ -56,7 +56,7 @@ const products = [
         id: 'pexeso-draci',
         name: 'Pexeso: Draci',
         description: 'Mocní a legendární Draci přinášejí do hry epické souboje. Nejmocnější bytosti v prémiovém provedení.',
-        price: 349,
+        price: 199,
         themeColor: '#ff0033',
         badges: [
             { id: 1, text: 'Premium', icon: Shield, color: '#ef4444' }
@@ -76,7 +76,7 @@ const products = [
         id: 'pexeso-kocky',
         name: 'Pexeso: Kočky bojovnice',
         description: 'Odvážné, mrštné a nebezpečně roztomilé kočičí válečnice. Získejte celou kočičí armádu.',
-        price: 349,
+        price: 199,
         themeColor: '#00d2ff',
         badges: [
             { id: 1, text: 'Novinka', icon: Sparkles, color: '#0ea5e9' }
@@ -91,7 +91,7 @@ const products = [
         id: 'pexeso-dravci',
         name: 'Pexeso: Velcí lovci',
         description: 'Odhalte sílu nejobávanějších dravců naší planety ve strhujícím pexesu pro odvážné.',
-        price: 349,
+        price: 199,
         themeColor: '#8b5a2b',
         badges: [
             { id: 1, text: 'Divoká příroda', icon: Star, color: '#d97706' }

@@ -147,7 +147,21 @@
             pointer-events: none;
         }
 
+        /* Index corners (Top Left and Bottom Right) - Hidden for authentic single-headed Mariáš */
+        .index {
+            display: none !important;
+        }
 
+        .index-top-left {
+            top: 45px;
+            left: 40px;
+        }
+
+        .index-bottom-right {
+            bottom: 45px;
+            right: 40px;
+            transform: rotate(180deg);
+        }
 
         /* Drop shadows for SVG Suit Icons */
         .suit-srdce .suit-icon {
@@ -207,7 +221,56 @@
             line-height: 1;
         }
 
+        /* Positioning Utils for Classic Poker pip layout */
+        .col-l {
+            left: 0;
+        }
 
+        .col-r {
+            right: 0;
+        }
+
+        .col-c {
+            left: 50%;
+            margin-left: -65px;
+        }
+
+        .row-1 {
+            top: 0;
+        }
+
+        .row-2 {
+            top: 33.33%;
+            margin-top: -65px;
+        }
+
+        .row-3 {
+            top: 66.66%;
+            margin-top: -65px;
+        }
+
+        .row-4 {
+            bottom: 0;
+        }
+
+        .row-1-5 {
+            top: 20%;
+            margin-top: -65px;
+        }
+
+        .row-c {
+            top: 50%;
+            margin-top: -65px;
+        }
+
+        .row-3-5 {
+            bottom: 20%;
+            margin-bottom: -65px;
+        }
+
+        .rot {
+            transform: rotate(180deg);
+        }
 
         /* Title banner for Figures */
         .figure-title {
@@ -340,90 +403,111 @@
             </g>
         </defs>
     </svg>
-    <div id="card-container" class="card suit-srdce is-figure">
 
-        <!-- Main Image Area (For Figures) -->
-        <div class="card-image" id="card-bg"
-            style="background-image: url('../kvarteta-eshop/public/cards/placeholder.png');">
-            <!-- Used only for number cards: Layout of pips -->
-            <div id="number-layout" class="number-card-layout layout-7" style="display: none;">
-                <!-- Filled dynamically by JS -->
+    <body>
+
+        <!-- Container that Puppeteer will target and modify based on data -->
+        <div id="card-container" class="card suit-srdce is-figure">
+
+            <!-- Top Left Index -->
+            <div class="index index-top-left">
+                <div class="index-value" id="val-tl">A</div>
+                <div class="index-suit" id="suit-tl">♥</div>
             </div>
+
+            <!-- Main Image Area (For Figures) -->
+            <div class="card-image" id="card-bg"
+                style="background-image: url('../kvarteta-eshop/public/cards/placeholder.png');">
+                <!-- Used only for number cards: Layout of pips -->
+                <div id="number-layout" class="number-card-layout layout-7" style="display: none;">
+                    <!-- Filled dynamically by JS -->
+                </div>
+            </div>
+
+            <!-- Large faint background pip for number cards -->
+            <div class="background-pip" id="bg-pip">♥</div>
+
+            <!-- Figure Title Banner -->
+            <div class="figure-title" id="fig-title">Epický Drak</div>
+
+            <!-- Bottom Right Index -->
+            <div class="index index-bottom-right">
+                <div class="index-value" id="val-br">A</div>
+                <div class="index-suit" id="suit-br">♥</div>
+            </div>
+
         </div>
 
-        <!-- Large faint background pip for number cards -->
-        <div class="background-pip" id="bg-pip">♥</div>
+        <!-- Script to render a specific card based on parameters passed via URL/Puppeteer -->
+        <script>
+            function renderCard(data) {
+                const container = document.getElementById('card-container');
 
-        <!-- Figure Title Banner -->
-        <div class="figure-title" id="fig-title">Epický Drak</div>
+                // 1. Reset classes
+                container.className = 'card';
 
-    </div>
+                // 2. Apply suit
+                container.classList.add(`suit-${data.suitClass}`); // srdce, listy, zaludy, kule
 
-    <!-- Script to render a specific card based on parameters passed via URL/Puppeteer -->
-    <script>
-        function renderCard(data) {
-            const container = document.getElementById('card-container');
+                // 3. Set values and suits (SVGs injected)
+                document.getElementById('val-tl').textContent = data.value;
+                document.getElementById('val-br').textContent = data.value;
 
-            // 1. Reset classes
-            container.className = 'card';
+                const suitSvg = `<svg class="suit-icon" viewBox="0 0 100 100"><use href="#icon-${data.suitClass}"/></svg>`;
+                document.getElementById('suit-tl').innerHTML = suitSvg;
+                document.getElementById('suit-br').innerHTML = suitSvg;
+                document.getElementById('bg-pip').innerHTML = suitSvg;
 
-            // 2. Apply suit
-            container.classList.add(`suit-${data.suitClass}`); // srdce, listy, zaludy, kule
+                // 4. Handle Type (Figure vs Number)
+                const isFigure = ['J', 'Q', 'K', 'A'].includes(data.value);
+                const cardBg = document.getElementById('card-bg');
+                const layout = document.getElementById('number-layout');
 
-            // 3. Set values and suits (SVGs injected)
-            const suitSvg = `<svg class="suit-icon" viewBox="0 0 100 100"><use href="#icon-${data.suitClass}"/></svg>`;
-            document.getElementById('bg-pip').innerHTML = suitSvg;
-
-            // 4. Handle Type (Figure vs Number)
-            const isFigure = ['J', 'Q', 'K', 'A'].includes(data.value);
-            const cardBg = document.getElementById('card-bg');
-            const layout = document.getElementById('number-layout');
-
-            if (isFigure || data.imageUrl) {
-                container.classList.add(isFigure ? 'is-figure' : 'is-number');
-                layout.style.display = 'none';
-                cardBg.style.backgroundImage = `url('${data.imageUrl}')`;
-                cardBg.style.backgroundColor = 'transparent';
-
-                // If it's a cohesive number card, make it full bleed and remove internal ornaments
-                if (!isFigure && data.imageUrl.startsWith('data:')) {
-                    cardBg.style.top = '0';
-                    cardBg.style.left = '0';
-                    cardBg.style.right = '0';
-                    cardBg.style.bottom = '0';
-                    cardBg.style.borderRadius = 'var(--card-radius)';
-                    container.classList.add('is-cohesive');
-                }
-
-                if (isFigure) {
-                    document.getElementById('fig-title').textContent = data.title;
+                if (isFigure || data.imageUrl) {
+                    container.classList.add(isFigure ? 'is-figure' : 'is-number');
+                    layout.style.display = 'none';
+                    cardBg.style.backgroundImage = `url('${data.imageUrl}')`;
+                    cardBg.style.backgroundColor = 'transparent';
+                    
+                    // If it's a cohesive number card, make it full bleed and remove internal ornaments
+                    if (!isFigure && data.imageUrl.startsWith('data:')) {
+                        cardBg.style.top = '0';
+                        cardBg.style.left = '0';
+                        cardBg.style.right = '0';
+                        cardBg.style.bottom = '0';
+                        cardBg.style.borderRadius = 'var(--card-radius)';
+                        container.classList.add('is-cohesive');
+                    }
+                    
+                    if (isFigure) {
+                        document.getElementById('fig-title').textContent = data.title;
+                    } else {
+                        document.getElementById('fig-title').style.display = 'none';
+                    }
                 } else {
-                    document.getElementById('fig-title').style.display = 'none';
-                }
-            } else {
-                container.classList.add('is-number');
-                // Reset positions for normal cards
-                cardBg.style.top = 'var(--bleed)';
-                cardBg.style.left = 'var(--bleed)';
-                cardBg.style.right = 'var(--bleed)';
-                cardBg.style.bottom = 'var(--bleed)';
-                layout.style.display = 'block';
-                cardBg.style.backgroundImage = 'none';
-                cardBg.style.backgroundColor = 'transparent';
+                    container.classList.add('is-number');
+                    // Reset positions for normal cards
+                    cardBg.style.top = 'var(--bleed)';
+                    cardBg.style.left = 'var(--bleed)';
+                    cardBg.style.right = 'var(--bleed)';
+                    cardBg.style.bottom = 'var(--bleed)';
+                    layout.style.display = 'block';
+                    cardBg.style.backgroundImage = 'none';
+                    cardBg.style.backgroundColor = 'transparent';
 
-                const val = data.value;
-                let pipHTML = '';
+                    const val = data.value;
+                    let pipHTML = '';
 
-                // Thematic Dragon Background Watermark
-                const suitColors = {
-                    'srdce': 'rgba(212, 0, 0, 0.04)',
-                    'listy': 'rgba(0, 128, 0, 0.04)',
-                    'zaludy': 'rgba(212, 175, 55, 0.06)',
-                    'kule': 'rgba(184, 92, 0, 0.06)'
-                };
-                const motifColor = suitColors[data.suitClass] || 'rgba(184,134,11,0.04)';
+                    // Thematic Dragon Background Watermark
+                    const suitColors = {
+                        'srdce': 'rgba(212, 0, 0, 0.04)',
+                        'listy': 'rgba(0, 128, 0, 0.04)',
+                        'zaludy': 'rgba(212, 175, 55, 0.06)',
+                        'kule': 'rgba(184, 92, 0, 0.06)'
+                    };
+                    const motifColor = suitColors[data.suitClass] || 'rgba(184,134,11,0.04)';
 
-                pipHTML += `
+                    pipHTML += `
                         <div style="position:absolute; inset: 0; display:flex; justify-content:center; align-items:center; z-index:0; pointer-events:none; opacity:0.8;">
                             <svg width="250" height="350" viewBox="0 0 100 100" style="color:${motifColor};">
                                 <path d="M50 5 L40 25 C20 20 10 40 20 60 C5 50 0 30 15 15 C5 30 5 50 20 70 C10 80 5 95 25 85 C15 90 15 100 35 90 C40 85 45 70 45 55 L50 75 L55 55 C55 70 60 85 65 90 C85 100 85 90 75 85 C95 95 90 80 80 70 C95 50 95 30 85 15 C100 30 95 50 80 60 C90 40 80 20 60 25 L50 5 Z" fill="currentColor"/>
@@ -431,65 +515,65 @@
                         </div>
                     `;
 
-                // Central Dragon Motif (The potted plant replacement)
-                if (data.motifUrl) {
-                    pipHTML += `<div style="position:absolute; bottom: 10%; left: 50%; width: 550px; height: 550px; transform: translateX(-50%); background-image: url('${data.motifUrl}'); background-size: contain; background-repeat: no-repeat; background-position: bottom center; z-index: 0; opacity: 1;"></div>`;
-                }
+                    // Central Dragon Motif (The potted plant replacement)
+                    if (data.motifUrl) {
+                        pipHTML += `<div style="position:absolute; bottom: 10%; left: 50%; width: 550px; height: 550px; transform: translateX(-50%); background-image: url('${data.motifUrl}'); background-size: contain; background-repeat: no-repeat; background-position: bottom center; z-index: 0; opacity: 1;"></div>`;
+                    }
 
-                // Layouts
-                if (val === '7' && data.suitClass === 'srdce') {
-                    // Bohemian 7: 1 top center, 3 in each side column
-                    // Widening columns slightly and moving them up to clear the main motif area
-                    const sideY = [28, 43, 58];
-                    pipHTML += `<div style="position:absolute; left: 50%; top: 13%; width: 130px; height: 130px; transform:translate(-50%, -50%); z-index:1;">${suitSvg}</div>`;
-                    sideY.forEach(y => {
-                        pipHTML += `<div style="position:absolute; left: 14%; top: ${y}%; width: 125px; height: 125px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
-                        pipHTML += `<div style="position:absolute; right: 14%; top: ${y}%; width: 125px; height: 125px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
-                    });
-                }
-                else if (val === '7') {
-                    // Standard fallback for other 7s if not yet defined
-                    const yOffsets = [40, 65, 90];
-                    pipHTML += `<div style="position:absolute; left: 50%; top: 15%; width: 110px; height: 110px; transform:translate(-50%, -50%); z-index:1;">${suitSvg}</div>`;
-                    yOffsets.forEach(y => {
-                        pipHTML += `<div style="position:absolute; left: 12%; top: ${y}%; width: 110px; height: 110px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
-                        pipHTML += `<div style="position:absolute; right: 12%; top: ${y}%; width: 110px; height: 110px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
-                    });
-                }
-                // Add other numbers 8, 9, 10 similarly...
-                else if (val === '8') {
-                    const yOffsets = [20, 43, 66, 89];
-                    yOffsets.forEach(y => {
-                        pipHTML += `<div style="position:absolute; left: 12%; top: ${y}%; width: 110px; height: 110px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
-                        pipHTML += `<div style="position:absolute; right: 12%; top: ${y}%; width: 110px; height: 110px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
-                    });
-                } else if (val === '9') {
-                    const yOffsets = [35, 54, 73, 92];
-                    pipHTML += `<div style="position:absolute; left: 50%; top: 15%; width: 110px; height: 110px; transform:translate(-50%, -50%); z-index:1;">${suitSvg}</div>`;
-                    yOffsets.forEach(y => {
-                        pipHTML += `<div style="position:absolute; left: 12%; top: ${y}%; width: 110px; height: 110px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
-                        pipHTML += `<div style="position:absolute; right: 12%; top: ${y}%; width: 110px; height: 110px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
-                    });
-                } else if (val === '10') {
-                    const yOffsets = [32, 47, 62, 77, 92];
-                    pipHTML += `<div class="index-value" style="position:absolute; left: 50%; top: 14%; transform:translate(-50%, -50%); z-index:1; font-size:150px; margin:0; color:var(--suit-border); -webkit-text-stroke: 1px #888; text-shadow:2px 2px 5px rgba(0,0,0,0.2);">X</div>`;
-                    yOffsets.forEach(y => {
-                        pipHTML += `<div style="position:absolute; left: 12%; top: ${y}%; width: 110px; height: 110px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
-                        pipHTML += `<div style="position:absolute; right: 12%; top: ${y}%; width: 110px; height: 110px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
-                    });
-                }
+                    // Layouts
+                    if (val === '7' && data.suitClass === 'srdce') {
+                        // Bohemian 7: 1 top center, 3 in each side column
+                        // Widening columns slightly and moving them up to clear the main motif area
+                        const sideY = [28, 43, 58];
+                        pipHTML += `<div style="position:absolute; left: 50%; top: 13%; width: 130px; height: 130px; transform:translate(-50%, -50%); z-index:1;">${suitSvg}</div>`;
+                        sideY.forEach(y => {
+                            pipHTML += `<div style="position:absolute; left: 14%; top: ${y}%; width: 125px; height: 125px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
+                            pipHTML += `<div style="position:absolute; right: 14%; top: ${y}%; width: 125px; height: 125px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
+                        });
+                    }
+                    else if (val === '7') {
+                        // Standard fallback for other 7s if not yet defined
+                        const yOffsets = [40, 65, 90];
+                        pipHTML += `<div style="position:absolute; left: 50%; top: 15%; width: 110px; height: 110px; transform:translate(-50%, -50%); z-index:1;">${suitSvg}</div>`;
+                        yOffsets.forEach(y => {
+                            pipHTML += `<div style="position:absolute; left: 12%; top: ${y}%; width: 110px; height: 110px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
+                            pipHTML += `<div style="position:absolute; right: 12%; top: ${y}%; width: 110px; height: 110px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
+                        });
+                    }
+                    // Add other numbers 8, 9, 10 similarly...
+                    else if (val === '8') {
+                        const yOffsets = [20, 43, 66, 89];
+                        yOffsets.forEach(y => {
+                            pipHTML += `<div style="position:absolute; left: 12%; top: ${y}%; width: 110px; height: 110px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
+                            pipHTML += `<div style="position:absolute; right: 12%; top: ${y}%; width: 110px; height: 110px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
+                        });
+                    } else if (val === '9') {
+                        const yOffsets = [35, 54, 73, 92];
+                        pipHTML += `<div style="position:absolute; left: 50%; top: 15%; width: 110px; height: 110px; transform:translate(-50%, -50%); z-index:1;">${suitSvg}</div>`;
+                        yOffsets.forEach(y => {
+                            pipHTML += `<div style="position:absolute; left: 12%; top: ${y}%; width: 110px; height: 110px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
+                            pipHTML += `<div style="position:absolute; right: 12%; top: ${y}%; width: 110px; height: 110px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
+                        });
+                    } else if (val === '10') {
+                        const yOffsets = [32, 47, 62, 77, 92];
+                        pipHTML += `<div class="index-value" style="position:absolute; left: 50%; top: 14%; transform:translate(-50%, -50%); z-index:1; font-size:150px; margin:0; color:var(--suit-border); -webkit-text-stroke: 1px #888; text-shadow:2px 2px 5px rgba(0,0,0,0.2);">X</div>`;
+                        yOffsets.forEach(y => {
+                            pipHTML += `<div style="position:absolute; left: 12%; top: ${y}%; width: 110px; height: 110px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
+                            pipHTML += `<div style="position:absolute; right: 12%; top: ${y}%; width: 110px; height: 110px; transform:translateY(-50%); z-index:1;">${suitSvg}</div>`;
+                        });
+                    }
 
-                layout.innerHTML = pipHTML;
+                    layout.innerHTML = pipHTML;
+                }
             }
-        }
 
-        // Expose to window for Puppeteer to call
-        window.renderCard = renderCard;
+            // Expose to window for Puppeteer to call
+            window.renderCard = renderCard;
 
-        // Example for testing visually without Puppeteer:
-        // renderCard({ suitClass: 'zaludy', suitSymbol: '🌰', value: '8', imageUrl: '', title: ''});
-        // renderCard({ suitClass: 'srdce', suitSymbol: '♥', value: 'A', imageUrl: '../kvarteta-eshop/public/cards/drag_1.png', title: 'Vulcanus'});
-    </script>
-</body>
+            // Example for testing visually without Puppeteer:
+            // renderCard({ suitClass: 'zaludy', suitSymbol: '🌰', value: '8', imageUrl: '', title: ''});
+            // renderCard({ suitClass: 'srdce', suitSymbol: '♥', value: 'A', imageUrl: '../kvarteta-eshop/public/cards/drag_1.png', title: 'Vulcanus'});
+        </script>
+    </body>
 
 </html>

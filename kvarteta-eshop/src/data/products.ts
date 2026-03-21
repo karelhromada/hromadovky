@@ -5,10 +5,10 @@ export const kartyProducts = [
         id: 'karty-tema-draku',
         name: 'Epická dračí edice',
         description: 'Luxusní dračí edice. Mariášové barvy reprezentující živly. Hodnoty 10, J, Q, K, A v klasickém čistém herním designu s plnou originální malbou draků.',
-        price: 449,
+        price: 349,
         themeColor: '#ff0033',
         images: ['/cards/dragon_scales_realistic_1.webp', '/cards/prsi/prsi_listy_A.webp', '/cards/prsi/prsi_srdce_K.webp'],
-        boxImage: '/cards/dragon_scales_realistic_1.webp',
+        boxImage: '/cards/prsi/prsi_srdce_A.webp',
         isThematic: true,
         sampleValue: 'A',
         sampleSuit: '♥',
@@ -23,7 +23,7 @@ export const kartyProducts = [
         id: 'karty-tema-carodejnice',
         name: 'Magické čarodějnice',
         description: 'Mysteriózní sady čarodějnic. Každá hodnota (spodek, svršek, král, eso) nabízí jedinečnou detailní ilustraci od učednic ohně až po královny lesa.',
-        price: 449,
+        price: 349,
         themeColor: '#ff4b4b',
         images: ['/cards/carodejnice/eso_srdce_oznaceno.png', '/cards/carodejnice/kral_listy_oznaceno.png', '/cards/carodejnice/svrsek_zaludy_oznaceno.png'],
         boxImage: '/cards/carodejnice/kral_srdce_oznaceno.png',
@@ -41,7 +41,7 @@ export const kartyProducts = [
         id: 'karty-tema-princezny',
         name: 'Život na zámku',
         description: 'Pohádková edice s princeznami, princi a roztomilými zvířátky. Jemné pastelové barvy a minimalistický design na čistě bílém pozadí.',
-        price: 449,
+        price: 249,
         themeColor: '#ff66b2', // Růžová
         images: ['/cards/princezny bez pozadi/eso_srdce.png', '/cards/princezny bez pozadi/kralovna_zelene.png', '/cards/princezny bez pozadi/sedmicka_srdce.png'],
         boxImage: '/cards/princezny bez pozadi/eso_srdce.png',
@@ -62,7 +62,7 @@ export const kvartetaProducts = [
         id: 'kvarteto-mytologie',
         name: 'Kvarteto: Mytologie a mýty',
         description: 'Epická sada bohů, hrdinů a temných bytostí. Sbírej rodiny božstev od starověkého Řecka po mrazivý sever. Obsahuje 32 karet s luxusním průhledným systémem vlastností.',
-        price: 399,
+        price: 349,
         themeColor: '#fde047', // Zlatá božská jako výchozí
         badges: [
             { id: 1, text: 'Horká novinka', icon: Sparkles, color: '#fde047' }
@@ -127,7 +127,7 @@ export const kvartetaProducts = [
         id: 'kvarteto-rytiri',
         name: 'Kvarteto: Roztomilí rytíři',
         description: 'Šlechetní a neuvěřitelně sladcí rytíři v brnění z marshmallow, karamelu i hvězdného prachu. Unikátní herní zážitek.',
-        price: 389,
+        price: 349,
         themeColor: '#ffccdd',
         badges: [
             { id: 1, text: 'Horká novinka', icon: Sparkles, color: '#ffb703' }

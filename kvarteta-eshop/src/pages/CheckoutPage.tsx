@@ -2,6 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { CartItem } from '../App';
 import './CheckoutPage.css';
+import { SHIPPING_CONFIG } from '../config/shipping';
+
+// Declare Packeta global for TS
+declare global {
+    interface Window {
+        Packeta: any;
+    }
+}
 
 interface CheckoutPageProps {
     items: CartItem[];
@@ -34,7 +42,75 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // Load Zasilkovna script once on mount
+        const packetaScript = document.createElement('script');
+        packetaScript.src = 'https://widget.packeta.com/v6/www/js/library.js';
+        packetaScript.async = true;
+        document.body.appendChild(packetaScript);
+
+        return () => {
+            if (document.body.contains(packetaScript)) {
+                document.body.removeChild(packetaScript);
+            }
+        };
     }, []);
+
+    // Load PPL script ONLY when PPL is selected and div is likely present
+    useEffect(() => {
+        if (formData.delivery === 'ppl' && !pickupPoint?.includes('PPL')) {
+            const pplScript = document.createElement('script');
+            pplScript.src = 'https://www.ppl.cz/sources/map/main.js';
+            pplScript.async = true;
+            document.body.appendChild(pplScript);
+
+            const pplStyle = document.createElement('link');
+            pplStyle.rel = 'stylesheet';
+            pplStyle.href = 'https://www.ppl.cz/sources/map/main.css';
+            document.head.appendChild(pplStyle);
+
+            const handlePPLEvent = (e: any) => {
+                const point = e.detail;
+                if (point) {
+                    setPickupPoint(`PPL: ${point.name} (${point.address})`);
+                    setFormData(prev => ({ 
+                        ...prev, 
+                        note: prev.note + ` [PPL Point ID: ${point.code}]` 
+                    }));
+                }
+            };
+            window.addEventListener('ppl-parcelshop-map', handlePPLEvent);
+
+            return () => {
+                if (document.body.contains(pplScript)) {
+                    document.body.removeChild(pplScript);
+                }
+                if (document.head.contains(pplStyle)) {
+                    document.head.removeChild(pplStyle);
+                }
+                window.removeEventListener('ppl-parcelshop-map', handlePPLEvent);
+            };
+        }
+    }, [formData.delivery, pickupPoint]);
+
+    const openZasilkovna = () => {
+        if (!window.Packeta) {
+            alert('Zásilkovna widget se ještě nenačetl, zkuste to prosím za sekundu.');
+            return;
+        }
+        window.Packeta.Widget.pick(SHIPPING_CONFIG.ZASILKOVNA_API_KEY, (point: any) => {
+            if (point) {
+                setPickupPoint(`Zásilkovna: ${point.name} (${point.street})`);
+                setFormData(prev => ({ 
+                    ...prev, 
+                    note: prev.note + ` [Zásilkovna ID: ${point.id}]` 
+                }));
+            }
+        }, {
+            language: 'cs',
+            primaryButtonColor: '#d4af37' // Matches gold theme
+        });
+    };
 
     const total = items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
@@ -199,19 +275,36 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
 
                         {formData.delivery === 'zasilkovna' && (
                             <div className="form-group checkout-pickup-section">
-                                <label>Výdejní místo</label>
+                                <label>Výdejní místo Zásilkovna</label>
                                 <div className="pickup-selector-container">
-                                    {pickupPoint ? (
+                                    {pickupPoint && pickupPoint.includes('Zásilkovna') ? (
                                         <div className="selected-pickup-info">
                                             <span className="pickup-name">📍 {pickupPoint}</span>
-                                            <button type="button" className="btn-text" onClick={() => setShowPickupModal(true)}>Změnit</button>
+                                            <button type="button" className="btn-text" onClick={openZasilkovna}>Změnit</button>
                                         </div>
                                     ) : (
-                                        <button type="button" className="btn-secondary btn-pickup" onClick={() => setShowPickupModal(true)}>
-                                            Vybrat výdejní místo
+                                        <button type="button" className="btn-secondary btn-pickup" onClick={openZasilkovna}>
+                                            Vybrat výdejní místo na mapě
                                         </button>
                                     )}
-                                    {!pickupPoint && <span className="error-text">Prosím vyberte výdejní místo</span>}
+                                    {(!pickupPoint || !pickupPoint.includes('Zásilkovna')) && <span className="error-text">Prosím vyberte výdejní místo</span>}
+                                </div>
+                            </div>
+                        )}
+
+                        {formData.delivery === 'ppl' && (
+                            <div className="form-group checkout-pickup-section">
+                                <label>PPL ParcelShop / Box</label>
+                                <div className="pickup-selector-container" style={{ minHeight: '500px', display: 'block', padding: '10px' }}>
+                                    {pickupPoint && pickupPoint.includes('PPL') ? (
+                                        <div className="selected-pickup-info" style={{ marginBottom: '15px' }}>
+                                            <span className="pickup-name">📍 {pickupPoint}</span>
+                                            <button type="button" className="btn-text" onClick={() => setPickupPoint(null)}>Změnit</button>
+                                        </div>
+                                    ) : (
+                                        <div id="ppl-parcelshop-map" data-language="cs" style={{ height: '500px', width: '100%', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--glass-border)', background: 'rgba(0,0,0,0.1)' }}></div>
+                                    )}
+                                    {(!pickupPoint || !pickupPoint.includes('PPL')) && <span className="error-text">Vyberte výdejní místo přímo na mapě</span>}
                                 </div>
                             </div>
                         )}
@@ -244,7 +337,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                         <button 
                             type="submit" 
                             className="btn-primary btn-submit" 
-                            disabled={isSubmitting || (formData.delivery === 'zasilkovna' && !pickupPoint)}
+                            disabled={isSubmitting || (['zasilkovna', 'ppl'].includes(formData.delivery) && !pickupPoint)}
                         >
                             {isSubmitting ? 'Odesílám...' : `Dokončit objednávku (${formatCurrency(total + (formData.delivery === 'osobni' ? 0 : (formData.delivery === 'zasilkovna' ? 79 : 99)))})`}
                         </button>

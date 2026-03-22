@@ -10,11 +10,20 @@ interface ProductShowcaseKartyProps {
 
 import { kartyProducts as products } from '../data/products';
 
+const backgrounds = [
+    '/cards/backs/epic_gold_scales.png', '/cards/backs/epic_lava_flow.png',
+    '/cards/backs/epic_ice_crystal.png', '/cards/backs/epic_arcane_parchment.png',
+    '/cards/backs/epic_runed_obsidian.png',
+    '/cards/card_back_pattern.webp', '/cards/dragon_scales_seamless.webp'
+];
+
 const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart }) => {
     const [selectedProductForPreview, setSelectedProductForPreview] = useState<any | null>(null);
     const [activeTab, setActiveTab] = useState<string>('Všechny');
     const [isMaximized, setIsMaximized] = useState<boolean>(false);
     const [zoomedCardImage, setZoomedCardImage] = useState<string | null>(null);
+    const [selectedProductForCart, setSelectedProductForCart] = useState<any | null>(null);
+    const [selectedBack, setSelectedBack] = useState<string>(backgrounds[0]);
 
     // Prevent background scrolling when modal or lightbox is open
     React.useEffect(() => {
@@ -27,16 +36,23 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
     }, [selectedProductForPreview, zoomedCardImage]);
 
     const handleAddToCart = (product: any) => {
-        if (onAddToCart) {
+        setSelectedProductForCart(product);
+        setSelectedBack(backgrounds[0]);
+    };
+
+    const confirmAddToCart = () => {
+        if (onAddToCart && selectedProductForCart) {
             onAddToCart({
-                id: product.id,
-                name: product.name,
-                description: product.description,
-                price: product.price,
-                image: product.images[1],
-                themeColor: product.themeColor
+                id: selectedProductForCart.id,
+                name: selectedProductForCart.name,
+                description: selectedProductForCart.description,
+                price: selectedProductForCart.price,
+                image: selectedProductForCart.images[1],
+                themeColor: selectedProductForCart.themeColor,
+                selectedBack: selectedBack
             });
-            alert(`${product.name} bylo přidáno do košíku!`);
+            alert(`${selectedProductForCart.name} bylo přidáno do košíku!`);
+            setSelectedProductForCart(null);
         }
     };
 
@@ -269,6 +285,59 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
                     />
                 </div>,
                 document.body
+            )}
+
+            {/* Back Selection Modal for Hrací karty */}
+            {selectedProductForCart && (
+                <div className="back-selection-modal-overlay" onClick={() => setSelectedProductForCart(null)}>
+                    <div className="back-selection-modal glass-panel" onClick={e => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <h3>Zvolte zadní stranu sady</h3>
+                            <button className="close-btn" onClick={() => setSelectedProductForCart(null)}>
+                                <X size={24} />
+                            </button>
+                        </div>
+                        <p className="modal-subtitle">Vybraná zadní strana se vytiskne na všechny karty v tomto balíčku.</p>
+                        
+                        <div className="backs-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', maxHeight: '300px', overflowY: 'auto', padding: '4px' }}>
+                            {backgrounds.map((bg, idx) => (
+                                <div
+                                    key={idx}
+                                    className={`back-preview-item ${selectedBack === bg ? 'selected' : ''}`}
+                                    onClick={() => setSelectedBack(bg)}
+                                    style={{ 
+                                        backgroundImage: `url('${bg}')`,
+                                        height: '120px',
+                                        borderRadius: '8px',
+                                        cursor: 'pointer',
+                                        border: selectedBack === bg ? '2px solid var(--accent-gold)' : '2px solid transparent',
+                                        backgroundSize: 'cover',
+                                        position: 'relative'
+                                    }}
+                                >
+                                    {selectedBack === bg && (
+                                        <div className="selection-check" style={{ position: 'absolute', top: '4px', right: '4px', background: 'var(--accent-gold)', borderRadius: '50%', padding: '2px' }}>
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="modal-footer" style={{ marginTop: '24px', display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+                            <button className="btn-cancel" onClick={() => setSelectedProductForCart(null)}>Zrušit</button>
+                            <button 
+                                className="btn-confirm" 
+                                onClick={confirmAddToCart}
+                                style={{ background: 'var(--accent-gold)', color: 'white', border: 'none', padding: '12px 24px', borderRadius: '12px', fontWeight: 600, cursor: 'pointer' }}
+                            >
+                                Přidat do košíku
+                            </button>
+                        </div>
+                    </div>
+                </div>
             )}
         </section>
     );

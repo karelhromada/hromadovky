@@ -1,7 +1,6 @@
 import React from 'react';
 import HeroSection from '../components/HeroSection';
 import FeaturesSection from '../components/FeaturesSection';
-import HowToPlay from '../components/HowToPlay';
 import ProductShowcase from '../components/ProductShowcase';
 import Testimonials from '../components/Testimonials';
 import CardCreator from '../components/CardCreator';
@@ -17,10 +16,9 @@ const KvartetaPage: React.FC<KvartetaPageProps> = ({ onAddToCart }) => {
         <>
             <HeroSection />
             <FeaturesSection />
-            <HowToPlay />
             <ProductShowcase onAddToCart={onAddToCart} />
-            <Testimonials />
             <CardCreator onAddToCart={onAddToCart} />
+            <Testimonials />
             <FAQ />
         </>
     );

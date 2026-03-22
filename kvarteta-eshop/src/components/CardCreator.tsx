@@ -106,7 +106,7 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
         style: 'Roztomilé',
         note: '',
         customThemeDescription: '',
-        frontImage: frontImages[0],
+        frontImage: '/cards/drag_3.webp',
         bgImage: backgrounds[0],
         fontFamily: fontFamilies[0].value,
         statShape: 'hexagon',

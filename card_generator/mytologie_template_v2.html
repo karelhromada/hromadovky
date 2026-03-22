@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Mythology Cards V2</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Roboto:wght@300;400;700&display=swap');
+        
+        * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+        :root {
+            --card-width: 60mm;
+            --card-height: 85mm;
+            --border-radius: 4mm;
+            --gold: #fde047;
+            --gold-dark: #854d0e;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #1a1a1a;
+            margin: 0; padding: 0;
+            display: flex; justify-content: center; align-items: center; min-height: 100vh;
+        }
+
+        .card {
+            width: var(--card-width);
+            height: var(--card-height);
+            position: relative;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            background-color: #000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .card-image {
+            width: 100%; height: 100%; position: absolute;
+            object-fit: cover; z-index: 1;
+            object-position: center 20%;
+        }
+
+        .overlay {
+            position: absolute; inset: 0; z-index: 2;
+            background: linear-gradient(to bottom, 
+                rgba(0,0,0,0.3) 0%, 
+                transparent 20%, 
+                transparent 60%, 
+                rgba(0,0,0,1) 75%, 
+                rgba(0,0,0,1) 100%
+            );
+        }
+
+        /* Stats Layout */
+        .stat-box {
+            position: absolute; z-index: 10; width: 15mm; height: 14mm;
+            background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px);
+            border: 0.2mm solid rgba(255,255,255,0.2);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: #fff;
+        }
+
+        .stat-v { font-family: 'Cinzel', serif; font-weight: 900; font-size: 3.2mm; line-height: 1; }
+        .stat-l { font-size: 1.1mm; color: #ccc; margin-top: 0.5mm; text-transform: uppercase; letter-spacing: 0.1mm; }
+
+        .tl { top: 1.5mm; left: 1.5mm; }
+        .tr { top: 1.5mm; right: 1.5mm; }
+        .bl { bottom: 1.5mm; left: 1.5mm; }
+        .br { bottom: 1.5mm; right: 1.5mm; }
+
+        /* Badge for ID (1A, 1B...) */
+        .id-badge {
+            position: absolute; top: 1.5mm; left: 50%; transform: translateX(-50%);
+            width: 7mm; height: 7mm; background: #000; border: 0.4mm solid var(--gold);
+            border-radius: 50%; color: var(--gold); display: flex; justify-content: center;
+            align-items: center; font-family: 'Cinzel', serif; font-weight: 900;
+            font-size: 3mm; z-index: 15;
+        }
+
+        /* Origin Label */
+        .origin-label {
+            position: absolute; bottom: 12mm; left: 0; right: 0; text-align: center;
+            z-index: 10; color: var(--gold); font-size: 1.8mm; 
+            text-transform: uppercase; letter-spacing: 1px; font-weight: 700;
+            opacity: 0.9;
+        }
+
+        .name-container {
+            position: absolute; bottom: 3mm; left: 2mm; right: 2mm;
+            text-align: center; z-index: 10;
+        }
+
+        .card-name {
+            font-family: 'Cinzel', serif; font-size: 4mm; color: #fff;
+            margin: 0; text-shadow: 0 2px 4px #000;
+        }
+
+        @media print {
+            body { background: none; }
+            .card { box-shadow: none; border: 0.1mm solid #333; }
+        }
+    </style>
+</head>
+<body>
+    <!-- This is a single card template for the generator -->
+    <div class="card">
+        <img src="${IMG_PATH}" class="card-image">
+        <div class="overlay"></div>
+        <div class="id-badge">${ID}</div>
+        
+        <!-- Stats -->
+        <div class="stat-box tl">
+            <div class="stat-v">${MAGIE}</div>
+            <div class="stat-l">Magie</div>
+        </div>
+        <div class="stat-box tr">
+            <div class="stat-v">${STARI}</div>
+            <div class="stat-l">Stáří (let)</div>
+        </div>
+        <div class="stat-box bl">
+            <div class="stat-v">${SILA}</div>
+            <div class="stat-l">Síla</div>
+        </div>
+        <div class="stat-box br">
+            <div class="stat-v">${HROZIVOST}</div>
+            <div class="stat-l">Hrozivost</div>
+        </div>
+
+        <div class="origin-label">${ORIGIN}</div>
+        <div class="name-container">
+            <h1 class="card-name">${NAME}</h1>
+        </div>
+    </div>
+</body>
+</html>

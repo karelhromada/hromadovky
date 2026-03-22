@@ -6,6 +6,8 @@ import Footer from './components/Footer'
 import KvartetaPage from './pages/KvartetaPage'
 import PexesoPage from './pages/PexesoPage'
 import HraciKartyPage from './pages/HraciKartyPage'
+import RulesPage from './pages/RulesPage'
+import HomePage from './pages/HomePage'
 import './App.css'
 
 export interface CartItem {
@@ -75,9 +77,11 @@ function App() {
 
         <main>
           <Routes>
-            <Route path="/" element={<KvartetaPage onAddToCart={addToCart} />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/kvarteta" element={<KvartetaPage onAddToCart={addToCart} />} />
             <Route path="/pexeso" element={<PexesoPage onAddToCart={addToCart} />} />
             <Route path="/karty" element={<HraciKartyPage onAddToCart={addToCart} />} />
+            <Route path="/pravidla" element={<RulesPage />} />
           </Routes>
         </main>
 

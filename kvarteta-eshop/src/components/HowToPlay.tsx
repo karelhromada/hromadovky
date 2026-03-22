@@ -37,22 +37,54 @@ const kvartetoRules = [
     }
 ];
 
-const HowToPlay = () => {
-    const [activeTab, setActiveTab] = useState<'vyssi' | 'kvarteto'>('vyssi');
+const mensiRules = [
+    {
+        id: '01',
+        title: 'Rozdejte karty',
+        desc: 'Zamíchejte balíček a rozdejte všechny karty rovnoměrně mezi hráče. Každý drží své karty tak, aby viděl pouze vrchní.'
+    },
+    {
+        id: '02',
+        title: 'Zvolte „nejslabší“ vlastnost',
+        desc: 'Hráč na tahu vybere z vrchní karty tu vlastnost (např. Síla nebo Rychlost), o které si myslí, že v ní má jeho postava nejnižší hodnotu.'
+    },
+    {
+        id: '03',
+        title: 'Menší bere vše!',
+        desc: 'Ostatní hráči nahlásí hodnotu stejné vlastnosti. Karta s nejnižším číslem v dané vlastnosti vyhrává a bere karty všech poražených!'
+    }
+];
 
-    const activeRules = activeTab === 'vyssi' ? rules : kvartetoRules;
+const HowToPlay = () => {
+    const [activeTab, setActiveTab] = useState<'vyssi' | 'mensi' | 'kvarteto'>('vyssi');
+
+    const getActiveRules = () => {
+        if (activeTab === 'vyssi') return rules;
+        if (activeTab === 'mensi') return mensiRules;
+        return kvartetoRules;
+    };
+
+    const activeRules = getActiveRules();
+
+    const getTitle = () => {
+        if (activeTab === 'vyssi') return 'Vyšší bere';
+        if (activeTab === 'mensi') return 'Menší bere';
+        return 'Kvarteto';
+    };
+
+    const getSubtitle = () => {
+        if (activeTab === 'vyssi') return 'Tři jednoduché kroky, které zaručí hodiny akční zábavy pro celou rodinu.';
+        if (activeTab === 'mensi') return 'Obrácená varianta klasické bitvy. Někdy i to nejmenší číslo může znamenat velké vítězství!';
+        return 'Klasická strategická paměťovka pro všechny generace. Kdo získá nejvíce čtveřic?';
+    };
 
     return (
         <section className="how-to-play-section" id="how-to-play">
             <div className="container">
                 <div className="section-header text-center">
                     <span className="badge mb-4">Pravidla hry</span>
-                    <h2 className="section-title">Jak se hraje <span className="text-gradient-gold">{activeTab === 'vyssi' ? 'Vyšší bere' : 'Kvarteto'}</span>?</h2>
-                    <p className="section-subtitle">
-                        {activeTab === 'vyssi'
-                            ? 'Tři jednoduché kroky, které zaručí hodiny akční zábavy pro celou rodinu.'
-                            : 'Klasická strategická paměťovka pro všechny generace. Kdo získá nejvíce čtveřic?'}
-                    </p>
+                    <h2 className="section-title">Jak se hraje <span className="text-gradient-gold">{getTitle()}</span>?</h2>
+                    <p className="section-subtitle">{getSubtitle()}</p>
                 </div>
 
                 <div className="rules-toggle-container">
@@ -62,6 +94,12 @@ const HowToPlay = () => {
                             onClick={() => setActiveTab('vyssi')}
                         >
                             Vyšší bere
+                        </button>
+                        <button
+                            className={`toggle-btn ${activeTab === 'mensi' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('mensi')}
+                        >
+                            Menší bere
                         </button>
                         <button
                             className={`toggle-btn ${activeTab === 'kvarteto' ? 'active' : ''}`}

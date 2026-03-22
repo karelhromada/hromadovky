@@ -29,16 +29,18 @@ const Navbar: React.FC<NavbarProps> = ({ toggleCart, cartCount }) => {
     return (
         <header className={`navbar ${scrolled ? 'scrolled glass-panel' : ''}`}>
             <div className="navbar-container container">
-                <div className="logo">
+                <Link to="/" className="logo">
                     <img src="/logo.webp" alt="Hromadovky Logo" className="navbar-logo-img" />
                     <span className="text-gradient-gold">HROMADOVKY</span>
                     <span className="logo-subtitle">| karty plné příběhů</span>
-                </div>
+                </Link>
 
                 <nav className="nav-links">
-                    <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>Kvarteta</Link>
+                    <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>Domů</Link>
+                    <Link to="/kvarteta" className={`nav-link ${location.pathname === '/kvarteta' ? 'active' : ''}`}>Kvarteta</Link>
                     <Link to="/pexeso" className={`nav-link ${location.pathname === '/pexeso' ? 'active' : ''}`}>Pexeso</Link>
                     <Link to="/karty" className={`nav-link ${location.pathname === '/karty' ? 'active' : ''}`}>Hrací karty</Link>
+                    <Link to="/pravidla" className={`nav-link ${location.pathname === '/pravidla' ? 'active' : ''}`}>Pravidla hry</Link>
                 </nav>
 
                 <div className="nav-actions">
@@ -66,9 +68,11 @@ const Navbar: React.FC<NavbarProps> = ({ toggleCart, cartCount }) => {
             {/* Mobile Navigation Menu */}
             <div className={`mobile-nav ${mobileMenuOpen ? 'open' : ''}`}>
                 <nav className="mobile-nav-links">
-                    <Link to="/" className={`mobile-nav-link ${location.pathname === '/' ? 'active' : ''}`}>Kvarteta</Link>
+                    <Link to="/" className={`mobile-nav-link ${location.pathname === '/' ? 'active' : ''}`}>Domů</Link>
+                    <Link to="/kvarteta" className={`mobile-nav-link ${location.pathname === '/kvarteta' ? 'active' : ''}`}>Kvarteta</Link>
                     <Link to="/pexeso" className={`mobile-nav-link ${location.pathname === '/pexeso' ? 'active' : ''}`}>Pexeso</Link>
                     <Link to="/karty" className={`mobile-nav-link ${location.pathname === '/karty' ? 'active' : ''}`}>Hrací karty</Link>
+                    <Link to="/pravidla" className={`mobile-nav-link ${location.pathname === '/pravidla' ? 'active' : ''}`}>Pravidla hry</Link>
                 </nav>
             </div>
 

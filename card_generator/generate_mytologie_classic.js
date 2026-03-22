@@ -16,7 +16,7 @@ async function run() {
         args: ['--allow-file-access-from-files', '--disable-web-security']
     });
     const page = await browser.newPage();
-    // Using original image proportions (678x921)
+    // Using original image proportions (678x921px) for Perfect Original
     await page.setViewport({ width: 678, height: 921, deviceScaleFactor: 2 });
     await page.setDefaultNavigationTimeout(60000);
 
@@ -24,7 +24,7 @@ async function run() {
 
     for (const char of data) {
         let html = template;
-        
+
         // Image as Base64
         const imgSrc = path.join(IMG_SRC_DIR, char.img);
         if (!fs.existsSync(imgSrc)) {
@@ -48,13 +48,13 @@ async function run() {
 
         // Render HTML
         await page.setContent(html, { waitUntil: 'load', timeout: 60000 });
-        
+
         // Wait for fonts/effects
         await new Promise(r => setTimeout(r, 200));
-        
+
         const element = await page.$('.card-container');
         const outputPath = path.join(OUTPUT_DIR, char.img.replace('_karta_', '_v2_'));
-        
+
         await element.screenshot({ path: outputPath, omitBackground: true });
         console.log(`✅ Generated (Classic): ${char.name} -> ${path.basename(outputPath)}`);
     }

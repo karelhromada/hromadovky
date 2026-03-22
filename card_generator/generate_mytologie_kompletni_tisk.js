@@ -42,6 +42,8 @@ async function run() {
         if (fs.existsSync(srcPath)) {
             await sharp(srcPath)
                 .resize(1200) // High quality for print, but optimized
+                .modulate({ brightness: 1.2, saturation: 1.1 }) // +20% jas, +10% saturace pro matnou fólii
+                .sharpen(1.5) // Doostření hran pro tisk
                 .jpeg({ quality: 85, chromaSubsampling: '4:4:4' })
                 .toFile(outPath);
             optimizedFiles.push(outName);
@@ -55,6 +57,8 @@ async function run() {
     const backOutName = 'back_mythology_optimized.jpg';
     await sharp(path.join(srcBase, backFile))
         .resize(1200)
+        .modulate({ brightness: 1.2, saturation: 1.1 }) // Aplikace stejného filtru i na rubovou stranu
+        .sharpen(1.5)
         .jpeg({ quality: 85 })
         .toFile(path.join(assetsDir, backOutName));
 
@@ -68,11 +72,18 @@ async function run() {
         const pageCards = optimizedFiles.slice(p * CARDS_PER_PAGE, (p + 1) * CARDS_PER_PAGE);
         
         pageCards.forEach((file, index) => {
+            const char = rawData.find(c => {
+                const v2Name = c.img.replace('_karta_', '_v2_');
+                const outName = v2Name.replace('.png', '.jpg');
+                return outName === file;
+            });
+            const color = char ? char.color : 'transparent';
+            
             const row = Math.floor(index / 3);
             const col = index % 3;
             const x = START_X + col * (BOX_W + GUTTER);
             const y = START_Y + row * (BOX_H + GUTTER);
-            frontCardsHtml += `<div class="card" style="left:${x}mm; top:${y}mm; background-image:url('assets_mytologie_v2/${file}');"></div>\n`;
+            frontCardsHtml += `<div class="card" style="left:${x}mm; top:${y}mm; background-image:url('assets_mytologie_v2/${file}'); --card-color: ${color};"></div>\n`;
         });
 
         pagesHtml += `<div class="page front">${frontCardsHtml}</div>\n`;
@@ -85,7 +96,7 @@ async function run() {
             const col = 2 - (b % 3); // MIRRORING
             const x = START_X + col * (BOX_W + GUTTER);
             const y = START_Y + row * (BOX_H + GUTTER);
-            backCardsHtml += `<div class="card" style="left:${x}mm; top:${y}mm; background-image:url('assets_mytologie_v2/${backOutName}');"></div>\n`;
+            backCardsHtml += `<div class="card" style="left:${x}mm; top:${y}mm; background-image:url('assets_mytologie_v2/${backOutName}'); --card-color: transparent;"></div>\n`;
         }
 
         pagesHtml += `<div class="page back">${backCardsHtml}</div>\n`;
@@ -99,7 +110,26 @@ async function run() {
     <style>
         body { margin: 0; padding: 0; background: #eee; }
         .page { width: 210mm; height: 297mm; background: #fff; margin: 10mm auto; position: relative; overflow: hidden; page-break-after: always; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        .card { width: ${BOX_W}mm; height: ${BOX_H}mm; position: absolute; background-size: cover; background-position: center; border: 0.1mm solid #f0f0f0; }
+        .card { width: ${BOX_W}mm; height: ${BOX_H}mm; position: absolute; background-color: #000; background-size: cover; background-position: center; border-radius: 15px; overflow: hidden; }
+        
+        /* Zaoblující vnější černý okraj překrývající staré ostré hrany */
+        .card::before {
+            content: ''; position: absolute; inset: 0;
+            border: 1.4mm solid #000;
+            border-radius: 15px;
+            pointer-events: none;
+            z-index: 2;
+        }
+        
+        /* Nový perfektně zaoblený barevný rámeček tažený z dat */
+        .card::after {
+            content: ''; position: absolute; inset: 1.4mm;
+            border: 0.6mm solid var(--card-color);
+            border-radius: 10px;
+            pointer-events: none;
+            z-index: 3;
+        }
+        
         @media print {
             body { background: none; }
             .page { margin: 0; box-shadow: none; border: none; }

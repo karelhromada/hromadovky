@@ -1,0 +1,325 @@
+.checkout-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    min-height: 80vh;
+}
+
+.checkout-layout {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 30px;
+}
+
+@media (max-width: 968px) {
+    .checkout-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+.checkout-form-section, .order-summary-section {
+    padding: 30px;
+    height: fit-content;
+}
+
+.checkout-container h2 {
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+    color: var(--text-primary);
+    border-bottom: 2px solid rgba(212, 175, 55, 0.2);
+    padding-bottom: 10px;
+}
+
+.checkout-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+@media (max-width: 600px) {
+    .form-row {
+        flex-direction: column;
+    }
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.1);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.btn-submit {
+    margin-top: 15px;
+    padding: 18px !important;
+    font-size: 1.1rem !important;
+    font-weight: 800 !important;
+}
+
+/* Order Summary Styles */
+.summary-items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.summary-info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.summary-name {
+    font-weight: 500;
+}
+
+.summary-name .qty {
+    color: var(--accent-gold);
+    margin-left: 8px;
+    font-weight: 700;
+}
+
+.summary-total {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-secondary);
+}
+
+.grand-total {
+    margin-top: 5px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(212, 175, 55, 0.3);
+    color: var(--text-primary);
+    font-weight: 800;
+    font-size: 1.2rem;
+}
+
+.checkout-empty {
+    max-width: 600px;
+    margin: 100px auto;
+    padding: 50px;
+    text-align: center;
+}
+
+.checkout-empty h2 {
+    margin-bottom: 15px;
+}
+
+.checkout-empty p {
+    margin-bottom: 30px;
+    color: var(--text-secondary);
+}
+
+/* Pickup Point Selection Styles */
+.pickup-selector-container {
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px dashed rgba(212, 175, 55, 0.3);
+    border-radius: 12px;
+}
+
+.selected-pickup-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pickup-name {
+    font-weight: 500;
+    color: var(--accent-gold);
+}
+
+.btn-pickup {
+    width: 100%;
+    margin-top: 5px;
+}
+
+.error-text {
+    display: block;
+    font-size: 0.8rem;
+    color: #ff4d4d;
+    margin-top: 8px;
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-content {
+    max-width: 500px;
+    width: 100%;
+    max-height: 80vh;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+}
+
+.pickup-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pickup-option {
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.pickup-option:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--accent-gold);
+}
+
+/* Success View Styles */
+.checkout-success-container {
+    max-width: 600px;
+    margin: 80px auto;
+    padding: 20px;
+}
+
+.success-card {
+    padding: 60px 40px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.success-card h1 {
+    font-size: 2.5rem;
+    color: var(--accent-gold);
+}
+
+.success-details {
+    margin: 20px 0;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Checkmark Animation */
+.success-icon-wrap {
+    margin-bottom: 20px;
+}
+
+.checkmark-circle {
+    width: 100px;
+    height: 100px;
+    border: 5px solid #4CAF50;
+    border-radius: 50%;
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.checkmark {
+    display: block;
+}
+
+.checkmark.draw:after {
+    animation-duration: 800ms;
+    animation-timing-function: ease;
+    animation-name: checkmark;
+    transform: scaleX(-1) rotate(135deg);
+}
+
+.checkmark:after {
+    opacity: 1;
+    height: 50px;
+    width: 25px;
+    transform-origin: left top;
+    border-right: 5px solid #4CAF50;
+    border-top: 5px solid #4CAF50;
+    content: '';
+    left: 20px;
+    top: 50px;
+    position: absolute;
+}
+
+@keyframes checkmark {
+    0% { height: 0; width: 0; opacity: 1; }
+    20% { height: 0; width: 25px; opacity: 1; }
+    40% { height: 50px; width: 25px; opacity: 1; }
+    100% { height: 50px; width: 25px; opacity: 1; }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

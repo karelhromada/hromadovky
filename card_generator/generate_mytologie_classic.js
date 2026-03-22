@@ -34,7 +34,14 @@ async function run() {
         const base64Img = fs.readFileSync(imgSrc).toString('base64');
         const imgUrl = `data:image/png;base64,${base64Img}`;
 
+        // Kalkulace velikosti písma pro dlouhé názvy
+        const fullTitle = `${char.id} - ${char.name}`;
+        let titleSize = '38px';
+        if (fullTitle.length > 20) titleSize = '28px'; // např. "7C - Grendelova matka" (21 znaků)
+        else if (fullTitle.length > 17) titleSize = '33px';
+
         // Replace placeholders
+        html = html.replace(/\${TITLE_SIZE}/g, titleSize);
         html = html.replace(/\${ID}/g, char.id);
         html = html.replace(/\${NAME}/g, char.name);
         html = html.replace(/\${SUBTITLE}/g, char.subtitle);

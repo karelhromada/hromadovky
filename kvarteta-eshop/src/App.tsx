@@ -8,6 +8,7 @@ import PexesoPage from './pages/PexesoPage'
 import HraciKartyPage from './pages/HraciKartyPage'
 import RulesPage from './pages/RulesPage'
 import HomePage from './pages/HomePage'
+import CheckoutPage from './pages/CheckoutPage'
 import './App.css'
 
 export interface CartItem {
@@ -51,6 +52,10 @@ function App() {
     setIsCartOpen(true);
   };
 
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
   const removeFromCart = (id: string, selectedBack?: string, size?: string) => {
     setCartItems(prev => prev.filter(item => !(item.id === id && item.selectedBack === selectedBack && item.size === size)));
   };
@@ -82,6 +87,7 @@ function App() {
             <Route path="/pexeso" element={<PexesoPage onAddToCart={addToCart} />} />
             <Route path="/karty" element={<HraciKartyPage onAddToCart={addToCart} />} />
             <Route path="/pravidla" element={<RulesPage />} />
+            <Route path="/checkout" element={<CheckoutPage items={cartItems} onClearCart={clearCart} />} />
           </Routes>
         </main>
 

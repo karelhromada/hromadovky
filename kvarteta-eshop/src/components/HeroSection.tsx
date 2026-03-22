@@ -25,24 +25,24 @@ const HeroSection: React.FC = () => {
     }, []);
 
     const cards = [
-        { id: 1, image: '/cards/mytologie/zeus_karta_1773232441103.png' },     // Zlaty Zeus (Sada 1)
-        { id: 2, image: '/cards/mytologie/thor_karta_1773232978954.png' },     // Zeleny Thor (Sada 2)
-        { id: 3, image: '/cards/mytologie/hades_karta_1773232474069.png' },    // Modry Hades (Sada 3)
-        { id: 4, image: '/cards/mytologie/freya_karta_1773233012935.png' },    // Stribrna Freya (Sada 4)
-        { id: 5, image: '/cards/mytologie/fenrir_karta_1773233163130.png' },   // Zlaty Fenrir (Sada 1 E)
+        { id: 1, image: '/cards/mytologie/zeus_karta_1773232441103.png' },     // Mytologie
+        { id: 2, image: '/cards/knight_full_1.webp' },                          // Rytíři
+        { id: 3, image: '/cards/drag_full_1.webp' },                            // Draci
+        { id: 4, image: '/cards/cat_full_1.webp' },                             // Kočky
+        { id: 5, image: '/cards/baby_full_1.webp' },                           // Baby dráčci
     ];
 
     return (
         <section id="hero" className="hero-section container">
             <div className="hero-content">
-                <div className="badge animate-fade-in-up">🔥 Nová edice: Mytologie a Bohové</div>
+                <div className="badge animate-fade-in-up">Karetní hry, které propojují generace</div>
                 <h1 className="hero-title animate-fade-in-up delay-100">
-                    Objevte kouzla karet a pexes, <br />
-                    která vyprávějí své <span className="text-gradient-gold">vlastní příběhy</span>
+                    Objevte kouzla <span className="text-gradient-gold">autorských kvartet</span>, <br />
+                    která vyprávějí své vlastní příběhy
                 </h1>
                 <p className="hero-description animate-fade-in-up delay-200">
-                    Nádherně vytvořené karetní sady s prémiovým skleněným designem pro celou rodinu.
-                    Unikátní statistiky, úžasné ilustrace z mytologie a desítky hodin zábavy čekají jen na vás.
+                    Nádherně vytvořené karetní sady s prémiovým designem pro celou rodinu. 
+                    Unikátní statistiky, originální ilustrace a desítky hodin společné zábavy čekají jen na vás.
                 </p>
                 <div className="hero-actions animate-fade-in-up delay-300">
                     <a href="#products" className="btn-primary">Prozkoumat sady</a>

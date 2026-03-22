@@ -68,20 +68,20 @@ export const kvartetaProducts = [
             { id: 1, text: 'Horká novinka', icon: Sparkles, color: '#fde047' }
         ],
         image: [
-            '/cards/mytologie/zeus_karta_1773232441103.png', '/cards/mytologie/poseidon_karta_1773232459144.png', '/cards/mytologie/hades_karta_1773232474069.png', '/cards/mytologie/athena_karta_1773232489883.png',
-            '/cards/mytologie/herakles_karta_1773232618325.png', '/cards/mytologie/meduza_karta_1773232636144.png', '/cards/mytologie/kerberos_karta_1773232651828.png', '/cards/mytologie/pegas_karta_1773232669889.png',
-            '/cards/mytologie/jupiter_karta_1773232768056.png', '/cards/mytologie/mars_karta_1773232782289.png', '/cards/mytologie/neptun_karta_1773232797411.png', '/cards/mytologie/venuse_karta_1773232812348.png',
-            '/cards/mytologie/odin_karta_1773232963748.png', '/cards/mytologie/thor_karta_1773232978954.png', '/cards/mytologie/loki_karta_1773232994824.png', '/cards/mytologie/freya_karta_1773233012935.png',
-            '/cards/mytologie/fenrir_karta_1773233163130.png', '/cards/mytologie/jormungandr_karta_1773331719629.png', '/cards/mytologie/valkyra_karta_1773331735922.png', '/cards/mytologie/ymir_karta_1773331768521.png',
-            '/cards/mytologie/ra_karta_1773332186294.png', '/cards/mytologie/anubis_karta_1773332202104.png', '/cards/mytologie/horus_karta_1773332218750.png', '/cards/mytologie/bastet_karta_1773332236278.png',
-            '/cards/mytologie/beowulf_karta_1773332496331.png', '/cards/mytologie/grendel_karta_1773332517229.png', '/cards/mytologie/grendel_mother_karta_1773332529832.png', '/cards/mytologie/fire_dragon_karta_1773332546606.png',
-            '/cards/mytologie/minotaurus_karta_1773332802337.png', '/cards/mytologie/bazilisek_v2_karta_1773333084369.png', '/cards/mytologie/kraken_karta_1773332833372.png', '/cards/mytologie/mantikora_karta_1773332852801.png'
+            '/cards/mytologie/zeus_v2_1773232441103.png', '/cards/mytologie/poseidon_v2_1773232459144.png', '/cards/mytologie/hades_v2_1773232474069.png', '/cards/mytologie/athena_v2_1773232489883.png',
+            '/cards/mytologie/herakles_v2_1773232618325.png', '/cards/mytologie/meduza_v2_1773232636144.png', '/cards/mytologie/kerberos_v2_1773232651828.png', '/cards/mytologie/pegas_v2_1773232669889.png',
+            '/cards/mytologie/jupiter_v2_1773232768056.png', '/cards/mytologie/mars_v2_1773232782289.png', '/cards/mytologie/neptun_v2_1773232797411.png', '/cards/mytologie/venuse_v2_1773232812348.png',
+            '/cards/mytologie/odin_v2_1773232963748.png', '/cards/mytologie/thor_v2_1773232978954.png', '/cards/mytologie/loki_v2_1773232994824.png', '/cards/mytologie/freya_v2_1773233012935.png',
+            '/cards/mytologie/fenrir_v2_1773233163130.png', '/cards/mytologie/jormungandr_v2_1773331719629.png', '/cards/mytologie/valkyra_v2_1773331735922.png', '/cards/mytologie/ymir_v2_1773331768521.png',
+            '/cards/mytologie/ra_v2_1773332186294.png', '/cards/mytologie/anubis_v2_1773332202104.png', '/cards/mytologie/horus_v2_1773332218750.png', '/cards/mytologie/bastet_v2_1773332236278.png',
+            '/cards/mytologie/beowulf_v2_1773332496331.png', '/cards/mytologie/grendel_v2_1773332517229.png', '/cards/mytologie/grendel_mother_v2_1773332529832.png', '/cards/mytologie/fire_dragon_v2_1773332546606.png',
+            '/cards/mytologie/minotaurus_v2_1773332802337.png', '/cards/mytologie/bazilisek_v2_v2_1773333084369.png', '/cards/mytologie/kraken_v2_1773332833372.png', '/cards/mytologie/mantikora_v2_1773332852801.png'
         ]
     },
     {
         id: 'kvarteto-dinosauri',
         name: 'Kvarteto: Dinosauři',
-        description: 'Poznejte prehistorické obry v luxusní sběratelské edici. 32 nádherně ilustrovaných karet s unikátními statistikami.',
+        description: 'Poznejte prehistorické obry v luxusní sběratelské edici. 32 nádherně ilustrovaných karet.',
         price: 349,
         themeColor: '#ff8a00',
         badges: [

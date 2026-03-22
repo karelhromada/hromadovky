@@ -11,20 +11,25 @@ interface ProductShowcaseProps {
 }
 
 const backgrounds = [
-    '/cards/card_back_pattern.webp', '/cards/dragon_scales_seamless.webp',
-    '/cards/dragon_scales_vibrant.webp', '/cards/dragon_scales_metallic.webp',
-    '/cards/dragon_scales_realistic_1.webp', '/cards/dragon_scales_realistic_2.webp',
-    '/cards/cat_fur_orange.webp', '/cards/cat_fur_silver.webp', '/cards/cat_fur_calico.webp',
-    '/cards/pexeso_back_blue_geo.webp', '/cards/pexeso_back_red_geo.webp',
-    '/cards/pexeso_back_linen.webp', '/cards/pexeso_back_stars.webp'
+    '/cards/card_back_pattern.webp', 
+    '/cards/dragon_scales_seamless.webp',
+    '/cards/dragon_scales_realistic_1.webp', 
+    '/cards/dragon_scales_realistic_2.webp',
+    '/cards/cat_fur_orange.webp', 
+    '/cards/cat_fur_silver.webp', 
+    '/cards/cat_fur_calico.webp',
+    '/cards/pexeso_back_blue_geo.webp', 
+    '/cards/pexeso_back_red_geo.webp',
+    '/cards/pexeso_back_linen.webp', 
+    '/cards/pexeso_back_stars.webp'
 ];
 
 const products = [
     {
         id: 'pexeso-dinosauri',
         name: 'Pexeso: Dinosauři',
-        description: 'Poznejte prehistorické obry v luxusní sběratelské edici. 32 nádherně ilustrovaných karet s unikátními statistikami.',
-        price: 199,
+        description: 'Poznejte prehistorické obry v luxusní sběratelské edici s nádherně ilustrovanými kartami.',
+        price: 249,
         themeColor: '#ff8a00',
         badges: [
             { id: 1, text: 'Bestseller', icon: Trophy, color: '#ffb703' }
@@ -40,8 +45,8 @@ const products = [
     {
         id: 'pexeso-dracci',
         name: 'Pexeso: Baby dráčci',
-        description: 'Roztomilí dráčci v pexesu pro nejmenší i velké. 64 karet pro trénink paměti.',
-        price: 199,
+        description: 'Roztomilí dráčci v pexesu pro nejmenší i velké. Skvělý trénink paměti pro každého.',
+        price: 249,
         themeColor: '#a100ff',
         badges: [
             { id: 1, text: 'Roztomilé', icon: Star, color: '#d946ef' }
@@ -56,7 +61,7 @@ const products = [
         id: 'pexeso-draci',
         name: 'Pexeso: Draci',
         description: 'Mocní a legendární Draci přinášejí do hry epické souboje. Nejmocnější bytosti v prémiovém provedení.',
-        price: 199,
+        price: 249,
         themeColor: '#ff0033',
         badges: [
             { id: 1, text: 'Premium', icon: Shield, color: '#ef4444' }
@@ -76,7 +81,7 @@ const products = [
         id: 'pexeso-kocky',
         name: 'Pexeso: Kočky bojovnice',
         description: 'Odvážné, mrštné a nebezpečně roztomilé kočičí válečnice. Získejte celou kočičí armádu.',
-        price: 199,
+        price: 249,
         themeColor: '#00d2ff',
         badges: [
             { id: 1, text: 'Novinka', icon: Sparkles, color: '#0ea5e9' }
@@ -91,7 +96,7 @@ const products = [
         id: 'pexeso-dravci',
         name: 'Pexeso: Velcí lovci',
         description: 'Odhalte sílu nejobávanějších dravců naší planety ve strhujícím pexesu pro odvážné.',
-        price: 199,
+        price: 249,
         themeColor: '#8b5a2b',
         badges: [
             { id: 1, text: 'Divoká příroda', icon: Star, color: '#d97706' }
@@ -105,10 +110,23 @@ const products = [
     }
 ];
 
+const dimensions = [
+    { id: 'klasicke', label: 'Klasické', desc: '50 × 50 mm', priceAdd: 0 },
+    { id: 'velke', label: 'Velké', desc: '60 × 60 mm', priceAdd: 49 },
+    { id: 'maxi', label: 'Maxi', desc: '80 × 80 mm', priceAdd: 99 }
+];
+
+const deckSizeOptions = [
+    { id: 16, label: '16 karet', price: 199, desc: '8 párů, ideální pro nejmenší' },
+    { id: 32, label: '32 karet', price: 299, desc: '16 párů, zlatý standard' },
+    { id: 64, label: '64 karet', price: 399, desc: '32 párů, pro mistry paměti' }
+];
+
 // --- Internal Components ---
-const ProductCardInteractive = ({ product, onAddToCartClick }: { product: any, onAddToCartClick: (product: any) => void }) => {
+const ProductCardInteractive = ({ product, onAddToCartClick }: { product: any, onAddToCartClick: (product: any, deckSize: any) => void }) => {
     const images = Array.isArray(product.image) ? product.image : [product.image];
     const [isHovered, setIsHovered] = useState(false);
+    const [selectedDeckSize, setSelectedDeckSize] = useState(deckSizeOptions[1]); // Default 32 cards
 
     // 3D Parallax Tilt state
     const x = useMotionValue(0);
@@ -238,11 +256,26 @@ const ProductCardInteractive = ({ product, onAddToCartClick }: { product: any, o
             <div className="product-info" style={{ transform: "translateZ(30px)" }}>
                 <h3 className="product-name">{product.name}</h3>
                 <p className="product-desc">{product.description}</p>
+                
+                {/* Deck Size Selection on Card */}
+                <div className="card-size-label">Počet karet</div>
+                <div className="card-size-selector">
+                    {deckSizeOptions.map(opt => (
+                        <button
+                            key={opt.id}
+                            onClick={(e) => { e.stopPropagation(); setSelectedDeckSize(opt); }}
+                            className={`size-pill ${selectedDeckSize.id === opt.id ? 'active' : ''}`}
+                        >
+                            {opt.id}
+                        </button>
+                    ))}
+                </div>
+
                 <div className="product-footer">
-                    <span className="product-price">{product.price} Kč</span>
+                    <span className="product-price">{selectedDeckSize.price} Kč</span>
                     <button
                         className="btn-add-cart"
-                        onClick={() => onAddToCartClick(product)}
+                        onClick={() => onAddToCartClick(product, selectedDeckSize)}
                     >
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle>
@@ -258,31 +291,40 @@ const ProductCardInteractive = ({ product, onAddToCartClick }: { product: any, o
     );
 };
 
-const dimensions = [
-    { id: 'klasicke', label: 'Klasické', desc: '50 × 50 mm', priceAdd: 0 },
-    { id: 'velke', label: 'Velké', desc: '60 × 60 mm', priceAdd: 49 },
-    { id: 'maxi', label: 'Maxi', desc: '80 × 80 mm', priceAdd: 99 }
-];
-
 const ProductShowcasePexeso: React.FC<ProductShowcaseProps> = ({ onAddToCart }) => {
     const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
     const [selectedBack, setSelectedBack] = useState<string>(backgrounds[0]);
     const [selectedSize, setSelectedSize] = useState<typeof dimensions[0]>(dimensions[0]);
+    const [selectedDeckSize, setSelectedDeckSize] = useState<typeof deckSizeOptions[1]>(deckSizeOptions[1]); // Default 32 cards
 
-    const handleAddToCartClick = (product: any) => {
+    // Prevent body scroll when modal is open
+    useEffect(() => {
+        if (selectedProduct) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [selectedProduct]);
+
+    const handleAddToCartClick = (product: any, deckSize: any) => {
         setSelectedProduct(product);
         setSelectedBack(backgrounds[0]); // Reset to default on open
         setSelectedSize(dimensions[0]); // Reset to classical
+        setSelectedDeckSize(deckSize); // Use the size selected on the card
     };
 
     const confirmAddToCart = () => {
-        if (selectedProduct && selectedBack && selectedSize) {
+        if (selectedProduct && selectedBack && selectedSize && selectedDeckSize) {
             onAddToCart({
                 ...selectedProduct,
-                price: selectedProduct.price + selectedSize.priceAdd,
+                price: selectedDeckSize.price + selectedSize.priceAdd,
                 image: Array.isArray(selectedProduct.image) ? selectedProduct.image[0] : selectedProduct.image,
                 selectedBack,
-                size: `${selectedSize.label} (${selectedSize.desc})`
+                size: `${selectedSize.label} (${selectedSize.desc})`,
+                deckSize: selectedDeckSize.label
             });
             setSelectedProduct(null);
         }
@@ -341,6 +383,34 @@ const ProductShowcasePexeso: React.FC<ProductShowcaseProps> = ({ onAddToCart }) 
                             ))}
                         </div>
 
+                        <div className="deck-size-selection-container" style={{ marginTop: '24px' }}>
+                            <h4 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '12px', color: 'var(--text-primary)' }}>Zvolte počet karet</h4>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+                                {deckSizeOptions.map((opt) => (
+                                    <div
+                                        key={opt.id}
+                                        onClick={() => setSelectedDeckSize(opt)}
+                                        style={{
+                                            border: selectedDeckSize.id === opt.id ? '2px solid #a100ff' : '1px solid var(--glass-border)',
+                                            background: selectedDeckSize.id === opt.id ? 'rgba(161, 0, 255, 0.05)' : 'var(--glass-bg)',
+                                            padding: '12px',
+                                            borderRadius: '12px',
+                                            cursor: 'pointer',
+                                            textAlign: 'center',
+                                            transition: 'all 0.2s',
+                                            boxShadow: selectedDeckSize.id === opt.id ? '0 4px 12px rgba(161, 0, 255, 0.15)' : 'none'
+                                        }}
+                                    >
+                                        <div style={{ fontWeight: 800, fontSize: '0.95rem', color: selectedDeckSize.id === opt.id ? '#a100ff' : 'var(--text-primary)' }}>{opt.label}</div>
+                                        <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '4px' }}>{opt.desc}</div>
+                                        <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)', marginTop: '8px' }}>
+                                            {opt.price} Kč
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
                         <div className="size-selection-container" style={{ marginTop: '24px' }}>
                             <h4 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '12px', color: 'var(--text-primary)' }}>Vyberte rozměr pexesa</h4>
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
@@ -371,7 +441,7 @@ const ProductShowcasePexeso: React.FC<ProductShowcaseProps> = ({ onAddToCart }) 
 
                         <div className="modal-footer" style={{ marginTop: '30px' }}>
                             <button className="btn-cancel" onClick={() => setSelectedProduct(null)}>Zrušit</button>
-                            <button className="btn-confirm" onClick={confirmAddToCart}>Položka za {selectedProduct.price + selectedSize.priceAdd} Kč do košíku</button>
+                            <button className="btn-confirm" onClick={confirmAddToCart}>Položka za {selectedDeckSize.price + selectedSize.priceAdd} Kč do košíku</button>
                         </div>
                     </div>
                 </div>

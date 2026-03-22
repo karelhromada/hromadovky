@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { CartItem } from '../App';
 import './Cart.css';
 
@@ -15,6 +16,7 @@ const formatCurrency = (amount: number) => {
 };
 
 const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQuantity }) => {
+    const navigate = useNavigate();
     const total = items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
     return (
@@ -115,7 +117,10 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
                             <span>Celkem:</span>
                             <span className="text-gradient-gold total-amount">{formatCurrency(total)}</span>
                         </div>
-                        <button className="btn-checkout">Přejít k pokladně</button>
+                        <button className="btn-checkout" onClick={() => {
+                            navigate('/checkout');
+                            onClose();
+                        }}>Přejít k pokladně</button>
                     </div>
                 )}
             </div>

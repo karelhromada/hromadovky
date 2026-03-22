@@ -30,6 +30,8 @@ async function optimizeAssets() {
         const outName = file.replace('.png', '.jpg');
         await sharp(path.join(srcDir, file))
             .resize(600) // 50mm @ 300DPI je ~590px
+            .modulate({ brightness: 1.2, saturation: 1.1 }) // Úprava jasnosti/sytosti kvůli matné fólii
+            .sharpen(1.5) // Doostření hran pro tisk
             .jpeg({ quality: 85, progressive: true })
             .toFile(path.join(assetsDir, outName));
         optimizedMapping[file] = outName;
@@ -41,6 +43,8 @@ async function optimizeAssets() {
     if (fs.existsSync(path.join(__dirname, backFile))) {
         await sharp(path.join(__dirname, backFile))
             .resize(600)
+            .modulate({ brightness: 1.2, saturation: 1.1 })
+            .sharpen(1.5)
             .jpeg({ quality: 85, progressive: true })
             .toFile(path.join(assetsDir, optimizedBack));
     }
@@ -65,11 +69,16 @@ async function generate() {
         const pageCards = pexesoCards.slice(i * CARDS_PER_PAGE, (i + 1) * CARDS_PER_PAGE);
         let cardsHtml = '';
         pageCards.forEach((card, index) => {
+            // Název vyloupneme ze jména souboru (např. 'Aeris.jpg' -> 'AERIS')
+            const dragonName = card.replace('.jpg', '').replace('.png', '').toUpperCase();
+            
             const row = Math.floor(index / 4);
             const col = index % 4;
             const left = P_START_X + col * (CARD_SIZE + P_GUTTER);
             const top = P_START_Y + row * (CARD_SIZE + P_GUTTER);
-            cardsHtml += `<div class="card" style="left: ${left}mm; top: ${top}mm; background-image: url('assets_pexeso_draci/${card}');"></div>\n`;
+            cardsHtml += `<div class="card" style="left: ${left}mm; top: ${top}mm; background-image: url('assets_pexeso_draci/${card}');">\n`;
+            cardsHtml += `    <div class="name-overlay">${dragonName}</div>\n`;
+            cardsHtml += `</div>\n`;
         });
 
         allPagesHtml += `
@@ -101,10 +110,12 @@ async function generate() {
 <head>
     <meta charset="UTF-8">
     <title>Dračí Pexeso - Optimalizovaný tisk</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&display=swap" rel="stylesheet">
     <style>
         body { margin: 0; padding: 0; background: #f0f0f0; font-family: 'Segoe UI', sans-serif; }
         .page { width: 210mm; height: 297mm; background: white; margin: 10mm auto; position: relative; box-shadow: 0 0 10px rgba(0,0,0,0.1); overflow: hidden; page-break-after: always; }
-        .card { width: ${CARD_SIZE}mm; height: ${CARD_SIZE}mm; position: absolute; background-size: cover; background-position: center; border: 0.1mm solid #eee; }
+        .card { width: ${CARD_SIZE}mm; height: ${CARD_SIZE}mm; position: absolute; background-size: cover; background-position: center; border: 0.1mm solid #eee; border-radius: 5px; overflow: hidden; }
+        .name-overlay { position: absolute; bottom: 2mm; left: 0; right: 0; color: #fff; font-family: 'Cinzel', serif; font-size: 8pt; text-align: center; letter-spacing: 0.5px; z-index: 2; text-shadow: 0 1px 3px rgba(0,0,0,1), 0 0 5px rgba(0,0,0,1); }
         @media print { 
             body { background: none; } 
             .page { margin: 0; box-shadow: none; border: none; }

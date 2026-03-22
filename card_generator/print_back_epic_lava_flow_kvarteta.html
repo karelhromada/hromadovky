@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Epická zadní strana - Lávový proud (Kvarteta/Karty)</title>
+    <style>
+        :root {
+            --card-width: 62mm;
+            --card-height: 87mm;
+            --bg-image: url('epic_backs/epic_lava_flow.png');
+        }
+        body { margin: 0; padding: 0; background: #f0f0f0; font-family: 'Inter', sans-serif; }
+        .page { 
+            width: 210mm; 
+            height: 297mm; 
+            background: white; 
+            margin: 10mm auto; 
+            position: relative; 
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); 
+            overflow: hidden; 
+        }
+        .card { 
+            width: var(--card-width); 
+            height: var(--card-height); 
+            position: absolute; 
+            background-image: var(--bg-image);
+            background-size: cover; 
+            background-position: center; 
+            border: 0.1mm solid rgba(0,0,0,0.05); 
+        }
+        /* Crop marks logic */
+        .mark { width: 10mm; height: 10mm; position: absolute; }
+        .mark::before, .mark::after { content: ''; position: absolute; background: #000; }
+        .mark::before { width: 10mm; height: 0.1mm; top: 5mm; left: 0; }
+        .mark::after { width: 0.1mm; height: 10mm; left: 5mm; top: 0; }
+        
+        .info { position: absolute; top: 5mm; left: 10mm; font-size: 10px; color: #888; font-weight: bold; }
+        
+        @media print { 
+            body { background: none; } 
+            .page { margin: 0; box-shadow: none; page-break-after: always; } 
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="info">EPIK BACK: Lávový proud (Kvarteta/Karty) (62x87mm)</div>
+        <div class="card" style="left: 13mm; top: 19mm;"></div>
+<div class="card" style="left: 75mm; top: 19mm;"></div>
+<div class="card" style="left: 137mm; top: 19mm;"></div>
+<div class="card" style="left: 13mm; top: 106mm;"></div>
+<div class="card" style="left: 75mm; top: 106mm;"></div>
+<div class="card" style="left: 137mm; top: 106mm;"></div>
+<div class="card" style="left: 13mm; top: 193mm;"></div>
+<div class="card" style="left: 75mm; top: 193mm;"></div>
+<div class="card" style="left: 137mm; top: 193mm;"></div>
+
+        <div class="mark" style="left: 8mm; top: 14mm;"></div>
+<div class="mark" style="left: 8mm; top: 101mm;"></div>
+<div class="mark" style="left: 8mm; top: 188mm;"></div>
+<div class="mark" style="left: 8mm; top: 275mm;"></div>
+<div class="mark" style="left: 70mm; top: 14mm;"></div>
+<div class="mark" style="left: 70mm; top: 101mm;"></div>
+<div class="mark" style="left: 70mm; top: 188mm;"></div>
+<div class="mark" style="left: 70mm; top: 275mm;"></div>
+<div class="mark" style="left: 132mm; top: 14mm;"></div>
+<div class="mark" style="left: 132mm; top: 101mm;"></div>
+<div class="mark" style="left: 132mm; top: 188mm;"></div>
+<div class="mark" style="left: 132mm; top: 275mm;"></div>
+<div class="mark" style="left: 194mm; top: 14mm;"></div>
+<div class="mark" style="left: 194mm; top: 101mm;"></div>
+<div class="mark" style="left: 194mm; top: 188mm;"></div>
+<div class="mark" style="left: 194mm; top: 275mm;"></div>
+
+    </div>
+</body>
+</html>

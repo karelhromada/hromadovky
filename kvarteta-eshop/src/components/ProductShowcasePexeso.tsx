@@ -11,6 +11,9 @@ interface ProductShowcaseProps {
 }
 
 const backgrounds = [
+    '/cards/backs/epic_gold_scales.png', '/cards/backs/epic_lava_flow.png',
+    '/cards/backs/epic_ice_crystal.png', '/cards/backs/epic_arcane_parchment.png',
+    '/cards/backs/epic_runed_obsidian.png',
     '/cards/card_back_pattern.webp', 
     '/cards/dragon_scales_seamless.webp',
     '/cards/dragon_scales_realistic_1.webp', 

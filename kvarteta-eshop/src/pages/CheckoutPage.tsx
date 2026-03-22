@@ -30,6 +30,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
     const [isSuccess, setIsSuccess] = useState(false);
     const [pickupPoint, setPickupPoint] = useState<string | null>(null);
     const [showPickupModal, setShowPickupModal] = useState(false);
+    const [finalTotal, setFinalTotal] = useState(0);
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -87,6 +88,9 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
 
             await new Promise(resolve => setTimeout(resolve, 1500)); // Simulace sítě
 
+            const deliveryCost = formData.delivery === 'osobni' ? 0 : (formData.delivery === 'zasilkovna' ? 79 : 99);
+            setFinalTotal(total + deliveryCost);
+            
             onClearCart();
             setIsSuccess(true);
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -111,7 +115,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                     <p>Děkujeme za váš nákup. Potvrzení jsme odeslali na <strong>{formData.email}</strong>.</p>
                     <div className="success-details">
                         <span>Číslo objednávky: <strong>#{Math.floor(100000 + Math.random() * 900000)}</strong></span>
-                        <span>Celkem k úhradě: <strong>{formatCurrency(total + (formData.delivery === 'osobni' ? 0 : (formData.delivery === 'zasilkovna' ? 79 : 99)))}</strong></span>
+                        <span>Celkem k úhradě: <strong>{formatCurrency(finalTotal)}</strong></span>
                     </div>
                     <button className="btn-primary" onClick={() => navigate('/')}>Zpět do obchodu</button>
                     <div className="confetti-container"></div>

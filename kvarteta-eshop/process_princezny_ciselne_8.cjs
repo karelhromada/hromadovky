@@ -29,8 +29,8 @@ async function processCards() {
             const signBuffer = await sharp(signPath)
                 .trim()
                 .resize({
-                    width: 100,
-                    height: 100,
+                    width: 130,
+                    height: 130,
                     fit: 'contain',
                     background: { r: 255, g: 255, b: 255, alpha: 0 }
                 })
@@ -49,8 +49,8 @@ async function processCards() {
 
             // 4 znaky na leve strane, 4 na prave
             const yPositions = [140, 360, 580, 800];
-            const leftColumnX = 65;
-            const rightColumnX = 709 - 100 - 65; // 544
+            const leftColumnX = 55;
+            const rightColumnX = 709 - 130 - 55; // 524
 
             for (const y of yPositions) {
                 composites.push({ input: signBuffer, top: y, left: leftColumnX });

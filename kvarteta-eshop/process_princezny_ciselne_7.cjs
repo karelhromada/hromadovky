@@ -27,12 +27,12 @@ async function processCards() {
         const signPath = path.join(targetDir, card.sign);
 
         try {
-            // Pro ciselne karty zmenšujeme symbol na velikost cca 100x100
+            // Pro ciselne karty sjednocujeme velikost s figurkami na 130x130
             const signBuffer = await sharp(signPath)
                 .trim()
                 .resize({
-                    width: 100,
-                    height: 100,
+                    width: 130,
+                    height: 130,
                     fit: 'contain',
                     background: { r: 255, g: 255, b: 255, alpha: 0 }
                 })
@@ -52,8 +52,8 @@ async function processCards() {
 
             // 3 znaky na leve strane, 3 na prave
             const yPositions = [180, 480, 780];
-            const leftColumnX = 65;
-            const rightColumnX = 709 - 100 - 65; // 544
+            const leftColumnX = 55;
+            const rightColumnX = 709 - 130 - 55; // 524
 
             for (const y of yPositions) {
                 composites.push({ input: signBuffer, top: y, left: leftColumnX });
@@ -61,7 +61,7 @@ async function processCards() {
             }
 
             // 1 centralni znak nahore
-            const middleX = Math.floor((709 - 100) / 2); // 304
+            const middleX = Math.floor((709 - 130) / 2); // 289
             composites.push({ input: signBuffer, top: 45, left: middleX });
 
             // Zmenšení nebo zvětšení obrázku

@@ -8,28 +8,7 @@ interface KartyCreatorProps {
 
 type PlayMode = 'classic' | 'thematic';
 
-const backgrounds = [
-    { id: 'bg_ruby_stars', name: 'Magické hvězdy', url: '/cards/neutral_back_ruby_formatted.png' },
-    { id: 'knight_steel', name: 'Ocelový plát', url: '/cards/knight_back_iron_steel.webp' },
-    { id: 'knight_crest', name: 'Rytířský erb', url: '/cards/knight_back_crest.webp' },
-    { id: 'knight_gate', name: 'Hradní brána', url: '/cards/knight_back_gate.webp' },
-    { id: 'knight_patt', name: 'Zámecký vzor', url: '/cards/knight_back_pattern.webp' },
-    { id: 'bg1', name: 'Zelené šupiny', url: '/cards/dragon_scales_realistic_1.webp' },
-    { id: 'bg2', name: 'Kovový drak', url: '/cards/dragon_scales_metallic.webp' },
-    { id: 'bg3', name: 'Krvavé šupiny', url: '/cards/dragon_scales_vibrant.webp' },
-    { id: 'bg4', name: 'Zlaté šupiny', url: '/cards/dragon_scales_realistic_2.webp' },
-    { id: 'bg8', name: 'Tajemný vzor', url: '/cards/card_back_pattern.webp' },
-    { id: 'bg9', name: 'Noční obloha', url: '/cards/neutral_back_stars.webp' },
-    { id: 'bg12', name: 'Zrzavý kocour', url: '/cards/cat_fur_orange.webp' },
-    { id: 'bg13', name: 'Stříbrná srst', url: '/cards/cat_fur_silver.webp' },
-    { id: 'cat_calico', name: 'Tříbarevná srst', url: '/cards/cat_fur_calico.webp' },
-    { id: 'bg_geo_blue', name: 'Modré diamanty', url: '/cards/pexeso_back_blue_geo.webp' },
-    { id: 'bg_geo_red', name: 'Červené vzory', url: '/cards/pexeso_back_red_geo.webp' },
-    { id: 'bg_linen', name: 'Klasické plátno', url: '/cards/pexeso_back_linen.webp' },
-    { id: 'bg_stars', name: 'Hvězdná noc', url: '/cards/pexeso_back_stars.webp' },
-    { id: 'drag_seamless', name: 'Dračí plátování', url: '/cards/dragon_scales_seamless.webp' },
-    { id: 'neutral_grad', name: 'Temný gradient', url: '/cards/neutral_back_gradient.webp' }
-];
+import { backgrounds } from '../data/backgrounds';
 
 const cardStyles = [
     { label: 'Roztomilé', value: 'Roztomilé' },
@@ -98,9 +77,9 @@ const KartyCreator: React.FC<KartyCreatorProps> = ({ onAddToCart }) => {
                 description: productDesc,
                 price: getPrice(),
                 image: productImage || backgrounds[0].url,
+                selectedBack: backgrounds.find(b => b.url === selectedBack)?.name || 'Klasika',
                 themeColor: themeColor
             });
-            alert('Váš vlastní balíček byl přidán do košíku!');
         }
     };
 
@@ -162,7 +141,11 @@ const KartyCreator: React.FC<KartyCreatorProps> = ({ onAddToCart }) => {
                                     <div
                                         key={bg.id}
                                         className={`k-back-option ${selectedBack === bg.url ? 'active' : ''}`}
-                                        style={{ backgroundImage: `url('${bg.url}')` }}
+                                        style={{ 
+                                            backgroundImage: `url('${bg.url}')`,
+                                            backgroundSize: 'cover',
+                                            backgroundPosition: 'center'
+                                        }}
                                         onClick={() => setSelectedBack(bg.url)}
                                         title={bg.name}
                                     >

@@ -21,7 +21,7 @@ export const kartyProducts = [
     },
     {
         id: 'karty-tema-carodejnice',
-        name: 'Magické čarodějnice',
+        name: 'Hrací karty: Magické čarodějnice',
         description: 'Mysteriózní sady čarodějnic. Každá hodnota (spodek, svršek, král, eso) nabízí jedinečnou detailní ilustraci od učednic ohně až po královny lesa.',
         price: 349,
         themeColor: '#ff4b4b',
@@ -39,7 +39,7 @@ export const kartyProducts = [
     },
     {
         id: 'karty-tema-princezny',
-        name: 'Život na zámku',
+        name: 'Hrací karty: Život na zámku',
         description: 'Pohádková edice s princeznami, princi a roztomilými zvířátky. Jemné pastelové barvy a minimalistický design na čistě bílém pozadí.',
         price: 249,
         themeColor: '#ff66b2', // Růžová

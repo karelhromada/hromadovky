@@ -143,6 +143,42 @@
     gap: 16px;
 }
 
+.nav-link-icon {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-primary);
+    opacity: 0.8;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid transparent;
+}
+
+.nav-link-icon:hover, .nav-link-icon.active {
+    opacity: 1;
+    color: var(--accent-gold);
+    border-color: var(--accent-gold);
+    background: rgba(212, 175, 55, 0.05);
+}
+
+.nav-user-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+    .nav-user-name {
+        display: none;
+    }
+}
+
 .mobile-menu-btn {
     display: none;
     background: transparent;

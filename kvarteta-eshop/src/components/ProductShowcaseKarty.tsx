@@ -10,12 +10,7 @@ interface ProductShowcaseKartyProps {
 
 import { kartyProducts as products } from '../data/products';
 
-const backgrounds = [
-    '/cards/backs/epic_gold_scales.png', '/cards/backs/epic_lava_flow.png',
-    '/cards/backs/epic_ice_crystal.png', '/cards/backs/epic_arcane_parchment.png',
-    '/cards/backs/epic_runed_obsidian.png',
-    '/cards/card_back_pattern.webp', '/cards/dragon_scales_seamless.webp'
-];
+import { backgrounds } from '../data/backgrounds';
 
 const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart }) => {
     const [selectedProductForPreview, setSelectedProductForPreview] = useState<any | null>(null);
@@ -23,7 +18,7 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
     const [isMaximized, setIsMaximized] = useState<boolean>(false);
     const [zoomedCardImage, setZoomedCardImage] = useState<string | null>(null);
     const [selectedProductForCart, setSelectedProductForCart] = useState<any | null>(null);
-    const [selectedBack, setSelectedBack] = useState<string>(backgrounds[0]);
+    const [selectedBack, setSelectedBack] = useState<string>(backgrounds[0].url);
 
     // Prevent background scrolling when modal or lightbox is open
     React.useEffect(() => {
@@ -37,7 +32,7 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
 
     const handleAddToCart = (product: any) => {
         setSelectedProductForCart(product);
-        setSelectedBack(backgrounds[0]);
+        setSelectedBack(backgrounds[0].url);
     };
 
     const confirmAddToCart = () => {
@@ -51,7 +46,6 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
                 themeColor: selectedProductForCart.themeColor,
                 selectedBack: selectedBack
             });
-            alert(`${selectedProductForCart.name} bylo přidáno do košíku!`);
             setSelectedProductForCart(null);
         }
     };
@@ -303,19 +297,19 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
                             {backgrounds.map((bg, idx) => (
                                 <div
                                     key={idx}
-                                    className={`back-preview-item ${selectedBack === bg ? 'selected' : ''}`}
-                                    onClick={() => setSelectedBack(bg)}
+                                    className={`back-preview-item ${selectedBack === bg.url ? 'selected' : ''}`}
+                                    onClick={() => setSelectedBack(bg.url)}
                                     style={{ 
-                                        backgroundImage: `url('${bg}')`,
+                                        backgroundImage: `url('${bg.url}')`,
                                         height: '120px',
                                         borderRadius: '8px',
                                         cursor: 'pointer',
-                                        border: selectedBack === bg ? '2px solid var(--accent-gold)' : '2px solid transparent',
+                                        border: selectedBack === bg.url ? '2px solid var(--accent-gold)' : '2px solid transparent',
                                         backgroundSize: 'cover',
                                         position: 'relative'
                                     }}
                                 >
-                                    {selectedBack === bg && (
+                                    {selectedBack === bg.url && (
                                         <div className="selection-check" style={{ position: 'absolute', top: '4px', right: '4px', background: 'var(--accent-gold)', borderRadius: '50%', padding: '2px' }}>
                                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                                                 <polyline points="20 6 9 17 4 12"></polyline>

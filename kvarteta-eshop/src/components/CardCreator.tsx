@@ -3,26 +3,26 @@ import { Upload, Sparkles } from 'lucide-react';
 import './CardCreator.css';
 
 const backgrounds = [
-    '/cards/neutral_back_ruby_formatted.png',
-    '/cards/knight_back_iron_steel.webp',
-    '/cards/knight_back_crest.webp',
-    '/cards/knight_back_gate.webp',
-    '/cards/knight_back_pattern.webp',
-    '/cards/dragon_scales_realistic_1.webp',
-    '/cards/dragon_scales_metallic.webp',
-    '/cards/dragon_scales_vibrant.webp',
-    '/cards/dragon_scales_realistic_2.webp',
-    '/cards/card_back_pattern.webp',
-    '/cards/neutral_back_stars.webp',
-    '/cards/cat_fur_orange.webp',
-    '/cards/cat_fur_silver.webp',
-    '/cards/cat_fur_calico.webp',
-    '/cards/pexeso_back_blue_geo.webp',
-    '/cards/pexeso_back_red_geo.webp',
-    '/cards/pexeso_back_linen.webp',
-    '/cards/pexeso_back_stars.webp',
-    '/cards/dragon_scales_seamless.webp',
-    '/cards/neutral_back_gradient.webp'
+    { url: '/cards/neutral_back_ruby_formatted.png', name: 'Rubín' },
+    { url: '/cards/knight_back_iron_steel.webp', name: 'Ocel' },
+    { url: '/cards/knight_back_crest.webp', name: 'Erb' },
+    { url: '/cards/knight_back_gate.webp', name: 'Brána' },
+    { url: '/cards/knight_back_pattern.webp', name: 'Vzor' },
+    { url: '/cards/dragon_scales_realistic_1.webp', name: 'Zelené šupiny' },
+    { url: '/cards/dragon_scales_metallic.webp', name: 'Kovový drak' },
+    { url: '/cards/dragon_scales_vibrant.webp', name: 'Krvavé šupiny' },
+    { url: '/cards/dragon_scales_realistic_2.webp', name: 'Zlaté šupiny' },
+    { url: '/cards/card_back_pattern.webp', name: 'Tajemný vzor' },
+    { url: '/cards/neutral_back_stars.webp', name: 'Noční obloha' },
+    { url: '/cards/cat_fur_orange.webp', name: 'Zrzavý kocour' },
+    { url: '/cards/cat_fur_silver.webp', name: 'Stříbrná srst' },
+    { url: '/cards/cat_fur_calico.webp', name: 'Tříbarevná srst' },
+    { url: '/cards/pexeso_back_blue_geo.webp', name: 'Modré diamanty' },
+    { url: '/cards/pexeso_back_red_geo.webp', name: 'Červené vzory' },
+    { url: '/cards/pexeso_back_linen.webp', name: 'Klasické plátno' },
+    { url: '/cards/pexeso_back_stars.webp', name: 'Hvězdná noc' },
+    { url: '/cards/dragon_scales_seamless.webp', name: 'Dračí plátování' },
+    { url: '/cards/neutral_back_gradient.webp', name: 'Temný gradient' }
 ];
 
 const frontImages = [
@@ -107,7 +107,7 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
         note: '',
         customThemeDescription: '',
         frontImage: '/cards/drag_3.webp',
-        bgImage: backgrounds[0],
+        bgImage: backgrounds[0].url,
         fontFamily: fontFamilies[0].value,
         statShape: 'hexagon',
         statLayout: 'corners',
@@ -647,12 +647,12 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
                             <div className="bg-picker-grid">
                                 {backgrounds.map(bg => (
                                     <div
-                                        key={bg}
-                                        className={`bg-thumb ${cardData.bgImage === bg ? 'active' : ''}`}
-                                        style={{ backgroundImage: `url('${bg}')` }}
-                                        onClick={() => setCardData({ ...cardData, bgImage: bg })}
+                                        key={bg.url}
+                                        className={`bg-thumb ${cardData.bgImage === bg.url ? 'active' : ''}`}
+                                        style={{ backgroundImage: `url('${bg.url}')` }}
+                                        onClick={() => setCardData({ ...cardData, bgImage: bg.url })}
                                     >
-                                        {cardData.bgImage === bg && <div className="bg-thumb-active-dot"></div>}
+                                        {cardData.bgImage === bg.url && <div className="bg-thumb-active-dot"></div>}
                                     </div>
                                 ))}
                             </div>
@@ -852,7 +852,7 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
                                             name: `Unikátní kvarteto: ${cardData.groupName}`,
                                             price: 599,
                                             image: '', // Vlastní karty nemají v košíku přední ilustrační obrázek
-                                            selectedBack: (letDesignOnUs && !wantsCustomBack) ? 'Dle AI návrhu' : cardData.bgImage,
+                                            selectedBack: (letDesignOnUs && !wantsCustomBack) ? 'Dle AI návrhu' : (backgrounds.find(b => b.url === cardData.bgImage)?.name || 'Vlastní'),
                                             groupName: cardData.groupName,
                                             statShape: statShapes.find(s => s.value === cardData.statShape)?.label || cardData.statShape,
                                             statLayout: statLayouts.find(s => s.value === cardData.statLayout)?.label || cardData.statLayout,

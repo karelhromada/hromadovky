@@ -7,16 +7,7 @@ interface ProductShowcaseProps {
     onAddToCart: (product: Omit<CartItem, 'quantity'>) => void;
 }
 
-const backgrounds = [
-    '/cards/backs/epic_gold_scales.png', '/cards/backs/epic_lava_flow.png',
-    '/cards/backs/epic_ice_crystal.png', '/cards/backs/epic_arcane_parchment.png',
-    '/cards/backs/epic_runed_obsidian.png',
-    '/cards/card_back_pattern.webp', '/cards/dragon_scales_seamless.webp',
-    '/cards/dragon_scales_vibrant.webp', '/cards/dragon_scales_metallic.webp',
-    '/cards/dragon_scales_realistic_1.webp', '/cards/dragon_scales_realistic_2.webp',
-    '/cards/cat_fur_orange.webp', '/cards/cat_fur_silver.webp', '/cards/cat_fur_calico.webp',
-    '/cards/sugar_glaze_pattern.webp'
-];
+import { backgrounds } from '../data/backgrounds';
 
 import { kvartetaProducts as products } from '../data/products';
 
@@ -133,11 +124,11 @@ const ProductCardInteractive = ({ product, onAddToCartClick }: { product: any, o
 
 const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onAddToCart }) => {
     const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
-    const [selectedBack, setSelectedBack] = useState<string>(backgrounds[0]);
-
+    const [selectedBack, setSelectedBack] = useState<string>(backgrounds[0].url);
+    
     const handleAddToCartClick = (product: any) => {
         setSelectedProduct(product);
-        setSelectedBack(backgrounds[0]);
+        setSelectedBack(backgrounds[0].url);
     };
 
     const confirmAddToCart = () => {
@@ -189,11 +180,11 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onAddToCart }) => {
                             {backgrounds.map((bg, idx) => (
                                 <div
                                     key={idx}
-                                    className={`back-preview-item ${selectedBack === bg ? 'selected' : ''}`}
-                                    onClick={() => setSelectedBack(bg)}
-                                    style={{ backgroundImage: `url('${bg}')` }}
+                                    className={`back-preview-item ${selectedBack === bg.url ? 'selected' : ''}`}
+                                    onClick={() => setSelectedBack(bg.url)}
+                                    style={{ backgroundImage: `url('${bg.url}')` }}
                                 >
-                                    {selectedBack === bg && (
+                                    {selectedBack === bg.url && (
                                         <div className="selection-check">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                                                 <polyline points="20 6 9 17 4 12"></polyline>

@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { CartItem } from '../App';
 import './CheckoutPage.css';
-import { SHIPPING_CONFIG } from '../config/shipping';
+import { PAYMENT_CONFIG, SHIPPING_CONFIG, AUTOMATION_CONFIG } from '../config/payment';
+import { useAuth } from '../context/AuthContext';
+import { supabase } from '../lib/supabase';
+import { User, LogIn } from 'lucide-react';
+
 
 // Declare Packeta global for TS
 declare global {
@@ -35,10 +39,33 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
         payment: 'card',
         note: ''
     });
+    const [finalTotal, setFinalTotal] = useState(0);
+    const [orderVS, setOrderVS] = useState<string>('');
     const [isSuccess, setIsSuccess] = useState(false);
+    const { profile, user } = useAuth();
     const [pickupPoint, setPickupPoint] = useState<string | null>(null);
     const [showPickupModal, setShowPickupModal] = useState(false);
-    const [finalTotal, setFinalTotal] = useState(0);
+
+    // Pre-fill form from profile when it loads
+    useEffect(() => {
+        if (profile) {
+            setFormData(prev => ({
+                ...prev,
+                firstName: profile.first_name || prev.firstName,
+                lastName: profile.last_name || prev.lastName,
+                email: profile.email || prev.email,
+                phone: profile.phone || prev.phone,
+                street: profile.street || prev.street,
+                city: profile.city || prev.city,
+                zip: profile.zip || prev.zip,
+                delivery: profile.last_delivery || prev.delivery,
+                payment: profile.last_payment || prev.payment
+            }));
+            if (profile.last_delivery === 'ppl' || profile.last_delivery === 'zasilkovna') {
+                // If we have saved pickup point in the future, we could prefill it here
+            }
+        }
+    }, [profile]);
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -56,9 +83,9 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
         };
     }, []);
 
-    // Load PPL script ONLY when PPL is selected and div is likely present
+    // Load PPL script and setup event listener
     useEffect(() => {
-        if (formData.delivery === 'ppl' && !pickupPoint?.includes('PPL')) {
+        if (formData.delivery === 'ppl') {
             const pplScript = document.createElement('script');
             pplScript.src = 'https://www.ppl.cz/sources/map/main.js';
             pplScript.async = true;
@@ -70,28 +97,31 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
             document.head.appendChild(pplStyle);
 
             const handlePPLEvent = (e: any) => {
+                console.log('PPL Event fired (window/document):', e.detail);
                 const point = e.detail;
                 if (point) {
-                    setPickupPoint(`PPL: ${point.name} (${point.address})`);
-                    setFormData(prev => ({ 
+                    const address = point.address || point.street || 
+                                   (point.streetName ? `${point.streetName} ${point.streetNumber || ''}` : '') ||
+                                   point.city;
+                    
+                    setPickupPoint(`PPL: ${point.name} ${address ? `(${address.trim()})` : ''}`);
+                    setFormData((prev: any) => ({ 
                         ...prev, 
-                        note: prev.note + ` [PPL Point ID: ${point.code}]` 
+                        note: `${prev.note || ''} [PPL Point ID: ${point.code}]`.trim() 
                     }));
                 }
             };
             window.addEventListener('ppl-parcelshop-map', handlePPLEvent);
+            document.addEventListener('ppl-parcelshop-map', handlePPLEvent);
 
             return () => {
-                if (document.body.contains(pplScript)) {
-                    document.body.removeChild(pplScript);
-                }
-                if (document.head.contains(pplStyle)) {
-                    document.head.removeChild(pplStyle);
-                }
+                if (document.body.contains(pplScript)) document.body.removeChild(pplScript);
+                if (document.head.contains(pplStyle)) document.head.removeChild(pplStyle);
                 window.removeEventListener('ppl-parcelshop-map', handlePPLEvent);
+                document.removeEventListener('ppl-parcelshop-map', handlePPLEvent);
             };
         }
-    }, [formData.delivery, pickupPoint]);
+    }, [formData.delivery]);
 
     const openZasilkovna = () => {
         if (!window.Packeta) {
@@ -101,7 +131,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
         window.Packeta.Widget.pick(SHIPPING_CONFIG.ZASILKOVNA_API_KEY, (point: any) => {
             if (point) {
                 setPickupPoint(`Zásilkovna: ${point.name} (${point.street})`);
-                setFormData(prev => ({ 
+                setFormData((prev: any) => ({ 
                     ...prev, 
                     note: prev.note + ` [Zásilkovna ID: ${point.id}]` 
                 }));
@@ -113,10 +143,12 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
     };
 
     const total = items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+    const deliveryCost = formData.delivery === 'osobni' ? 0 : (formData.delivery === 'zasilkovna' ? 79 : 99);
+    const totalToPay = total + deliveryCost;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        setFormData((prev: any) => ({ ...prev, [name]: value }));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -138,34 +170,98 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                 }
             })),
             totalAmount: total,
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
+            variableSymbol: Math.floor(Date.now() / 1000).toString()
         };
 
         try {
-            // TADY BUDE TVŮJ N8N WEBHOOK URL
-            const N8N_WEBHOOK_URL = 'https://tvuj-n8n-na-hostingeru.com/webhook/objednavka';
-            
-            console.log(`Odesílám objednávku na: ${N8N_WEBHOOK_URL}`, orderData);
-            
-            // Odeslání do n8n (zatím jen s try/catch ochranou pro vývoj)
+            // Odeslání do n8n (pro automatizaci emailů a evidenci)
             try {
-                /*
-                await fetch(N8N_WEBHOOK_URL, {
+                const response = await fetch(AUTOMATION_CONFIG.N8N_WEBHOOK_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(orderData)
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        ...orderData, 
+                        totalToPay,
+                        deliveryCost,
+                        pickupPoint 
+                    }),
                 });
-                */
+                
+                if (!response.ok) {
+                    throw new Error(`N8N response error: ${response.status}`);
+                }
+                
+                console.log('Objednávka úspěšně odeslána do n8n');
             } catch (fetchError) {
-                console.warn('Síťová chyba (n8n pravděpodobně ještě není připojen):', fetchError);
+                // Nechceme zastavit celou objednávku, pokud selže jen automatizace emailu,
+                // ale chceme o tom vědět v logu.
+                console.error('Chyba automatizace (n8n):', fetchError);
             }
             
-            await new Promise(resolve => setTimeout(resolve, 1500)); // Simulace sítě
+            // Aktualizace profilu uživatele v Supabase (pokud je přihlášen)
+            if (user) {
+                try {
+                    await supabase
+                        .from('profiles')
+                        .update({
+                            first_name: formData.firstName,
+                            last_name: formData.lastName,
+                            phone: formData.phone,
+                            street: formData.street,
+                            city: formData.city,
+                            zip: formData.zip,
+                            last_delivery: formData.delivery,
+                            last_payment: formData.payment,
+                            updated_at: new Date().toISOString()
+                        })
+                        .eq('id', user.id);
+                } catch (profileError) {
+                    console.error('Chyba při aktualizaci profilu:', profileError);
+                }
 
-            await new Promise(resolve => setTimeout(resolve, 1500)); // Simulace sítě
+                // Uložení do historie objednávek (orders table)
+                try {
+                    await supabase
+                        .from('orders')
+                        .insert({
+                            user_id: user.id,
+                            items: items.map(item => ({
+                                id: item.id,
+                                name: item.name,
+                                price: item.price,
+                                quantity: item.quantity,
+                                selectedBack: item.selectedBack,
+                                size: item.size
+                            })),
+                            total_price: totalToPay,
+                            delivery_info: {
+                                method: formData.delivery,
+                                pickupPoint: pickupPoint
+                            },
+                            payment_method: formData.payment
+                        });
+                    console.log('Objednávka uložena do historie');
+                } catch (orderError) {
+                    console.error('Chyba při ukládání do historie objednávek:', orderError);
+                }
+            }
+            
+            await new Promise(resolve => setTimeout(resolve, 800)); // Simulace sítě
 
-            const deliveryCost = formData.delivery === 'osobni' ? 0 : (formData.delivery === 'zasilkovna' ? 79 : 99);
-            setFinalTotal(total + deliveryCost);
+            setFinalTotal(totalToPay);
+            setOrderVS(orderData.variableSymbol);
+
+            // Pokud je to karta, provedeme redirect na GP Webpay Simulator
+            if (formData.payment === 'card') {
+                console.log('Redirecting to GP Webpay...', PAYMENT_CONFIG.GATEWAY_URL);
+                // Simulace přesměrování
+                setTimeout(() => {
+                   // window.location.href = `https://test.pay.gpwebpay.com/pay-sim/index.html?amount=${totalToPay}&orderId=${Math.floor(Date.now()/1000)}`;
+                }, 2000);
+            }
             
             onClearCart();
             setIsSuccess(true);
@@ -193,6 +289,34 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                         <span>Číslo objednávky: <strong>#{Math.floor(100000 + Math.random() * 900000)}</strong></span>
                         <span>Celkem k úhradě: <strong>{formatCurrency(finalTotal)}</strong></span>
                     </div>
+
+                    {formData.payment === 'transfer' && (
+                        <div className="payment-transfer-instructions glass-panel">
+                            <h3>🔍 Údaje pro platbu převodem</h3>
+                            <div className="transfer-flex">
+                                <div className="transfer-text">
+                                    <p>Číslo účtu: <strong>670100-2202858274 / 6210</strong></p>
+                                    <p>Variabilní symbol: <strong>{orderVS}</strong></p>
+                                    <p>Částka: <strong>{formatCurrency(finalTotal)}</strong></p>
+                                </div>
+                                <div className="qr-code-wrap">
+                                    <img 
+                                        src={`https://api.paylibo.com/paylibo/generator/czech/image?accountNumber=2202858274&bankCode=6210&prefix=670100&amount=${finalTotal}&currency=CZK&vs=${orderVS}&size=250`}
+                                        alt="QR Platba"
+                                        className="qr-image"
+                                    />
+                                    <span>Naskenujte pro rychlou platbu</span>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {formData.payment === 'card' && (
+                        <div className="payment-card-status glass-panel">
+                            <p>Byli jste přesměrováni na platební bránu <strong>GP Webpay</strong>.</p>
+                            <p className="small">Pokud se okno nadeotevřelo, zkontrolujte prosím blokování pop-up oken.</p>
+                        </div>
+                    )}
                     <button className="btn-primary" onClick={() => navigate('/')}>Zpět do obchodu</button>
                     <div className="confetti-container"></div>
                 </div>
@@ -233,7 +357,22 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
             )}
             <div className="checkout-layout">
                 <div className="checkout-form-section glass-panel">
-                    <h2>Kontaktní údaje</h2>
+                    {!user && (
+                        <div className="login-promo glass-panel animate-fade-in">
+                            <div className="promo-content">
+                                <LogIn size={20} className="promo-icon" />
+                                <div>
+                                    <p><strong>Ušetřete čas příště!</strong></p>
+                                    <p className="small">Přihlaste se a my si vaše údaje zapamatujeme.</p>
+                                </div>
+                            </div>
+                            <button type="button" className="btn-text" onClick={() => navigate('/login')}>Přihlásit se</button>
+                        </div>
+                    )}
+                    <div className="section-header-flex">
+                        <h2>Kontaktní údaje</h2>
+                        {user && <span className="user-badge"><User size={14} /> Přihlášen: {profile?.first_name || user.email}</span>}
+                    </div>
                     <form onSubmit={handleSubmit} className="checkout-form">
                         <div className="form-row">
                             <div className="form-group">
@@ -257,21 +396,25 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                             </div>
                         </div>
 
-                        <h2>Doručovací adresa</h2>
-                        <div className="form-group">
-                            <label>Ulice a číslo popisné</label>
-                            <input type="text" name="street" value={formData.street} onChange={handleChange} required placeholder="Vodičkova 123" />
-                        </div>
-                        <div className="form-row">
-                            <div className="form-group" style={{ flex: 2 }}>
-                                <label>Město</label>
-                                <input type="text" name="city" value={formData.city} onChange={handleChange} required={formData.delivery !== 'zasilkovna'} placeholder="Praha" />
+                        {formData.delivery === 'gls' && (
+                            <div className="address-section animate-fade-in">
+                                <h2>Doručovací adresa</h2>
+                                <div className="form-group">
+                                    <label>Ulice a číslo popisné</label>
+                                    <input type="text" name="street" value={formData.street} onChange={handleChange} required placeholder="Vodičkova 123" />
+                                </div>
+                                <div className="form-row">
+                                    <div className="form-group" style={{ flex: 2 }}>
+                                        <label>Město</label>
+                                        <input type="text" name="city" value={formData.city} onChange={handleChange} required placeholder="Praha" />
+                                    </div>
+                                    <div className="form-group" style={{ flex: 1 }}>
+                                        <label>PSČ</label>
+                                        <input type="text" name="zip" value={formData.zip} onChange={handleChange} required placeholder="110 00" />
+                                    </div>
+                                </div>
                             </div>
-                            <div className="form-group" style={{ flex: 1 }}>
-                                <label>PSČ</label>
-                                <input type="text" name="zip" value={formData.zip} onChange={handleChange} required={formData.delivery !== 'zasilkovna'} placeholder="110 00" />
-                            </div>
-                        </div>
+                        )}
 
                         {formData.delivery === 'zasilkovna' && (
                             <div className="form-group checkout-pickup-section">
@@ -295,15 +438,19 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                         {formData.delivery === 'ppl' && (
                             <div className="form-group checkout-pickup-section">
                                 <label>PPL ParcelShop / Box</label>
-                                <div className="pickup-selector-container" style={{ minHeight: '500px', display: 'block', padding: '10px' }}>
-                                    {pickupPoint && pickupPoint.includes('PPL') ? (
+                                <div className="pickup-selector-container" style={{ minHeight: pickupPoint ? 'auto' : '600px', display: 'block', padding: '10px' }}>
+                                    {pickupPoint && pickupPoint.includes('PPL') && (
                                         <div className="selected-pickup-info" style={{ marginBottom: '15px' }}>
                                             <span className="pickup-name">📍 {pickupPoint}</span>
                                             <button type="button" className="btn-text" onClick={() => setPickupPoint(null)}>Změnit</button>
                                         </div>
-                                    ) : (
-                                        <div id="ppl-parcelshop-map" data-language="cs" style={{ height: '500px', width: '100%', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--glass-border)', background: 'rgba(0,0,0,0.1)' }}></div>
                                     )}
+                                    <div 
+                                        className="ppl-container-wrapper" 
+                                        style={{ display: pickupPoint && pickupPoint.includes('PPL') ? 'none' : 'block' }}
+                                    >
+                                        <div id="ppl-parcelshop-map" data-language="cs" style={{ height: '600px', width: '100%', borderRadius: '12px', border: '1px solid var(--glass-border)', background: 'rgba(0,0,0,0.1)' }}></div>
+                                    </div>
                                     {(!pickupPoint || !pickupPoint.includes('PPL')) && <span className="error-text">Vyberte výdejní místo přímo na mapě</span>}
                                 </div>
                             </div>
@@ -314,8 +461,9 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                             <div className="form-group">
                                 <label>Doprava</label>
                                 <select name="delivery" value={formData.delivery} onChange={handleChange}>
+                                    <option value="gls">GLS - na adresu (99 Kč)</option>
                                     <option value="zasilkovna">Zásilkovna (79 Kč)</option>
-                                    <option value="ppl">PPL (99 Kč)</option>
+                                    <option value="ppl">PPL ParcelShop (99 Kč)</option>
                                     <option value="osobni">Osobní odběr (Zdarma)</option>
                                 </select>
                             </div>
@@ -350,7 +498,12 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                         {items.map(item => (
                             <div key={`${item.id}-${item.selectedBack}-${item.size}`} className="summary-item">
                                 <div className="summary-info">
-                                    <span className="summary-name">{item.name} <span className="qty">x{item.quantity}</span></span>
+                                    <span className="summary-name">
+                                        {item.name} <span className="qty">x{item.quantity}</span>
+                                        {item.selectedBack && (
+                                            <div className="summary-option">Rub: {item.selectedBack}</div>
+                                        )}
+                                    </span>
                                     <span className="summary-price">{formatCurrency(item.price * item.quantity)}</span>
                                 </div>
                             </div>
@@ -367,7 +520,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                         </div>
                         <div className="total-row grand-total">
                             <span>Celkem k úhradě:</span>
-                            <span className="text-gradient-gold">{formatCurrency(total + (formData.delivery === 'osobni' ? 0 : (formData.delivery === 'zasilkovna' ? 79 : 99)))}</span>
+                            <span className="text-gradient-gold">{formatCurrency(totalToPay)}</span>
                         </div>
                     </div>
                 </div>

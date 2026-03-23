@@ -34,6 +34,9 @@ export interface CartItem {
   size?: string;
 }
 
+import { AuthProvider } from './context/AuthContext'
+import AuthPage from './pages/AuthPage'
+
 function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -71,37 +74,40 @@ function App() {
   };
 
   return (
-    <Router>
-      <div className="app-container">
-        {/* Animated Pastel Mesh Background */}
-        <div className="pastel-mesh-bg">
-          <div className="blob"></div>
+    <AuthProvider>
+      <Router>
+        <div className="app-container">
+          {/* Animated Pastel Mesh Background */}
+          <div className="pastel-mesh-bg">
+            <div className="blob"></div>
+          </div>
+
+          <Navbar toggleCart={toggleCart} cartCount={cartItems.reduce((acc, item) => acc + item.quantity, 0)} />
+
+          <main>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/kvarteta" element={<KvartetaPage onAddToCart={addToCart} />} />
+              <Route path="/pexeso" element={<PexesoPage onAddToCart={addToCart} />} />
+              <Route path="/karty" element={<HraciKartyPage onAddToCart={addToCart} />} />
+              <Route path="/pravidla" element={<RulesPage />} />
+              <Route path="/checkout" element={<CheckoutPage items={cartItems} onClearCart={clearCart} />} />
+              <Route path="/login" element={<AuthPage />} />
+            </Routes>
+          </main>
+
+          <Footer />
+
+          <Cart
+            isOpen={isCartOpen}
+            onClose={() => setIsCartOpen(false)}
+            items={cartItems}
+            onRemove={removeFromCart}
+            onUpdateQuantity={updateQuantity}
+          />
         </div>
-
-        <Navbar toggleCart={toggleCart} cartCount={cartItems.reduce((acc, item) => acc + item.quantity, 0)} />
-
-        <main>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/kvarteta" element={<KvartetaPage onAddToCart={addToCart} />} />
-            <Route path="/pexeso" element={<PexesoPage onAddToCart={addToCart} />} />
-            <Route path="/karty" element={<HraciKartyPage onAddToCart={addToCart} />} />
-            <Route path="/pravidla" element={<RulesPage />} />
-            <Route path="/checkout" element={<CheckoutPage items={cartItems} onClearCart={clearCart} />} />
-          </Routes>
-        </main>
-
-        <Footer />
-
-        <Cart
-          isOpen={isCartOpen}
-          onClose={() => setIsCartOpen(false)}
-          items={cartItems}
-          onRemove={removeFromCart}
-          onUpdateQuantity={updateQuantity}
-        />
-      </div>
-    </Router>
+      </Router>
+    </AuthProvider>
   )
 }
 

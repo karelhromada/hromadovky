@@ -51,7 +51,7 @@ async function run() {
             output: path.join(targetDir, 'znak_srdce.png') 
         },
         { 
-            input: path.join(brainDir, 'witch_bell_vertical_v1_1774279040365.png'),
+            input: path.join(brainDir, 'magic_kule_variant_1_1774279223936.png'),
             output: path.join(targetDir, 'znak_kule.png') 
         }
     ];

@@ -1,27 +1,29 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Bricolage+Grotesque:wght@500;700;800&display=swap');
 
 :root {
-  /* Joyful Light Background */
+  /* Premium Magical Background */
   --bg-color: #fcfbfa;
-  /* Soft warm cream */
-  --bg-gradient: radial-gradient(circle at top right, #fffbf2, #f5f0e6);
-  --text-primary: #1e293b;
-  /* slate-800 for strong readable text */
-  --text-secondary: #475569;
+  /* Rich warm cream to soft amber */
+  --bg-gradient: radial-gradient(circle at 0% 0%, #fffbf2 0%, #fdfcf0 50%, #f5f0e6 100%);
+  --text-primary: #121826;
+  /* Deeper charcoal for better contrast */
+  --text-secondary: #4b5563;
   /* slate-600 */
 
-  /* Accent Colors (Keep Gold, but slightly stronger for contrast) */
+  /* Enhanced Premium Gold Palette */
   --accent-gold: #c59b27;
-  --accent-gold-light: #e0b84f;
-  --accent-gold-dark: #967315;
+  --accent-gold-light: #f3d67d;
+  --accent-gold-dark: #8e6b10;
+  --accent-gold-hover: #b48a1d;
 
-  /* Joyful Glassmorphism */
-  --glass-bg: rgba(255, 255, 255, 0.75);
-  --glass-border: rgba(255, 255, 255, 0.6);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
-  --glass-hover: rgba(255, 255, 255, 0.95);
+  /* Joyful Glassmorphism - Enhanced */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-shadow: 0 12px 40px -8px rgba(0, 0, 0, 0.1);
+  --glass-hover: rgba(255, 255, 255, 0.9);
 
   --font-family: 'Outfit', sans-serif;
+  --font-display: 'Bricolage Grotesque', sans-serif;
   --nav-height: 80px;
 }
 

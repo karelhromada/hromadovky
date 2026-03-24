@@ -38,7 +38,6 @@ const Navbar: React.FC<NavbarProps> = ({ toggleCart, cartCount }) => {
                 </Link>
 
                 <nav className="nav-links">
-                    <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>Domů</Link>
                     <Link to="/kvarteta" className={`nav-link ${location.pathname === '/kvarteta' ? 'active' : ''}`}>Kvarteta</Link>
                     <Link to="/pexeso" className={`nav-link ${location.pathname === '/pexeso' ? 'active' : ''}`}>Pexeso</Link>
                     <Link to="/karty" className={`nav-link ${location.pathname === '/karty' ? 'active' : ''}`}>Hrací karty</Link>
@@ -75,7 +74,6 @@ const Navbar: React.FC<NavbarProps> = ({ toggleCart, cartCount }) => {
             {/* Mobile Navigation Menu */}
             <div className={`mobile-nav ${mobileMenuOpen ? 'open' : ''}`}>
                 <nav className="mobile-nav-links">
-                    <Link to="/" className={`mobile-nav-link ${location.pathname === '/' ? 'active' : ''}`}>Domů</Link>
                     <Link to="/kvarteta" className={`mobile-nav-link ${location.pathname === '/kvarteta' ? 'active' : ''}`}>Kvarteta</Link>
                     <Link to="/pexeso" className={`mobile-nav-link ${location.pathname === '/pexeso' ? 'active' : ''}`}>Pexeso</Link>
                     <Link to="/karty" className={`mobile-nav-link ${location.pathname === '/karty' ? 'active' : ''}`}>Hrací karty</Link>

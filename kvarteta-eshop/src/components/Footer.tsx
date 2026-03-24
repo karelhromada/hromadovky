@@ -20,9 +20,8 @@ const Footer: React.FC = () => {
                     <div className="link-column">
                         <h4>Navigace</h4>
                         <ul>
-                            <li><a href="#hero">Domů</a></li>
                             <li><a href="#products">Naše sady</a></li>
-                            <li><a href="#about">O hře a pravidla</a></li>
+                            <li><a href="/pravidla">O hře a pravidla</a></li>
                         </ul>
                     </div>
 

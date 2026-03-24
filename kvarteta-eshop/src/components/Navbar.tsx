@@ -88,7 +88,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleCart, cartCount }) => {
                     </button>
 
                     <button
-                        className={`mobile-menu-btn ${mobileMenuOpen ? 'white-icon' : ''}`}
+                        className={`mobile-menu-btn ${mobileMenuOpen ? 'menu-open-icon' : ''}`}
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                         aria-label="Menu"
                     >
@@ -114,6 +114,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleCart, cartCount }) => {
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.1 + (i * 0.1) }}
+                                    style={{ width: '100%' }}
                                 >
                                     <Link 
                                         to={link.path} 
@@ -127,6 +128,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleCart, cartCount }) => {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.1 + (menuLinks.length * 0.1) }}
+                                style={{ width: '100%' }}
                             >
                                 <Link to="/login" className={`mobile-nav-link ${location.pathname === '/login' ? 'active' : ''}`}>
                                     <User size={24} style={{ marginRight: '10px' }} />
@@ -138,11 +140,11 @@ const Navbar: React.FC<NavbarProps> = ({ toggleCart, cartCount }) => {
                         {/* Elegant footer for mobile menu */}
                         <motion.div 
                             initial={{ opacity: 0 }}
-                            animate={{ opacity: 0.5 }}
+                            animate={{ opacity: 0.3 }}
                             transition={{ delay: 0.8 }}
                             style={{ position: 'absolute', bottom: '40px', textAlign: 'center' }}
                         >
-                            <p style={{ color: '#fff', fontSize: '0.9rem', letterSpacing: '2px' }}>HROMADOVKY</p>
+                            <p style={{ color: '#121826', fontSize: '0.9rem', letterSpacing: '2px', fontWeight: 600 }}>HROMADOVKY</p>
                         </motion.div>
                     </motion.div>
                 )}

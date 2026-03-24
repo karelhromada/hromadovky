@@ -183,7 +183,7 @@
     display: none;
     background: transparent;
     border: none;
-    color: var(--text-primary);
+    color: #121826; /* Explicit dark color for visibility */
     cursor: pointer;
     padding: 8px;
     z-index: 1200;
@@ -193,34 +193,30 @@
     justify-content: center;
 }
 
-.mobile-menu-btn.white-icon {
-    color: #fff !important;
+.mobile-menu-btn.menu-open-icon {
+    color: var(--accent-gold) !important;
 }
 
 .mobile-menu-btn:hover {
     background: rgba(0, 0, 0, 0.05);
 }
 
-.mobile-menu-btn.white-icon:hover {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-/* Mobile Nav Overlay Redesign */
+/* Mobile Nav Overlay Redesign - Light Cream Glass */
 .mobile-nav {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.92); /* Lux dark background */
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
+    background: rgba(252, 251, 250, 0.98); /* Light cream glass */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     z-index: 1100;
-    padding-top: calc(var(--nav-height) + 40px);
+    padding-top: calc(var(--nav-height) + 60px);
     display: flex;
     flex-direction: column;
     align-items: center;
-    transform: translateX(100%); /* Slide from right */
+    transform: translateX(100%);
     opacity: 0;
     transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     pointer-events: none;
@@ -238,28 +234,30 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 2px;
+    height: 4px;
     background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
-    opacity: 0.3;
 }
 
 .mobile-nav-links {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 40px;
+    gap: 35px;
+    width: 100%;
 }
 
 .mobile-nav-link {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     font-weight: 700;
-    color: #fff;
+    color: var(--text-primary);
     text-decoration: none;
-    opacity: 0; /* Animated in JS/Framer */
-    transition: color 0.3s ease, transform 0.3s ease;
-    letter-spacing: 1px;
+    opacity: 0;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
     display: flex;
     align-items: center;
+    justify-content: center;
+    width: 100%;
     gap: 12px;
 }
 
@@ -272,7 +270,10 @@
 .mobile-nav-link:hover {
     color: var(--accent-gold);
     opacity: 1 !important;
-    transform: scale(1.05) translateZ(0);
+}
+
+.mobile-nav-link svg {
+    color: var(--accent-gold);
 }
 
 @media (max-width: 900px) {

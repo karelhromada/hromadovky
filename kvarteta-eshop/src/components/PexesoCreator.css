@@ -494,3 +494,46 @@
         padding: 24px;
     }
 }
+
+@media (max-width: 480px) {
+    .pexeso-creator-section {
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+
+    .pexeso-config-panel {
+        padding: 20px 16px;
+        gap: 30px;
+        border-radius: 16px;
+    }
+
+    .step-header {
+        gap: 12px;
+        margin-bottom: 15px;
+    }
+
+    .step-title {
+        font-size: 1.3rem;
+    }
+
+    .size-option-card {
+        padding: 16px;
+    }
+
+    .size-title {
+        font-size: 1.2rem;
+    }
+
+    .upload-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .method-card {
+        padding: 20px 16px;
+    }
+
+    .upload-container {
+        padding: 20px 16px;
+    }
+}

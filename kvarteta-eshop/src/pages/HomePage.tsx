@@ -17,6 +17,23 @@ const epicCards = [
 
 const HomePage: React.FC = () => {
     const [isOpen, setIsOpen] = React.useState(false);
+    const [scale, setScale] = React.useState(1);
+
+    // Dynamic scale for the card explosion based on window width
+    React.useEffect(() => {
+        const handleResize = () => {
+            const width = window.innerWidth;
+            if (width < 480) setScale(0.4);
+            else if (width < 768) setScale(0.55);
+            else if (width < 1024) setScale(0.75);
+            else if (width < 1440) setScale(0.85);
+            else setScale(1);
+        };
+        
+        handleResize(); // Initial call
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     return (
         <div className="homepage-v5">
@@ -61,8 +78,8 @@ const HomePage: React.FC = () => {
                             className="exploding-card"
                             initial={{ x: 0, y: 0, rotate: 0, opacity: 0 }}
                             animate={{ 
-                                x: isOpen ? card.x : 0, 
-                                y: isOpen ? card.y : 0, 
+                                x: isOpen ? card.x * scale : 0, 
+                                y: isOpen ? card.y * scale : 0, 
                                 rotate: isOpen ? card.rot : 0, 
                                 opacity: isOpen ? 1 : 0 
                             }}

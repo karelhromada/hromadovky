@@ -10,6 +10,24 @@
     color: var(--text-dark);
     font-family: 'Outfit', sans-serif;
     overflow-x: hidden;
+    width: 100%;
+}
+
+/* --- RESPONSIVE VARIABLES --- */
+:root {
+    --card-scale: 1;
+}
+
+@media (max-width: 1024px) {
+    :root { --card-scale: 0.8; }
+}
+
+@media (max-width: 768px) {
+    :root { --card-scale: 0.6; }
+}
+
+@media (max-width: 480px) {
+    :root { --card-scale: 0.45; }
 }
 
 /* --- HERO EPIC --- */
@@ -46,15 +64,17 @@
     color: var(--text-muted);
     max-width: 650px;
     margin: 0 auto 4rem;
+    padding: 0 1rem;
 }
 
 /* --- THE EXPLODING DECK ZONE --- */
 .epic-deck-zone {
     position: relative;
-    width: 300px;
-    height: 420px;
-    margin: 350px auto 0;
+    width: calc(300px * var(--card-scale));
+    height: calc(420px * var(--card-scale));
+    margin: calc(250px * var(--card-scale)) auto 0;
     cursor: pointer;
+    transition: margin 0.3s ease;
 }
 
 .main-deck-wrapper {
@@ -100,12 +120,12 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 220px;
-    height: 310px;
-    margin-top: -155px;
-    margin-left: -110px;
+    width: calc(220px * var(--card-scale));
+    height: calc(310px * var(--card-scale));
+    margin-top: calc(-155px * var(--card-scale));
+    margin-left: calc(-110px * var(--card-scale));
     background: #fff;
-    border-radius: 12px;
+    border-radius: calc(12px * var(--card-scale));
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     border: 1px solid rgba(0,0,0,0.1);
     z-index: 15;
@@ -130,6 +150,7 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 4rem;
     margin-top: 6rem;
+    padding: 0 2rem;
 }
 
 .process-block-v9 {
@@ -210,5 +231,62 @@
 .btn-v9-epic:hover {
     transform: scale(1.05) translateY(-5px);
     box-shadow: 0 20px 40px rgba(197, 155, 39, 0.5);
+}
+
+/* --- MEDIA QUERIES --- */
+
+@media (max-width: 1024px) {
+    .process-grid-v9 {
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-epic {
+        padding: 100px 0 60px;
+        min-height: 100vh;
+    }
+
+    .hero-epic h1 {
+        font-size: 3rem;
+    }
+
+    .hero-epic p {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+    }
+
+    .process-story-v9 {
+        padding: 60px 0;
+    }
+
+    .process-grid-v9 {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .process-block-v9 {
+        padding: 2rem;
+        border-radius: 30px;
+    }
+
+    .process-story-v9 h2 {
+        font-size: 2.5rem !important;
+    }
+
+    .cta-v9 h2 {
+        font-size: 2.2rem !important;
+    }
+
+    .cta-v9 p {
+        font-size: 1.1rem;
+    }
+
+    .btn-v9-epic {
+        padding: 1.2rem 2.5rem;
+        font-size: 1.1rem;
+        width: 100%;
+        justify-content: center;
+    }
 }
 

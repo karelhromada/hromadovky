@@ -185,57 +185,94 @@
     border: none;
     color: var(--text-primary);
     cursor: pointer;
-    padding: 4px;
-    z-index: 1200; /* Above everything including the menu */
+    padding: 8px;
+    z-index: 1200;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Mobile Nav Overlay */
+.mobile-menu-btn.white-icon {
+    color: #fff !important;
+}
+
+.mobile-menu-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.mobile-menu-btn.white-icon:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Mobile Nav Overlay Redesign */
 .mobile-nav {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
-    background: #000; /* Solid background or very dark */
+    background: rgba(0, 0, 0, 0.92); /* Lux dark background */
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
     z-index: 1100;
-    padding-top: var(--nav-height);
+    padding-top: calc(var(--nav-height) + 40px);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    transform: translateY(-100%);
+    transform: translateX(100%); /* Slide from right */
     opacity: 0;
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     pointer-events: none;
 }
 
 .mobile-nav.open {
-    transform: translateY(0);
+    transform: translateX(0);
     opacity: 1;
     pointer-events: all;
+}
+
+.mobile-nav::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+    opacity: 0.3;
 }
 
 .mobile-nav-links {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 32px;
+    gap: 40px;
 }
 
 .mobile-nav-link {
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 700;
-    color: #fff; /* White for contrast */
+    color: #fff;
     text-decoration: none;
+    opacity: 0; /* Animated in JS/Framer */
+    transition: color 0.3s ease, transform 0.3s ease;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.mobile-nav.open .mobile-nav-link {
     opacity: 0.9;
-    transition: all 0.3s ease;
+    transform: translateY(0);
 }
 
 .mobile-nav-link.active,
 .mobile-nav-link:hover {
     color: var(--accent-gold);
-    opacity: 1;
-    transform: scale(1.05);
+    opacity: 1 !important;
+    transform: scale(1.05) translateZ(0);
 }
 
 @media (max-width: 900px) {

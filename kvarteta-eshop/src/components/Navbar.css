@@ -186,8 +186,7 @@
     color: var(--text-primary);
     cursor: pointer;
     padding: 4px;
-    z-index: 1001;
-    /* Above the overlay */
+    z-index: 1200; /* Above everything including the menu */
 }
 
 /* Mobile Nav Overlay */
@@ -197,10 +196,8 @@
     left: 0;
     width: 100%;
     height: 100vh;
-    background: rgba(10, 10, 10, 0.98);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    z-index: 999;
+    background: #000; /* Solid background or very dark */
+    z-index: 1100;
     padding-top: var(--nav-height);
     display: flex;
     flex-direction: column;
@@ -208,7 +205,7 @@
     justify-content: center;
     transform: translateY(-100%);
     opacity: 0;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     pointer-events: none;
 }
 
@@ -228,9 +225,9 @@
 .mobile-nav-link {
     font-size: 2rem;
     font-weight: 700;
-    color: var(--text-primary);
+    color: #fff; /* White for contrast */
     text-decoration: none;
-    opacity: 0.8;
+    opacity: 0.9;
     transition: all 0.3s ease;
 }
 

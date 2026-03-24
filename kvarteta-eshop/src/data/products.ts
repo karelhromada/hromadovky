@@ -3,7 +3,7 @@ import { Star, Sparkles, Trophy, Shield } from 'lucide-react';
 export const kartyProducts = [
     {
         id: 'karty-tema-draku',
-        name: 'Epická dračí edice',
+        name: 'Hrací karty: Epická dračí edice',
         description: 'Luxusní dračí edice. Mariášové barvy reprezentující živly. Hodnoty 10, J, Q, K, A v klasickém čistém herním designu s plnou originální malbou draků.',
         price: 349,
         themeColor: '#ff0033',

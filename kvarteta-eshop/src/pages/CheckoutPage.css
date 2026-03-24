@@ -17,6 +17,25 @@
     }
 }
 
+@media (max-width: 480px) {
+    .checkout-container {
+        padding: 10px;
+        margin: 20px auto;
+    }
+
+    .checkout-form-section, .order-summary-section {
+        padding: 20px 15px;
+    }
+
+    .success-card {
+        padding: 40px 20px;
+    }
+
+    .success-card h1 {
+        font-size: 1.8rem;
+    }
+}
+
 .checkout-form-section, .order-summary-section {
     padding: 30px;
     height: fit-content;

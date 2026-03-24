@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Cart from './components/Cart'
@@ -39,7 +39,15 @@ import AuthPage from './pages/AuthPage'
 
 function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+    const saved = localStorage.getItem('hromadovky_cart');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  // Save to localStorage whenever cartItems changes
+  useEffect(() => {
+    localStorage.setItem('hromadovky_cart', JSON.stringify(cartItems));
+  }, [cartItems]);
 
   const toggleCart = () => setIsCartOpen(!isCartOpen);
 

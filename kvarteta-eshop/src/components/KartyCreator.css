@@ -278,6 +278,33 @@
     }
 }
 
+@media (max-width: 480px) {
+    .karty-creator-section {
+        padding: 40px 15px;
+    }
+
+    .karty-config-panel {
+        padding: 20px 15px;
+        gap: 20px;
+    }
+
+    .k-type-card {
+        padding: 20px 15px;
+    }
+
+    .k-type-title {
+        font-size: 1.3rem;
+    }
+
+    .k-themes-grid {
+        gap: 10px;
+    }
+
+    .k-theme-label-text {
+        font-size: 0.8rem;
+    }
+}
+
 /* Theme Design Selection */
 .k-themes-grid {
     display: grid;

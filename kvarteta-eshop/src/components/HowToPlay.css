@@ -182,3 +182,26 @@
         left: auto;
     }
 }
+
+@media (max-width: 480px) {
+    .how-to-play-section {
+        padding: 60px 20px;
+    }
+
+    .timeline-content {
+        padding: 24px 20px;
+    }
+
+    .rule-number {
+        font-size: 3rem;
+        top: -15px;
+    }
+
+    .timeline-item {
+        margin-bottom: 40px;
+    }
+
+    .how-to-play-section .container h2 {
+        font-size: 2rem;
+    }
+}

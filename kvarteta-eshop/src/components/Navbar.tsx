@@ -4,6 +4,8 @@ import { Menu, X, User } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import './Navbar.css';
 
+import { motion, AnimatePresence } from 'framer-motion';
+
 interface NavbarProps {
     toggleCart: () => void;
     cartCount: number;
@@ -40,6 +42,13 @@ const Navbar: React.FC<NavbarProps> = ({ toggleCart, cartCount }) => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    const menuLinks = [
+        { path: '/kvarteta', label: 'Kvarteta' },
+        { path: '/pexeso', label: 'Pexeso' },
+        { path: '/karty', label: 'Hrací karty' },
+        { path: '/pravidla', label: 'Pravidla hry' }
+    ];
+
     return (
         <header className={`navbar ${scrolled ? 'scrolled glass-panel' : ''}`}>
             <div className="navbar-container container">
@@ -50,10 +59,15 @@ const Navbar: React.FC<NavbarProps> = ({ toggleCart, cartCount }) => {
                 </Link>
 
                 <nav className="nav-links">
-                    <Link to="/kvarteta" className={`nav-link ${location.pathname === '/kvarteta' ? 'active' : ''}`}>Kvarteta</Link>
-                    <Link to="/pexeso" className={`nav-link ${location.pathname === '/pexeso' ? 'active' : ''}`}>Pexeso</Link>
-                    <Link to="/karty" className={`nav-link ${location.pathname === '/karty' ? 'active' : ''}`}>Hrací karty</Link>
-                    <Link to="/pravidla" className={`nav-link ${location.pathname === '/pravidla' ? 'active' : ''}`}>Pravidla hry</Link>
+                    {menuLinks.map(link => (
+                        <Link 
+                            key={link.path}
+                            to={link.path} 
+                            className={`nav-link ${location.pathname === link.path ? 'active' : ''}`}
+                        >
+                            {link.label}
+                        </Link>
+                    ))}
                 </nav>
 
                 <div className="nav-actions">
@@ -74,7 +88,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleCart, cartCount }) => {
                     </button>
 
                     <button
-                        className="mobile-menu-btn"
+                        className={`mobile-menu-btn ${mobileMenuOpen ? 'white-icon' : ''}`}
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                         aria-label="Menu"
                     >
@@ -84,19 +98,55 @@ const Navbar: React.FC<NavbarProps> = ({ toggleCart, cartCount }) => {
             </div>
 
             {/* Mobile Navigation Menu */}
-            <div className={`mobile-nav ${mobileMenuOpen ? 'open' : ''}`}>
-                <nav className="mobile-nav-links">
-                    <Link to="/kvarteta" className={`mobile-nav-link ${location.pathname === '/kvarteta' ? 'active' : ''}`}>Kvarteta</Link>
-                    <Link to="/pexeso" className={`mobile-nav-link ${location.pathname === '/pexeso' ? 'active' : ''}`}>Pexeso</Link>
-                    <Link to="/karty" className={`mobile-nav-link ${location.pathname === '/karty' ? 'active' : ''}`}>Hrací karty</Link>
-                    <Link to="/pravidla" className={`mobile-nav-link ${location.pathname === '/pravidla' ? 'active' : ''}`}>Pravidla hry</Link>
-                    <Link to="/login" className={`mobile-nav-link ${location.pathname === '/login' ? 'active' : ''}`}>
-                        <User size={20} style={{ marginRight: '10px' }} />
-                        {user ? (profile?.first_name || 'Můj profil') : 'Přihlásit se'}
-                    </Link>
-                </nav>
-            </div>
-
+            <AnimatePresence>
+                {mobileMenuOpen && (
+                    <motion.div 
+                        initial={{ x: '100%' }}
+                        animate={{ x: 0 }}
+                        exit={{ x: '100%' }}
+                        transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+                        className="mobile-nav open"
+                    >
+                        <nav className="mobile-nav-links">
+                            {menuLinks.map((link, i) => (
+                                <motion.div
+                                    key={link.path}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.1 + (i * 0.1) }}
+                                >
+                                    <Link 
+                                        to={link.path} 
+                                        className={`mobile-nav-link ${location.pathname === link.path ? 'active' : ''}`}
+                                    >
+                                        {link.label}
+                                    </Link>
+                                </motion.div>
+                            ))}
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.1 + (menuLinks.length * 0.1) }}
+                            >
+                                <Link to="/login" className={`mobile-nav-link ${location.pathname === '/login' ? 'active' : ''}`}>
+                                    <User size={24} style={{ marginRight: '10px' }} />
+                                    {user ? (profile?.first_name || 'Můj profil') : 'Přihlásit se'}
+                                </Link>
+                            </motion.div>
+                        </nav>
+                        
+                        {/* Elegant footer for mobile menu */}
+                        <motion.div 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 0.5 }}
+                            transition={{ delay: 0.8 }}
+                            style={{ position: 'absolute', bottom: '40px', textAlign: 'center' }}
+                        >
+                            <p style={{ color: '#fff', fontSize: '0.9rem', letterSpacing: '2px' }}>HROMADOVKY</p>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
         </header>
     );

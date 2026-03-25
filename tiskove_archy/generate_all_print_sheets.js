@@ -175,11 +175,8 @@ function generatePrintHTML(product, cardFiles) {
         allCards = [...cardFiles, ...cardFiles];
     }
     
-    // Relativní cesta z tiskove_archy/subfolder/ k produktové složce
-    const relPath = path.relative(
-        path.join(BASE, 'tiskove_archy', product.subfolder),
-        path.join(BASE, product.folder)
-    );
+    // Relativní cesta z místa šablony k obrázkům (nyní vždy ve stejné složce jako podsložka finalni_karty)
+    const relPath = './finalni_karty';
     
     // Rozdělit na stránky
     const pages = [];
@@ -286,10 +283,11 @@ for (const product of products) {
     
     const html = generatePrintHTML(product, files);
     
-    const outDir = path.join(BASE, 'tiskove_archy', product.subfolder);
+    // Nový výstupní adresář: přímo v produktové složce (o úroveň výš než finalni_karty)
+    const outDir = path.dirname(path.join(BASE, product.folder));
     fs.mkdirSync(outDir, { recursive: true });
     
-    const outFile = path.join(outDir, `tisk_${product.slug}.html`);
+    const outFile = path.join(outDir, `tiskovy_arch_${product.slug}.html`);
     fs.writeFileSync(outFile, html, 'utf8');
     
     const relOut = path.relative(BASE, outFile);

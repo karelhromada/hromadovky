@@ -133,9 +133,14 @@ export const kvartetaProducts = [
             { id: 1, text: 'Horká novinka', icon: Sparkles, color: '#ffb703' }
         ],
         image: [
-            '/cards/knight_full_1.webp', '/cards/knight_full_2.webp', '/cards/knight_full_3.webp', '/cards/knight_full_4.webp',
-            '/cards/knight_full_5.webp', '/cards/knight_full_6.webp', '/cards/knight_full_7.webp', '/cards/knight_full_8.webp',
-            '/cards/knight_full_9.webp', '/cards/knight_full_10.webp'
+            '/cards/rytiri_v3/sir-pufik_karta_v3.png', '/cards/rytiri_v3/lord-karamel_karta_v3.png', '/cards/rytiri_v3/baron-vlnka_karta_v3.png', '/cards/rytiri_v3/princ-pralinka_karta_v3.png',
+            '/cards/rytiri_v3/kapitan-tlapka_karta_v3.png', '/cards/rytiri_v3/squirelous-kratky_karta_v3.png', '/cards/rytiri_v3/sir-jezurka_karta_v3.png', '/cards/rytiri_v3/don-krecek_karta_v3.png',
+            '/cards/rytiri_v3/vanek-usaty_karta_v3.png', '/cards/rytiri_v3/rytir-rosa_karta_v3.png', '/cards/rytiri_v3/slecna-pirko_karta_v3.png', '/cards/rytiri_v3/broucek-zbrojnos_karta_v3.png',
+            '/cards/rytiri_v3/sir-knoflik_karta_v3.png', '/cards/rytiri_v3/lego-las_karta_v3.png', '/cards/rytiri_v3/vojacek-oloveny_karta_v3.png', '/cards/rytiri_v3/jojo-rytir_karta_v3.png',
+            '/cards/rytiri_v3/hvezdicka-jasna_karta_v3.png', '/cards/rytiri_v3/lord-polstar_karta_v3.png', '/cards/rytiri_v3/snilek-modry_karta_v3.png', '/cards/rytiri_v3/zvonilka-zbrojna_karta_v3.png',
+            '/cards/rytiri_v3/sir-kapka_karta_v3.png', '/cards/rytiri_v3/admiral-kachnicka_karta_v3.png', '/cards/rytiri_v3/rytir-koral_karta_v3.png', '/cards/rytiri_v3/ploutvicka-chrabra_karta_v3.png',
+            '/cards/rytiri_v3/sir-jahudka_karta_v3.png', '/cards/rytiri_v3/lord-citron_karta_v3.png', '/cards/rytiri_v3/baron-boruvka_karta_v3.png', '/cards/rytiri_v3/princ-ananas_karta_v3.png',
+            '/cards/rytiri_v3/rytir-smudla_karta_v3.png', '/cards/rytiri_v3/squire-cara_karta_v3.png', '/cards/rytiri_v3/baron-v-naprstku_karta_v3.png', '/cards/rytiri_v3/sir-hajaja_karta_v3.png'
         ]
     },
     {

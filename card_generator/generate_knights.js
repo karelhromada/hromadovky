@@ -102,10 +102,10 @@ function getCardHTML(knight) {
         <div class="id-badge">${info.id}</div>
         
         <!-- Stats in corners (Hexagons) - Skill Section 4 -->
-        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">${knight['V1 (Roztomilost)']}</div><div class="stat-label">ROZTOMILOST</div></div></div>
-        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">${knight['V2 (Síla)']}</div><div class="stat-label">SÍLA</div></div></div>
-        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">${knight['V3 (Měkkost)']}</div><div class="stat-label">MĚKKOST</div></div></div>
-        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">${knight['V4 (Rychlost)']}</div><div class="stat-label">RYCHLOST</div></div></div>
+        <div class="hex-container pos-tl"><div class="stat-hex"><div class="stat-value">${knight['V1 (Roztomilost)']}</div><div class="stat-label">Roztomilost</div></div></div>
+        <div class="hex-container pos-tr"><div class="stat-hex"><div class="stat-value">${knight['V2 (Síla)']}</div><div class="stat-label">Síla</div></div></div>
+        <div class="hex-container pos-bl"><div class="stat-hex"><div class="stat-value">${knight['V3 (Měkkost)']}</div><div class="stat-label">Měkkost</div></div></div>
+        <div class="hex-container pos-br"><div class="stat-hex"><div class="stat-value">${knight['V4 (Rychlost)']}</div><div class="stat-label">Rychlost</div></div></div>
 
         <div class="footer-container">
             <div class="group-name">${info.groupName}</div>
@@ -248,7 +248,7 @@ let htmlContent = `
 
         .footer-container { position: absolute; bottom: 1.5mm; left: 16mm; right: 16mm; text-align: center; z-index: 10; }
         .group-name { font-size: 1.5mm; color: #fff; letter-spacing: 0.8mm; margin-bottom: 0.5mm; font-weight: 700; opacity: 0.6; }
-        .card-name { font-family: 'Cinzel', serif; font-size: 3.2mm; color: var(--theme-color); text-transform: uppercase; margin: 0; text-shadow: 0 2px 4px #000; letter-spacing: 0.1mm; line-height: 1.1; }
+        .card-name { font-family: 'Cinzel', serif; font-size: 3.2mm; color: var(--theme-color); margin: 0; text-shadow: 0 2px 4px #000; letter-spacing: 0.1mm; line-height: 1.1; }
         .card-desc { font-size: 1.8mm; color: #ccc; margin-top: 0.5mm; line-height: 1.2; text-shadow: 1px 1px 2px #000; font-weight: 400; }
         .card-desc i { font-style: italic; opacity: 0.8; }
 

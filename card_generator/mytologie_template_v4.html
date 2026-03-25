@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&display=swap');
+        
+        * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+        body {
+            margin: 0; padding: 0;
+            display: flex; justify-content: center; align-items: center; min-height: 100vh;
+            background: transparent; /* průhledné pozadí pro PNG generátor */
+        }
+
+        /* Standard card container */
+        .card-container {
+            width: 678px;
+            height: 921px;
+            position: relative;
+            background-color: #000;
+            background-image: url('${IMG_PATH}');
+            background-size: 109% 109%;
+            background-position: center center;
+            overflow: hidden;
+            
+            /* Add print-style borders */
+            border-radius: 20px;
+            border: 18px solid #000; /* Vnější silný tiskový rámeček */
+        }
+        
+        .card-inner-border {
+            position: absolute;
+            inset: 0px; /* Zevnitř černého rámečku */
+            border: 6px solid ${COLOR}; /* Barevná linka */
+            border-radius: 10px;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        /* PATCH: Covers the old ID - NAME and Subtitle area */
+        .name-patch {
+            position: absolute;
+            top: 61.5%; left: 10%; width: 80%; height: 11%;
+            background: #000;
+            z-index: 5;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+
+        .id-name {
+            font-family: 'Cinzel', serif; font-weight: 900; font-size: ${TITLE_SIZE};
+            color: ${COLOR}; margin: 0;
+            letter-spacing: 2px; line-height: 1; white-space: nowrap;
+        }
+
+        .subtitle {
+            font-family: 'Cinzel', serif; font-size: 18px; color: #cbd5e1; font-style: italic;
+            margin-top: 8px; opacity: 0.9; font-weight: 400;
+        }
+
+        /* PATCH: Covers the 4 stat boxes at once while preserving the border */
+        .stats-patch {
+            position: absolute;
+            top: 73.5%; left: 1%; right: 1%; bottom: 0%;
+            background: #000;
+            z-index: 5;
+            display: flex; align-items: center; justify-content: center;
+            padding: 0 4%;
+            padding-bottom: 3.5%;
+        }
+
+        .stats-grid {
+            width: 100%; display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 12px; height: 100%; align-items: center;
+        }
+
+        .stat-box {
+            background: #000; border: 2.8px solid ${COLOR};
+            border-radius: 12px; height: 115px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+
+        .stat-l {
+            font-family: 'Cinzel', serif; font-size: 14px; color: #e2e8f0; 
+            font-weight: 700; margin-bottom: 5px; letter-spacing: 1px;
+            /* text-transform: uppercase removed pro gramatickou správnost! */
+        }
+
+        .stat-v {
+            font-family: 'Cinzel', serif; font-weight: 900; font-size: 34px;
+            color: #fff; line-height: 1;
+        }
+
+        /* Subtle origin badge overlay */
+        .origin-badge {
+            position: absolute; top: 35px; right: 35px; z-index: 10;
+            background: rgba(0,0,0,0.8); color: ${COLOR};
+            border: 2px solid ${COLOR}; border-radius: 8px;
+            font-family: 'Cinzel', serif; font-size: 15px; padding: 6px 15px; 
+            font-weight: 700;
+            /* text-transform: uppercase removed pro gramatickou správnost! */
+        }
+    </style>
+</head>
+<body>
+    <div class="card-container">
+        <div class="card-inner-border"></div>
+        <div class="origin-badge">${ORIGIN}</div>
+        
+        <div class="name-patch">
+            <h1 class="id-name">${ID} - ${NAME}</h1>
+            <div class="subtitle">${SUBTITLE}</div>
+        </div>
+        
+        <div class="stats-patch">
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <span class="stat-l">Síla</span>
+                    <span class="stat-v">${SILA}</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-l">Magie</span>
+                    <span class="stat-v">${MAGIE}</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-l">Stáří</span>
+                    <span class="stat-v">${STARI}</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-l">Hrozivost</span>
+                    <span class="stat-v">${HROZIVOST}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

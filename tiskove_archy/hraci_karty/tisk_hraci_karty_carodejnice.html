@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Hrací karty – čarodějnice – tiskový arch</title>
+    <style>
+        /* ═══ PRINT RESET ═══ */
+        * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        body { margin: 0; padding: 0; background: #e8e8e8; font-family: system-ui, sans-serif; }
+        
+        /* ═══ PRINT HEADER (nepotiskne se) ═══ */
+        .no-print { text-align: center; padding: 12px 20px; background: #fff; border-bottom: 1px solid #ddd; position: sticky; top: 0; z-index: 100; }
+        .no-print h2 { margin: 0 0 4px; font-size: 16px; }
+        .no-print p { margin: 0 0 8px; color: #666; font-size: 13px; }
+        .btn-print { background: #ca8a04; color: white; border: none; padding: 8px 24px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 14px; }
+        .btn-print:hover { background: #a16207; }
+        
+        /* ═══ A4 STRÁNKA ═══ */
+        .page { width: 210mm; height: 297mm; background: #fff; margin: 8mm auto; position: relative; overflow: hidden; page-break-after: always; box-shadow: 0 0 10px rgba(0,0,0,0.15); }
+        .page:last-child { page-break-after: avoid; }
+        
+        /* ═══ KARTA ═══ */
+        .card { 
+            width: 62mm; height: 88mm; 
+            position: absolute; 
+            background-color: #000; 
+            background-size: cover; 
+            background-position: center; 
+            border-radius: 4mm; 
+            overflow: hidden; 
+        }
+        
+        /* ═══ LAMINAČNÍ KOMPENZACE ═══ */
+        /* Matná laminace ztlumí barvy a kontrast. Tyto filtry to předkompenzují. */
+        .card {
+            filter: brightness(1.08) contrast(1.06) saturate(1.08);
+        }
+        
+        @media print {
+            body { background: none; }
+            .page { margin: 0; box-shadow: none; }
+            .no-print { display: none; }
+            @page { size: A4 portrait; margin: 0; }
+            
+            /* Silnější kompenzace pro skutečný tisk */
+            .card {
+                filter: brightness(1.15) contrast(1.10) saturate(1.10);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="no-print">
+        <h2>Hrací karty – čarodějnice – tiskový arch</h2>
+        <p>Karty: 62mm × 88mm | 3×3 na stránku | Celkem 19 karet (3 stran) | Optimalizováno pro matnou laminaci</p>
+        <button class="btn-print" onclick="window.print()">Vytisknout karty</button>
+    </div>
+    <div class="page">
+        <div class="card" style="left:9mm; top:14mm; background-image:url('../../hraci_karty/carodejnice/finalni_karty/witch_desitka_kule_1772691240714.png');"></div>
+        <div class="card" style="left:74mm; top:14mm; background-image:url('../../hraci_karty/carodejnice/finalni_karty/witch_desitka_listy_1772691213142.png');"></div>
+        <div class="card" style="left:139mm; top:14mm; background-image:url('../../hraci_karty/carodejnice/finalni_karty/witch_desitka_srdce_1772691198630.png');"></div>
+        <div class="card" style="left:9mm; top:105mm; background-image:url('../../hraci_karty/carodejnice/finalni_karty/witch_desitka_zaludy_1772691226753.png');"></div>
+        <div class="card" style="left:74mm; top:105mm; background-image:url('../../hraci_karty/carodejnice/finalni_karty/witch_devitka_kule_1772693736055.png');"></div>
+        <div class="card" style="left:139mm; top:105mm; background-image:url('../../hraci_karty/carodejnice/finalni_karty/witch_devitka_listy_1772693708096.png');"></div>
+        <div class="card" style="left:9mm; top:196mm; background-image:url('../../hraci_karty/carodejnice/finalni_karty/witch_devitka_srdce_1772693693658.png');"></div>
+        <div class="card" style="left:74mm; top:196mm; background-image:url('../../hraci_karty/carodejnice/finalni_karty/witch_devitka_zaludy_1772693721438.png');"></div>
+        <div class="card" style="left:139mm; top:196mm; background-image:url('../../hraci_karty/carodejnice/finalni_karty/witch_earth.png');"></div>
+    </div>
+    <div class="page">
+        <div class="card" style="left:9mm; top:14mm; background-image:url('../../hraci_karty/carodejnice/finalni_karty/witch_fire.png');"></div>
+        <div class="card" style="left:74mm; top:14mm; background-image:url('../../hraci_karty/carodejnice/finalni_karty/witch_forest.png');"></div>
+        <div class="card" style="left:139mm; top:14mm; background-image:url('../../hraci_karty/carodejnice/finalni_karty/witch_osmicka_kule_1772693817463.png');"></div>
+        <div class="card" style="left:9mm; top:105mm; background-image:url('../../hraci_karty/carodejnice/finalni_karty/witch_osmicka_listy_1772693789231.png');"></div>
+        <div class="card" style="left:74mm; top:105mm; background-image:url('../../hraci_karty/carodejnice/finalni_karty/witch_osmicka_srdce_1772693778055.png');"></div>
+        <div class="card" style="left:139mm; top:105mm; background-image:url('../../hraci_karty/carodejnice/finalni_karty/witch_osmicka_zaludy_1772693802058.png');"></div>
+        <div class="card" style="left:9mm; top:196mm; background-image:url('../../hraci_karty/carodejnice/finalni_karty/witch_sand.png');"></div>
+        <div class="card" style="left:74mm; top:196mm; background-image:url('../../hraci_karty/carodejnice/finalni_karty/witch_sedmicka_kule_bg_1772713123748.png');"></div>
+        <div class="card" style="left:139mm; top:196mm; background-image:url('../../hraci_karty/carodejnice/finalni_karty/witch_sedmicka_listy_1772697158164.png');"></div>
+    </div>
+    <div class="page">
+        <div class="card" style="left:9mm; top:14mm; background-image:url('../../hraci_karty/carodejnice/finalni_karty/witch_sedmicka_zaludy_1772697171931.png');"></div>
+    </div>
+
+</body>
+</html>

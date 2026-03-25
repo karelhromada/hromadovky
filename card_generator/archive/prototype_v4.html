@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kvarteta - V4 RPG Style</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Exo+2:wght@600&display=swap');
+
+        body {
+            background-color: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Exo 2', sans-serif;
+        }
+
+        :root {
+            --card-width: 400px;
+            --card-height: 560px;
+            --border-radius: 20px;
+            --gold: #ffcc00;
+            --silver: #e0e0e0;
+            --stat-bg: rgba(0, 0, 0, 0.7);
+            --stat-border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .card {
+            width: var(--card-width);
+            height: var(--card-height);
+            position: relative;
+            border-radius: var(--border-radius);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+            border: 4px solid #111;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        /* Subtle Vignette */
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle, transparent 40%, rgba(0, 0, 0, 0.8) 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Stat Container Styles */
+        .stat-badge {
+            position: absolute;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 70px;
+            height: 70px;
+            background: var(--stat-bg);
+            border: 2px solid var(--gold);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            /* Rhombus shape */
+            transform: rotate(45deg);
+        }
+
+        .stat-content {
+            transform: rotate(-45deg);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .stat-value {
+            font-family: 'Cinzel', serif;
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--gold);
+            line-height: 1;
+            text-shadow: 2px 2px 0px #000;
+        }
+
+        .stat-label {
+            font-size: 9px;
+            text-transform: uppercase;
+            color: #fff;
+            margin-top: 2px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        .stat-unit {
+            font-size: 8px;
+            color: #ccc;
+            margin-top: -2px;
+        }
+
+        /* Positioning */
+        /* Top Right: Strength */
+        .pos-tr {
+            top: 30px;
+            right: 30px;
+        }
+
+        /* Top Left: Wingspan */
+        .pos-tl {
+            top: 30px;
+            left: 30px;
+        }
+
+        /* Bottom Right: Range */
+        .pos-br {
+            bottom: 30px;
+            right: 30px;
+        }
+
+        /* Bottom Left: Speed */
+        .pos-bl {
+            bottom: 30px;
+            left: 30px;
+        }
+
+        /* Center Bottom: Age - make this one different/smaller or circle */
+        .pos-bm {
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            /* Keeps the rotation logic */
+            width: 50px;
+            height: 50px;
+            border-color: var(--silver);
+        }
+
+        .pos-bm .stat-value {
+            font-size: 16px;
+        }
+
+        .pos-bm .stat-label {
+            font-size: 8px;
+        }
+
+
+        /* Name Plate */
+        .name-plate {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            text-align: center;
+            width: 60%;
+            background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.8), transparent);
+            padding: 5px 0;
+            border-top: 1px solid var(--gold);
+            border-bottom: 1px solid var(--gold);
+        }
+
+        /* Modifying to fit centered age */
+        .name-plate {
+            bottom: 140px;
+            /* Moved up to clear the bottom stats */
+        }
+
+        .card-name {
+            font-family: 'Cinzel', serif;
+            font-size: 28px;
+            color: #fff;
+            text-transform: uppercase;
+            margin: 0;
+            text-shadow: 0 2px 4px #000;
+        }
+
+        .card-desc {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 12px;
+            color: #ccc;
+            z-index: 10;
+            font-style: italic;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        /* ID Badge */
+        .id-badge {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #000;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 2px 8px;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            font-size: 12px;
+            z-index: 20;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <img src="Obrázky draků/Vulkanus.png" class="card-image" alt="Vulkanus">
+
+        <div class="id-badge">#1</div>
+
+        <div class="name-plate">
+            <h1 class="card-name">Vulkanus</h1>
+        </div>
+
+        <!-- Strength (Top Right) -->
+        <div class="stat-badge pos-tr">
+            <div class="stat-content">
+                <span class="stat-value">95</span>
+                <span class="stat-label">Síla</span>
+            </div>
+        </div>
+
+        <!-- Wingspan (Top Left) -->
+        <div class="stat-badge pos-tl">
+            <div class="stat-content">
+                <span class="stat-value">45</span>
+                <span class="stat-unit">metrů</span>
+                <span class="stat-label">Rozpětí</span>
+            </div>
+        </div>
+
+        <!-- Range (Bottom Right) -->
+        <div class="stat-badge pos-br">
+            <div class="stat-content">
+                <span class="stat-value">120</span>
+                <span class="stat-unit">metrů</span>
+                <span class="stat-label">Dosah</span>
+            </div>
+        </div>
+
+        <!-- Speed (Bottom Left) -->
+        <div class="stat-badge pos-bl">
+            <div class="stat-content">
+                <span class="stat-value">180</span>
+                <span class="stat-unit">km/h</span>
+                <span class="stat-label">Rychlost</span>
+            </div>
+        </div>
+
+        <!-- Age (Bottom Middle - Smaller) -->
+        <div class="stat-badge pos-bm">
+            <div class="stat-content">
+                <span class="stat-value">1200</span>
+                <span class="stat-label">Let</span>
+            </div>
+        </div>
+
+        <div class="card-desc">Obrovský ohnivý drak žijící v aktivních sopkách.</div>
+    </div>
+
+</body>
+
+</html>

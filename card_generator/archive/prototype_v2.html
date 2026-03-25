@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kvarteta - Premium Prototype</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@400;700&display=swap');
+
+        :root {
+            --card-width: 63.5mm;
+            --card-height: 88.9mm;
+            --gold: #d4af37;
+            --gold-light: #f1d78a;
+            --dark-bg: #1a1a1a;
+            --darkER-bg: #0f0f0f;
+            --text-color: #e0e0e0;
+        }
+
+        body {
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .card {
+            width: var(--card-width);
+            height: var(--card-height);
+            background: var(--dark-bg);
+            border-radius: 4mm;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+            position: relative;
+            overflow: hidden;
+            border: 1.5mm solid var(--gold);
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            color: var(--text-color);
+        }
+
+        /* Elaborate Border Effect */
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 1mm;
+            left: 1mm;
+            right: 1mm;
+            bottom: 1mm;
+            border: 0.5mm solid var(--gold-light);
+            border-radius: 3mm;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        .card-header {
+            background: linear-gradient(to bottom, var(--gold), #a38216);
+            color: #000;
+            padding: 1.5mm 1mm;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-title {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 13pt;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card-id-badge {
+            position: absolute;
+            top: 50%;
+            left: 2mm;
+            transform: translateY(-50%);
+            background: #000;
+            color: var(--gold);
+            width: 5mm;
+            height: 5mm;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 8pt;
+            border: 1px solid var(--gold);
+            font-family: 'Cinzel', serif;
+        }
+
+        .card-image-container {
+            width: 100%;
+            height: 35mm;
+            /* Reduced from 42mm to prevent overflow */
+            background: #000;
+            position: relative;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            object-position: top center;
+        }
+
+        /* Stylish Stats Grid */
+        .stats-container {
+            flex-grow: 1;
+            padding: 1.5mm 3mm;
+            background: radial-gradient(circle at center, #2a2a2a 0%, #151515 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.5mm;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 0.5mm;
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            display: flex;
+            align-items: center;
+            font-size: 8pt;
+            text-transform: uppercase;
+            color: #d0d0d0;
+            /* Increased contrast from #aaa */
+            font-weight: 700;
+        }
+
+        .stat-icon {
+            width: 4mm;
+            text-align: center;
+            margin-right: 1.5mm;
+            font-size: 9pt;
+        }
+
+        .stat-value {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 10pt;
+            color: var(--gold-light);
+            text-shadow: 0 0 2px rgba(212, 175, 55, 0.5);
+        }
+
+        .card-footer {
+            background: #000;
+            padding: 2mm 3mm;
+            border-top: 1px solid var(--gold);
+            min-height: 12mm;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-description {
+            font-size: 7.5pt;
+            text-align: center;
+            font-style: italic;
+            color: #ccc;
+            line-height: 1.2;
+        }
+
+        /* SVG Placeholder for Image */
+        .placeholder-svg {
+            width: 100%;
+            height: 100%;
+            background: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #444;
+            flex-direction: column;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Prototype V2 for Vulkanus (ID 1) -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-id-badge">1</div>
+            <h1 class="card-title">Vulkanus</h1>
+        </div>
+
+        <div class="card-image-container">
+            <!-- Using local image provided by user -->
+            <img src="Obrázky draků/Vulkanus.png" class="card-image" alt="Vulkanus">
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-row">
+                <div class="stat-label"><span class="stat-icon">⚔️</span> Síla</div>
+                <div class="stat-value">95</div>
+            </div>
+            <div class="stat-row">
+                <div class="stat-label"><span class="stat-icon">🦅</span> Rozpětí</div>
+                <div class="stat-value">45 m</div>
+            </div>
+            <div class="stat-row">
+                <div class="stat-label"><span class="stat-icon">🎯</span> Dosah</div>
+                <div class="stat-value">120 m</div>
+            </div>
+            <div class="stat-row">
+                <div class="stat-label"><span class="stat-icon">⏳</span> Věk</div>
+                <div class="stat-value">1200 let</div>
+            </div>
+            <div class="stat-row">
+                <div class="stat-label"><span class="stat-icon">💨</span> Rychlost</div>
+                <div class="stat-value">180 km/h</div>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <div class="card-description">
+                "Obrovský ohnivý drak žijící v aktivních sopkách."
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

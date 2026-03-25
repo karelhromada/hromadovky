@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kvarteta - V5 Hex Style</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Exo+2:wght@600&display=swap');
+
+        body {
+            background-color: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Exo 2', sans-serif;
+        }
+
+        :root {
+            --card-width: 400px;
+            --card-height: 560px;
+            --border-radius: 20px;
+            --gold: #ffcc00;
+            --gold-dark: #b8860b;
+            --silver: #e0e0e0;
+            --stat-bg: rgba(20, 20, 20, 0.85);
+        }
+
+        .card {
+            width: var(--card-width);
+            height: var(--card-height);
+            position: relative;
+            border-radius: var(--border-radius);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+            border: 4px solid #111;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        /* Gradient Overlays */
+        .overlay-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
+            z-index: 2;
+        }
+
+        .overlay-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 140px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+            z-index: 2;
+        }
+
+        /* Hexagonal Stat Badge */
+        .stat-hex {
+            width: 70px;
+            height: 80px;
+            background: var(--stat-bg);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Container for Border + Hex */
+        .hex-container {
+            position: absolute;
+            z-index: 10;
+            width: 76px;
+            height: 86px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .stat-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--gold);
+            margin-bottom: 2px;
+            filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.8));
+        }
+
+        .stat-value {
+            font-family: 'Cinzel', serif;
+            font-size: 20px;
+            font-weight: 900;
+            color: #fff;
+            margin: 2px 0;
+            line-height: 1;
+            text-shadow: 2px 2px 0 #000;
+        }
+
+        .stat-label {
+            font-size: 8px;
+            text-transform: uppercase;
+            color: #ccc;
+            letter-spacing: 0.5px;
+            text-shadow: 1px 1px 1px #000;
+        }
+
+        /* Positioning (V3 Layout) */
+        .pos-tr {
+            top: 20px;
+            right: 20px;
+        }
+
+        .pos-tl {
+            top: 20px;
+            left: 20px;
+        }
+
+        .pos-br {
+            bottom: 100px;
+            right: 20px;
+        }
+
+        .pos-bl {
+            bottom: 100px;
+            left: 20px;
+        }
+
+        .pos-ml {
+            top: 50%;
+            left: 20px;
+            transform: translateY(-50%);
+        }
+
+        /* Adjust internal spacing to lift text from bottom edge */
+        .stat-hex {
+            padding-bottom: 4px;
+            /* Lifts content up slightly */
+        }
+
+        /* Name Plate */
+        .name-container {
+            position: absolute;
+            bottom: 25px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .card-name {
+            font-family: 'Cinzel', serif;
+            font-size: 30px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin: 0;
+            text-shadow: 0 3px 6px #000;
+            letter-spacing: 2px;
+        }
+
+        .card-desc {
+            font-size: 13px;
+            color: #ddd;
+            margin-top: 5px;
+            font-style: italic;
+            text-shadow: 1px 1px 3px #000;
+        }
+
+        /* ID Badge - Centered Top */
+        .id-badge {
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            background: #000;
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            color: var(--gold);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 16px;
+            z-index: 15;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <img src="Obrázky draků/Vulkanus.png" class="card-image" alt="Vulkanus">
+
+        <div class="overlay-top"></div>
+        <div class="overlay-bottom"></div>
+
+        <div class="id-badge">1</div>
+
+        <!-- Strength (Top Right) -->
+        <div class="hex-container pos-tr">
+            <div class="stat-hex">
+                <div class="stat-icon">
+                    <!-- Sword Icon -->
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M6,2V8H6V8L10,12L6,16V22H18V16L14,12L18,8V2H6M12,13L14,11H10L12,13M13,2H16V7H13V2M8,2H11V7H8V2M8,17H11V20H8V17M13,17H16V20H13V17Z" />
+                    </svg>
+                </div>
+                <div class="stat-value">95</div>
+                <div class="stat-label">Síla</div>
+            </div>
+        </div>
+
+        <!-- Wingspan (Top Left) -->
+        <div class="hex-container pos-tl">
+            <div class="stat-hex">
+                <div class="stat-icon">
+                    <!-- Expand/Arrows Icon -->
+                    <svg viewBox="0 0 24 24">
+                        <path d="M21,11C21,16.55 17.16,21.74 12,23C6.84,21.74 3,16.55 3,11V5L12,1L21,5V11Z" />
+                    </svg>
+                </div>
+                <div class="stat-value">45m</div>
+                <div class="stat-label">Rozpětí</div>
+            </div>
+        </div>
+
+        <!-- Range (Bottom Right) -->
+        <div class="hex-container pos-br">
+            <div class="stat-hex">
+                <div class="stat-icon">
+                    <!-- Target Icon -->
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z" />
+                    </svg>
+                </div>
+                <div class="stat-value">120</div>
+                <div class="stat-label">Dosah</div>
+            </div>
+        </div>
+
+        <!-- Speed (Bottom Left) -->
+        <div class="hex-container pos-bl">
+            <div class="stat-hex">
+                <div class="stat-icon">
+                    <!-- Wind/Gust Icon -->
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M4,10A2,2 0 0,0 6,12H9C14.5,12 18,8.5 18,8.5C18,8.5 14.5,5 9,5H6A2,2 0 0,0 4,7V10M12.5,14C11.5,14 10.5,13.5 10,13H6V17H10C14.5,17 18,14.5 18,14.5C18,14.5 15.5,14 12.5,14Z" />
+                    </svg>
+                </div>
+                <div class="stat-value">180</div>
+                <div class="stat-label">Rychlost</div>
+            </div>
+        </div>
+
+        <!-- Age (Middle Left) -->
+        <div class="hex-container pos-ml">
+            <div class="stat-hex">
+                <div class="stat-icon">
+                    <!-- Hourglass Icon -->
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M6,2H18V8H18V8L14,12L18,16V16H18V22H6V16H6V16L10,12L6,8V8H6V2M16,16.5L12,12.5L8,16.5V20H16V16.5M12,11.5L16,7.5V4H8V7.5L12,11.5Z" />
+                    </svg>
+                </div>
+                <div class="stat-value">1200</div>
+                <div class="stat-label">Let</div>
+            </div>
+        </div>
+
+        <div class="name-container">
+            <h1 class="card-name">Vulkanus</h1>
+            <div class="card-desc">Obrovský ohnivý drak žijící v aktivních sopkách.</div>
+        </div>
+    </div>
+
+</body>
+
+</html>

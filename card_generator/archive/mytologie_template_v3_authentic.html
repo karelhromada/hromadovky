@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&display=swap');
+        
+        * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+        body {
+            margin: 0; padding: 0;
+            display: flex; justify-content: center; align-items: center; min-height: 100vh;
+            background: #1a1a1a;
+        }
+
+        /* 
+           V3 PRODUCTION: 60x85mm (678x961px)
+           Base is the ORIGINAL PNG.
+        */
+        .card-container {
+            width: 678px;
+            height: 961px;
+            position: relative;
+            background-color: #000;
+            overflow: hidden;
+            /* Matte optimization */
+            filter: brightness(1.10) contrast(1.05) url(#sharpen);
+            image-rendering: -webkit-optimize-contrast;
+        }
+
+        /* The Original AI Generated Card */
+        .base-image {
+            position: absolute;
+            top: 0; left: 0; width: 678px; height: 921px;
+            background-image: url('${IMG_PATH}');
+            background-size: 100% 100%;
+            z-index: 1;
+        }
+
+        /* Border Extensions (Continuous look) */
+        .border-ext {
+            position: absolute;
+            bottom: 0; width: 14px; height: 100px;
+            background: ${COLOR};
+            z-index: 5;
+        }
+        .border-ext.left { left: 0; }
+        .border-ext.right { right: 0; }
+
+        /* 
+           V3 TEXT REPLACEMENT OVERLAY:
+           Matches the original footer's dark color and style.
+        */
+        .ui-overlay {
+            position: absolute;
+            top: 615px; left: 14px; right: 14px; bottom: 0;
+            background: #020202; /* Seamless blend with dark footer */
+            z-index: 10;
+            display: flex; flex-direction: column; align-items: center;
+            padding-top: 20px;
+        }
+
+        .name-section {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .id-name {
+            font-family: 'Cinzel', serif; font-weight: 900; font-size: 44px;
+            color: ${COLOR}; text-transform: uppercase; margin: 0;
+            letter-spacing: 2px; line-height: 1;
+        }
+
+        .subtitle {
+            font-family: 'Cinzel', serif; font-size: 19px; color: #cbd5e1; font-style: italic;
+            margin-top: 10px; opacity: 0.9;
+        }
+
+        /* REPLICATE: Labels ABOVE Boxes */
+        .stats-grid {
+            width: calc(100% - 20px);
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: auto;
+            margin-bottom: 40px;
+        }
+
+        .stat-col { display: flex; flex-direction: column; align-items: center; }
+
+        .stat-label {
+            font-family: 'Cinzel', serif; font-size: 13px; color: #ddd; 
+            text-transform: uppercase; font-weight: 700; margin-bottom: 8px;
+        }
+
+        .stat-box {
+            background: rgba(0,0,0,0.5); 
+            border: 2px solid ${COLOR};
+            border-radius: 8px; width: 100%; height: 85px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .stat-val {
+            font-family: 'Cinzel', serif; font-weight: 900; font-size: 34px;
+            color: #fff;
+        }
+
+        .origin-badge {
+            position: absolute; top: 35px; right: 35px; z-index: 10;
+            background: rgba(0,0,0,0.8); color: ${COLOR};
+            border: 2px solid ${COLOR}; border-radius: 6px;
+            font-family: 'Cinzel', serif; font-size: 14px; padding: 5px 15px; 
+            text-transform: uppercase; font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <svg width="0" height="0" style="position:absolute; z-index:-1;">
+        <filter id="sharpen">
+            <feConvolveMatrix order="3" kernelMatrix="0 -1 0 -1 5 -1 0 -1 0" preserveAlpha="true"/>
+        </filter>
+    </svg>
+
+    <div class="card-container">
+        <!-- BASE: The Original AI PNG -->
+        <div class="base-image"></div>
+        
+        <!-- EXTENSIONS: Side borders reached bottom 85mm -->
+        <div class="border-ext left"></div>
+        <div class="border-ext right"></div>
+        
+        <div class="origin-badge">${ORIGIN}</div>
+        
+        <!-- REWRITE: Replicating original style but with new text -->
+        <div class="ui-overlay">
+            <div class="name-section">
+                <h1 class="id-name">${ID} - ${NAME}</h1>
+                <div class="subtitle">${SUBTITLE}</div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-col">
+                    <span class="stat-label">Síla</span>
+                    <div class="stat-box"><span class="stat-val">${SILA}</span></div>
+                </div>
+                <div class="stat-col">
+                    <span class="stat-label">Magie</span>
+                    <div class="stat-box"><span class="stat-val">${MAGIE}</span></div>
+                </div>
+                <div class="stat-col">
+                    <span class="stat-label">Stáří</span>
+                    <div class="stat-box"><span class="stat-val">${STARI}</span></div>
+                </div>
+                <div class="stat-col">
+                    <span class="stat-label">Hrozivost</span>
+                    <div class="stat-box"><span class="stat-val">${HROZIVOST}</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -123,7 +123,7 @@
 .cards-stage {
     position: relative;
     width: 300px;
-    height: 420px;
+    height: 407px; /* Perfect aspect ratio for 678x921 cards */
     transform-style: preserve-3d;
     z-index: 10;
     transition: transform 0.1s ease-out;
@@ -134,14 +134,14 @@
     width: 100%;
     height: 100%;
     border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
     animation: levitate 6s ease-in-out infinite;
     backface-visibility: hidden;
+    background: transparent;
 }
 
 .hero-card-img {
@@ -156,24 +156,19 @@
 /* Card positioning for carousel with 5 cards */
 .card-pos-0 {
     transform: translateZ(100px) rotate(5deg) translateX(40px) translateY(20px);
-    background-color: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(20px);
-    border-color: var(--accent-gold);
     z-index: 5;
     opacity: 1;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15), 0 0 30px rgba(197, 155, 39, 0.3);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), 0 0 30px rgba(197, 155, 39, 0.3);
 }
 
 .card-pos-1 {
     transform: translateZ(20px) rotate(15deg) translateX(120px) translateY(-20px) scale(0.9);
-    background-color: var(--glass-bg);
     z-index: 4;
     opacity: 0.8;
 }
 
 .card-pos-2 {
     transform: translateZ(-50px) rotate(5deg) translateX(60px) translateY(-50px) scale(0.8);
-    background-color: var(--glass-bg);
     z-index: 1;
     opacity: 0;
     pointer-events: none;
@@ -181,7 +176,6 @@
 
 .card-pos-3 {
     transform: translateZ(-50px) rotate(-5deg) translateX(-60px) translateY(-50px) scale(0.8);
-    background-color: var(--glass-bg);
     z-index: 1;
     opacity: 0;
     pointer-events: none;
@@ -189,7 +183,6 @@
 
 .card-pos-4 {
     transform: translateZ(50px) rotate(-10deg) translateX(-80px) translateY(0px) scale(0.9);
-    background-color: var(--glass-bg);
     z-index: 3;
     opacity: 0.8;
 }

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tisk karet Prší - 62x105mm (3x2 Portrait)</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f0f0f0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        @page {
+            size: A4 portrait;
+            margin: 0;
+        }
+
+        .page-grid {
+            width: 210mm;
+            height: 297mm;
+            padding: 0;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: grid;
+            grid-template-columns: repeat(2, 88mm);
+            grid-template-rows: repeat(2, 120mm);
+            justify-content: center;
+            align-content: center;
+            /* Vertical centering on A4 portrait */
+            page-break-after: always;
+            box-sizing: border-box;
+            gap: 5mm;
+        }
+
+        .page-grid:last-child {
+            page-break-after: avoid;
+        }
+
+        .card {
+            width: 88mm;
+            height: 120mm;
+            border: 0.1mm solid #ccc;
+            position: relative;
+            overflow: hidden;
+            background: #000;
+            box-sizing: border-box;
+            border-radius: 4mm;
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @media print {
+            body {
+                background: none;
+            }
+
+            .page-grid {
+                margin: 0;
+                box-shadow: none;
+                border: none;
+            }
+
+            .no-print {
+                display: none;
+            }
+
+            .card {
+                border: 0.1mm solid #999;
+            }
+
+            /* Kompenzace pro matnou laminaci - zabrání ztrátě ostrosti, křivky zežloutnutí a zapíjení tmavé. */
+            .card img {
+                filter: brightness(1.15) contrast(1.10) saturate(1.10) !important;
+            }
+        }
+
+        .no-print {
+            text-align: center;
+            padding: 15px;
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .btn-print {
+            background: #ca8a04;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="no-print">
+        <h1>Tiskový arch (88 x 120 mm) - 4 karty na stránku</h1>
+        <p>Orientace: **Na výšku (Portrait)** | Měřítko: **100% (Skutečná velikost)**</p>
+        <button class="btn-print" onclick="window.print()">Vytisknout karty</button>
+    </div>
+
+    <script>
+        const cards = [
+            'prsi_srdce_7', 'prsi_srdce_8', 'prsi_srdce_9', 'prsi_srdce_10', 'prsi_srdce_J', 'prsi_srdce_Q', 'prsi_srdce_K', 'prsi_srdce_A',
+            'prsi_listy_7', 'prsi_listy_8', 'prsi_listy_9', 'prsi_listy_10', 'prsi_listy_J', 'prsi_listy_Q', 'prsi_listy_K', 'prsi_listy_A',
+            'prsi_kule_7', 'prsi_kule_8', 'prsi_kule_9', 'prsi_kule_10', 'prsi_kule_J', 'prsi_kule_Q', 'prsi_kule_K', 'prsi_kule_A',
+            'prsi_zaludy_7', 'prsi_zaludy_8', 'prsi_zaludy_9', 'prsi_zaludy_10', 'prsi_zaludy_J', 'prsi_zaludy_Q', 'prsi_zaludy_K', 'prsi_zaludy_A'
+        ];
+
+        let html = '';
+        const cardsPerPage = 4;
+        for (let i = 0; i < cards.length; i += cardsPerPage) {
+            html += '<div class="page-grid">';
+            for (let j = 0; j < cardsPerPage; j++) {
+                html += `<div class="card"><img src="../kvarteta-eshop/public/cards/prsi/${cards[i + j]}.png"></div>`;
+            }
+            html += '</div>';
+        }
+        document.write(html);
+    </script>
+</body>
+
+</html>

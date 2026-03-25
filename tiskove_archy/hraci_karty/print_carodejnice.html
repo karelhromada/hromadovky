@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tisk karet Čarodějnice - 70.9x100.4mm (4x2 Landscape)</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f0f0f0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        @page {
+            size: A4 landscape;
+            margin: 0;
+        }
+
+        .page-grid {
+            width: 297mm;
+            height: 210mm;
+            padding: 0;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: grid;
+            grid-template-columns: repeat(4, 70.9mm);
+            grid-template-rows: repeat(2, 100.4mm);
+            justify-content: center;
+            align-content: center;
+            page-break-after: always;
+            box-sizing: border-box;
+            gap: 2mm;
+        }
+
+        .page-grid:last-child {
+            page-break-after: avoid;
+        }
+
+        .card {
+            width: 70.9mm;
+            height: 100.4mm;
+            border: 0.1mm solid #ccc;
+            /* ořezová značka na spad */
+            position: relative;
+            overflow: hidden;
+            background: #000;
+            box-sizing: border-box;
+            border-radius: 3mm;
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Aplikace BLEEDU (spadávky) na rubovou stranu */
+        /* Odstraníme obrys, aby se rub netiskl s ořezovou značkou líce */
+        .page-back .card {
+            border: none;
+            overflow: visible;
+            /* povolíme přetečení do sousedních mezer */
+            background: transparent;
+            z-index: 10;
+        }
+
+        /* Uměle roztáhneme velikost rubového obrazu o 4mm všemi směry do mezer. */
+        /* Tiskárnám to odpustí až 2mm nepřesnost posunu při oboustranném vtahování. */
+        .page-back .card img {
+            width: calc(100% + 4mm);
+            height: calc(100% + 4mm);
+            max-width: none;
+            z-index: 10;
+        }
+
+        @media print {
+            body {
+                background: none;
+            }
+
+            .page-grid {
+                margin: 0;
+                box-shadow: none;
+                border: none;
+            }
+
+            .no-print {
+                display: none;
+            }
+
+            .card {
+                border: 0.2mm solid #999;
+            }
+
+            /* Kompenzace pro matnou laminaci - zvýšíme jas o 15% a kontrast a saturaci o 10%,
+               díky čemuž fólie z tiskoviny nevysaje hloubku a zanechá ji stejně živou jako na monitoru. */
+            .card img {
+                filter: brightness(1.15) contrast(1.10) saturate(1.10) !important;
+            }
+        }
+
+        .no-print {
+            text-align: center;
+            padding: 15px;
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .btn-print {
+            background: #ca8a04;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="no-print">
+        <h1>Tiskový arch Čarodějnice (70.9 x 100.4 mm)</h1>
+        <p style="color: #ca8a04; font-weight: bold; font-size: 16px;">
+            ⚠️ DŮLEŽITÉ PŘED TISKEM: V nastavení prohlížeče musíte vypnout okraje (Okraje: Žádné) a nastavit Měřítko
+            přesně na 100% (Výchozí).
+        </p>
+        <p>Rubové strany karet schválně mírně přetékají (tzv. Spadávka), aby vykryly nepřesnosti tiskárny. Karty
+            následně <b>stříhejte vždy jen podle Lícových stran</b> (mají jemné šedé značky).</p>
+        <p>Orientace: <b>Na šířku (Landscape)</b> | Tisk: <b>Oboustranně (Otáčet po delším okraji)</b></p>
+        <button class="btn-print" onclick="window.print()">Vytisknout karty</button>
+    </div>
+
+    <script>
+        const prefix = "../kvarteta-eshop/public/cards/carodejnice/";
+
+        const cards = [
+            'sedmicka_srdce_oznaceno', 'osmicka_srdce_oznaceno', 'devitka_srdce_oznaceno', 'desitka_srdce_oznaceno', 'spodek_srdce_oznaceno', 'svrsek_srdce_oznaceno', 'kral_srdce_oznaceno', 'eso_srdce_oznaceno',
+            'sedmicka_listy_oznaceno', 'osmicka_listy_oznaceno', 'devitka_listy_oznaceno', 'desitka_listy_oznaceno', 'spodek_listy_oznaceno', 'svrsek_listy_oznaceno', 'kral_listy_oznaceno', 'eso_listy_oznaceno',
+            'sedmicka_kule_oznaceno', 'osmicka_kule_oznaceno', 'devitka_kule_oznaceno', 'desitka_kule_oznaceno', 'spodek_kule_oznaceno', 'svrsek_kule_oznaceno', 'kral_kule_oznaceno', 'eso_kule_oznaceno',
+            'sedmicka_zaludy_oznaceno', 'osmicka_zaludy_oznaceno', 'devitka_zaludy_oznaceno', 'desitka_zaludy_oznaceno', 'spodek_zaludy_oznaceno', 'svrsek_zaludy_oznaceno', 'kral_zaludy_oznaceno', 'eso_zaludy_oznaceno'
+        ];
+
+        const backImage = "../kvarteta-eshop/public/cards/neutral_back_ruby_formatted.png";
+
+        let html = '';
+        const cardsPerPage = 8;
+
+        for (let i = 0; i < cards.length; i += cardsPerPage) {
+            // LÍC - PŘEDNÍ STRANA
+            html += '<div class="page-grid page-front">';
+            for (let j = 0; j < cardsPerPage; j++) {
+                if (i + j < cards.length) {
+                    html += `<div class="card"><img src="${prefix}${cards[i + j]}.png"></div>`;
+                } else {
+                    // Prázdná karta
+                    html += `<div class="card" style="background:#fff; border:none;"></div>`;
+                }
+            }
+            html += '</div>';
+
+            // RUB - ZADNÍ STRANA (ihned za front, aby se dala duplexně tisknout)
+            html += '<div class="page-grid page-back">';
+            for (let j = 0; j < cardsPerPage; j++) {
+                // Generujeme rub jen pokud na odpovídajícím místě ležela reálná líce (aby se neplýtvalo barvou)
+                if (i + j < cards.length) {
+                    html += `<div class="card"><img src="${backImage}"></div>`;
+                } else {
+                    html += `<div class="card" style="background:#fff; border:none;"></div>`;
+                }
+            }
+            html += '</div>';
+        }
+        document.write(html);
+    </script>
+</body>
+
+</html>

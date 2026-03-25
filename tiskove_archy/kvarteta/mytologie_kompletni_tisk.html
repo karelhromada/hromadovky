@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Mytologie - Kompletní tisk (V2)</title>
+    <style>
+        body { margin: 0; padding: 0; background: #eee; }
+        .page { width: 210mm; height: 297mm; background: #fff; margin: 10mm auto; position: relative; overflow: hidden; page-break-after: always; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .card { width: 62mm; height: 83.5mm; position: absolute; background-color: #000; background-size: cover; background-position: center; border-radius: 15px; overflow: hidden; }
+        
+        /* Zaoblující vnější černý okraj překrývající staré ostré hrany */
+        .card::before {
+            content: ''; position: absolute; inset: 0;
+            border: 1.4mm solid #000;
+            border-radius: 15px;
+            pointer-events: none;
+            z-index: 2;
+        }
+        
+        /* Nový perfektně zaoblený barevný rámeček tažený z dat */
+        .card::after {
+            content: ''; position: absolute; inset: 1.4mm;
+            border: 0.6mm solid var(--card-color);
+            border-radius: 10px;
+            pointer-events: none;
+            z-index: 3;
+        }
+        
+        @media print {
+            body { background: none; }
+            .page { margin: 0; box-shadow: none; border: none; }
+            @page { size: A4 portrait; margin: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page front"><div class="card" style="left:9mm; top:20.25mm; background-image:url('assets_mytologie_v2/zeus_v2_1773232441103.jpg'); --card-color: #fae984;"></div>
+<div class="card" style="left:74mm; top:20.25mm; background-image:url('assets_mytologie_v2/poseidon_v2_1773232459144.jpg'); --card-color: #fbbf24;"></div>
+<div class="card" style="left:139mm; top:20.25mm; background-image:url('assets_mytologie_v2/hades_v2_1773232474069.jpg'); --card-color: #fbbf24;"></div>
+<div class="card" style="left:9mm; top:106.75mm; background-image:url('assets_mytologie_v2/athena_v2_1773232489883.jpg'); --card-color: #fbbf24;"></div>
+<div class="card" style="left:74mm; top:106.75mm; background-image:url('assets_mytologie_v2/herakles_v2_1773232618325.jpg'); --card-color: #69e2b2;"></div>
+<div class="card" style="left:139mm; top:106.75mm; background-image:url('assets_mytologie_v2/meduza_v2_1773232636144.jpg'); --card-color: #69e2b2;"></div>
+<div class="card" style="left:9mm; top:193.25mm; background-image:url('assets_mytologie_v2/kerberos_v2_1773232651828.jpg'); --card-color: #69e2b2;"></div>
+<div class="card" style="left:74mm; top:193.25mm; background-image:url('assets_mytologie_v2/pegas_v2_1773232669889.jpg'); --card-color: #69e2b2;"></div>
+<div class="card" style="left:139mm; top:193.25mm; background-image:url('assets_mytologie_v2/jupiter_v2_1773232768056.jpg'); --card-color: #5da1f8;"></div>
+</div>
+<div class="page back"><div class="card" style="left:139mm; top:20.25mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:74mm; top:20.25mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:9mm; top:20.25mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:139mm; top:106.75mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:74mm; top:106.75mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:9mm; top:106.75mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:139mm; top:193.25mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:74mm; top:193.25mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:9mm; top:193.25mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+</div>
+<div class="page front"><div class="card" style="left:9mm; top:20.25mm; background-image:url('assets_mytologie_v2/mars_v2_1773232782289.jpg'); --card-color: #5da1f8;"></div>
+<div class="card" style="left:74mm; top:20.25mm; background-image:url('assets_mytologie_v2/neptun_v2_1773232797411.jpg'); --card-color: #5da1f8;"></div>
+<div class="card" style="left:139mm; top:20.25mm; background-image:url('assets_mytologie_v2/venuse_v2_1773232812348.jpg'); --card-color: #5da1f8;"></div>
+<div class="card" style="left:9mm; top:106.75mm; background-image:url('assets_mytologie_v2/odin_v2_1773232963748.jpg'); --card-color: #dedee2;"></div>
+<div class="card" style="left:74mm; top:106.75mm; background-image:url('assets_mytologie_v2/thor_v2_1773232978954.jpg'); --card-color: #dedee2;"></div>
+<div class="card" style="left:139mm; top:106.75mm; background-image:url('assets_mytologie_v2/loki_v2_1773232994824.jpg'); --card-color: #dedee2;"></div>
+<div class="card" style="left:9mm; top:193.25mm; background-image:url('assets_mytologie_v2/freya_v2_1773233012935.jpg'); --card-color: #dedee2;"></div>
+<div class="card" style="left:74mm; top:193.25mm; background-image:url('assets_mytologie_v2/fenrir_v2_1773233163130.jpg'); --card-color: #eca4f8;"></div>
+<div class="card" style="left:139mm; top:193.25mm; background-image:url('assets_mytologie_v2/jormungandr_v2_1773331719629.jpg'); --card-color: #eca4f8;"></div>
+</div>
+<div class="page back"><div class="card" style="left:139mm; top:20.25mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:74mm; top:20.25mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:9mm; top:20.25mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:139mm; top:106.75mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:74mm; top:106.75mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:9mm; top:106.75mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:139mm; top:193.25mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:74mm; top:193.25mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:9mm; top:193.25mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+</div>
+<div class="page front"><div class="card" style="left:9mm; top:20.25mm; background-image:url('assets_mytologie_v2/valkyra_v2_1773331735922.jpg'); --card-color: #eca4f8;"></div>
+<div class="card" style="left:74mm; top:20.25mm; background-image:url('assets_mytologie_v2/ymir_v2_1773331768521.jpg'); --card-color: #eca4f8;"></div>
+<div class="card" style="left:139mm; top:20.25mm; background-image:url('assets_mytologie_v2/ra_v2_1773332186294.jpg'); --card-color: #fab46f;"></div>
+<div class="card" style="left:9mm; top:106.75mm; background-image:url('assets_mytologie_v2/anubis_v2_1773332202104.jpg'); --card-color: #fab46f;"></div>
+<div class="card" style="left:74mm; top:106.75mm; background-image:url('assets_mytologie_v2/horus_v2_1773332218750.jpg'); --card-color: #fab46f;"></div>
+<div class="card" style="left:139mm; top:106.75mm; background-image:url('assets_mytologie_v2/bastet_v2_1773332236278.jpg'); --card-color: #fab46f;"></div>
+<div class="card" style="left:9mm; top:193.25mm; background-image:url('assets_mytologie_v2/beowulf_v2_1773332496331.jpg'); --card-color: #f99e9e;"></div>
+<div class="card" style="left:74mm; top:193.25mm; background-image:url('assets_mytologie_v2/grendel_v2_1773332517229.jpg'); --card-color: #f99e9e;"></div>
+<div class="card" style="left:139mm; top:193.25mm; background-image:url('assets_mytologie_v2/grendel_mother_v2_1773332529832.jpg'); --card-color: #f99e9e;"></div>
+</div>
+<div class="page back"><div class="card" style="left:139mm; top:20.25mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:74mm; top:20.25mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:9mm; top:20.25mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:139mm; top:106.75mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:74mm; top:106.75mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:9mm; top:106.75mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:139mm; top:193.25mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:74mm; top:193.25mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:9mm; top:193.25mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+</div>
+<div class="page front"><div class="card" style="left:9mm; top:20.25mm; background-image:url('assets_mytologie_v2/fire_dragon_v2_1773332546606.jpg'); --card-color: #f99e9e;"></div>
+<div class="card" style="left:74mm; top:20.25mm; background-image:url('assets_mytologie_v2/minotaurus_v2_1773332802337.jpg'); --card-color: #5ae4cf;"></div>
+<div class="card" style="left:139mm; top:20.25mm; background-image:url('assets_mytologie_v2/bazilisek_v2_v2_1773333084369.jpg'); --card-color: #5ae4cf;"></div>
+<div class="card" style="left:9mm; top:106.75mm; background-image:url('assets_mytologie_v2/kraken_v2_1773332833372.jpg'); --card-color: #5ae4cf;"></div>
+<div class="card" style="left:74mm; top:106.75mm; background-image:url('assets_mytologie_v2/mantikora_v2_1773332852801.jpg'); --card-color: #5ae4cf;"></div>
+</div>
+<div class="page back"><div class="card" style="left:139mm; top:20.25mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:74mm; top:20.25mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:9mm; top:20.25mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:139mm; top:106.75mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+<div class="card" style="left:74mm; top:106.75mm; background-image:url('assets_mytologie_v2/back_mythology_optimized.jpg'); --card-color: transparent;"></div>
+</div>
+
+</body>
+</html>

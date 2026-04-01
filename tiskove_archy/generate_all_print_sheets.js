@@ -107,8 +107,34 @@ const products = [
         name: 'Hrací karty – čarodějnice',
         slug: 'hraci_karty_carodejnice',
         folder: 'hraci_karty/carodejnice/finalni_karty',
-        filter: f => f.match(/^witch_.*\.png$/),
-        sort: (a, b) => a.localeCompare(b, 'cs'),
+        filter: f => f.match(/_oznaceno\.png$/),
+        sort: (a, b) => {
+            const order = ['srdce', 'listy', 'kule', 'zaludy'];
+            const valOrder = ['sedmicka', 'osmicka', 'devitka', 'desitka', 'spodek', 'svrsek', 'svršek', 'kral', 'eso'];
+            
+            // Odstranění přípony a rozdělení na části
+            const pA = a.replace('_oznaceno.png', '').split('_');
+            const pB = b.replace('_oznaceno.png', '').split('_');
+            
+            // Získání hodnoty (první část názvu)
+            const valA = pA[0];
+            const valB = pB[0];
+            
+            // Mapování svršek/svrsek na stejný index pro jistotu
+            const getValIndex = (val) => {
+                const idx = valOrder.indexOf(val);
+                if (idx === 6) return 5; // svršek i svrsek jsou na stejné pozici 5
+                return idx;
+            };
+
+            const valDiff = getValIndex(valA) - getValIndex(valB);
+            if (valDiff !== 0) return valDiff;
+            
+            // Získání barvy (druhá část názvu)
+            const suitA = pA[1];
+            const suitB = pB[1];
+            return order.indexOf(suitA) - order.indexOf(suitB);
+        },
         size: HRACI_KARTY_SIZE,
         subfolder: 'hraci_karty',
     },

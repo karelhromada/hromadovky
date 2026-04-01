@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Univerzální Duplex Konfigurátor – Kvarteta & Karty</title>
+    <style>
+        /* ═══ DESIGN SYSTEM ═══ */
+        :root {
+            --bg: #0f172a;
+            --panel: #1e293b;
+            --accent: #ca8a04;
+            --accent-hover: #a16207;
+            --text: #f8fafc;
+            --text-dim: #94a3b8;
+        }
+
+        * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; }
+
+        /* ═══ UI CONTROLS (nepotiskne se) ═══ */
+        .no-print {
+            background: var(--panel);
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .header-row { display: flex; justify-content: space-between; align-items: center; }
+        h1 { margin: 0; font-size: 20px; color: var(--accent); letter-spacing: 1px; }
+
+        .tabs { display: flex; gap: 5px; background: #0f172a; padding: 5px; border-radius: 8px; }
+        .tab-btn {
+            background: transparent; border: none; color: var(--text-dim);
+            padding: 10px 25px; cursor: pointer; border-radius: 6px;
+            font-weight: 600; transition: 0.2s;
+        }
+        .tab-btn.active { background: var(--accent); color: white; }
+        .tab-btn:hover:not(.active) { background: #334155; color: var(--text); }
+
+        .control-group { display: flex; flex-direction: column; gap: 8px; }
+        .control-group label { font-size: 12px; font-weight: bold; color: var(--accent); }
+        
+        select, input {
+            background: #1f2937; border: 1px solid #374151; color: white;
+            padding: 8px; border-radius: 4px; outline: none;
+        }
+        select:focus, input:focus { border-color: var(--accent); }
+
+        .gallery {
+            display: flex; gap: 10px; overflow-x: auto; padding: 10px;
+            background: #000; border-radius: 6px; margin-top: 10px;
+        }
+        .gallery-item {
+            width: 50px; height: 75px; flex-shrink: 0; cursor: pointer;
+            border: 2px solid transparent; border-radius: 4px;
+            background-size: cover; background-position: center; transition: 0.2s;
+        }
+        .gallery-item:hover { transform: scale(1.1); }
+        .gallery-item.active { border-color: var(--accent); box-shadow: 0 0 10px var(--accent); }
+
+        .btn-print {
+            background: var(--accent); color: white; border: none;
+            padding: 12px 25px; border-radius: 6px; font-weight: 800;
+            cursor: pointer; width: 100%; transition: 0.2s;
+        }
+        .btn-print:hover { background: var(--accent-hover); transform: translateY(-1px); }
+
+        .controls-inner {
+            display: grid;
+            grid-template-columns: 220px 1fr 280px 250px;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .control-section {
+            background: rgba(0,0,0,0.2);
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .section-title { font-size: 11px; font-weight: 900; color: var(--accent-hover); text-transform: uppercase; margin-bottom: 5px; border-bottom: 1px solid #334155; padding-bottom: 2px; }
+
+        .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .input-item { display: flex; flex-direction: column; gap: 4px; }
+        .input-item label { font-size: 10px; color: var(--text-dim); }
+        .input-item input { padding: 4px 8px; font-size: 13px; width: 100%; }
+
+        .toggle-group { display: flex; background: #0f172a; border-radius: 4px; padding: 2px; }
+        .toggle-btn { flex: 1; padding: 5px; font-size: 11px; cursor: pointer; border: none; background: transparent; color: var(--text-dim); border-radius: 2px; font-weight: bold; }
+        .toggle-btn.active { background: var(--accent); color: white; }
+
+        /* ═══ A4 STRÁNKA ═══ */
+        #print-area { padding-bottom: 50px; }
+        .page {
+            width: 210mm; height: 297mm; background: #fff;
+            margin: 20px auto; position: relative; overflow: hidden;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            page-break-after: always;
+        }
+        .card { position: absolute; background-color: #000; background-size: cover; background-position: center; }
+
+        @media print {
+            body { background: white; }
+            .no-print { display: none; }
+            .page { margin: 0; box-shadow: none; border: none; }
+            @page { margin: 0; }
+        }
+    </style>
+</head>
+<body class="portrait-mode">
+
+    <div class="no-print">
+        <div class="header-row">
+            <h1>Duplex Konfigurátor</h1>
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchSide('front')">Přední strana</button>
+                <button class="tab-btn" onclick="switchSide('back')">Zadní strana</button>
+            </div>
+        </div>
+
+        <div class="controls-inner">
+            <!-- SEKCIE 1: SADA A STRÁNKA -->
+            <div class="control-section">
+                <div class="section-title">Sada a orientace</div>
+                <div class="control-group">
+                    <label>Vybrat sadu karet</label>
+                    <select id="product-select" onchange="loadProduct()"></select>
+                </div>
+                <div class="control-group">
+                    <label>Orientace stránky (A4)</label>
+                    <div class="toggle-group">
+                        <button id="orient-p" class="toggle-btn active" onclick="setOrientation('portrait')">Na výšku</button>
+                        <button id="orient-l" class="toggle-btn" onclick="setOrientation('landscape')">Na šířku</button>
+                    </div>
+                </div>
+                <button class="btn-print" onclick="window.print()">Vytisknout tuto stranu</button>
+            </div>
+
+            <!-- SEKCIE 2: GEOMETRIE MŘÍŽKY -->
+            <div class="control-section">
+                <div class="section-title">Rozvržení mřížky (mm)</div>
+                <div class="input-row">
+                    <div class="input-item"><label>Šířka karty</label><input type="number" id="inp-w" oninput="manualUpdate()"></div>
+                    <div class="input-item"><label>Výška karty</label><input type="number" id="inp-h" oninput="manualUpdate()"></div>
+                    <div class="input-item"><label>Sloupců</label><input type="number" id="inp-cols" oninput="manualUpdate()"></div>
+                    <div class="input-item"><label>Řádků</label><input type="number" id="inp-rows" oninput="manualUpdate()"></div>
+                    <div class="input-item"><label>Bílý okraj L</label><input type="number" id="inp-ml" oninput="manualUpdate()"></div>
+                    <div class="input-item"><label>Bílý okraj T</label><input type="number" id="inp-mt" oninput="manualUpdate()"></div>
+                    <div class="input-item"><label>Rozestup X</label><input type="number" id="inp-gx" oninput="manualUpdate()"></div>
+                    <div class="input-item"><label>Rozestup Y</label><input type="number" id="inp-gy" oninput="manualUpdate()"></div>
+                    <div class="input-item" style="grid-column: span 2;"><label>Tiskový přesah (Bleed)</label><input type="number" id="inp-bleed" value="1" oninput="manualUpdate()"></div>
+                </div>
+            </div>
+
+            <!-- SEKCIE 3: LADĚNÍ DESIGNU -->
+            <div class="control-section">
+                <div class="section-title">Ladění motivu v kartě</div>
+                
+                <div id="front-adjustments" style="display: flex; flex-direction: column; gap: 10px;">
+                    <div class="control-group">
+                        <label>Zvětšení motivu (Přední)</label>
+                        <input type="range" id="front-zoom-slider" min="100" max="250" value="100" oninput="updateFrontStyles()">
+                    </div>
+                    <div class="control-group">
+                        <label>Horizontální / Vertikální posun</label>
+                        <div style="display: flex; gap: 5px;">
+                            <input type="range" id="front-x-slider" min="0" max="100" value="50" oninput="updateFrontStyles()">
+                            <input type="range" id="front-y-slider" min="0" max="100" value="50" oninput="updateFrontStyles()">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="back-adjustments" style="display: none; flex-direction: column; gap: 10px;">
+                    <div class="control-group">
+                        <label>Zvětšení motivu (Zadní)</label>
+                        <input type="range" id="zoom-slider" min="100" max="250" value="130" oninput="updateBackStyles()">
+                    </div>
+                    <div class="control-group">
+                        <label>Horizontální / Vertikální posun</label>
+                        <div style="display: flex; gap: 5px;">
+                            <input type="range" id="x-slider" min="0" max="100" value="50" oninput="updateBackStyles()">
+                            <input type="range" id="y-slider" min="0" max="100" value="50" oninput="updateBackStyles()">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label>Korekce duplexu (Zrcadlení X) <span id="offset-val">0mm</span></label>
+                        <input type="range" id="duplex-offset" min="-5" max="5" step="0.1" value="0" oninput="render()">
+                    </div>
+                    <div class="gallery" id="back-gallery" style="margin: 0; max-height: 80px; overflow-y: auto;"></div>
+                </div>
+            </div>
+
+            <!-- SEKCIE 4: KOREKCE LAMINACE -->
+            <div class="control-section">
+                <div class="section-title">Korekce pro matnou laminaci</div>
+                <div class="control-group">
+                    <label>Jas (Brightness) <span id="val-bright">1.15</span></label>
+                    <input type="range" id="f-bright" min="0.5" max="2.0" step="0.01" value="1.15" oninput="applyFilters()">
+                </div>
+                <div class="control-group">
+                    <label>Kontrast / Ostrost <span id="val-contrast">1.10</span></label>
+                    <input type="range" id="f-contrast" min="0.5" max="2.0" step="0.01" value="1.10" oninput="applyFilters()">
+                </div>
+                <div class="control-group">
+                    <label>Saturace (Sytost) <span id="val-saturate">1.10</span></label>
+                    <input type="range" id="f-saturate" min="0.5" max="2.0" step="0.01" value="1.10" oninput="applyFilters()">
+                </div>
+                <div style="display: flex; gap: 5px;">
+                    <button class="toggle-btn" style="flex: 1; padding: 5px; font-size: 11px;" onclick="setLaminationPreset(1.15, 1.10, 1.10)">Matná fólie</button>
+                    <button class="toggle-btn" style="flex: 1; padding: 5px; font-size: 11px;" onclick="setLaminationPreset(1.0, 1.0, 1.0)">Vypnout</button>
+                </div>
+            </div>
+        </div>
+        <p style="margin: 0; margin-top: 10px; font-size: 10px; color: var(--text-dim); text-align: center;">Všechna nastavení mřížky a filtrů jsou sdílená pro přední i zadní stranu.</p>
+    </div>
+
+    <div id="print-area"></div>
+
+    <script>
+        // ═══ DATA PRODUKTŮ ═══
+        const PRODUCTS = {
+            "draci_kvarteto": {
+                name: "Kvarteto Draci",
+                folder: "../kvarteta/draci/Obrázky draků/",
+                w: 60, h: 85, radius: "4mm",
+                cols: 3, rows: 3, marginL: 10, marginT: 15,
+                gapX: 63, gapY: 88,
+                cards: ["Vulkanus.png","Ignis rexx.png","Magmaton.png","Uhelný běžec.png","Aeris.png","Nebeský poutník.png","Tornádo.png","Mrakošlap.png","Hydrus.png","Bažináč.png","Kronos.png","Jedový trn.png","Brontos.png","Železný dráp.png","Stařec z hor.png","Terragor.png","Blesk.png","Sonic.png","Ostrý hvizd.png","Vichřice.png","Necromancer.png","Stínový běžec.png","Popelavý dech.png","Runový tesák.png","Křišťál.png","Astrál.png","Bazilišek.png","Moudré oko.png","Hmyzí král.png","Chameleon.png","Knihovník.png","Zlatý zloděj.png"]
+            },
+            "dinosauri": {
+                name: "Kvarteto Dinosauři",
+                folder: "../kvarteta/dinosauri/Obrázky dinosaurů/",
+                w: 60, h: 85, radius: "4mm",
+                cols: 3, rows: 3, marginL: 10, marginT: 15,
+                gapX: 63, gapY: 88,
+                cards: ["Tyrannosaurus - Rex.png","Spinosaurus.png","Giganotosaurus.png","Allosaurus.png","Triceratops.png","Styracosaurus.jpg","Ankylosaurus.jpg","Pachycephalosaurus.jpg","Stegosaurus.jpg","Kentrosaurus.jpg","Brachiosaurus.png","Diplodocus.png","Velociraptor.png","Deinonychus.png","Utahraptor.png","Compsognathus.jpg","Pteranodon.jpg","Quetzalcoatlus.jpg","Dimorphodon.jpg","Tapejara.jpg","Parasaurolophus.jpg","Iguanodon.jpg","Therizinosaurus.jpg","Deinocheirus.jpg","Mosasaurus.jpg","Plesiosaurus.jpg","Ichthyosaurus.jpg","Liopleurodon.jpg","Argentínosaurus.png","Baryonyx.jpg","Carnotaurus.jpg","Archaeopteryx.jpg"]
+            },
+            "baby_dracci": {
+                name: "Kvarteto Baby dráčci",
+                folder: "../kvarteta/baby_dracci/Baby dráčci/",
+                w: 60, h: 85, radius: "4mm",
+                cols: 3, rows: 3, marginL: 10, marginT: 15,
+                gapX: 63, gapY: 88,
+                cards: ["Lávový prcek.png","Magmísek.png","Uhlík.png","Rudíček.png","Vzdušník.png","Obláčkový Špunt.png","Vířík.png","Křidélko.png","Vlník.png","Bažík.png","Brontíček.png","Trníček.png","Horalíček.png","Korunka\u010dek.png","Obřík.png","Kostiček.png","Bleskáček.png","Sonicík.png","Plachťáček.png","Hvězdínek.png","Stínek.png","Popeláček.png","RuníÄek.png","Drápek.png","Diamantík.png","Mudráček.png","Třihlavík.png","Mrakáček.png","Hmyzík.png","Duhoš.png","Zlatoušek.png","Časíček.png"]
+            },
+            "carodejnice": {
+                name: "Hrací karty – Čarodějnice",
+                folder: "../hraci_karty/carodejnice/finalni_karty/",
+                w: 62, h: 88, radius: "4mm",
+                cols: 3, rows: 3, marginL: 10, marginT: 15,
+                gapX: 65, gapY: 91,
+                cards: ["sedmicka_srdce_oznaceno.png","sedmicka_listy_oznaceno.png","sedmicka_kule_oznaceno.png","sedmicka_zaludy_oznaceno.png","osmicka_srdce_oznaceno.png","osmicka_listy_oznaceno.png","osmicka_kule_oznaceno.png","osmicka_zaludy_oznaceno.png","devitka_srdce_oznaceno.png","devitka_listy_oznaceno.png","devitka_kule_oznaceno.png","devitka_zaludy_oznaceno.png","desitka_srdce_oznaceno.png","desitka_listy_oznaceno.png","desitka_kule_oznaceno.png","desitka_zaludy_oznaceno.png","spodek_srdce_oznaceno.png","spodek_listy_oznaceno.png","spodek_kule_oznaceno.png","spodek_zaludy_oznaceno.png","svrsek_srdce_oznaceno.png","svrsek_listy_oznaceno.png","svrsek_kule_oznaceno.png","svrsek_zaludy_oznaceno.png","kral_srdce_oznaceno.png","kral_listy_oznaceno.png","kral_kule_oznaceno.png","kral_zaludy_oznaceno.png","eso_srdce_oznaceno.png","eso_listy_oznaceno.png","eso_kule_oznaceno.png","eso_zaludy_oznaceno.png"]
+            },
+            "epicka_draci": {
+                name: "Hrací karty – Epická dračí edice",
+                folder: "../hraci_karty/epicka_draci_edice/finalni_karty/",
+                w: 62, h: 88, radius: "4mm",
+                cols: 3, rows: 3, marginL: 9, marginT: 14,
+                gapX: 65, gapY: 91,
+                cards: ["prsi_srdce_7.webp","prsi_listy_7.webp","prsi_kule_7.webp","prsi_zaludy_7.webp","prsi_srdce_8.webp","prsi_listy_8.webp","prsi_kule_8.webp","prsi_zaludy_8.webp","prsi_srdce_9.webp","prsi_listy_9.webp","prsi_kule_9.webp","prsi_zaludy_9.webp","prsi_srdce_10.webp","prsi_listy_10.webp","prsi_kule_10.webp","prsi_zaludy_10.webp","spodek_srdce.webp","spodek_listy.webp","spodek_kule.webp","spodek_zaludy.webp","svrsek_srdce.webp","svrsek_listy.webp","svrsek_kule.webp","svrsek_zaludy.webp","kral_srdce.webp","kral_listy.webp","kral_kule.webp","kral_zaludy.webp","eso_srdce.webp","eso_listy.webp","eso_kule.webp","eso_zaludy.webp"]
+            },
+            "princezny": {
+                name: "Hrací karty – Princezny",
+                folder: "../hraci_karty/princezny/finalni_karty/",
+                w: 62, h: 88, radius: "4mm",
+                cols: 3, rows: 3, marginL: 10, marginT: 15,
+                gapX: 65, gapY: 91,
+                cards: ["sedmicka_srdce.png","sedmicka_kule.png","sedmicka_zaludy.png","sedmicka_zelene.png","osmicka_srdce.png","osmicka_kule.png","osmicka_zaludy.png","osmicka_zelene.png","devitka_srdce.png","devitka_kule.png","devitka_zaludy.png","devitka_zelene.png","desitka_srdce.png","desitka_kule.png","desitka_zaludy.png","desitka_zelene.png","spodek_srdce.png","spodek_kule.png","spodek_zaludy.png","spodek_zelene.png","svrsek_srdce.png","svrsek_kule.png","svrsek_zaludy.png","svrsek_zelene.png","kralovna_srdce.png","kral_kule.png","kral_zaludy.png","kralovna_zelene.png","eso_srdce.png","eso_kule.png","eso_zaludy.png","eso_zelene.png"]
+            },
+            "mytologie": {
+                name: "Kvarteto Mytologie",
+                folder: "../kvarteta/mytologie/finalni_karty/",
+                w: 60, h: 85, radius: "4mm",
+                cols: 3, rows: 3, marginL: 12, marginT: 18,
+                gapX: 63, gapY: 88,
+                cards: ["zeus_v4_1773232441103.png","poseidon_v4_1773232459144.png","hades_v4_1773232474069.png","athena_v4_1773232489883.png","herakles_v4_1773232618325.png","meduza_v4_1773232636144.png","kerberos_v4_1773232651828.png","pegas_v4_1773232669889.png","jupiter_v4_1773232768056.png","mars_v4_1773232782289.png","neptun_v4_1773232797411.png","venuse_v4_1773232812348.png","odin_v4_1773232963748.png","thor_v4_1773232978954.png","loki_v4_1773232994824.png","freya_v4_1773233012935.png","fenrir_v4_1773233163130.png","jormungandr_v4_1773331719629.png","valkyra_v4_1773331735922.png","ymir_v4_1773331768521.png","ra_v4_1773332186294.png","anubis_v4_1773332202104.png","horus_v4_1773332218750.png","bastet_v4_1773332236278.png","beowulf_v4_1773332496331.png","grendel_v4_1773332517229.png","grendel_mother_v4_1773332529832.png","fire_dragon_v4_1773332546606.png","minotaurus_v4_1773332802337.png","kraken_v4_1773332833372.png","mantikora_v4_1773332852801.png","bazilisek_v2_v4_1773333084369.png"]
+            },
+            "rytiri": {
+                name: "Kvarteto Rytíři",
+                folder: "../kvarteta/rytiri/finalni_karty/",
+                w: 60, h: 85, radius: "4mm",
+                cols: 3, rows: 3, marginL: 10, marginT: 15,
+                gapX: 63, gapY: 88,
+                cards: ["admiral-kachnicka_karta_v3.png","baron-boruvka_karta_v3.png","baron-v-naprstku_karta_v3.png","baron-vlnka_karta_v3.png","broucek-zbrojnos_karta_v3.png","don-krecek_karta_v3.png","hvezdicka-jasna_karta_v3.png","jojo-rytir_karta_v3.png","kapitan-tlapka_karta_v3.png","lego-las_karta_v3.png","lord-citron_karta_v3.png","lord-karamel_karta_v3.png","lord-polstar_karta_v3.png","ploutvicka-chrabra_karta_v3.png","princ-ananas_karta_v3.png","princ-pralinka_karta_v3.png","rytir-koral_karta_v3.png","rytir-rosa_karta_v3.png","rytir-smudla_karta_v3.png","sir-hajaja_karta_v3.png","sir-jahudka_karta_v3.png","sir-jezurka_karta_v3.png","sir-kapka_karta_v3.png","sir-knoflik_karta_v3.png","sir-pufik_karta_v3.png","slecna-pirko_karta_v3.png","snilek-modry_karta_v3.png","squire-cara_karta_v3.png","squirelous-kratky_karta_v3.png","vanek-usaty_karta_v3.png","vojacek-oloveny_karta_v3.png","zvonilka-zbrojna_karta_v3.png"]
+            }
+        };
+
+        const BACKS = [
+            '../kvarteta/backs/card_back_pattern.png',
+            '../kvarteta/backs/knight_back_pattern.png',
+            '../kvarteta/backs/knight_back_gold.png',
+            '../kvarteta/backs/knight_back_iron_steel.png',
+            '../kvarteta/backs/knight_back_copper.png',
+            '../hraci_karty/epicka_draci_edice/epic_backs/back_arcane.webp',
+            '../hraci_karty/epicka_draci_edice/epic_backs/back_fire.webp',
+            '../hraci_karty/epicka_draci_edice/epic_backs/back_ice.webp',
+            '../hraci_karty/epicka_draci_edice/epic_backs/back_nature.webp',
+            '../hraci_karty/epicka_draci_edice/epic_backs/back_shadow.webp'
+        ];
+
+
+        // ═══ STATE ═══
+        let currentSide = 'front';
+        let currentProductKey = 'draci_kvarteto';
+        let currentBack = BACKS[0];
+        let orientation = 'portrait';
+
+        // ═══ CORE LOGIC ═══
+        function switchSide(side) {
+            currentSide = side;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.toggle('active', btn.innerText.toLowerCase().includes(side === 'front' ? 'přední' : 'zadní')));
+            document.getElementById('back-adjustments').style.display = (side === 'back' ? 'flex' : 'none');
+            document.getElementById('front-adjustments').style.display = (side === 'front' ? 'flex' : 'none');
+            render();
+        }
+
+        function setOrientation(o) {
+            orientation = o;
+            document.getElementById('orient-p').classList.toggle('active', o === 'portrait');
+            document.getElementById('orient-l').classList.toggle('active', o === 'landscape');
+            document.body.className = o + '-mode';
+            
+            let style = document.getElementById('orient-css');
+            if (!style) {
+                style = document.createElement('style');
+                style.id = 'orient-css';
+                document.head.appendChild(style);
+            }
+            style.innerHTML = `@media print { @page { size: A4 ${o}; } }`;
+            render();
+        }
+
+        function loadProduct() {
+            currentProductKey = document.getElementById('product-select').value;
+            const p = PRODUCTS[currentProductKey];
+            if (p) {
+                document.getElementById('inp-w').value = p.w;
+                document.getElementById('inp-h').value = p.h;
+                document.getElementById('inp-ml').value = p.marginL;
+                document.getElementById('inp-mt').value = p.marginT;
+                document.getElementById('inp-gx').value = p.gapX;
+                document.getElementById('inp-gy').value = p.gapY;
+                document.getElementById('inp-cols').value = p.cols;
+                p.rows = p.rows || 3;
+                document.getElementById('inp-rows').value = p.rows;
+            }
+            render();
+        }
+
+        function manualUpdate() {
+            const p = PRODUCTS[currentProductKey];
+            if (!p) return;
+            p.w = parseFloat(document.getElementById('inp-w').value);
+            p.h = parseFloat(document.getElementById('inp-h').value);
+            p.marginL = parseFloat(document.getElementById('inp-ml').value);
+            p.marginT = parseFloat(document.getElementById('inp-mt').value);
+            p.gapX = parseFloat(document.getElementById('inp-gx').value);
+            p.gapY = parseFloat(document.getElementById('inp-gy').value);
+            p.cols = parseInt(document.getElementById('inp-cols').value);
+            p.rows = parseInt(document.getElementById('inp-rows').value);
+            render();
+        }
+
+        function applyFilters() {
+            const b = document.getElementById('f-bright').value;
+            const c = document.getElementById('f-contrast').value;
+            const s = document.getElementById('f-saturate').value;
+            
+            document.getElementById('val-bright').innerText = b;
+            document.getElementById('val-contrast').innerText = c;
+            document.getElementById('val-saturate').innerText = s;
+
+            const filterStr = `brightness(${b}) contrast(${c}) saturate(${s})`;
+            document.querySelectorAll('.card').forEach(el => {
+                el.style.filter = filterStr;
+            });
+        }
+
+        function setLaminationPreset(bright, contrast, saturate) {
+            document.getElementById('f-bright').value = bright;
+            document.getElementById('f-contrast').value = contrast;
+            document.getElementById('f-saturate').value = saturate;
+            applyFilters();
+        }
+
+        function render() {
+            const container = document.getElementById('print-area');
+            container.innerHTML = '';
+            const p = PRODUCTS[currentProductKey];
+            if (!p) return;
+
+            const pageWidth = orientation === 'portrait' ? 210 : 297;
+            const pageHeight = orientation === 'portrait' ? 297 : 210;
+
+            const cardsPerPage = p.cols * p.rows;
+            const pagesCount = Math.ceil(p.cards.length / cardsPerPage);
+            
+            for (let pageIdx = 0; pageIdx < pagesCount; pageIdx++) {
+                const page = document.createElement('div');
+                page.className = 'page';
+                page.style.width = pageWidth + 'mm';
+                page.style.height = pageHeight + 'mm';
+                
+                for (let i = 0; i < cardsPerPage; i++) {
+                    const cardIdx = pageIdx * cardsPerPage + i;
+                    if (cardIdx >= p.cards.length) break;
+
+                    const col = i % p.cols;
+                    const row = Math.floor(i / p.cols);
+                    
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.style.borderRadius = p.radius;
+                    
+                    const frontX = p.marginL + col * p.gapX;
+                    const y = p.marginT + row * p.gapY;
+                    const bleed = parseFloat(document.getElementById('inp-bleed').value) || 0;
+                    
+                    if (currentSide === 'front') {
+                        card.style.width = p.w + 'mm';
+                        card.style.height = p.h + 'mm';
+                        card.style.left = frontX + 'mm';
+                        card.style.top = y + 'mm';
+                        card.style.backgroundImage = `url('${p.folder}${p.cards[cardIdx]}')`;
+                        card.classList.add('front-card');
+                    } else {
+                        const duplexOffset = parseFloat(document.getElementById('duplex-offset').value) || 0;
+                        document.getElementById('offset-val').innerText = duplexOffset + 'mm';
+                        
+                        const backW = p.w + (bleed * 2);
+                        const backH = p.h + (bleed * 2);
+                        const mirrorX = (pageWidth - (frontX + p.w));
+                        const backX = mirrorX - bleed + duplexOffset;
+                        const backY = y - bleed;
+
+                        card.style.width = backW + 'mm';
+                        card.style.height = backH + 'mm';
+                        card.style.left = backX + 'mm';
+                        card.style.top = backY + 'mm';
+                        card.style.backgroundImage = `url('${currentBack}')`;
+                        card.classList.add('back-card');
+                    }
+                    
+                    page.appendChild(card);
+                }
+                container.appendChild(page);
+            }
+            if (currentSide === 'front') updateFrontStyles();
+            if (currentSide === 'back') updateBackStyles();
+            applyFilters();
+        }
+
+        function updateFrontStyles() {
+            const z = document.getElementById('front-zoom-slider').value + '%';
+            const x = document.getElementById('front-x-slider').value + '%';
+            const y = document.getElementById('front-y-slider').value + '%';
+            
+            document.querySelectorAll('.front-card').forEach(el => {
+                el.style.backgroundSize = z;
+                el.style.backgroundPosition = `${x} ${y}`;
+            });
+        }
+
+        function updateBackStyles() {
+            const z = document.getElementById('zoom-slider').value + '%';
+            const x = document.getElementById('x-slider').value + '%';
+            const y = document.getElementById('y-slider').value + '%';
+            
+            document.querySelectorAll('.back-card').forEach(el => {
+                el.style.backgroundSize = z;
+                el.style.backgroundPosition = `${x} ${y}`;
+            });
+        }
+
+        // ═══ INIT ═══
+        function init() {
+            const select = document.getElementById('product-select');
+            for (const key in PRODUCTS) {
+                const opt = document.createElement('option');
+                opt.value = key;
+                opt.innerText = PRODUCTS[key].name;
+                select.appendChild(opt);
+            }
+            select.value = currentProductKey;
+
+            const gallery = document.getElementById('back-gallery');
+            BACKS.forEach(src => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item' + (src === currentBack ? ' active' : '');
+                item.style.backgroundImage = `url('${src}')`;
+                item.onclick = () => {
+                    currentBack = src;
+                    document.querySelectorAll('.gallery-item').forEach(el => el.classList.remove('active'));
+                    item.classList.add('active');
+                    render();
+                };
+                gallery.appendChild(item);
+            });
+
+            loadProduct();
+        }
+
+        init();
+    </script>
+</body>
+</html>

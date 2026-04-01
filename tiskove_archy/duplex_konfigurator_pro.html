@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Duplex Konfigurátor PRO – Kvarteta & Karty</title>
+    <style>
+        /* ═══ DESIGN SYSTEM ═══ */
+        :root {
+            --bg: #020617;
+            --panel: #1e293b;
+            --accent: #eab308;
+            --accent-hover: #ca8a04;
+            --text: #f8fafc;
+            --text-dim: #94a3b8;
+            --gold: #d4af37;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Roboto:ital,wght@0,300;0,400;0,700;1,400&display=swap');
+
+        * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        body { margin: 0; padding: 0; font-family: 'Roboto', sans-serif; }
+
+        /* ═══ UI CONTROLS (nepotiskne se) ═══ */
+        .no-print {
+            background: var(--panel);
+            padding: 24px;
+            position: relative;
+            font-size: 14px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            border-bottom: 3px solid var(--accent);
+        }
+        
+        /* === Spinner replacement: schovejme nativní šipky a použijme vlastní tlačítka === */
+        input[type="number"] {
+            -moz-appearance: textfield; /* Firefox: skryje nativní šipky */
+            appearance: textfield;
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none; /* Chrome/Safari: skryje nativní šipky */
+            margin: 0;
+        }
+        .input-with-arrows {
+            display: flex; align-items: stretch; gap: 0;
+        }
+        .input-with-arrows input {
+            flex: 1; min-width: 0; border-radius: 6px 0 0 6px; text-align: center; font-size: 16px; font-weight: bold;
+        }
+        .arrow-btns {
+            display: flex; flex-direction: column; width: 28px;
+        }
+        .arrow-btn {
+            flex: 1; display: flex; align-items: center; justify-content: center;
+            background: #334155; border: 1px solid #475569; color: #eab308;
+            cursor: pointer; font-size: 14px; font-weight: 900; line-height: 1;
+            user-select: none; transition: background 0.15s;
+        }
+        .arrow-btn:first-child { border-radius: 0 6px 0 0; border-bottom: none; }
+        .arrow-btn:last-child { border-radius: 0 0 6px 0; }
+        .arrow-btn:hover { background: #475569; }
+        .arrow-btn:active { background: var(--accent); color: #000; }
+
+        .header-row { display: flex; justify-content: space-between; align-items: center; }
+        h1 { margin: 0; font-size: 24px; color: var(--accent); letter-spacing: 1px; font-family: 'Cinzel', serif; }
+
+        .tabs { display: flex; gap: 8px; background: #0f172a; padding: 6px; border-radius: 10px; }
+        .tab-btn {
+            background: transparent; border: none; color: var(--text-dim);
+            padding: 12px 28px; cursor: pointer; border-radius: 8px;
+            font-weight: 700; transition: 0.3s; text-transform: uppercase; font-size: 13px;
+        }
+        .tab-btn.active { background: var(--accent); color: #000; box-shadow: 0 4px 12px rgba(234, 179, 8, 0.3); }
+        .tab-btn:hover:not(.active) { background: #334155; color: var(--text); }
+
+        .controls-inner {
+            display: grid;
+            grid-template-columns: 240px 1fr 300px 280px;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .control-section {
+            background: rgba(15, 23, 42, 0.4);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .section-title { font-size: 12px; font-weight: 900; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; border-bottom: 1px solid #334155; padding-bottom: 4px; letter-spacing: 1px; }
+
+        .control-group { display: flex; flex-direction: column; gap: 6px; }
+        .control-group label { font-size: 11px; font-weight: bold; color: var(--text-dim); }
+        
+        select, input {
+            background: #0f172a; border: 1px solid #334151; color: white;
+            padding: 10px; border-radius: 6px; outline: none; font-size: 14px;
+        }
+        select:focus, input:focus { border-color: var(--accent); }
+
+        .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .input-item { display: flex; flex-direction: column; gap: 4px; }
+        .input-item label { font-size: 10px; color: var(--text-dim); }
+
+        .toggle-group { display: flex; background: #0f172a; border-radius: 6px; padding: 3px; }
+        .toggle-btn { flex: 1; padding: 8px; font-size: 12px; cursor: pointer; border: none; background: transparent; color: var(--text-dim); border-radius: 4px; font-weight: bold; }
+        .toggle-btn.active { background: var(--accent); color: #000; }
+
+        .gallery { display: flex; gap: 12px; overflow-x: auto; padding: 10px 0; }
+        .gallery-item {
+            width: 60px; height: 85px; flex-shrink: 0; cursor: pointer;
+            border: 3px solid transparent; border-radius: 6px;
+            background-size: cover; background-position: center; transition: 0.3s;
+        }
+        .gallery-item:hover { transform: scale(1.1) translateY(-5px); }
+        .gallery-item.active { border-color: var(--accent); box-shadow: 0 0 15px var(--accent); }
+
+        .btn-print {
+            background: var(--accent); color: #000; border: none;
+            padding: 15px; border-radius: 8px; font-weight: 900;
+            cursor: pointer; width: 100%; transition: 0.3s; text-transform: uppercase;
+            font-size: 14px; letter-spacing: 1px;
+        }
+        .btn-print:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255, 255, 255, 0.2); }
+
+        /* ═══ KVARTETA RICH STYLES (Injection) ═══ */
+        .card { position: absolute; background-color: #000; background-size: cover; background-position: center; overflow: hidden; }
+        
+        /* Stats Styles - copied from source archs */
+        .card-bg-blur-img { position: absolute; top:0; left:0; width:100%; height:100%; z-index:1; object-fit:cover; filter:blur(12px); transform:scale(1.1); }
+        .card-image-img { position: absolute; top:0; left:0; width:100%; height:100%; z-index:2; object-fit:cover; }
+        .overlay-top, .overlay-bottom { position: absolute; left:0; right:0; height:100%; z-index:3; pointer-events:none; }
+        .overlay-top { top:0; box-shadow: inset 0 15mm 25mm -10mm rgba(0,0,0,0.3); }
+        .overlay-bottom { bottom:0; box-shadow: inset 0 -30mm 45mm -10mm rgba(0,0,0,0.5); }
+        
+        .hex-container { position: absolute; z-index:10; width: 14mm; height: 13mm; background: rgba(0,0,0,0.3); backdrop-filter: blur(4px); border: 0.3mm solid rgba(255,255,255,0.4); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); display: flex; align-items: center; justify-content: center; }
+        .stat-hex { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; }
+        .stat-value { font-family: 'Cinzel', serif; font-weight: 900; font-size: 3.4mm; line-height: 1; text-shadow: 0 1.5px 3px #000; }
+        .stat-label { font-size: 1.2mm; color: #ddd; margin-top: 0.5mm; letter-spacing: 0.2mm; transform: scaleX(0.8); text-transform: uppercase; }
+        
+        .pos-tr { top: 2mm !important; right: 2mm !important; }
+        .pos-tl { top: 2mm !important; left: 2mm !important; }
+        .pos-br { bottom: 2.5mm !important; right: 2mm !important; }
+        .pos-bl { bottom: 2.5mm !important; left: 2mm !important; }
+        
+        .footer-container, .name-container { position: absolute; bottom: 3mm; left: 5%; right: 5%; text-align: center; z-index: 10; font-family: 'Roboto', sans-serif; pointer-events: none; }
+        .card-name { font-family: 'Cinzel', serif; font-size: 3.4mm; color: var(--gold); margin: 0; text-shadow: 0 2px 5px #000; line-height: 1.1; font-weight: 900; }
+        .card-desc { font-size: 1.9mm; color: #ccc; margin-top: 0.6mm; font-style: italic; text-shadow: 1px 1px 2px #000; }
+        .id-badge { position: absolute; top: 2.5mm; left: 50%; transform: translateX(-50%); width: 8.5mm; height: 8.5mm; background: #000; border: 0.6mm solid var(--gold); border-radius: 50%; color: var(--gold); display: flex; justify-content: center; align-items: center; font-family: 'Cinzel', serif; font-weight: 900; font-size: 4mm; z-index: 15; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+        .group-name { font-size: 1.35mm; color: rgba(255,255,255,0.7); letter-spacing: 1.2mm; text-transform: uppercase; margin-bottom: 0.4mm; }
+
+        /* ═══ A4 STRÁNKA - výchozí = TISKOVÝ layout ═══ 
+           Tento CSS je to, co vidí tisk. Žádné okraje, žádné dekorace.
+           Karty se pozicují absolutně uvnitř .page. */
+        .page {
+            width: 210mm; 
+            height: 297mm; 
+            background: #fff;
+            margin: 0;              /* V TISKU = žádný margin */
+            position: relative; 
+            overflow: hidden;
+            box-shadow: none; 
+            border: none;
+            page-break-after: always;
+        }
+
+        /* Výchozí #print-area = čistý pro tisk */
+        #print-area { 
+            margin: 0; 
+            padding: 0; 
+            background: none; 
+        }
+
+        @media print {
+            .no-print { display: none !important; }
+        }
+
+        /* ═══ EDITOR dekorace: platí POUZE na obrazovce ═══ */
+        @media screen {
+            body { 
+                background: var(--bg); 
+                color: var(--text); 
+            }
+            #print-area { 
+                padding: 20px 0; 
+                background: #1a1a1a; 
+            }
+            .page { 
+                margin: 20px auto;   /* Centrování + mezera v editoru */
+                box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            }
+        }
+
+        /* Dynamic @page injected via JS */
+        #dynamic-page-style {}
+    </style>
+</head>
+<body class="portrait-mode">
+
+    <div class="no-print">
+        <div class="header-row">
+            <h1>Duplex Konfigurátor PRO</h1>
+            <div class="tabs">
+                <button class="tab-btn active" id="tab-front" onclick="switchSide('front')">Přední strana (HTML)</button>
+                <button class="tab-btn" id="tab-back" onclick="switchSide('back')">Zadní strana (Obrázek)</button>
+            </div>
+        </div>
+
+        <div class="controls-inner">
+            <div class="control-section">
+                <div class="section-title">Sada a orientace</div>
+                <div class="control-group">
+                    <label>Vybrat zdrojový arch</label>
+                    <select id="product-select" onchange="loadProduct()"></select>
+                </div>
+                <div class="control-group">
+                    <label>Orientace stránky</label>
+                    <div class="toggle-group">
+                        <button id="orient-p" class="toggle-btn active" onclick="setOrientation('portrait')">Na výšku</button>
+                        <button id="orient-l" class="toggle-btn" onclick="setOrientation('landscape')">Na šířku</button>
+                    </div>
+                </div>
+                <button class="btn-print" onclick="window.print()">Vytisknout aktuální stranu</button>
+            </div>
+
+            <div class="control-section">
+                <div class="section-title">Rozvržení mřížky (mm)</div>
+                <div class="input-row">
+                    <div class="input-item"><label>Šířka karty</label><div class="input-with-arrows"><input type="number" id="inp-w" oninput="manualUpdate()"><div class="arrow-btns"><span class="arrow-btn" onclick="stepInput('inp-w',1)">▲</span><span class="arrow-btn" onclick="stepInput('inp-w',-1)">▼</span></div></div></div>
+                    <div class="input-item"><label>Výška karty</label><div class="input-with-arrows"><input type="number" id="inp-h" oninput="manualUpdate()"><div class="arrow-btns"><span class="arrow-btn" onclick="stepInput('inp-h',1)">▲</span><span class="arrow-btn" onclick="stepInput('inp-h',-1)">▼</span></div></div></div>
+                    <div class="input-item"><label>Sloupců</label><div class="input-with-arrows"><input type="number" id="inp-cols" oninput="manualUpdate()"><div class="arrow-btns"><span class="arrow-btn" onclick="stepInput('inp-cols',1)">▲</span><span class="arrow-btn" onclick="stepInput('inp-cols',-1)">▼</span></div></div></div>
+                    <div class="input-item"><label>Řádků</label><div class="input-with-arrows"><input type="number" id="inp-rows" oninput="manualUpdate()"><div class="arrow-btns"><span class="arrow-btn" onclick="stepInput('inp-rows',1)">▲</span><span class="arrow-btn" onclick="stepInput('inp-rows',-1)">▼</span></div></div></div>
+                    <div class="input-item"><label>Bílý okraj L</label><div class="input-with-arrows"><input type="number" id="inp-ml" oninput="manualUpdate()"><div class="arrow-btns"><span class="arrow-btn" onclick="stepInput('inp-ml',1)">▲</span><span class="arrow-btn" onclick="stepInput('inp-ml',-1)">▼</span></div></div></div>
+                    <div class="input-item"><label>Bílý okraj T</label><div class="input-with-arrows"><input type="number" id="inp-mt" oninput="manualUpdate()"><div class="arrow-btns"><span class="arrow-btn" onclick="stepInput('inp-mt',1)">▲</span><span class="arrow-btn" onclick="stepInput('inp-mt',-1)">▼</span></div></div></div>
+                    <div class="input-item"><label>Rozestup X</label><div class="input-with-arrows"><input type="number" id="inp-gx" oninput="manualUpdate()"><div class="arrow-btns"><span class="arrow-btn" onclick="stepInput('inp-gx',1)">▲</span><span class="arrow-btn" onclick="stepInput('inp-gx',-1)">▼</span></div></div></div>
+                    <div class="input-item"><label>Rozestup Y</label><div class="input-with-arrows"><input type="number" id="inp-gy" oninput="manualUpdate()"><div class="arrow-btns"><span class="arrow-btn" onclick="stepInput('inp-gy',1)">▲</span><span class="arrow-btn" onclick="stepInput('inp-gy',-1)">▼</span></div></div></div>
+                    <div class="input-item"><label>Zaoblení rohů (mm)</label><div class="input-with-arrows"><input type="number" id="inp-radius" value="4" oninput="manualUpdate()"><div class="arrow-btns"><span class="arrow-btn" onclick="stepInput('inp-radius',0.5)">▲</span><span class="arrow-btn" onclick="stepInput('inp-radius',-0.5)">▼</span></div></div></div>
+                    <div class="input-item"><label>Bleed (mm)</label><div class="input-with-arrows"><input type="number" id="inp-bleed" value="2" oninput="manualUpdate()"><div class="arrow-btns"><span class="arrow-btn" onclick="stepInput('inp-bleed',0.5)">▲</span><span class="arrow-btn" onclick="stepInput('inp-bleed',-0.5)">▼</span></div></div></div>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <div class="section-title">Zvětšení obsahu (Zoom)</div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <p style="font-size: 10px; color: var(--text-dim); margin:0;">Změny se aplikují na grafiku uvnitř karty (obrázky, statistiky atd.). Pro tisk doporučeno 100%.</p>
+                    <div class="control-group">
+                        <label>Měřítko obsahu (%) <span id="zoom-val">100%</span></label>
+                        <input type="range" id="zoom-slider" min="50" max="200" value="100" oninput="updateCards()">
+                    </div>
+                    <div id="back-only-controls" style="display: none; flex-direction: column; gap: 10px;">
+                        <div class="control-group">
+                            <label>Korekce duplexu (X posun) <span id="offset-val">0mm</span></label>
+                            <input type="range" id="duplex-offset" min="-10" max="10" step="0.1" value="0" oninput="render()">
+                        </div>
+                        <div class="gallery" id="back-gallery"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <div class="section-title">Korekce laminace</div>
+                <div class="control-group">
+                    <label>Jas (Brightness) <span id="val-bright">1.15</span></label>
+                    <input type="range" id="f-bright" min="0.5" max="2.0" step="0.01" value="1.15" oninput="applyFilters()">
+                </div>
+                <div class="control-group">
+                    <label>Kontrast <span id="val-contrast">1.10</span></label>
+                    <input type="range" id="f-contrast" min="0.5" max="2.0" step="0.01" value="1.10" oninput="applyFilters()">
+                </div>
+                <div class="control-group">
+                    <label>Saturace <span id="val-saturate">1.10</span></label>
+                    <input type="range" id="f-saturate" min="0.5" max="2.0" step="0.01" value="1.10" oninput="applyFilters()">
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn-print" style="flex: 1; font-size: 11px; padding: 10px;" onclick="setLaminationPreset(1.15, 1.10, 1.10)">Matná fólie</button>
+                    <button class="btn-print" style="flex: 1; font-size: 11px; padding: 10px; background: #334155; color: white;" onclick="setLaminationPreset(1.0, 1.0, 1.0)">Vypnout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="print-area"></div>
+    <iframe id="loader-iframe" style="display:none;"></iframe>
+
+    <script>
+        const PRODUCTS = {
+            "draci": {
+                name: "Kvarteto Draci",
+                htmlFile: "draci.html",
+                basePath: "../kvarteta/draci/",
+                w: 60, h: 85, radius: 4,
+                cols: 3, rows: 3, marginL: 10, marginT: 15,
+                gapX: 63, gapY: 88,
+                zoom: 100
+            },
+            "dinosauri": {
+                name: "Kvarteto Dinosauři",
+                htmlFile: "all_dinosaurs.html",
+                basePath: "../kvarteta/dinosauri/",
+                w: 60, h: 85, radius: 4,
+                cols: 3, rows: 3, marginL: 10, marginT: 15,
+                gapX: 63, gapY: 88,
+                zoom: 100
+            },
+            "baby_dracci": {
+                name: "Kvarteto Baby dráčci",
+                htmlFile: "all_baby_dragons.html",
+                basePath: "../kvarteta/baby_dracci/",
+                w: 60, h: 85, radius: 4,
+                cols: 3, rows: 3, marginL: 10, marginT: 15,
+                gapX: 63, gapY: 88,
+                zoom: 100
+            },
+            "kocky": {
+                name: "Kvarteto Kočky",
+                htmlFile: "tiskovy_arch_kvarteta_kocky.html",
+                basePath: "../kvarteta/kocky/",
+                w: 60, h: 85, radius: 4,
+                cols: 3, rows: 3, marginL: 12, marginT: 18,
+                gapX: 63, gapY: 88,
+                zoom: 100
+            },
+            "mytologie": {
+                name: "Kvarteto Mytologie",
+                htmlFile: "tiskovy_arch_kvarteta_mytologie.html",
+                basePath: "../kvarteta/mytologie/",
+                w: 60, h: 85, radius: 4,
+                cols: 3, rows: 3, marginL: 12, marginT: 18,
+                gapX: 63, gapY: 88,
+                zoom: 100
+            },
+            "rytiri": {
+                name: "Kvarteto Rytíři",
+                htmlFile: "tiskovy_arch_kvarteta_rytiri.html",
+                basePath: "../kvarteta/rytiri/",
+                w: 60, h: 85, radius: 4,
+                cols: 3, rows: 3, marginL: 10, marginT: 15,
+                gapX: 63, gapY: 88,
+                zoom: 100
+            },
+            "hraci_draci": {
+                name: "Hrací karty: Epická dračí edice",
+                htmlFile: "../hraci_karty/epicka_draci_edice/tiskovy_arch_hraci_karty_epicka_draci.html",
+                basePath: "../hraci_karty/epicka_draci_edice/",
+                w: 62, h: 88, radius: 4,
+                cols: 3, rows: 3, marginL: 9, marginT: 14,
+                gapX: 65, gapY: 91,
+                zoom: 100
+            },
+            "hraci_carodejnice": {
+                name: "Hrací karty: Čarodějnice",
+                htmlFile: "../hraci_karty/carodejnice/tiskovy_arch_hraci_karty_carodejnice.html",
+                basePath: "../hraci_karty/carodejnice/",
+                w: 62, h: 88, radius: 4,
+                cols: 3, rows: 3, marginL: 9, marginT: 14,
+                gapX: 65, gapY: 91,
+                zoom: 100
+            },
+            "hraci_princezny": {
+                name: "Hrací karty: Princezny",
+                htmlFile: "../hraci_karty/princezny/tiskovy_arch_hraci_karty_princezny.html",
+                basePath: "../hraci_karty/princezny/",
+                w: 62, h: 88, radius: 4,
+                cols: 3, rows: 3, marginL: 9, marginT: 14,
+                gapX: 65, gapY: 91,
+                zoom: 100
+            }
+
+        };
+
+        const BACKS = [
+            '../kvarteta/backs/card_back_pattern.png',
+            '../kvarteta/backs/knight_back_pattern.png',
+            '../kvarteta/backs/knight_back_gold.png',
+            '../kvarteta/backs/knight_back_iron_steel.png',
+            '../kvarteta/backs/knight_back_copper.png',
+            '../kvarteta/backs/knight_back_crest.png',
+            '../kvarteta/backs/knight_back_gate.png',
+            '../kvarteta/backs/knight_back_cute.png',
+            '../kvarteta/backs/cat_back_pattern.png',
+            '../kvarteta/backs/cat_back_paw.png',
+            '../kvarteta/backs/cat_back_fancy.png',
+            '../kvarteta/mytologie/mytologie_back_1_emblem.png',
+            '../kvarteta/mytologie/mytologie_back_2_runes.png',
+            '../kvarteta/mytologie/mytologie_back_3_gateway.png',
+            '../hraci_karty/epicka_draci_edice/epic_backs/epic_gold_scales.png',
+            '../hraci_karty/epicka_draci_edice/epic_backs/epic_arcane_parchment.png',
+            '../hraci_karty/epicka_draci_edice/epic_backs/epic_ice_crystal.png',
+            '../hraci_karty/epicka_draci_edice/epic_backs/epic_lava_flow.png',
+            '../hraci_karty/epicka_draci_edice/epic_backs/epic_runed_obsidian.png',
+            '../hraci_karty/epicka_draci_edice/epic_backs/back_1.png',
+            '../hraci_karty/epicka_draci_edice/epic_backs/back_2.png',
+            '../hraci_karty/epicka_draci_edice/epic_backs/back_3.png',
+            '../hraci_karty/epicka_draci_edice/epic_backs/back_4.png',
+            '../hraci_karty/epicka_draci_edice/epic_backs/back_5.png',
+            '../hraci_karty/epicka_draci_edice/epic_backs/back_6.png',
+            '../hraci_karty/epicka_draci_edice/epic_backs/back_7.png',
+            '../hraci_karty/epicka_draci_edice/epic_backs/back_9.png',
+            '../hraci_karty/epicka_draci_edice/epic_backs/back_10.png',
+            '../kvarteta/backs/dino_back_nature.png',
+            '../kvarteta/backs/dino_back_amber.png',
+            '../kvarteta/backs/dino_back_crystals.png',
+            '../kvarteta/backs/dino_back_oasis.png',
+            '../kvarteta/backs/dino_back_nest.png'
+        ];
+
+        let currentSide = 'front';
+        let currentProductKey = 'draci';
+        let currentBack = BACKS[0];
+        let orientation = 'portrait';
+        let sourceCards = [];
+
+        // Helper pro vlastní +/- tlačítka
+        function stepInput(id, delta) {
+            const inp = document.getElementById(id);
+            const val = parseFloat(inp.value) || 0;
+            inp.value = Math.max(0, Math.round((val + delta) * 10) / 10);
+            manualUpdate();
+        }
+
+        // Robust path fix logic (supports NFC/NFD issues)
+        function fixPath(src) {
+            if (!src) return '';
+            const p = PRODUCTS[currentProductKey];
+            if (!p || !p.basePath) return src;
+            if (src.startsWith('http') || src.startsWith('data:')) return src;
+
+            // Remove any prefix like ./ or ../
+            let cleanSrc = src;
+            if (cleanSrc.startsWith('./')) {
+                cleanSrc = cleanSrc.substring(2);
+            } else if (cleanSrc.startsWith('../')) {
+                cleanSrc = cleanSrc.substring(3);
+            }
+            
+            // Normalize path separator if present
+            cleanSrc = cleanSrc.replace(/\\/g, '/');
+
+            // Hrací karty specific path fix handling
+            if (currentProductKey.startsWith('hraci_')) {
+               if (cleanSrc.includes('finalni_karty/')) {
+                   // Some source HTMLs already have finalni_karty/ inside the background-image rule.
+                   return p.basePath + cleanSrc;
+               } else {
+                   return p.basePath + "finalni_karty/" + cleanSrc;
+               }
+            }
+
+            // Normal Kvarteta specific path logic
+            const basePathParts = p.basePath.split('/').filter(Boolean);
+            const basePathLastDir = basePathParts[basePathParts.length - 1] ? basePathParts[basePathParts.length - 1].normalize("NFC").toLowerCase() : "";
+            const srcParts = cleanSrc.split('/').filter(Boolean);
+            const srcFirstDir = srcParts.length > 0 ? srcParts[0].normalize("NFC").toLowerCase() : "";
+
+            if (basePathLastDir === srcFirstDir || (basePathLastDir === 'baby_dracci' && srcFirstDir === 'baby dráčci'.normalize("NFC").toLowerCase())) {
+                return p.basePath + srcParts.slice(1).join('/');
+            } else {
+                return p.basePath + cleanSrc;
+            }
+        }
+
+        function switchSide(side) {
+            currentSide = side;
+            document.getElementById('tab-front').classList.toggle('active', side === 'front');
+            document.getElementById('tab-back').classList.toggle('active', side === 'back');
+            
+            const backOnly = document.getElementById('back-only-controls');
+            if (backOnly) backOnly.style.display = (side === 'back' ? 'flex' : 'none');
+            render();
+        }
+
+        function setOrientation(o) {
+            orientation = o;
+            document.getElementById('orient-p').classList.toggle('active', o === 'portrait');
+            document.getElementById('orient-l').classList.toggle('active', o === 'landscape');
+            render();
+        }
+
+        async function loadProduct() {
+            currentProductKey = document.getElementById('product-select').value;
+            const p = PRODUCTS[currentProductKey];
+            if (!p) return;
+
+            // Load values to UI - Fixed mapping
+            const map = {
+                'w': 'w', 'h': 'h', 'marginL': 'ml', 'marginT': 'mt', 
+                'gapX': 'gx', 'gapY': 'gy', 'cols': 'cols', 'rows': 'rows',
+                'radius': 'radius'
+            };
+            for (const key in map) {
+                const el = document.getElementById('inp-' + map[key]);
+                if (el) el.value = p[key];
+            }
+            document.getElementById('zoom-slider').value = p.zoom || 100;
+            document.getElementById('zoom-val').innerText = (p.zoom || 100) + '%';
+
+            // Load HTML via hidden iframe
+            const iframe = document.getElementById('loader-iframe');
+            iframe.src = p.htmlFile;
+            iframe.onload = () => {
+                try {
+                    const doc = iframe.contentDocument || iframe.contentWindow.document;
+                    const cardElements = doc.querySelectorAll('.card');
+                    
+                    if (cardElements.length === 0) {
+                        console.warn('No .card elements found in source HTML');
+                        sourceCards = [];
+                        render();
+                        return;
+                    }
+
+                    sourceCards = Array.from(cardElements).map(el => {
+                        const style = el.getAttribute('style') || '';
+                        const clone = el.cloneNode(true);
+                        
+                        // Fix card dimensions and position (for preview in iframe if needed)
+                        clone.style.position = 'relative';
+                        clone.style.left = '0';
+                        clone.style.top = '0';
+                        clone.style.width = p.w + 'mm';
+                        clone.style.height = p.h + 'mm';
+                        clone.style.display = 'block';
+
+                        // Fix relative paths for images inside the card
+                        clone.querySelectorAll('img').forEach(img => {
+                            let src = img.getAttribute('src');
+                            if (src) img.src = fixPath(src);
+                        });
+                        
+                        clone.querySelectorAll('[style*="background-image"]').forEach(childEl => {
+                            let childStyle = childEl.getAttribute('style');
+                            if (childStyle) {
+                                let newStyle = childStyle.replace(/url\(['"]?(.*?)['"]?\)/g, (match, p1) => {
+                                    return `url('${fixPath(p1)}')`;
+                                });
+                                childEl.setAttribute('style', newStyle);
+                            }
+                        });
+
+                        return { innerHTML: clone.innerHTML, style: style };
+                    });
+                    render();
+                    updateGallery();
+                } catch (e) {
+                    console.error('Error loading product cards:', e);
+                }
+            };
+            currentBack = BACKS[0]; // Reset back to first one for new product
+        }
+
+        function updateGallery() {
+            const gallery = document.getElementById('back-gallery');
+            gallery.innerHTML = '';
+            BACKS.forEach(src => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item' + (src === currentBack ? ' active' : '');
+                item.style.backgroundImage = `url('${src}')`;
+                item.onclick = () => {
+                    currentBack = src;
+                    document.querySelectorAll('.gallery-item').forEach(el => el.classList.remove('active'));
+                    item.classList.add('active');
+                    render();
+                };
+                gallery.appendChild(item);
+            });
+        }
+
+        function manualUpdate() {
+            const p = PRODUCTS[currentProductKey];
+            if (!p) return;
+            
+            // Added fallbacks to prevent NaN
+            p.w = parseFloat(document.getElementById('inp-w').value) || 60;
+            p.h = parseFloat(document.getElementById('inp-h').value) || 85;
+            p.marginL = parseFloat(document.getElementById('inp-ml').value) || 0;
+            p.marginT = parseFloat(document.getElementById('inp-mt').value) || 0;
+            p.gapX = parseFloat(document.getElementById('inp-gx').value) || 0;
+            p.gapY = parseFloat(document.getElementById('inp-gy').value) || 0;
+            p.radius = parseFloat(document.getElementById('inp-radius').value) || 0;
+            p.cols = parseInt(document.getElementById('inp-cols').value) || 3;
+            p.rows = parseInt(document.getElementById('inp-rows').value) || 3;
+            render();
+        }
+
+        function updateCards() {
+            const zVal = document.getElementById('zoom-slider').value;
+            document.getElementById('zoom-val').innerText = zVal + '%';
+            render();
+        }
+
+        function applyFilters() {
+            const b = document.getElementById('f-bright').value;
+            const c = document.getElementById('f-contrast').value;
+            const s = document.getElementById('f-saturate').value;
+            ['bright','contrast','saturate'].forEach(k => document.getElementById('val-'+k).innerText = document.getElementById('f-'+k).value);
+
+            const filterStr = `brightness(${b}) contrast(${c}) saturate(${s})`;
+            document.querySelectorAll('.card').forEach(el => {
+                el.style.filter = filterStr;
+            });
+        }
+
+        function setLaminationPreset(b, c, s) {
+            document.getElementById('f-bright').value = b;
+            document.getElementById('f-contrast').value = c;
+            document.getElementById('f-saturate').value = s;
+            applyFilters();
+        }
+
+        function updatePageStyle() {
+            let styleEl = document.getElementById('dynamic-page-style');
+            if (!styleEl) {
+                styleEl = document.createElement('style');
+                styleEl.id = 'dynamic-page-style';
+                document.head.appendChild(styleEl);
+            }
+            const size = orientation === 'portrait' ? 'A4 portrait' : 'A4 landscape';
+            // Pouze @page definice - všechna ostatní tisková pravidla jsou v hlavním @media print bloku.
+            styleEl.innerHTML = `@page { size: ${size}; margin: 0; }`;
+            document.body.className = orientation + '-mode';
+        }
+
+        function render() {
+            updatePageStyle();
+            const container = document.getElementById('print-area');
+            container.innerHTML = '';
+            const p = PRODUCTS[currentProductKey];
+            if (!p) return;
+
+            const pageWidth = orientation === 'portrait' ? 210 : 297;
+            const pageHeight = orientation === 'portrait' ? 297 : 210;
+            const cardsPerPage = p.cols * p.rows;
+            const pagesCount = Math.ceil(sourceCards.length / cardsPerPage);
+            const zoom = (parseFloat(document.getElementById('zoom-slider').value) || 100) / 100;
+            const bleed = parseFloat(document.getElementById('inp-bleed').value) || 0;
+
+            for (let pageIdx = 0; pageIdx < pagesCount; pageIdx++) {
+                const page = document.createElement('div');
+                page.className = 'page';
+                page.style.width = pageWidth + 'mm';
+                page.style.height = pageHeight + 'mm';
+                // Margin se centruje přes CSS (.page { margin: 20px auto; })
+                // V @media print se automaticky přebije na margin: 0 !important
+
+                for (let i = 0; i < cardsPerPage; i++) {
+                    const cardIdx = pageIdx * cardsPerPage + i;
+                    if (cardIdx >= sourceCards.length) break;
+
+                    const col = i % p.cols;
+                    const row = Math.floor(i / p.cols);
+                    const frontX = p.marginL + col * p.gapX;
+                    const y = p.marginT + row * p.gapY;
+
+                    const cardWrapper = document.createElement('div');
+                    cardWrapper.className = 'card-wrapper';
+
+                    if (currentSide === 'front') {
+                        // === PŘEDNÍ STRANA: žádný bleed, přesné rozměry karty ===
+                        const cssW = p.w + 'mm';
+                        const cssH = p.h + 'mm';
+                        cardWrapper.style.cssText = `position: absolute; left: ${frontX}mm; top: ${y}mm; width: ${cssW}; height: ${cssH}; overflow: hidden; border-radius: ${p.radius}mm; z-index: 5;`;
+                        
+                        const cardData = sourceCards[cardIdx];
+                        const contentBox = document.createElement('div');
+                        contentBox.className = 'card content-box-zoomable';
+                        const vW = (p.w * zoom) + 'mm';
+                        const vH = (p.h * zoom) + 'mm';
+                        contentBox.style.cssText = `width: ${vW}; height: ${vH}; overflow: hidden; border-radius: ${p.radius}mm; position: relative; background: none;`;
+                        
+                        contentBox.innerHTML = cardData.innerHTML;
+                        if (cardData.style) {
+                            const forbidden = ['left', 'top', 'width', 'height', 'position', 'display', 'margin', 'padding'];
+                            let fixedStyle = cardData.style.split(';').map(s => s.trim()).filter(s => {
+                                const prop = s.split(':')[0].trim().toLowerCase();
+                                return prop && !forbidden.includes(prop);
+                            }).join('; ');
+
+                            fixedStyle = fixedStyle.replace(/url\(['"]?(.*?)['"]?\)/g, (match, p1) => {
+                                return `url('${fixPath(p1)}')`;
+                            });
+                            
+                            if (fixedStyle.includes('background-image')) {
+                                fixedStyle += '; background-size: cover; background-position: center;';
+                            }
+                            
+                            contentBox.setAttribute('style', contentBox.getAttribute('style') + '; ' + fixedStyle);
+                        }
+                        
+                        cardWrapper.appendChild(contentBox);
+                    } else {
+                        // === ZADNÍ STRANA: s bleedem pro přesah pozadí ===
+                        const slotW = p.w + (bleed * 2);
+                        const slotH = p.h + (bleed * 2);
+                        const duplexOffset = parseFloat(document.getElementById('duplex-offset').value) || 0;
+                        document.getElementById('offset-val').innerText = duplexOffset + 'mm';
+                        
+                        const mirrorX = (pageWidth - frontX - p.w);
+                        const backX = mirrorX - bleed + duplexOffset;
+                        const backY = y - bleed;
+
+                        cardWrapper.style.cssText = `position: absolute; left: ${backX}mm; top: ${backY}mm; width: ${slotW}mm; height: ${slotH}mm; overflow: hidden; border-radius: ${p.radius}mm; z-index: 5;`;
+                        
+                        const backDiv = document.createElement('div');
+                        backDiv.className = 'card back-card';
+                        const vW = (slotW * zoom) + 'mm';
+                        const vH = (slotH * zoom) + 'mm';
+                        backDiv.style.cssText = `width: ${vW}; height: ${vH}; border-radius: ${p.radius}mm; background-image: url('${currentBack}'); background-size: cover; background-position: center; position: relative;`;
+                        
+                        cardWrapper.appendChild(backDiv);
+                    }
+                    page.appendChild(cardWrapper);
+                }
+                container.appendChild(page);
+            }
+            applyFilters();
+        }
+
+        function init() {
+            const select = document.getElementById('product-select');
+            for (const key in PRODUCTS) {
+                const opt = document.createElement('option');
+                opt.value = key;
+                opt.innerText = PRODUCTS[key].name;
+                select.appendChild(opt);
+            }
+            updateGallery();
+            loadProduct();
+        }
+
+        init();
+    </script>
+</body>
+</html>

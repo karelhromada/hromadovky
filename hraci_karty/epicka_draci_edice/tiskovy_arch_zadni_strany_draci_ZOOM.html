@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Zadní strany – epická dračí edice – tiskový arch</title>
+    <style>
+        /* ═══ PRINT RESET ═══ */
+        * {
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f0f0f0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        /* ═══ UI CONTROLS (nepotiskne se) ═══ */
+        .no-print {
+            background: #1a1a1a;
+            color: white;
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .no-print h1 {
+            margin: 0;
+            font-size: 20px;
+            color: #fbbf24;
+        }
+
+        .no-print p {
+            margin: 0;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .gallery {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            max-width: 100%;
+            padding: 10px;
+            background: #262626;
+            border-radius: 8px;
+        }
+
+        .gallery-item {
+            width: 60px;
+            height: 85px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 4px;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.2s, border-color 0.2s;
+            flex-shrink: 0;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.1);
+            border-color: #fbbf24;
+        }
+
+        .gallery-item.active {
+            border-color: #fbbf24;
+            box-shadow: 0 0 10px #fbbf24;
+        }
+
+        .btn-print {
+            background: #ca8a04;
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .btn-print:hover {
+            background: #a16207;
+        }
+
+        /* ═══ A4 STRÁNKA ═══ */
+        .page {
+            width: 210mm;
+            height: 297mm;
+            background: #fff;
+            margin: 10mm auto;
+            position: relative;
+            overflow: hidden;
+            page-break-after: always;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .page:last-child {
+            page-break-after: avoid;
+        }
+
+        /* ═══ KARTA (se spadávkou 1mm na každou stranu) ═══ */
+        .card {
+            width: 64mm;
+            height: 90mm;
+            /* Původní 62x88 + 2mm bleed */
+            position: absolute;
+            background-color: #000;
+            background-size: 114%;
+            /* Zvětšeno pro oříznutí AI rámečků */
+            background-position: center;
+            /* Na zadní straně obvykle neděláme border-radius v HTML,
+               necháme design přesahovat, aby ořez byl čistý. */
+            border: 0.1mm solid rgba(0, 0, 0, 0.1);
+            /* Jemný okraj pro orientaci */
+        }
+
+        /* ═══ LAMINAČNÍ KOMPENZACE ═══ */
+        .card {
+            filter: brightness(1.08) contrast(1.06) saturate(1.08);
+        }
+
+        @media print {
+            body {
+                background: none;
+            }
+
+            .page {
+                margin: 0;
+                box-shadow: none;
+            }
+
+            .no-print {
+                display: none;
+            }
+
+            @page {
+                size: A4 portrait;
+                margin: 0;
+            }
+
+            /* Silnější kompenzace pro matné lamino při tisku */
+            .card {
+                filter: brightness(1.15) contrast(1.10) saturate(1.10);
+            }
+        }
+
+        /* Pomocné značky pro tisk (vnější) */
+        .crop-mark {
+            position: absolute;
+            width: 5mm;
+            height: 5mm;
+            border: 0.2mm solid #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="no-print">
+        <h1>Zadní strany – epická dračí edice (LADĚNÍ)</h1>
+        <p>Klikněte na náhled a posuvníkem nastavte "Zoom" tak, aby vnitřní motiv přesně vyplnil plochu a rámečky zmizely.</p>
+        
+        <div style="background: #333; padding: 15px; border-radius: 8px; display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 900px;">
+            <!-- Design Tuning -->
+            <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center; border-bottom: 1px solid #444; padding-bottom: 10px;">
+                <span style="font-weight: bold; color: #fbbf24; width: 100%;">1. LADĚNÍ DESIGNU (OŘEZ A POZICE)</span>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <label for="zoom-slider">ZOOM:</label>
+                    <input type="range" id="zoom-slider" min="100" max="300" value="145" style="width: 120px;">
+                    <span id="zoom-value" style="font-family: monospace; color: #fbbf24;">145%</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <label for="x-slider">POSUN X:</label>
+                    <input type="range" id="x-slider" min="0" max="100" value="50" style="width: 100px;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <label for="y-slider">POSUN Y:</label>
+                    <input type="range" id="y-slider" min="0" max="100" value="50" style="width: 100px;">
+                </div>
+            </div>
+
+            <!-- Layout Configuration -->
+            <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center;">
+                <span style="font-weight: bold; color: #fbbf24; width: 100%;">2. ROZLOŽENÍ ARCHU (FORMÁT)</span>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <label>ŠÍŘKA (mm):</label>
+                    <input type="number" id="card-w" value="62" style="width: 50px; background: #444; color: white; border: none; padding: 3px;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <label>VÝŠKA (mm):</label>
+                    <input type="number" id="card-h" value="88" style="width: 50px; background: #444; color: white; border: none; padding: 3px;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <label>SLOUPCE:</label>
+                    <input type="number" id="cols" value="3" style="width: 40px; background: #444; color: white; border: none; padding: 3px;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <label>ŘÁDKY:</label>
+                    <input type="number" id="rows" value="3" style="width: 40px; background: #444; color: white; border: none; padding: 3px;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <label>OKRAJ L (mm):</label>
+                    <input type="number" id="margin-l" value="9" style="width: 45px; background: #444; color: white; border: none; padding: 3px;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <label>OKRAJ T (mm):</label>
+                    <input type="number" id="margin-t" value="14" style="width: 45px; background: #444; color: white; border: none; padding: 3px;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <label>MEZERA X (mm):</label>
+                    <input type="number" id="gap-x" value="65" style="width: 45px; background: #444; color: white; border: none; padding: 3px;">
+                </div>
+                 <div style="display: flex; align-items: center; gap: 8px;">
+                    <label>MEZERA Y (mm):</label>
+                    <input type="number" id="gap-y" value="91" style="width: 45px; background: #444; color: white; border: none; padding: 3px;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <label>POČET KARET:</label>
+                    <input type="number" id="card-count" value="32" style="width: 50px; background: #444; color: white; border: none; padding: 3px;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-left: 10px; border-left: 1px solid #555; padding-left: 10px;">
+                    <label>PRESET:</label>
+                    <select id="preset-select" style="background: #444; color: #fbbf24; border: none; padding: 3px; cursor: pointer;">
+                        <option value="custom">Vlastní...</option>
+                        <option value="playing">Hrací karty (3x3)</option>
+                        <option value="pexeso">Pexeso (4x6)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="gallery" id="gallery">
+            <!-- Dynamicky naplněno JS -->
+        </div>
+        <button class="btn-print" onclick="window.print()">Vytisknout tuto verzi</button>
+    </div>
+
+    <!-- Tiskové strany (zrcadlově k předním stranám) -->
+    <!-- Front positions: left 9, 74, 139 | top 14, 105, 196 -->
+    <!-- Back positions (1mm offset for bleed): 
+         left: (210-139-62)-1 = 8 | (210-74-62)-1 = 73 | (210-9-62)-1 = 138 
+         top: 14-1 = 13 | 105-1 = 104 | 196-1 = 195
+    -->
+
+    <div id="print-pages"></div>
+
+    <script>
+        const backs = [
+            'epic_backs/back_1.png', 'epic_backs/back_2.png', 'epic_backs/back_3.png',
+            'epic_backs/back_4.png', 'epic_backs/back_5.png', 'epic_backs/back_6.png',
+            'epic_backs/back_7.png', 'epic_backs/back_8.png', 'epic_backs/back_9.png',
+            'epic_backs/back_10.png',
+            'epic_backs/epic_gold_scales.png', 'epic_backs/epic_arcane_parchment.png',
+            'epic_backs/epic_ice_crystal.png', 'epic_backs/epic_lava_flow.png',
+            'epic_backs/epic_runed_obsidian.png'
+        ];
+
+        let currentBack = backs[0];
+
+        function initGallery() {
+            const gallery = document.getElementById('gallery');
+            gallery.innerHTML = '';
+            backs.forEach((src, index) => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item' + (src === currentBack ? ' active' : '');
+                item.style.backgroundImage = `url('${src}')`;
+                item.title = src.split('/').pop();
+                item.onclick = () => {
+                    currentBack = src;
+                    document.querySelectorAll('.gallery-item').forEach(el => el.classList.remove('active'));
+                    item.classList.add('active');
+                    renderPages();
+                };
+                gallery.appendChild(item);
+            });
+        }
+
+        // --- INITIALIZATION ---
+        const slider = document.getElementById('zoom-slider');
+        const zoomValue = document.getElementById('zoom-value');
+        const xSlider = document.getElementById('x-slider');
+        const xValue = document.getElementById('x-value');
+        const ySlider = document.getElementById('y-slider');
+        const yValue = document.getElementById('y-value');
+
+        function updateStyles() {
+            if (!slider) return;
+            const z = slider.value + '%';
+            const x = xSlider.value + '%';
+            const y = ySlider.value + '%';
+            
+            zoomValue.innerText = z;
+            if (xValue) xValue.innerText = x;
+            if (yValue) yValue.innerText = y;
+
+            document.querySelectorAll('.card, .gallery-item').forEach(el => {
+                el.style.backgroundSize = z;
+                el.style.backgroundPosition = `${x} ${y}`;
+            });
+        }
+
+        function renderPages() {
+            const container = document.getElementById('print-pages');
+            container.innerHTML = '';
+            
+            const cardsCount = parseInt(document.getElementById('card-count').value || 32);
+            const w = parseFloat(document.getElementById('card-w').value || 62);
+            const h = parseFloat(document.getElementById('card-h').value || 88);
+            const numCols = parseInt(document.getElementById('cols').value || 3);
+            const numRows = parseInt(document.getElementById('rows').value || 3);
+            const marginL = parseFloat(document.getElementById('margin-l').value || 9);
+            const marginT = parseFloat(document.getElementById('margin-t').value || 14);
+            const gapX = parseFloat(document.getElementById('gap-x').value || 65);
+            const gapY = parseFloat(document.getElementById('gap-y').value || 91);
+
+            const perPage = numCols * numRows;
+            const pagesCount = Math.ceil(cardsCount / perPage);
+
+            for (let p = 0; p < pagesCount; p++) {
+                const page = document.createElement('div');
+                page.className = 'page';
+                
+                for (let r = 0; r < numRows; r++) {
+                    for (let c = 0; c < numCols; c++) {
+                        const index = p * perPage + r * numCols + c;
+                        if (index < cardsCount) {
+                            const card = document.createElement('div');
+                            card.className = 'card';
+                            
+                            const frontLeft = marginL + c * gapX;
+                            const backLeft = (210 - (frontLeft + w)) - 1; 
+
+                            const top = marginT + r * gapY - 1;
+
+                            card.style.width = (w + 2) + 'mm';
+                            card.style.height = (h + 2) + 'mm';
+                            card.style.left = backLeft + 'mm';
+                            card.style.top = top + 'mm';
+                            card.style.backgroundImage = `url('${currentBack}')`;
+                            page.appendChild(card);
+                        }
+                    }
+                }
+                container.appendChild(page);
+            }
+            updateStyles();
+        }
+
+        // --- EVENT LISTENERS ---
+        slider.oninput = updateStyles;
+        xSlider.oninput = updateStyles;
+        ySlider.oninput = updateStyles;
+
+        document.getElementById('preset-select').onchange = function() {
+            const presets = {
+                playing: { w: 62, h: 88, cols: 3, rows: 3, ml: 9, mt: 14, gx: 65, gy: 91, count: 32 },
+                pexeso: { w: 48, h: 48, cols: 4, rows: 5, ml: 10, mt: 15, gx: 48, gy: 48, count: 48 }
+            };
+            const p = presets[this.value];
+            if (p) {
+                document.getElementById('card-w').value = p.w;
+                document.getElementById('card-h').value = p.h;
+                document.getElementById('cols').value = p.cols;
+                document.getElementById('rows').value = p.rows;
+                document.getElementById('margin-l').value = p.ml;
+                document.getElementById('margin-t').value = p.mt;
+                document.getElementById('gap-x').value = p.gx;
+                document.getElementById('gap-y').value = p.gy;
+                document.getElementById('card-count').value = p.count;
+                renderPages();
+            }
+        };
+
+        ['card-w', 'card-h', 'cols', 'rows', 'margin-l', 'margin-t', 'gap-x', 'gap-y', 'card-count'].forEach(id => {
+            const el = document.getElementById(id);
+            el.onchange = renderPages;
+            el.oninput = renderPages;
+        });
+
+        // --- START ---
+        initGallery();
+        renderPages();
+        window.addEventListener('load', updateStyles);
+    </script>
+</body>
+
+</html>

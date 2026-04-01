@@ -31,19 +31,33 @@ document.addEventListener('mousemove', (e) => {
         AppState.globalLogo.y += dy;
         renderGrid();
     }
-    // Normální Drag -> Panning ilustrace aktivní karty (Layer 0)
-    else if (AppState.activeCardId) {
-        const card = AppState.cards.find(c => c.id === AppState.activeCardId);
-        if (card && !card.isLocked) {
-            card.crop.x += dx;
-            card.crop.y += dy;
-            updateCardTransform(card);
+    // Normální Drag -> Panning ilustrace
+    else {
+        if (AppState.viewMode === 'back') {
+            if (!AppState.backSideSettings.crop) AppState.backSideSettings.crop = { x: 0, y: 0, scale: 1, opacity: 1 };
+            AppState.backSideSettings.crop.x += dx;
+            AppState.backSideSettings.crop.y += dy;
+            renderGrid(); // Aplikuje na všechny zadní strany naráz
             
-            // Sync s UI 
-            const slX = document.getElementById('ind-img-x');
-            const slY = document.getElementById('ind-img-y');
-            if (slX) slX.value = card.crop.x;
-            if (slY) slY.value = card.crop.y;
+            // Sync s UI
+            const slX = document.getElementById('back-img-x');
+            const slY = document.getElementById('back-img-y');
+            if (slX) slX.value = AppState.backSideSettings.crop.x;
+            if (slY) slY.value = AppState.backSideSettings.crop.y;
+            
+        } else if (AppState.activeCardId) {
+            const card = AppState.cards.find(c => c.id === AppState.activeCardId);
+            if (card && !card.isLocked) {
+                card.crop.x += dx;
+                card.crop.y += dy;
+                updateCardTransform(card);
+                
+                // Sync s UI 
+                const slX = document.getElementById('ind-img-x');
+                const slY = document.getElementById('ind-img-y');
+                if (slX) slX.value = card.crop.x;
+                if (slY) slY.value = card.crop.y;
+            }
         }
     }
 
@@ -83,19 +97,31 @@ document.addEventListener('wheel', (e) => {
         if (AppState.globalLogo.scale < 0.05) AppState.globalLogo.scale = 0.05;
         renderGrid();
     }
-    // Normální Wheel -> Zoom ilustrace konkrétní karty
+    // Normální Wheel -> Zoom ilustrace
     else {
-        const id = cardEl.id.replace('card-el-', '');
-        const card = AppState.cards.find(c => c.id === id);
-        if (card && !card.isLocked) {
-            card.crop.scale -= delta * zoomSpeed;
-            if (card.crop.scale < 0.01) card.crop.scale = 0.01;
-            updateCardTransform(card);
+        if (AppState.viewMode === 'back') {
+            if (!AppState.backSideSettings.crop) AppState.backSideSettings.crop = { x: 0, y: 0, scale: 1, opacity: 1 };
+            AppState.backSideSettings.crop.scale -= delta * zoomSpeed;
+            if (AppState.backSideSettings.crop.scale < 0.01) AppState.backSideSettings.crop.scale = 0.01;
+            renderGrid();
             
-            // Sync s UI pokud je to aktivní karta
-            if (AppState.activeCardId === id) {
-                const slider = document.getElementById('ind-img-scale');
-                if (slider) slider.value = Math.round(card.crop.scale * 100);
+            // Sync s UI
+            const slider = document.getElementById('back-img-zoom');
+            if (slider) slider.value = Math.round(AppState.backSideSettings.crop.scale * 100);
+            
+        } else {
+            const id = cardEl.id.replace('card-el-', '');
+            const card = AppState.cards.find(c => c.id === id);
+            if (card && !card.isLocked) {
+                card.crop.scale -= delta * zoomSpeed;
+                if (card.crop.scale < 0.01) card.crop.scale = 0.01;
+                updateCardTransform(card);
+                
+                // Sync s UI pokud je to aktivní karta
+                if (AppState.activeCardId === id) {
+                    const slider = document.getElementById('ind-img-scale');
+                    if (slider) slider.value = Math.round(card.crop.scale * 100);
+                }
             }
         }
     }

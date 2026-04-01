@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Zadní strany – epická dračí edice – tiskový arch</title>
+    <style>
+        /* ═══ PRINT RESET ═══ */
+        * {
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f0f0f0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        /* ═══ UI CONTROLS (nepotiskne se) ═══ */
+        .no-print {
+            background: #1a1a1a;
+            color: white;
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .no-print h1 {
+            margin: 0;
+            font-size: 20px;
+            color: #fbbf24;
+        }
+
+        .no-print p {
+            margin: 0;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .gallery {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            max-width: 100%;
+            padding: 10px;
+            background: #262626;
+            border-radius: 8px;
+        }
+
+        .gallery-item {
+            width: 60px;
+            height: 85px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 4px;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.2s, border-color 0.2s;
+            flex-shrink: 0;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.1);
+            border-color: #fbbf24;
+        }
+
+        .gallery-item.active {
+            border-color: #fbbf24;
+            box-shadow: 0 0 10px #fbbf24;
+        }
+
+        .btn-print {
+            background: #ca8a04;
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .btn-print:hover {
+            background: #a16207;
+        }
+
+        /* ═══ A4 STRÁNKA ═══ */
+        .page {
+            width: 210mm;
+            height: 297mm;
+            background: #fff;
+            margin: 10mm auto;
+            position: relative;
+            overflow: hidden;
+            page-break-after: always;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .page:last-child {
+            page-break-after: avoid;
+        }
+
+        /* ═══ KARTA (se spadávkou 1mm na každou stranu) ═══ */
+        .card {
+            width: 64mm;
+            height: 90mm;
+            /* Původní 62x88 + 2mm bleed */
+            position: absolute;
+            background-color: #000;
+            background-size: cover;
+            /* Zvětšeno pro oříznutí AI rámečků */
+            background-position: center;
+            /* Na zadní straně obvykle neděláme border-radius v HTML, 
+               necháme design přesahovat, aby ořez byl čistý. */
+            border: 0.1mm solid rgba(0, 0, 0, 0.1);
+            /* Jemný okraj pro orientaci */
+        }
+
+        /* ═══ LAMINAČNÍ KOMPENZACE ═══ */
+        .card {
+            filter: brightness(1.08) contrast(1.06) saturate(1.08);
+        }
+
+        @media print {
+            body {
+                background: none;
+            }
+
+            .page {
+                margin: 0;
+                box-shadow: none;
+            }
+
+            .no-print {
+                display: none;
+            }
+
+            @page {
+                size: A4 portrait;
+                margin: 0;
+            }
+
+            /* Silnější kompenzace pro matné lamino při tisku */
+            .card {
+                filter: brightness(1.15) contrast(1.10) saturate(1.10);
+            }
+        }
+
+        /* Pomocné značky pro tisk (vnější) */
+        .crop-mark {
+            position: absolute;
+            width: 5mm;
+            height: 5mm;
+            border: 0.2mm solid #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="no-print">
+        <h1>Zadní strany – epická dračí edice</h1>
+        <p>Vyberte design kliknutím na náhled. Karty mají 1mm spadávku (bleed) pro eliminaci bílých okrajů při
+            oboustranném tisku.</p>
+        <div class="gallery" id="gallery">
+            <!-- Dynamicky naplněno JS -->
+        </div>
+        <button class="btn-print" onclick="window.print()">Vytisknout zadní strany</button>
+    </div>
+
+    <!-- Tiskové strany (zrcadlově k předním stranám) -->
+    <!-- Front positions: left 9, 74, 139 | top 14, 105, 196 -->
+    <!-- Back positions (1mm offset for bleed): 
+         left: (210-139-62)-1 = 8 | (210-74-62)-1 = 73 | (210-9-62)-1 = 138 
+         top: 14-1 = 13 | 105-1 = 104 | 196-1 = 195
+    -->
+
+    <div id="print-pages"></div>
+
+    <script>
+        const backs = [
+            'epic_backs/back_1.png', 'epic_backs/back_2.png', 'epic_backs/back_3.png',
+            'epic_backs/back_4.png', 'epic_backs/back_5.png', 'epic_backs/back_6.png',
+            'epic_backs/back_7.png', 'epic_backs/back_8.png', 'epic_backs/back_9.png',
+            'epic_backs/back_10.png',
+            'epic_backs/epic_gold_scales.png', 'epic_backs/epic_arcane_parchment.png',
+            'epic_backs/epic_ice_crystal.png', 'epic_backs/epic_lava_flow.png',
+            'epic_backs/epic_runed_obsidian.png'
+        ];
+
+        let currentBack = backs[0];
+
+        function initGallery() {
+            const gallery = document.getElementById('gallery');
+            backs.forEach((src, index) => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item' + (src === currentBack ? ' active' : '');
+                item.style.backgroundImage = `url('${src}')`;
+                item.title = src.split('/').pop();
+                item.onclick = () => {
+                    currentBack = src;
+                    document.querySelectorAll('.gallery-item').forEach(el => el.classList.remove('active'));
+                    item.classList.add('active');
+                    renderPages();
+                };
+                gallery.appendChild(item);
+            });
+        }
+
+        function renderPages() {
+            const container = document.getElementById('print-pages');
+            container.innerHTML = '';
+
+            const cardsCount = 32;
+            const perPage = 9;
+            const pagesCount = Math.ceil(cardsCount / perPage);
+
+            const lefts = [8, 73, 138];
+            const tops = [13, 104, 195];
+
+            for (let p = 0; p < pagesCount; p++) {
+                const page = document.createElement('div');
+                page.className = 'page';
+
+                for (let r = 0; r < 3; r++) {
+                    for (let c = 0; c < 3; c++) {
+                        const index = p * perPage + r * 3 + c;
+                        if (index < cardsCount) {
+                            const card = document.createElement('div');
+                            card.className = 'card';
+                            card.style.left = lefts[c] + 'mm';
+                            card.style.top = tops[r] + 'mm';
+                            card.style.backgroundImage = `url('${currentBack}')`;
+                            page.appendChild(card);
+                        }
+                    }
+                }
+                container.appendChild(page);
+            }
+        }
+
+        initGallery();
+        renderPages();
+    </script>
+</body>
+
+</html>

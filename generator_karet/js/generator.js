@@ -46,75 +46,126 @@ function renderGrid() {
         cardEl.style.height = Math.round(AppState.cardHeight * scaleUi) + 'px';
         cardEl.style.borderRadius = Math.round(AppState.cardRadius * scaleUi) + 'px';
 
-        // VRSTVA 0: ILUSTRACE
-        const bgLayer = document.createElement('div');
-        bgLayer.className = 'card-bg';
-        if (card.image) {
-            const img = document.createElement('img');
-            img.src = card.image;
-            const c = card.crop;
-            img.style.transform = `translate(calc(-50% + ${c.x}px), calc(-50% + ${c.y}px)) scale(${c.scale * c.stretchX}, ${c.scale * c.stretchY})`;
-            bgLayer.appendChild(img);
-        }
-        cardEl.appendChild(bgLayer);
+        // ZÁKLADNÍ VRSTVY ZÁVISÍ NA REŽIMU (Front vs Back)
+        if (AppState.viewMode === 'back') {
+            const bs = AppState.backSideSettings;
+            
+            // BACK VRSTVA 0: ILUSTRACE (Rub)
+            const bgLayer = document.createElement('div');
+            bgLayer.className = 'card-bg';
+            if (bs && bs.image) {
+                const img = document.createElement('img');
+                img.src = bs.image;
+                const c = bs.crop;
+                img.style.transform = `translate(calc(-50% + ${c.x}px), calc(-50% + ${c.y}px)) scale(${c.scale * (c.stretchX || 1)}, ${c.scale * (c.stretchY || 1)})`;
+                bgLayer.appendChild(img);
+            }
+            cardEl.appendChild(bgLayer);
 
-        // VRSTVA 1: GLOBÁLNÍ LOGO
-        if (AppState.globalLogo.image) {
-            const logo = document.createElement('div');
-            logo.className = 'card-logo';
-            logo.style.backgroundImage = `url(${AppState.globalLogo.image})`;
-            logo.style.opacity = AppState.globalLogo.opacity;
-            const l = AppState.globalLogo;
-            logo.style.transform = `translate(calc(-50% + ${l.x}px), calc(-50% + ${l.y}px)) scale(${l.scale * l.stretchX}, ${l.scale * l.stretchY})`;
-            cardEl.appendChild(logo);
-        }
+            // BACK VRSTVA 1: LOGO
+            if (bs && bs.logo && bs.logo.image) {
+                const logo = document.createElement('div');
+                logo.className = 'card-logo';
+                logo.style.backgroundImage = `url(${bs.logo.image})`;
+                logo.style.opacity = bs.logo.opacity;
+                const l = bs.logo;
+                logo.style.transform = `translate(calc(-50% + ${l.x}px), calc(-50% + ${l.y}px)) scale(${l.scale * l.stretchX}, ${l.scale * l.stretchY})`;
+                cardEl.appendChild(logo);
+            }
 
-        // VRSTVA 2: GLOBÁLNÍ RÁM (s prioritou barvy)
-        const overlay = document.createElement('div');
-        overlay.className = 'card-overlay';
-        cardEl.appendChild(overlay); 
-        
-        // Priorita: Pokud má barva definované ohraničení (width > 0), použijeme ho. Jinak globální.
-        const suit = card.id.split('_')[0];
-        const sS = AppState.suitSettings[suit];
-        const gO = AppState.globalOverlay;
-        
-        // Rozhodnutí o parametrech (fallback na global)
-        const activeBorderWidth = (sS && sS.borderWidth > 0) ? sS.borderWidth : gO.borderWidth;
-        const activeBorderColor = (sS && sS.borderWidth > 0) ? sS.borderColor : gO.borderColor;
-        const activeInset = (sS && sS.borderWidth > 0) ? sS.inset : gO.inset;
-        const activeBorderRadius = (sS && sS.borderWidth > 0) ? sS.borderRadius : gO.borderRadius;
-        
-        overlay.style.opacity = gO.opacity; // Opacity a image zůstávají globální/logické
-        
-        // Aplikace barvy a šířky ohraničení
-        overlay.style.border = (activeBorderWidth > 0) ? `${activeBorderWidth * scaleUi}px solid ${activeBorderColor}` : 'none';
-        overlay.style.boxSizing = 'border-box';
+            // BACK VRSTVA 2: OVERLAY
+            if (bs && bs.overlay) {
+                const overlay = document.createElement('div');
+                overlay.className = 'card-overlay';
+                cardEl.appendChild(overlay); 
+                
+                const gO = bs.overlay;
+                overlay.style.opacity = gO.opacity;
+                overlay.style.border = (gO.borderWidth > 0) ? `${gO.borderWidth * scaleUi}px solid ${gO.borderColor}` : 'none';
+                overlay.style.boxSizing = 'border-box';
 
-        // Aplikace Insetu (v mm přepočítané na px)
-        const insetPx = activeInset * (scaleUi * 3.78);
-        const brPx = activeBorderRadius * (scaleUi * 3.78);
-        
-        overlay.style.top = insetPx + 'px';
-        overlay.style.left = insetPx + 'px';
-        overlay.style.width = `calc(100% - ${2 * insetPx}px)`;
-        overlay.style.height = `calc(100% - ${2 * insetPx}px)`;
-        overlay.style.borderRadius = brPx + 'px';
-        overlay.style.transform = 'none';
+                const insetPx = gO.inset * (scaleUi * 3.78);
+                const brPx = gO.borderRadius * (scaleUi * 3.78);
+                
+                overlay.style.top = insetPx + 'px';
+                overlay.style.left = insetPx + 'px';
+                overlay.style.width = `calc(100% - ${2 * insetPx}px)`;
+                overlay.style.height = `calc(100% - ${2 * insetPx}px)`;
+                overlay.style.borderRadius = brPx + 'px';
+                overlay.style.transform = 'none';
 
-        if (gO.image) {
-            overlay.style.backgroundImage = `url(${gO.image})`;
-            overlay.style.transform = `translate(${gO.x * scaleUi}px, ${gO.y * scaleUi}px) scale(${gO.scale * gO.stretchX}, ${gO.scale * gO.stretchY})`;
-            overlay.style.transformOrigin = 'center';
+                if (gO.image) {
+                    overlay.style.backgroundImage = `url(${gO.image})`;
+                    overlay.style.transform = `translate(${gO.x * scaleUi}px, ${gO.y * scaleUi}px) scale(${gO.scale * gO.stretchX}, ${gO.scale * gO.stretchY})`;
+                    overlay.style.transformOrigin = 'center';
+                }
+            }
         } else {
-            overlay.style.backgroundImage = 'none';
-        }
-        
-        // VRSTVA 3: DYNAMICKÉ SYMBOLY
-        if (AppState.gameMode === 'quartet') {
-            drawQuartetOverlay(cardEl, card);
-        } else if (AppState.showSymbols) {
-            drawSymbols(cardEl, card);
+            // FRONT VRSTVA 0: ILUSTRACE
+            const bgLayer = document.createElement('div');
+            bgLayer.className = 'card-bg';
+            if (card.image) {
+                const img = document.createElement('img');
+                img.src = card.image;
+                const c = card.crop;
+                img.style.transform = `translate(calc(-50% + ${c.x}px), calc(-50% + ${c.y}px)) scale(${c.scale * c.stretchX}, ${c.scale * c.stretchY})`;
+                bgLayer.appendChild(img);
+            }
+            cardEl.appendChild(bgLayer);
+
+            // FRONT VRSTVA 1: GLOBÁLNÍ LOGO
+            if (AppState.globalLogo.image) {
+                const logo = document.createElement('div');
+                logo.className = 'card-logo';
+                logo.style.backgroundImage = `url(${AppState.globalLogo.image})`;
+                logo.style.opacity = AppState.globalLogo.opacity;
+                const l = AppState.globalLogo;
+                logo.style.transform = `translate(calc(-50% + ${l.x}px), calc(-50% + ${l.y}px)) scale(${l.scale * l.stretchX}, ${l.scale * l.stretchY})`;
+                cardEl.appendChild(logo);
+            }
+
+            // FRONT VRSTVA 2: GLOBÁLNÍ RÁM (s prioritou barvy)
+            const overlay = document.createElement('div');
+            overlay.className = 'card-overlay';
+            cardEl.appendChild(overlay); 
+            
+            const suit = card.id.split('_')[0];
+            const sS = AppState.suitSettings[suit];
+            const gO = AppState.globalOverlay;
+            
+            const activeBorderWidth = (sS && sS.borderWidth > 0) ? sS.borderWidth : gO.borderWidth;
+            const activeBorderColor = (sS && sS.borderWidth > 0) ? sS.borderColor : gO.borderColor;
+            const activeInset = (sS && sS.borderWidth > 0) ? sS.inset : gO.inset;
+            const activeBorderRadius = (sS && sS.borderWidth > 0) ? sS.borderRadius : gO.borderRadius;
+            
+            overlay.style.opacity = gO.opacity;
+            overlay.style.border = (activeBorderWidth > 0) ? `${activeBorderWidth * scaleUi}px solid ${activeBorderColor}` : 'none';
+            overlay.style.boxSizing = 'border-box';
+
+            const insetPx = activeInset * (scaleUi * 3.78);
+            const brPx = activeBorderRadius * (scaleUi * 3.78);
+            
+            overlay.style.top = insetPx + 'px';
+            overlay.style.left = insetPx + 'px';
+            overlay.style.width = `calc(100% - ${2 * insetPx}px)`;
+            overlay.style.height = `calc(100% - ${2 * insetPx}px)`;
+            overlay.style.borderRadius = brPx + 'px';
+            overlay.style.transform = 'none';
+
+            if (gO.image) {
+                overlay.style.backgroundImage = `url(${gO.image})`;
+                overlay.style.transform = `translate(${gO.x * scaleUi}px, ${gO.y * scaleUi}px) scale(${gO.scale * gO.stretchX}, ${gO.scale * gO.stretchY})`;
+                overlay.style.transformOrigin = 'center';
+            }
+            
+            // FRONT VRSTVA 3: DYNAMICKÉ SYMBOLY
+            if (AppState.gameMode === 'quartet') {
+                drawQuartetOverlay(cardEl, card);
+            } else if (AppState.gameMode === 'pexeso') {
+                drawPexesoOverlay(cardEl, card);
+            } else if (AppState.showSymbols) {
+                drawSymbols(cardEl, card);
+            }
         }
 
         const label = document.createElement('div');
@@ -313,7 +364,7 @@ function drawQuartetOverlay(cardEl, card) {
         const statsWrapper = document.createElement('div');
         statsWrapper.className = `layout-wrapper-${statLayout}`;
         
-        if (statLayout === 'bottom-row' || statLayout === 'left-column' || statLayout === 'right-column') {
+        if (statLayout === 'bottom-row' || statLayout === 'left-column' || statLayout === 'right-column' || statLayout === 'grid-2x2') {
             statsWrapper.style.gap = `${statSpacing}px`;
         }
         statsWrapper.style.textRendering = 'optimizeLegibility';
@@ -437,37 +488,27 @@ function updateLayoutParam(param, value) {
     renderGrid();
 }
 
-function toggleIndividualOverride(enabled) {
+function updateIndividualParam(param, value) {
     if (!AppState.activeCardId) return;
     const card = AppState.cards.find(c => c.id === AppState.activeCardId);
     if (!card) return;
 
-    if (enabled) {
+    // Pokud override neexistuje, vytvoříme ho na základě aktuální hodnoty/barvy
+    if (!card.symbolOverride) {
         const parts = card.id.split('_');
         const suit = parts[0];
         const val = parts[1] || '7';
-        const globalVal = AppState.valueSettings[val] || {offsetY:0, spacingY:1, columnX:0};
-        const globalSuit = AppState.suitSettings[suit] || {scale: 0.18, opacity: 1, offsetY:0, spacingY:1, columnX:0};
+        const gV = AppState.valueSettings[val] || {offsetY:0, spacingY:1, columnX:0};
+        const gS = AppState.suitSettings[suit] || {scale: 0.18, opacity: 1, offsetY:0, spacingY:1, columnX:0};
         card.symbolOverride = { 
-            offsetX: globalVal.offsetX || 0,
-            offsetY: globalVal.offsetY,
-            spacingY: globalVal.spacingY,
-            columnX: globalVal.columnX,
-            scale: globalSuit.scale, 
-            opacity: globalSuit.opacity 
-        }; 
-    } else {
-        card.symbolOverride = null;
+            offsetX: gV.offsetX || 0,
+            offsetY: gV.offsetY,
+            spacingY: gV.spacingY,
+            columnX: gV.columnX,
+            scale: gS.scale, 
+            opacity: gS.opacity 
+        };
     }
-    saveState();
-    renderUIFromState();
-    renderGrid();
-}
-
-function updateIndividualParam(param, value) {
-    if (!AppState.activeCardId) return;
-    const card = AppState.cards.find(c => c.id === AppState.activeCardId);
-    if (!card || !card.symbolOverride) return;
 
     const val = parseFloat(value);
     if (param === 'scale') card.symbolOverride.scale = val / 100;
@@ -479,8 +520,28 @@ function updateIndividualParam(param, value) {
     renderGrid();
 }
 
+function toggleCardLock(checked) {
+    if (!AppState.activeCardId) return;
+    const card = AppState.cards.find(c => c.id === AppState.activeCardId);
+    if (card) {
+        card.isLocked = checked;
+        saveState();
+        renderUIFromState();
+    }
+}
+
+function resetIndividualOverride() {
+    if (!AppState.activeCardId) return;
+    const card = AppState.cards.find(c => c.id === AppState.activeCardId);
+    if (card) {
+        card.symbolOverride = null;
+        saveState();
+        renderUIFromState();
+    }
+}
+
 function resetIndividualLayout() {
-    toggleIndividualOverride(false);
+    resetIndividualOverride();
 }
 
 // --- SUIT HANDLERS ---
@@ -574,6 +635,99 @@ function updateLogo() {
     renderGrid();
 }
 
+// --- ZADNÍ STRANA HANDLERS ---
+function switchViewMode(mode) {
+    if (AppState.viewMode === mode) return;
+    AppState.viewMode = mode;
+    
+    // Update tabs UI
+    document.getElementById('tab-front').classList.toggle('active', mode === 'front');
+    document.getElementById('tab-back').classList.toggle('active', mode === 'back');
+    document.getElementById('tab-front').style.borderBottom = mode === 'front' ? '2px solid var(--accent)' : '2px solid transparent';
+    document.getElementById('tab-back').style.borderBottom = mode === 'back' ? '2px solid var(--accent)' : '2px solid transparent';
+    document.getElementById('tab-front').style.color = mode === 'front' ? '#121212' : '#aaa';
+    document.getElementById('tab-front').style.background = mode === 'front' ? 'var(--accent)' : 'transparent';
+    document.getElementById('tab-back').style.color = mode === 'back' ? '#121212' : '#aaa';
+    document.getElementById('tab-back').style.background = mode === 'back' ? 'var(--accent)' : 'transparent';
+
+    // Show/hide panels
+    document.getElementById('front-side-panels').style.display = mode === 'front' ? 'block' : 'none';
+    document.getElementById('back-side-panels').style.display = mode === 'back' ? 'block' : 'none';
+
+    renderGrid();
+}
+
+function handleBackImageUpload(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => { 
+            AppState.backSideSettings.image = e.target.result; 
+            saveState();
+            renderGrid(); 
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+function updateBackImageParam(param, value) {
+    if (param === 'scale') AppState.backSideSettings.crop.scale = parseFloat(value) / 100;
+    else AppState.backSideSettings.crop[param] = parseFloat(value);
+    saveState();
+    renderGrid();
+}
+
+function resetBackImage() {
+    AppState.backSideSettings.image = null;
+    AppState.backSideSettings.crop = { x: 0, y: 0, scale: 1, stretchX: 1, stretchY: 1 };
+    saveState();
+    renderUIFromState(); // reset sliders
+}
+
+function updateBackOverlayParam(param, value) {
+    if (param === 'borderColor') AppState.backSideSettings.overlay[param] = value;
+    else AppState.backSideSettings.overlay[param] = parseFloat(value);
+    saveState();
+    renderGrid();
+}
+
+function handleBackOverlayUpload(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => { AppState.backSideSettings.overlay.image = e.target.result; saveState(); renderGrid(); };
+        reader.readAsDataURL(file);
+    }
+}
+
+function updateBackOverlay() {
+    const o = AppState.backSideSettings.overlay;
+    o.opacity = (parseFloat(document.getElementById('back-overlay-opacity').value) || 0) / 100;
+    o.x = parseFloat(document.getElementById('back-overlay-x').value) || 0;
+    o.y = parseFloat(document.getElementById('back-overlay-y').value) || 0;
+    saveState();
+    renderGrid();
+}
+
+function handleBackLogoUpload(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => { AppState.backSideSettings.logo.image = e.target.result; saveState(); renderGrid(); };
+        reader.readAsDataURL(file);
+    }
+}
+
+function updateBackLogo() {
+    const l = AppState.backSideSettings.logo;
+    l.opacity = (parseFloat(document.getElementById('back-logo-opacity').value) || 0) / 100;
+    l.x = parseFloat(document.getElementById('back-logo-x').value) || 0;
+    l.y = parseFloat(document.getElementById('back-logo-y').value) || 0;
+    l.scale = (parseFloat(document.getElementById('back-logo-zoom').value) || 30) / 100;
+    saveState();
+    renderGrid();
+}
+
 function toggleSymbols(show) { AppState.showSymbols = show; renderGrid(); }
 
 function fillActiveCard() {
@@ -652,6 +806,8 @@ async function exportSingleCard() {
 
 function setActiveCard(id, e) {
     AppState.activeCardId = id;
+    const card = AppState.cards.find(c => c.id === id);
+    // Vybíráme pouze kartu, neovlivňujeme její zámek (ten je plně manuální)
     document.querySelectorAll('.preview-card').forEach(el => el.classList.remove('active'));
     document.getElementById('card-el-' + id).classList.add('active');
     renderUIFromState(); 
@@ -660,19 +816,31 @@ function setActiveCard(id, e) {
 function handleImageDrop(cardId, e) {
     e.preventDefault();
     const card = AppState.cards.find(c => c.id === cardId);
-    if (!card || card.isLocked) {
-        if (card && card.isLocked) alert("Tato karta je zamčená. Pro změnu obrázku ji nejdříve odemkněte.");
+    if (!card) {
         return;
     }
+    
     const file = e.dataTransfer.files[0];
     if (file && file.type.startsWith('image/')) {
         const reader = new FileReader();
         reader.onload = (ev) => {
-            card.image = ev.target.result; 
-            card.crop = { x: 0, y: 0, scale: 1, stretchX: 1, stretchY: 1 }; 
-            AppState.activeCardId = cardId; // Nastavíme jako aktivní, aby se UI chytlo
-            saveState(); 
-            renderUIFromState(); 
+            if (AppState.viewMode === 'back') {
+                if (!AppState.backSideSettings.crop) {
+                    AppState.backSideSettings.crop = { scale: 1, x: 0, y: 0, opacity: 1 };
+                }
+                AppState.backSideSettings.image = ev.target.result;
+                AppState.backSideSettings.crop = { scale: 1, x: 0, y: 0, opacity: 1 };
+                saveState();
+                renderGrid();
+                renderUIFromState();
+            } else {
+                card.image = ev.target.result; 
+                card.crop = { x: 0, y: 0, scale: 1, stretchX: 1, stretchY: 1 }; 
+                AppState.activeCardId = cardId; // Nastavíme jako aktivní, aby se UI chytlo
+                saveState(); 
+                renderUIFromState(); 
+                renderGrid();
+            }
         };
         reader.readAsDataURL(file);
     }
@@ -813,27 +981,13 @@ function renderUIFromState() {
             indPanel.style.display = 'block';
             const labelEl = document.getElementById('active-card-label');
             if (labelEl) labelEl.innerText = card.label;
+
+            setChecked('card-lock-toggle', card.isLocked);
             
-            const lockBtn = document.getElementById('card-lock-btn');
-            if (lockBtn) {
-                lockBtn.classList.toggle('locked', card.isLocked);
-                lockBtn.innerText = card.isLocked ? '🔒 Odemknout kartu' : '🔓 Zamknout kartu';
-            }
-
-            setChecked('individual-override-toggle', !!card.symbolOverride);
-            const overrideToggle = document.getElementById('individual-override-toggle');
-            if (overrideToggle) overrideToggle.disabled = card.isLocked;
-
-            const uploadBtn = document.querySelector('#individual-card-image-section .upload-btn');
-            if (uploadBtn) {
-                uploadBtn.style.opacity = card.isLocked ? 0.3 : 1;
-                uploadBtn.style.pointerEvents = card.isLocked ? 'none' : 'auto';
-            }
-
             const ctrls = document.getElementById('individual-layout-controls');
             if (ctrls) {
-                ctrls.style.opacity = (card.symbolOverride && !card.isLocked) ? 1 : 0.5;
-                ctrls.style.pointerEvents = (card.symbolOverride && !card.isLocked) ? 'auto' : 'none';
+                ctrls.style.opacity = 1;
+                ctrls.style.pointerEvents = 'auto';
             }
 
             if (card.symbolOverride) {
@@ -909,7 +1063,36 @@ function renderUIFromState() {
         updateQuartetGroupColorUI();
     }
 
+    // 9. ZADNÍ STRANA SYNC
+    if (AppState.backSideSettings) {
+        const bs = AppState.backSideSettings;
+        setVal('back-img-scale', Math.round(bs.crop.scale * 100));
+        setVal('back-img-x', bs.crop.x);
+        setVal('back-img-y', bs.crop.y);
+        
+        const bo = bs.overlay;
+        if (bo) {
+            setVal('back-overlay-opacity', Math.round(bo.opacity * 100));
+            setVal('back-overlay-x', bo.x);
+            setVal('back-overlay-y', bo.y);
+            setVal('back-overlay-border-color', bo.borderColor);
+            setVal('back-overlay-border-width', bo.borderWidth);
+            setVal('back-overlay-inset', bo.inset);
+            setVal('back-overlay-border-radius', bo.borderRadius);
+        }
+        
+        const bl = bs.logo;
+        if (bl) {
+            setVal('back-logo-opacity', Math.round(bl.opacity * 100));
+            setVal('back-logo-x', bl.x);
+            setVal('back-logo-y', bl.y);
+            setVal('back-logo-zoom', Math.round(bl.scale * 100));
+        }
+    }
+
     renderGrid();
+    // Aktualizace info o tisku
+    if (typeof updatePrintSettings === 'function') updatePrintSettings();
 }
 
 // --- KVARTETA SPECIFIC LOGIC ---
@@ -1046,3 +1229,395 @@ function updateActiveQuartetData(field, value, statIndex = 0) {
     saveState();
     renderGrid();
 }
+
+// --- PEXESO LOGIC ---
+
+function updatePexesoConfig(prop, value) {
+    if (!AppState.pexesoSettings) {
+        AppState.pexesoSettings = {
+            pairsCount: 16,
+            showName: true,
+            showDesc: false,
+            nameOffsetX: 50, nameOffsetY: 10,
+            descOffsetX: 50, descOffsetY: 5,
+            fontFamily: "'Roboto', sans-serif"
+        };
+    }
+    AppState.pexesoSettings[prop] = value;
+    saveState();
+    renderGrid();
+}
+
+function drawPexesoOverlay(cardEl, card) {
+    const cfg = AppState.pexesoSettings || {};
+    const fontFamily = cfg.fontFamily || "'Roboto', sans-serif";
+    const data = card.quartetData || { name: "", description: "" };
+
+    if (cfg.showName) {
+        const nameEl = document.createElement('h1');
+        nameEl.className = 'kvarteta-card-name';
+        nameEl.style.position = 'absolute';
+        nameEl.style.left = `${cfg.nameOffsetX || 50}%`;
+        nameEl.style.bottom = `${cfg.nameOffsetY || 10}%`;
+        nameEl.style.transform = 'translateX(-50%)';
+        nameEl.style.width = '90%';
+        nameEl.style.fontFamily = fontFamily;
+        nameEl.style.fontSize = '1.1rem';
+        nameEl.innerText = data.name || card.label;
+        cardEl.appendChild(nameEl);
+    }
+
+    if (cfg.showDesc) {
+        const descEl = document.createElement('p');
+        descEl.className = 'kvarteta-card-desc';
+        descEl.style.position = 'absolute';
+        descEl.style.left = `${cfg.descOffsetX || 50}%`;
+        descEl.style.bottom = `${cfg.descOffsetY || 5}%`;
+        descEl.style.transform = 'translateX(-50%)';
+        descEl.style.width = '80%';
+        descEl.style.fontFamily = fontFamily;
+        descEl.innerText = data.description || '';
+        cardEl.appendChild(descEl);
+    }
+}
+
+function applyGlobalCropToAllCards() {
+    if (!AppState.activeCardId) {
+        alert("Nejdříve vyberte kartu (kliknutím), jejíž ořez chcete kopírovat.");
+        return;
+    }
+    const activeCard = AppState.cards.find(c => c.id === AppState.activeCardId);
+    if (!activeCard) return;
+
+    if (!confirm("Opravdu chcete ořez této karty (přiblížení a posun) aplikovat na všechny ostatní karty v sadě?")) {
+        return;
+    }
+
+    const sourceCrop = JSON.parse(JSON.stringify(activeCard.crop));
+    
+    AppState.cards.forEach(card => {
+        card.crop = JSON.parse(JSON.stringify(sourceCrop));
+    });
+
+    saveState();
+    renderGrid();
+    alert("Ořez byl sjednocen pro celou sadu.");
+}
+
+// --- NASTAVENÍ TISKU ---
+
+function setPrintOrientation(orientation) {
+    AppState.printSettings.orientation = orientation;
+    document.getElementById('orient-portrait').style.background = orientation === 'portrait' ? 'var(--accent)' : 'transparent';
+    document.getElementById('orient-portrait').style.color = orientation === 'portrait' ? '#000' : '#aaa';
+    document.getElementById('orient-portrait').style.borderColor = orientation === 'portrait' ? 'var(--accent)' : 'var(--border)';
+    document.getElementById('orient-landscape').style.background = orientation === 'landscape' ? 'var(--accent)' : 'transparent';
+    document.getElementById('orient-landscape').style.color = orientation === 'landscape' ? '#000' : '#aaa';
+    document.getElementById('orient-landscape').style.borderColor = orientation === 'landscape' ? 'var(--accent)' : 'var(--border)';
+    updatePrintSettings();
+}
+
+function updatePrintSettings() {
+    const ps = AppState.printSettings;
+    ps.orientation = ps.orientation || 'portrait';
+    ps.colsAuto = document.getElementById('cols-auto').checked;
+    ps.rowsAuto = document.getElementById('rows-auto').checked;
+    if (!ps.colsAuto) ps.cols = parseInt(document.getElementById('print-cols').value) || 3;
+    if (!ps.rowsAuto) ps.rows = parseInt(document.getElementById('print-rows').value) || 3;
+    ps.gapX = parseFloat(document.getElementById('print-gap-x').value) || 0;
+    ps.gapY = parseFloat(document.getElementById('print-gap-y').value) || 0;
+
+    // Disable/enable number inputs based on Auto checkbox
+    document.getElementById('print-cols').disabled = ps.colsAuto;
+    document.getElementById('print-rows').disabled = ps.rowsAuto;
+    document.getElementById('print-cols').style.opacity = ps.colsAuto ? '0.4' : '1';
+    document.getElementById('print-rows').style.opacity = ps.rowsAuto ? '0.4' : '1';
+
+    // Calculate preview info
+    const pageW = ps.orientation === 'portrait' ? 210 : 297;
+    const pageH = ps.orientation === 'portrait' ? 297 : 210;
+    const usableW = pageW - 20; // 10mm margins each side
+    const usableH = pageH - 20;
+    const w = AppState.cardWidth;
+    const h = AppState.cardHeight;
+    
+    const autoCols = ps.colsAuto ? Math.floor(usableW / (w + ps.gapX)) : ps.cols;
+    const autoRows = ps.rowsAuto ? Math.floor(usableH / (h + ps.gapY)) : ps.rows;
+    const perPage = autoCols * autoRows;
+    const totalCards = AppState.cards.length;
+    const pages = Math.ceil(totalCards / perPage);
+
+    const info = document.getElementById('print-layout-info');
+    if (info) {
+        info.innerHTML = `📐 <b>${autoCols} sl. × ${autoRows} řád.</b> = ${perPage} karet/strana<br>📄 Celkem <b>${pages} listů</b> (${pages * 2} stran oboustranně)<br>📏 Stránka: ${pageW}×${pageH} mm`;
+    }
+    
+    // Store effective values
+    ps._effectiveCols = autoCols;
+    ps._effectiveRows = autoRows;
+}
+
+// --- DUPLEX PRINT EXPORT ---
+
+// Globální proměnná pro tiskový HTML
+let _printHtmlContent = '';
+
+function closePrintPreview() {
+    const overlay = document.getElementById('print-preview-overlay');
+    if (overlay) overlay.style.display = 'none';
+}
+
+function printFromPreview() {
+    // Otevřeme nové okno s čistým HTML pro tisk
+    const printWin = window.open('', '_blank');
+    if (!printWin) { alert("Povolte prosím vyskakovací okna pro tisk."); return; }
+    printWin.document.open();
+    printWin.document.write(_printHtmlContent);
+    printWin.document.close();
+}
+
+async function exportPrintSheets() {
+
+    // --- 1. Přepočítat nastavení tisku (čerstvé hodnoty z UI) ---
+    const ps = AppState.printSettings || {};
+    const orientation = ps.orientation || 'portrait';
+    const pageW = orientation === 'portrait' ? 210 : 297;
+    const pageH = orientation === 'portrait' ? 297 : 210;
+    const marginMm = 10;
+    const usableW = pageW - marginMm * 2;
+    const usableH = pageH - marginMm * 2;
+
+    const w = AppState.cardWidth;
+    const h = AppState.cardHeight;
+    const gapX = parseFloat(document.getElementById('print-gap-x')?.value) || 0;
+    const gapY = parseFloat(document.getElementById('print-gap-y')?.value) || 0;
+    
+    const colsAutoEl = document.getElementById('cols-auto');
+    const rowsAutoEl = document.getElementById('rows-auto');
+    const colsAuto = colsAutoEl ? colsAutoEl.checked : true;
+    const rowsAuto = rowsAutoEl ? rowsAutoEl.checked : true;
+    
+    const cols = colsAuto
+        ? Math.max(1, Math.floor(usableW / (w + gapX)))
+        : Math.max(1, parseInt(document.getElementById('print-cols')?.value) || 3);
+    const rows = rowsAuto
+        ? Math.max(1, Math.floor(usableH / (h + gapY)))
+        : Math.max(1, parseInt(document.getElementById('print-rows')?.value) || 3);
+    const perPage = cols * rows;
+
+    if (perPage < 1) {
+        alert("Karty jsou příliš velké na tento formát stránky.");
+        return;
+    }
+
+    // --- 2. Vygenerovat HTML karet pro líc a rub ---
+    const modeBackup = AppState.viewMode;
+    const activeBackup = AppState.activeCardId;
+    AppState.activeCardId = null;
+
+    AppState.viewMode = 'front';
+    renderGrid();
+    await new Promise(r => setTimeout(r, 300));
+    const frontEls = Array.from(document.getElementById('cards-grid').children)
+        .map(el => el.outerHTML);
+
+    AppState.viewMode = 'back';
+    renderGrid();
+    await new Promise(r => setTimeout(r, 300));
+    const backEls = Array.from(document.getElementById('cards-grid').children)
+        .map(el => el.outerHTML);
+
+    AppState.viewMode = modeBackup;
+    AppState.activeCardId = activeBackup;
+    renderGrid();
+
+    // --- 3. Sestavit čisté tiskové HTML (bez editačních CSS) ---
+    // Sesbíráme jen externí CSS soubory (ne inline editorové styly)
+    let linkTags = '';
+    for (const sheet of document.styleSheets) {
+        try { if (sheet.href) linkTags += `<link rel="stylesheet" href="${sheet.href}">\n`; } catch(e) {}
+    }
+
+    const totalCards = AppState.cards.length;
+    const totalPages = Math.ceil(totalCards / perPage);
+
+    // CSS pro tisk - izolovaný, přepíše vše co přijde z editoru
+    const printCss = `
+        *, *::before, *::after { box-sizing: border-box; }
+        @page { size: ${pageW}mm ${pageH}mm; margin: ${marginMm}mm; }
+        body { background: white; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        .print-page {
+            width: ${usableW}mm; height: ${usableH}mm; 
+            margin: 0; padding: 0;
+            display: flex; flex-wrap: wrap;
+            align-content: flex-start; justify-content: flex-start;
+            gap: ${gapY}mm ${gapX}mm;
+            page-break-after: always; break-after: page;
+            overflow: hidden; position: relative;
+        }
+        .print-page > * {
+            width: ${w}mm !important;
+            height: ${h}mm !important;
+            min-width: ${w}mm !important;
+            min-height: ${h}mm !important;
+            max-width: ${w}mm !important;
+            max-height: ${h}mm !important;
+            flex-shrink: 0 !important;
+            flex-grow: 0 !important;
+            overflow: hidden !important;
+            position: relative !important;
+            /* Reset editor positioning */
+            cursor: default !important;
+        }
+        /* Reset editor specific classes that would mess up mm sizing */
+        .preview-card {
+            width: ${w}mm !important;
+            height: ${h}mm !important;
+            border-radius: ${AppState.cardRadius}mm !important;
+        }
+        .card-label { display: none !important; }
+        .drop-zone-overlay { display: none !important; }
+        .card-bg img {
+            width: 100% !important; height: 100% !important;
+            object-fit: cover !important;
+        }
+    `;
+
+    let pagesHtml = '';
+    for (let p = 0; p < totalPages; p++) {
+        const startIdx = p * perPage;
+        const endIdx = Math.min(startIdx + perPage, totalCards);
+
+        // LÍC
+        pagesHtml += `<div class="print-page front-page">\n`;
+        for (let i = startIdx; i < endIdx; i++) {
+            pagesHtml += frontEls[i] + '\n';
+        }
+        pagesHtml += `</div>\n`;
+
+        // RUB – horizontální zrcadlení po řádcích
+        pagesHtml += `<div class="print-page back-page">\n`;
+        let backItems = backEls.slice(startIdx, endIdx);
+        let mirrored = [];
+        const completeRows = Math.floor(backItems.length / cols);
+        for (let r = 0; r < completeRows; r++) {
+            mirrored.push(...backItems.slice(r * cols, (r+1) * cols).reverse());
+        }
+        const remaining = backItems.length % cols;
+        if (remaining > 0) {
+            const lastRow = backItems.slice(completeRows * cols).reverse();
+            const pad = cols - remaining;
+            const emptyCard = `<div style="width:${w}mm;height:${h}mm;flex-shrink:0;"></div>`;
+            mirrored.push(...new Array(pad).fill(emptyCard), ...lastRow);
+        }
+        pagesHtml += mirrored.join('\n') + '\n';
+        pagesHtml += `</div>\n`;
+    }
+
+    _printHtmlContent = `<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Tiskové archy – ${AppState.projectName}</title>
+    ${linkTags}
+    <style>${printCss}</style>
+</head>
+<body>
+${pagesHtml}
+<script>window.onload = () => { setTimeout(() => { window.print(); }, 800); };<\/script>
+</body></html>`;
+
+    // --- 4. Zobrazit in-page preview ---
+    const PX_PER_MM = 3.0; // měřítko pro náhled (menší než tisk)
+    const previewPages = document.getElementById('print-preview-pages');
+    previewPages.innerHTML = '';
+
+    for (let p = 0; p < totalPages; p++) {
+        const startIdx = p * perPage;
+        const endIdx = Math.min(startIdx + perPage, totalCards);
+
+        // LÍC stránka – karta stránky
+        ['front', 'back'].forEach((side, sideIdx) => {
+            const pageWrapper = document.createElement('div');
+            pageWrapper.style.cssText = `
+                background: white; 
+                width: ${pageW * PX_PER_MM}px; height: ${pageH * PX_PER_MM}px;
+                box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+                position: relative; overflow: hidden; flex-shrink: 0;
+            `;
+
+            // Štítek stránky
+            const label = document.createElement('div');
+            label.style.cssText = `position:absolute; top:-28px; left:0; font-size:12px; color:#aaa; font-weight:bold;`;
+            label.textContent = `Strana ${p * 2 + sideIdx + 1} – ${side === 'front' ? 'LÍC' : 'RUB'}`;
+            pageWrapper.appendChild(label);
+
+            // Vnitřní oblast karet (s marginy)
+            const inner = document.createElement('div');
+            inner.style.cssText = `
+                position: absolute;
+                top: ${marginMm * PX_PER_MM}px; left: ${marginMm * PX_PER_MM}px;
+                width: ${usableW * PX_PER_MM}px; height: ${usableH * PX_PER_MM}px;
+                display: flex; flex-wrap: wrap;
+                align-content: flex-start; justify-content: flex-start;
+                gap: ${gapY * PX_PER_MM}px ${gapX * PX_PER_MM}px;
+                overflow: hidden;
+            `;
+
+            let items = (side === 'front') ? frontEls.slice(startIdx, endIdx) : backEls.slice(startIdx, endIdx);
+            
+            if (side === 'back') {
+                // Zrcadit
+                let mirrored = [];
+                const completeR = Math.floor(items.length / cols);
+                for (let r = 0; r < completeR; r++) {
+                    mirrored.push(...items.slice(r * cols, (r+1) * cols).reverse());
+                }
+                const rem = items.length % cols;
+                if (rem > 0) {
+                    const lastR = items.slice(completeR * cols).reverse();
+                    const emptyHtml = `<div></div>`;
+                    mirrored.push(...new Array(cols - rem).fill(emptyHtml), ...lastR);
+                }
+                items = mirrored;
+            }
+
+            items.forEach(html => {
+                const wrapper = document.createElement('div');
+                wrapper.style.cssText = `
+                    width: ${w * PX_PER_MM}px !important;
+                    height: ${h * PX_PER_MM}px !important;
+                    min-width: ${w * PX_PER_MM}px; min-height: ${h * PX_PER_MM}px;
+                    flex-shrink: 0; flex-grow: 0;
+                    overflow: hidden; position: relative;
+                    border-radius: ${AppState.cardRadius * PX_PER_MM}px;
+                    outline: 1px solid rgba(0,0,0,0.15);
+                `;
+                wrapper.innerHTML = html;
+                // Odstranit label a drop-zónu z preview
+                wrapper.querySelectorAll('.card-label, .drop-zone-overlay').forEach(el => el.remove());
+                // Škálujeme vnitřní obsah (karty jsou v UI renderované > v px)
+                const inner2 = wrapper.querySelector('.preview-card');
+                if (inner2) {
+                    const scaleRatio = (w * PX_PER_MM) / inner2.offsetWidth || 1;
+                    // Necháme přirozené přizpůsobení přes wrapper size
+                }
+                inner.appendChild(wrapper);
+            });
+
+            pageWrapper.appendChild(inner);
+            previewPages.appendChild(pageWrapper);
+        });
+    }
+
+    // Info lišta
+    const infoBar = document.getElementById('preview-info-bar');
+    if (infoBar) {
+        infoBar.textContent = `${AppState.projectName} · ${totalPages} listů (${totalPages * 2} stran) · ${cols}×${rows} karet/strana · ${pageW}×${pageH} mm`;
+    }
+
+    // Zobrazit overlay
+    const overlay = document.getElementById('print-preview-overlay');
+    overlay.style.display = 'flex';
+}
+

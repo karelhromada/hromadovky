@@ -48,6 +48,12 @@
     <main class="main-layout">
         <!-- Boční Panel (Globální Nastavení) -->
         <aside class="sidebar">
+            <div id="moje-super-taby" style="display: flex !important; margin-bottom: 20px !important; min-height: 50px !important; background: #222 !important; border-radius: 6px !important; overflow: hidden !important; visibility: visible !important; opacity: 1 !important;">
+                <button id="tab-front" onclick="switchViewMode('front')" style="flex:1; padding:15px; border:none; background:#eab308; color:#000; font-size: 14px; font-weight:bold; cursor:pointer;">LÍCOVÉ STRANY</button>
+                <button id="tab-back" onclick="switchViewMode('back')" style="flex:1; padding:15px; border:none; background:#333; color:#fff; font-size: 14px; font-weight:bold; cursor:pointer;">ZADNÍ STRANA</button>
+            </div>
+
+            <div id="front-side-panels">
             <div class="panel-section">
                 <h3>Typ Hry a Rozložení</h3>
                 <div class="control-row">
@@ -198,6 +204,7 @@
                     <select id="quartet-stat-layout" class="dropdown" onchange="updateQuartetConfig('statLayout', this.value)">
                         <option value="corners">V rozích (Klasika)</option>
                         <option value="bottom-row">V řadě dole</option>
+                        <option value="grid-2x2">Mřížka 2x2 dole</option>
                         <option value="left-column">Sloupec vlevo</option>
                         <option value="right-column">Sloupec vpravo</option>
                     </select>
@@ -235,6 +242,59 @@
                     <label>Rozestupy mezi vlastnostmi</label>
                     <input type="range" id="quartet-stat-spacing" oninput="updateQuartetConfig('statSpacing', this.value)" min="0" max="60" value="5" step="1">
                 </div>
+            
+            <div id="pexeso-global-panel" class="panel-section" style="display:none; background:rgba(16, 185, 129, 0.05); border: 1px solid #10b981; padding: 15px; border-radius: 8px;">
+                <h3 style="color:#10b981;">Nastavení Pexesa</h3>
+                <div class="control-row">
+                    <label>Počet dvojic</label>
+                    <select id="pexeso-pairs-select" class="dropdown" onchange="updatePexesoConfig('pairsCount', this.value); initCardsByMode('pexeso');">
+                        <option value="8">8 dvojic (16 karet)</option>
+                        <option value="16">16 dvojic (32 karet)</option>
+                        <option value="32">32 dvojic (64 karet)</option>
+                    </select>
+                </div>
+                
+                <h4 style="font-size:10px; color:var(--text); margin-top:20px; margin-bottom:10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">Vzhled a Typografie</h4>
+                <div class="control-row">
+                    <label>Zobrazit název karty</label>
+                    <input type="checkbox" id="pexeso-show-name" checked onchange="updatePexesoConfig('showName', this.checked)">
+                </div>
+                <div class="control-row">
+                    <label>Zobrazit popisek karty</label>
+                    <input type="checkbox" id="pexeso-show-desc" onchange="updatePexesoConfig('showDesc', this.checked)">
+                </div>
+                <div class="control-row">
+                    <label>Styl písma (Font)</label>
+                    <select id="pexeso-font-family" class="dropdown" onchange="updatePexesoConfig('fontFamily', this.value)">
+                        <option value="'Roboto', sans-serif">Roboto (Moderní)</option>
+                        <option value="'Cinzel', serif">Cinzel (Elegantní)</option>
+                        <option value="'Oswald', sans-serif">Oswald (Úzké)</option>
+                        <option value="'Montserrat', sans-serif">Montserrat (Geometrické)</option>
+                    </select>
+                </div>
+
+                <h4 style="font-size:10px; color:var(--text); margin-top:20px; margin-bottom:10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">Umístění textů</h4>
+                <div class="control-row">
+                    <label>Název X (%)</label>
+                    <input type="range" id="pexeso-name-x" oninput="updatePexesoConfig('nameOffsetX', this.value)" min="0" max="100" value="50">
+                </div>
+                <div class="control-row">
+                    <label>Název Y (%)</label>
+                    <input type="range" id="pexeso-name-y" oninput="updatePexesoConfig('nameOffsetY', this.value)" min="0" max="100" value="10">
+                </div>
+                <div class="control-row">
+                    <label>Popisek X (%)</label>
+                    <input type="range" id="pexeso-desc-x" oninput="updatePexesoConfig('descOffsetX', this.value)" min="0" max="100" value="50">
+                </div>
+                <div class="control-row">
+                    <label>Popisek Y (%)</label>
+                    <input type="range" id="pexeso-desc-y" oninput="updatePexesoConfig('descOffsetY', this.value)" min="0" max="100" value="5">
+                </div>
+
+                <button class="action-btn" style="width:100%; margin-top:15px; background:rgba(16, 185, 129, 0.2); border:1px solid #10b981; color:#fff;" onclick="applyGlobalCropToAllCards()">
+                    ✨ Sjednotit ořez v celé sadě
+                </button>
+            </div>
             </div>
 
             <div class="sidebar-section" id="symbols-global-panel">
@@ -523,11 +583,6 @@
                     <label style="color:var(--accent); font-weight:bold;">ZÁMEK KARTY 🔒</label>
                     <input type="checkbox" id="card-lock-toggle" onchange="toggleCardLock(this.checked)">
                 </div>
-                <div class="control-row">
-                    <label>Vlastní rozvržení</label>
-                    <input type="checkbox" id="individual-override-toggle" onchange="toggleIndividualOverride(this.checked)">
-                </div>
-                
                 <div id="individual-quartet-controls" style="display:none; padding-top:15px; border-top:1px solid rgba(255,255,255,0.1); margin-top:10px;">
                     <h4 style="font-size:10px; color:var(--accent); margin-bottom:12px;">KVARTETA DATA</h4>
                     <div class="control-group">
@@ -679,11 +734,136 @@
                 </div>
                 <p class="hint-text">Tip: Alt + Tah myší hýbe logem přímo na kartě.</p>
             </div>
+            </div> <!-- End of front-side-panels -->
+
+            <!-- ZADNÍ STRANA PANELY -->
+            <div id="back-side-panels" style="display:none;">
+                <div class="panel-section">
+                    <h3>Obrázek zadní strany (Rub)</h3>
+                    <label class="upload-btn primary" style="width:100%; text-align:center;">
+                        <input type="file" accept="image/*" style="display:none;" onchange="handleBackImageUpload(event)">
+                        <span>+ Nahrát Rub Karty</span>
+                    </label>
+                    <div class="control-row" style="margin-top:10px;">
+                        <label>Měřítko (%)</label>
+                        <input type="range" id="back-img-scale" min="10" max="400" value="100" oninput="updateBackImageParam('scale', this.value)">
+                    </div>
+                    <div class="control-row">
+                        <label>Posun X</label>
+                        <input type="range" id="back-img-x" min="-200" max="200" value="0" oninput="updateBackImageParam('x', this.value)">
+                    </div>
+                    <div class="control-row">
+                        <label>Posun Y</label>
+                        <input type="range" id="back-img-y" min="-200" max="200" value="0" oninput="updateBackImageParam('y', this.value)">
+                    </div>
+                    
+                    <button onclick="resetBackImage()" class="action-btn minor full-width" style="margin-top:10px; background:rgba(255,100,100,0.1); color:#ff6b6b; border:1px solid rgba(255,100,100,0.2);">Smazat Obrázek</button>
+                    <p class="hint-text" style="color:var(--accent);">Rozměry se automaticky přebírají z přední strany.</p>
+                </div>
+
+                <div class="panel-section">
+                    <h3>Overlay zadní strany (Vrstva 2)</h3>
+                    <div class="control-row">
+                        <label>Barva ohraničení</label>
+                        <input type="color" id="back-overlay-border-color" value="#555555" style="width:100%; height:24px; border:none; background:none; padding:0; cursor:pointer;" oninput="updateBackOverlayParam('borderColor', this.value)">
+                    </div>
+                    <div class="control-row">
+                        <label>Šířka ohraničení (px)</label>
+                        <input type="range" id="back-overlay-border-width" min="0" max="20" value="0" oninput="updateBackOverlayParam('borderWidth', this.value)">
+                    </div>
+                    <div class="control-row">
+                        <label>Vnitřní odsazení (mm)</label>
+                        <input type="range" id="back-overlay-inset" min="0" max="10" step="0.5" value="0" oninput="updateBackOverlayParam('inset', this.value)">
+                    </div>
+                    <div class="control-row">
+                        <label>Zaoblení rohů (mm)</label>
+                        <input type="range" id="back-overlay-border-radius" min="0" max="20" step="0.5" value="4" oninput="updateBackOverlayParam('borderRadius', this.value)">
+                    </div>
+                    
+                    <label class="upload-btn minor">
+                        <input type="file" id="upload-back-overlay" accept="image/*" style="display:none;" onchange="handleBackOverlayUpload(event)">
+                        <span>+ Společný rám / Vzor</span>
+                    </label>
+                    <div class="control-row">
+                        <label>Průhlednost (%)</label>
+                        <input type="range" id="back-overlay-opacity" min="0" max="100" value="80" oninput="updateBackOverlay()">
+                    </div>
+                    <div class="control-row">
+                        <label>Posun X / Y (px)</label>
+                        <div style="display: flex; gap: 4px;">
+                            <input type="number" id="back-overlay-x" value="0" style="width: 45px; background: var(--bg-app); border: 1px solid var(--border); color: #fff; text-align: center;" onchange="updateBackOverlay()">
+                            <input type="number" id="back-overlay-y" value="0" style="width: 45px; background: var(--bg-app); border: 1px solid var(--border); color: #fff; text-align: center;" onchange="updateBackOverlay()">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>Logo zadní strany (Vrstva 2)</h3>
+                    <label class="upload-btn minor">
+                        <input type="file" id="upload-back-logo" accept="image/*" style="display:none;" onchange="handleBackLogoUpload(event)">
+                        <span>+ Nahrát Logo pro rub</span>
+                    </label>
+                    <div class="control-row">
+                        <label>Průhlednost (%)</label>
+                        <input type="range" id="back-logo-opacity" min="0" max="100" value="100" oninput="updateBackLogo()">
+                    </div>
+                    <div class="control-row">
+                        <label>Posun X / Y (px)</label>
+                        <div style="display: flex; gap: 4px;">
+                            <input type="number" id="back-logo-x" value="0" style="width: 45px; background: var(--bg-app); border: 1px solid var(--border); color: #fff; text-align: center;" onchange="updateBackLogo()">
+                            <input type="number" id="back-logo-y" value="0" style="width: 45px; background: var(--bg-app); border: 1px solid var(--border); color: #fff; text-align: center;" onchange="updateBackLogo()">
+                        </div>
+                    </div>
+                    <div class="control-row">
+                        <label>Zoom (%)</label>
+                        <div class="stepper">
+                            <input type="number" id="back-logo-zoom" value="30" style="width: 45px; background: var(--bg-app); border: 1px solid var(--border); color: #fff; text-align: center;" onchange="updateBackLogo()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section" style="border-top: 1px solid var(--border); padding-top: 15px;">
+                <h3>Nastavení tisku</h3>
+                <div class="control-row"><label>Orientace stránky</label></div>
+                <div style="display: flex; gap: 6px; margin-bottom: 8px;">
+                    <button id="orient-portrait" onclick="setPrintOrientation('portrait')"
+                        style="flex:1; padding:8px 4px; border:1px solid var(--accent); background:var(--accent); color:#000; font-size:11px; font-weight:bold; border-radius:4px; cursor:pointer;">
+                        ↕ Na výšku
+                    </button>
+                    <button id="orient-landscape" onclick="setPrintOrientation('landscape')"
+                        style="flex:1; padding:8px 4px; border:1px solid var(--border); background:transparent; color:#aaa; font-size:11px; font-weight:bold; border-radius:4px; cursor:pointer;">
+                        ↔ Na šířku
+                    </button>
+                </div>
+                <div class="control-row">
+                    <label>Počet sloupců</label>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <label style="font-size:11px; color:var(--text-muted);"><input type="checkbox" id="cols-auto" checked onchange="updatePrintSettings()" style="accent-color:var(--accent); margin-right:3px;">Auto</label>
+                        <input type="number" id="print-cols" value="3" min="1" max="10" style="width:50px; background:var(--bg-app); border:1px solid var(--border); color:#fff; text-align:center; padding:4px; border-radius:4px;" onchange="updatePrintSettings()">
+                    </div>
+                </div>
+                <div class="control-row">
+                    <label>Počet řádků</label>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <label style="font-size:11px; color:var(--text-muted);"><input type="checkbox" id="rows-auto" checked onchange="updatePrintSettings()" style="accent-color:var(--accent); margin-right:3px;">Auto</label>
+                        <input type="number" id="print-rows" value="3" min="1" max="10" style="width:50px; background:var(--bg-app); border:1px solid var(--border); color:#fff; text-align:center; padding:4px; border-radius:4px;" onchange="updatePrintSettings()">
+                    </div>
+                </div>
+                <div class="control-row">
+                    <label>Mezery X / Y (mm)</label>
+                    <div style="display:flex; gap:4px;">
+                        <input type="number" id="print-gap-x" value="0" min="0" max="20" style="width:45px; background:var(--bg-app); border:1px solid var(--border); color:#fff; text-align:center; padding:4px; border-radius:4px;" onchange="updatePrintSettings()">
+                        <input type="number" id="print-gap-y" value="0" min="0" max="20" style="width:45px; background:var(--bg-app); border:1px solid var(--border); color:#fff; text-align:center; padding:4px; border-radius:4px;" onchange="updatePrintSettings()">
+                    </div>
+                </div>
+                <div id="print-layout-info" style="background:rgba(234,179,8,0.08); border:1px solid rgba(234,179,8,0.2); border-radius:4px; padding:8px; font-size:11px; color:var(--text-muted); line-height:1.6; margin-top:4px;"></div>
+            </div>
 
             <div class="panel-actions-bottom">
                 <button class="action-btn primary full-width" onclick="exportPrintSheets()">🖨️ Export k Tisku</button>
             </div>
-            <p class="hint-text" style="margin-top: 10px; text-align: center;">Obrázky přidávejte Drag&Drop přímo na karty.</p>
+            <p class="hint-text" style="margin-top: 10px; text-align: center;">Obrázky přidávejte Drag&amp;Drop přímo na karty.</p>
         </aside>
 
         <!-- Pracovní plocha (Mřížka karet) -->
@@ -694,10 +874,38 @@
         </section>
     </main>
 
+    <!-- TISKOVÝ NÁHLED (Modal Overlay) -->
+    <div id="print-preview-overlay" style="
+        display: none; position: fixed; inset: 0; z-index: 9999;
+        background: #1a1a2e; flex-direction: column;
+    ">
+        <!-- Horní lišta náhledu -->
+        <div style="
+            display: flex; align-items: center; gap: 12px; padding: 12px 20px;
+            background: #0f0f1a; border-bottom: 2px solid #eab308; flex-shrink: 0;
+        ">
+            <span style="color:#eab308; font-weight:900; font-size:16px;">🖨️ Tiskový náhled</span>
+            <span id="preview-info-bar" style="color:#aaa; font-size:13px; flex:1;"></span>
+            <button onclick="printFromPreview()" style="
+                background:#eab308; color:#000; border:none; padding:10px 24px;
+                border-radius:6px; font-weight:900; cursor:pointer; font-size:14px;
+            ">Vytisknout ▸</button>
+            <button onclick="closePrintPreview()" style="
+                background:#333; color:#fff; border:1px solid #555; padding:10px 18px;
+                border-radius:6px; font-weight:bold; cursor:pointer; font-size:14px;
+            ">✕ Zavřít</button>
+        </div>
+        <!-- Oblast stránek -->
+        <div id="print-preview-pages" style="
+            flex: 1; overflow-y: auto; padding: 30px; display: flex; flex-direction: column;
+            align-items: center; gap: 30px;
+        "></div>
+    </div>
+
     <!-- Skripty -->
-    <script src="js/state.js"></script>
-    <script src="js/cropper.js"></script>
-    <script src="js/generator.js"></script>
+    <script src="js/state.js?v=3"></script>
+    <script src="js/cropper.js?v=3"></script>
+    <script src="js/generator.js?v=3"></script>
 
 </body>
 </html>

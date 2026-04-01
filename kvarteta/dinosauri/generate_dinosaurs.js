@@ -185,7 +185,7 @@ let htmlContent = `
             /* Skill Rule: NO FILTERS, NO SHADOWS for print reliability */
             .card { break-inside: avoid !important; box-shadow: none !important; border: 0.1mm solid #eee; }
             .card-bg-blur-img { display: none !important; filter: none !important; }
-            .card-image-img { filter: none !important; }
+            .card-image-img { filter: brightness(1.15) contrast(1.10) saturate(1.10) !important; }
             .overlay-top { box-shadow: inset 0 10mm 15mm -10mm rgba(0,0,0,0.05) !important; background: none !important; }
             .overlay-bottom { box-shadow: inset 0 -20mm 30mm -10mm rgba(0,0,0,0.2) !important; background: none !important; }
             .hex-container { backdrop-filter: none !important; background: rgba(0, 0, 0, 0.2) !important; border: 0.1mm solid rgba(255,255,255,0.3) !important; }
@@ -235,6 +235,7 @@ let htmlContent = `
         .card-image-img {
             width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 2;
             object-fit: cover;
+            filter: brightness(1.08) contrast(1.06) saturate(1.08);
         }
 
         .overlay-top {

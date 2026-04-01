@@ -54,6 +54,28 @@ export const kartyProducts = [
             '/cards/princezny bez pozadi/eso_zaludy.png', '/cards/princezny bez pozadi/kral_zaludy.png', '/cards/princezny bez pozadi/svrsek_zaludy.png', '/cards/princezny bez pozadi/spodek_zaludy.png', '/cards/princezny bez pozadi/desitka_zaludy.png', '/cards/princezny bez pozadi/devitka_zaludy.png', '/cards/princezny bez pozadi/osmicka_zaludy.png', '/cards/princezny bez pozadi/sedmicka_zaludy.png',
             '/cards/princezny bez pozadi/eso_kule.png', '/cards/princezny bez pozadi/kral_kule.png', '/cards/princezny bez pozadi/svrsek_kule.png', '/cards/princezny bez pozadi/spodek_kule.png', '/cards/princezny bez pozadi/desitka_kule.png', '/cards/princezny bez pozadi/devitka_kule.png', '/cards/princezny bez pozadi/osmicka_kule.png', '/cards/princezny bez pozadi/sedmicka_kule.png'
         ]
+    },
+    {
+        id: 'karty-tema-minecraft',
+        name: 'Hrací karty: Minecraft',
+        description: 'Epická Minecraft edice pro fanoušky kultovní hry. 32 unikátních full-art ilustrací v voxelovém stylu – postavy, příšery a předměty ze světa Minecraftu. Ideální pro děti i dospělé nadšence!',
+        price: 349,
+        themeColor: '#4CAF50',
+        images: [
+            '/cards/minecraft-prsi/karta_Srdce_Kral.png',
+            '/cards/minecraft-prsi/karta_Kule_Eso.png',
+            '/cards/minecraft-prsi/karta_Piky_Svrsek.png'
+        ],
+        boxImage: '/cards/minecraft-prsi/karta_Srdce_Kral.png',
+        isThematic: true,
+        sampleValue: 'K',
+        sampleSuit: '♥',
+        allCards: [
+            '/cards/minecraft-prsi/karta_Srdce_7-2.png', '/cards/minecraft-prsi/karta_Srdce_8-2.png', '/cards/minecraft-prsi/karta_Srdce_9-2.png', '/cards/minecraft-prsi/karta_Srdce_10.png', '/cards/minecraft-prsi/karta_Srdce_Spodek-2.png', '/cards/minecraft-prsi/karta_Srdce_Svrsek.png', '/cards/minecraft-prsi/karta_Srdce_Kral.png', '/cards/minecraft-prsi/karta_Srdce_Eso-2.png',
+            '/cards/minecraft-prsi/karta_Piky_7-2.png', '/cards/minecraft-prsi/karta_Piky_8-2.png', '/cards/minecraft-prsi/karta_Piky_9-2.png', '/cards/minecraft-prsi/karta_Piky_10.png', '/cards/minecraft-prsi/karta_Piky_Spodek.png', '/cards/minecraft-prsi/karta_Piky_Svrsek.png', '/cards/minecraft-prsi/karta_Piky_Kral.png', '/cards/minecraft-prsi/karta_Piky_Eso.png',
+            '/cards/minecraft-prsi/karta_Zaludy_7.png', '/cards/minecraft-prsi/karta_Zaludy_8.png', '/cards/minecraft-prsi/karta_Zaludy_9.png', '/cards/minecraft-prsi/karta_Zaludy_10.png', '/cards/minecraft-prsi/karta_Zaludy_Spodek.png', '/cards/minecraft-prsi/karta_Zaludy_Svrsek.png', '/cards/minecraft-prsi/karta_Zaludy_Kral.png', '/cards/minecraft-prsi/karta_Zaludy_Eso.png',
+            '/cards/minecraft-prsi/karta_Kule_7.png', '/cards/minecraft-prsi/karta_Kule_8.png', '/cards/minecraft-prsi/karta_Kule_9.png', '/cards/minecraft-prsi/karta_Kule_10.png', '/cards/minecraft-prsi/karta_Kule_Spodek.png', '/cards/minecraft-prsi/karta_Kule_Svrsek.png', '/cards/minecraft-prsi/karta_Kule_Kral.png', '/cards/minecraft-prsi/karta_Kule_Eso.png'
+        ]
     }
 ];
 

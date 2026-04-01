@@ -37,7 +37,7 @@ const HeroSection: React.FC = () => {
             <div className="hero-content">
                 <div className="badge animate-fade-in-up">Karetní hry, které propojují generace</div>
                 <h1 className="hero-title animate-fade-in-up delay-100">
-                    Objevte kouzla <span className="text-gradient-gold">autorských kvartet</span>, <br />
+                    Objevte kouzla <span className="text-gradient-gold">našich kvartet</span>, <br />
                     která vyprávějí své vlastní příběhy
                 </h1>
                 <p className="hero-description animate-fade-in-up delay-200">

@@ -262,7 +262,7 @@ function drawSymbols(cardEl, card) {
             img.style.width = (fScale * 600) + 'px'; 
             symbol.appendChild(img);
         } else {
-            const iconMap = { 'Srdce':'♥', 'Piky':'♠', 'Kule':'♦', 'Žaludy':'♣', 
+            const iconMap = { 'Srdce':'♥', 'Zelene':'♠', 'Kule':'♦', 'Zaludy':'♣', 
                              'zelene':'♠', 'kule':'♦', 'zaludy':'♣', 'srdce':'♥' };
             symbol.innerText = iconMap[suit] || iconMap[suit.toLowerCase()] || '';
             symbol.style.color = suitCfg.color;
@@ -945,7 +945,7 @@ function renderUIFromState() {
     setVal('logo-opacity', Math.round(gL.opacity * 100));
 
     // 4. PER-SUIT NASTAVENÍ (SYMBOLŮ A OHRANIČENÍ)
-    ['Srdce', 'Piky', 'Kule', 'Žaludy'].forEach(suit => {
+    ['Srdce', 'Zelene', 'Kule', 'Zaludy'].forEach(suit => {
         const s = AppState.suitSettings[suit];
         if (!s) return;
         const p = `suit-${suit}-`;

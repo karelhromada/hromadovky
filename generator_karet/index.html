@@ -374,39 +374,39 @@
                                 <div class="control-group"> <label>Šířka sloupců (mm)</label> <input type="range" id="suit-Srdce-columnX" oninput="updateSuitParam('Srdce', 'columnX', this.value)" min="-20" max="20" value="0" step="0.5"> </div>
                             </div>
                         </div>
-                        <!-- Piky -->
+                        <!-- Zelené -->
                         <div class="suit-card" style="border-top: 3px solid #4444ff;">
                             <div class="suit-card-header">
                                 <span class="suit-icon" style="color:#4444ff;">♠</span>
                                 <label class="upload-btn minor" style="flex:1;">
-                                    <input type="file" onchange="handleSuitUpload('Piky', event)" style="display:none;">
+                                    <input type="file" onchange="handleSuitUpload('Zelene', event)" style="display:none;">
                                     <span>Vlastní Ikona</span>
                                 </label>
                             </div>
                             
                             <div class="control-subgroup">
                                 <span class="subgroup-title">Vzhled Ikon</span>
-                                <div class="control-group"> <label>Velikost (%)</label> <input type="range" id="suit-Piky-scale" oninput="updateSuitParam('Piky', 'scale', this.value)" min="5" max="40" value="18"> </div>
-                                <div class="control-group"> <label>Průhlednost (%)</label> <input type="range" id="suit-Piky-opacity" oninput="updateSuitParam('Piky', 'opacity', this.value)" min="0" max="100" value="100"> </div>
+                                <div class="control-group"> <label>Velikost (%)</label> <input type="range" id="suit-Zelene-scale" oninput="updateSuitParam('Zelene', 'scale', this.value)" min="5" max="40" value="18"> </div>
+                                <div class="control-group"> <label>Průhlednost (%)</label> <input type="range" id="suit-Zelene-opacity" oninput="updateSuitParam('Zelene', 'opacity', this.value)" min="0" max="100" value="100"> </div>
                             </div>
 
                             <div class="control-subgroup">
                                 <span class="subgroup-title">Ohraničení a Rám</span>
                                 <div class="control-group"> 
                                     <label>Barva</label> 
-                                    <input type="color" id="suit-Piky-borderColor" oninput="updateSuitParam('Piky', 'borderColor', this.value)" value="#4444ff" style="width:100%; height:24px; border:none; background:none; cursor:pointer;"> 
+                                    <input type="color" id="suit-Zelene-borderColor" oninput="updateSuitParam('Zelene', 'borderColor', this.value)" value="#4444ff" style="width:100%; height:24px; border:none; background:none; cursor:pointer;"> 
                                 </div>
-                                <div class="control-group"> <label>Šířka (mm)</label> <input type="range" id="suit-Piky-borderWidth" oninput="updateSuitParam('Piky', 'borderWidth', this.value)" min="0" max="15" value="0"> </div>
-                                <div class="control-group"> <label>Vnitřní odsazení (mm)</label> <input type="range" id="suit-Piky-inset" oninput="updateSuitParam('Piky', 'inset', this.value)" min="0" max="10" step="0.5" value="0"> </div>
-                                <div class="control-group"> <label>Zaoblení rohů (mm)</label> <input type="range" id="suit-Piky-borderRadius" oninput="updateSuitParam('Piky', 'borderRadius', this.value)" min="0" max="15" step="0.5" value="4"> </div>
+                                <div class="control-group"> <label>Šířka (mm)</label> <input type="range" id="suit-Zelene-borderWidth" oninput="updateSuitParam('Zelene', 'borderWidth', this.value)" min="0" max="15" value="0"> </div>
+                                <div class="control-group"> <label>Vnitřní odsazení (mm)</label> <input type="range" id="suit-Zelene-inset" oninput="updateSuitParam('Zelene', 'inset', this.value)" min="0" max="10" step="0.5" value="0"> </div>
+                                <div class="control-group"> <label>Zaoblení rohů (mm)</label> <input type="range" id="suit-Zelene-borderRadius" oninput="updateSuitParam('Zelene', 'borderRadius', this.value)" min="0" max="15" step="0.5" value="4"> </div>
                             </div>
 
                             <div class="control-subgroup">
                                 <span class="subgroup-title">Pozice a Rozestupy</span>
-                                <div class="control-group"> <label>Posun X (mm)</label> <input type="range" id="suit-Piky-offsetX" min="-50" max="50" value="0" step="0.5" oninput="updateSuitParam('Piky', 'offsetX', this.value)"> </div>
-                                <div class="control-group"> <label>Posun Y (mm)</label> <input type="range" id="suit-Piky-offsetY" oninput="updateSuitParam('Piky', 'offsetY', this.value)" min="-50" max="50" value="0" step="0.5"> </div>
-                                <div class="control-group"> <label>Rozestupy série (%)</label> <input type="range" id="suit-Piky-spacingY" oninput="updateSuitParam('Piky', 'spacingY', this.value)" min="50" max="150" value="100"> </div>
-                                <div class="control-group"> <label>Šířka sloupců (mm)</label> <input type="range" id="suit-Piky-columnX" oninput="updateSuitParam('Piky', 'columnX', this.value)" min="-20" max="20" value="0" step="0.5"> </div>
+                                <div class="control-group"> <label>Posun X (mm)</label> <input type="range" id="suit-Zelene-offsetX" min="-50" max="50" value="0" step="0.5" oninput="updateSuitParam('Zelene', 'offsetX', this.value)"> </div>
+                                <div class="control-group"> <label>Posun Y (mm)</label> <input type="range" id="suit-Zelene-offsetY" oninput="updateSuitParam('Zelene', 'offsetY', this.value)" min="-50" max="50" value="0" step="0.5"> </div>
+                                <div class="control-group"> <label>Rozestupy série (%)</label> <input type="range" id="suit-Zelene-spacingY" oninput="updateSuitParam('Zelene', 'spacingY', this.value)" min="50" max="150" value="100"> </div>
+                                <div class="control-group"> <label>Šířka sloupců (mm)</label> <input type="range" id="suit-Zelene-columnX" oninput="updateSuitParam('Zelene', 'columnX', this.value)" min="-20" max="20" value="0" step="0.5"> </div>
                             </div>
                         </div>
                         <!-- Kule -->
@@ -449,34 +449,34 @@
                             <div class="suit-card-header">
                                 <span class="suit-icon" style="color:#22cc22;">♣</span>
                                 <label class="upload-btn minor" style="flex:1;">
-                                    <input type="file" onchange="handleSuitUpload('Žaludy', event)" style="display:none;">
+                                    <input type="file" onchange="handleSuitUpload('Zaludy', event)" style="display:none;">
                                     <span>Vlastní Ikona</span>
                                 </label>
                             </div>
                             
                             <div class="control-subgroup">
                                 <span class="subgroup-title">Vzhled Ikon</span>
-                                <div class="control-group"> <label>Velikost (%)</label> <input type="range" id="suit-Žaludy-scale" oninput="updateSuitParam('Žaludy', 'scale', this.value)" min="5" max="40" value="18"> </div>
-                                <div class="control-group"> <label>Průhlednost (%)</label> <input type="range" id="suit-Žaludy-opacity" oninput="updateSuitParam('Žaludy', 'opacity', this.value)" min="0" max="100" value="100"> </div>
+                                <div class="control-group"> <label>Velikost (%)</label> <input type="range" id="suit-Zaludy-scale" oninput="updateSuitParam('Zaludy', 'scale', this.value)" min="5" max="40" value="18"> </div>
+                                <div class="control-group"> <label>Průhlednost (%)</label> <input type="range" id="suit-Zaludy-opacity" oninput="updateSuitParam('Zaludy', 'opacity', this.value)" min="0" max="100" value="100"> </div>
                             </div>
 
                             <div class="control-subgroup">
                                 <span class="subgroup-title">Ohraničení a Rám</span>
                                 <div class="control-group"> 
                                     <label>Barva</label> 
-                                    <input type="color" id="suit-Žaludy-borderColor" oninput="updateSuitParam('Žaludy', 'borderColor', this.value)" value="#22cc22" style="width:100%; height:24px; border:none; background:none; cursor:pointer;"> 
+                                    <input type="color" id="suit-Zaludy-borderColor" oninput="updateSuitParam('Zaludy', 'borderColor', this.value)" value="#22cc22" style="width:100%; height:24px; border:none; background:none; cursor:pointer;"> 
                                 </div>
-                                <div class="control-group"> <label>Šířka (mm)</label> <input type="range" id="suit-Žaludy-borderWidth" oninput="updateSuitParam('Žaludy', 'borderWidth', this.value)" min="0" max="15" value="0"> </div>
-                                <div class="control-group"> <label>Vnitřní odsazení (mm)</label> <input type="range" id="suit-Žaludy-inset" oninput="updateSuitParam('Žaludy', 'inset', this.value)" min="0" max="10" step="0.5" value="0"> </div>
-                                <div class="control-group"> <label>Zaoblení rohů (mm)</label> <input type="range" id="suit-Žaludy-borderRadius" oninput="updateSuitParam('Žaludy', 'borderRadius', this.value)" min="0" max="15" step="0.5" value="4"> </div>
+                                <div class="control-group"> <label>Šířka (mm)</label> <input type="range" id="suit-Zaludy-borderWidth" oninput="updateSuitParam('Zaludy', 'borderWidth', this.value)" min="0" max="15" value="0"> </div>
+                                <div class="control-group"> <label>Vnitřní odsazení (mm)</label> <input type="range" id="suit-Zaludy-inset" oninput="updateSuitParam('Zaludy', 'inset', this.value)" min="0" max="10" step="0.5" value="0"> </div>
+                                <div class="control-group"> <label>Zaoblení rohů (mm)</label> <input type="range" id="suit-Zaludy-borderRadius" oninput="updateSuitParam('Zaludy', 'borderRadius', this.value)" min="0" max="15" step="0.5" value="4"> </div>
                             </div>
 
                             <div class="control-subgroup">
                                 <span class="subgroup-title">Pozice a Rozestupy</span>
-                                <div class="control-group"> <label>Posun X (mm)</label> <input type="range" id="suit-Žaludy-offsetX" min="-50" max="50" value="0" step="0.5" oninput="updateSuitParam('Žaludy', 'offsetX', this.value)"> </div>
-                                <div class="control-group"> <label>Posun Y (mm)</label> <input type="range" id="suit-Žaludy-offsetY" oninput="updateSuitParam('Žaludy', 'offsetY', this.value)" min="-50" max="50" value="0" step="0.5"> </div>
-                                <div class="control-group"> <label>Rozestupy série (%)</label> <input type="range" id="suit-Žaludy-spacingY" oninput="updateSuitParam('Žaludy', 'spacingY', this.value)" min="50" max="150" value="100"> </div>
-                                <div class="control-group"> <label>Šířka sloupců (mm)</label> <input type="range" id="suit-Žaludy-columnX" oninput="updateSuitParam('Žaludy', 'columnX', this.value)" min="-20" max="20" value="0" step="0.5"> </div>
+                                <div class="control-group"> <label>Posun X (mm)</label> <input type="range" id="suit-Zaludy-offsetX" min="-50" max="50" value="0" step="0.5" oninput="updateSuitParam('Zaludy', 'offsetX', this.value)"> </div>
+                                <div class="control-group"> <label>Posun Y (mm)</label> <input type="range" id="suit-Zaludy-offsetY" oninput="updateSuitParam('Zaludy', 'offsetY', this.value)" min="-50" max="50" value="0" step="0.5"> </div>
+                                <div class="control-group"> <label>Rozestupy série (%)</label> <input type="range" id="suit-Zaludy-spacingY" oninput="updateSuitParam('Zaludy', 'spacingY', this.value)" min="50" max="150" value="100"> </div>
+                                <div class="control-group"> <label>Šířka sloupců (mm)</label> <input type="range" id="suit-Zaludy-columnX" oninput="updateSuitParam('Zaludy', 'columnX', this.value)" min="-20" max="20" value="0" step="0.5"> </div>
                             </div>
                         </div>
                     </div>

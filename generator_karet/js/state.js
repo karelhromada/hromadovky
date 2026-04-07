@@ -167,9 +167,9 @@ let AppState = {
     // Nastavení symbolů pro každou barvu (značku)
     suitSettings: {
         'Srdce':  { image: null, opacity: 1, scale: 0.18, color: '#ff4444', offsetX: 0, offsetY: 0, spacingY: 1, columnX: 0, borderColor: '#ff4444', borderWidth: 0, inset: 0, borderRadius: 4 },
-        'Piky':   { image: null, opacity: 1, scale: 0.18, color: '#4444ff', offsetX: 0, offsetY: 0, spacingY: 1, columnX: 0, borderColor: '#4444ff', borderWidth: 0, inset: 0, borderRadius: 4 },
+        'Zelene':   { image: null, opacity: 1, scale: 0.18, color: '#4444ff', offsetX: 0, offsetY: 0, spacingY: 1, columnX: 0, borderColor: '#4444ff', borderWidth: 0, inset: 0, borderRadius: 4 },
         'Kule':   { image: null, opacity: 1, scale: 0.18, color: '#ffbb00', offsetX: 0, offsetY: 0, spacingY: 1, columnX: 0, borderColor: '#ffbb00', borderWidth: 0, inset: 0, borderRadius: 4 },
-        'Žaludy': { image: null, opacity: 1, scale: 0.18, color: '#44ff44', offsetX: 0, offsetY: 0, spacingY: 1, columnX: 0, borderColor: '#44ff44', borderWidth: 0, inset: 0, borderRadius: 4 }
+        'Zaludy': { image: null, opacity: 1, scale: 0.18, color: '#44ff44', offsetX: 0, offsetY: 0, spacingY: 1, columnX: 0, borderColor: '#44ff44', borderWidth: 0, inset: 0, borderRadius: 4 }
     },
 
     // Globální nastavení rozvržení dle hodnoty (7-Eso)
@@ -213,7 +213,7 @@ function initCardsByMode(mode, forceReset = false) {
         AppState.cardWidth = 63;
         AppState.cardHeight = 105;
         
-        const suits = ['Srdce', 'Piky', 'Kule', 'Žaludy'];
+        const suits = ['Srdce', 'Zelene', 'Kule', 'Zaludy'];
         const values = ['7', '8', '9', '10', 'Spodek', 'Svršek', 'Král', 'Eso'];
         suits.forEach(suit => {
             values.forEach(val => {

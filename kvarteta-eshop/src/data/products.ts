@@ -7,16 +7,16 @@ export const kartyProducts = [
         description: 'Luxusní dračí edice. Mariášové barvy reprezentující živly. Hodnoty 10, J, Q, K, A v klasickém čistém herním designu s plnou originální malbou draků.',
         price: 349,
         themeColor: '#ff0033',
-        images: ['/cards/dragon_scales_realistic_1.webp', '/cards/prsi/prsi_listy_A.webp', '/cards/prsi/prsi_srdce_K.webp'],
-        boxImage: '/cards/prsi/prsi_srdce_A.webp',
+        images: ['/cards/epicka-draci-edice/Cervene_Eso.png', '/cards/epicka-draci-edice/Zelene_Kral.png', '/cards/epicka-draci-edice/Kule_Svrsek.png'],
+        boxImage: '/cards/epicka-draci-edice/Cervene_Eso.png',
         isThematic: true,
         sampleValue: 'A',
         sampleSuit: '♥',
         allCards: [
-            '/cards/prsi/prsi_srdce_7.webp', '/cards/prsi/prsi_srdce_8.webp', '/cards/prsi/prsi_srdce_9.webp', '/cards/prsi/prsi_srdce_10.webp', '/cards/prsi/prsi_srdce_J.webp', '/cards/prsi/prsi_srdce_Q.webp', '/cards/prsi/prsi_srdce_K.webp', '/cards/prsi/prsi_srdce_A.webp',
-            '/cards/prsi/prsi_listy_7.webp', '/cards/prsi/prsi_listy_8.webp', '/cards/prsi/prsi_listy_9.webp', '/cards/prsi/prsi_listy_10.webp', '/cards/prsi/prsi_listy_J.webp', '/cards/prsi/prsi_listy_Q.webp', '/cards/prsi/prsi_listy_K.webp', '/cards/prsi/prsi_listy_A.webp',
-            '/cards/prsi/prsi_zaludy_7.webp', '/cards/prsi/prsi_zaludy_8.webp', '/cards/prsi/prsi_zaludy_9.webp', '/cards/prsi/prsi_zaludy_10.webp', '/cards/prsi/prsi_zaludy_J.webp', '/cards/prsi/prsi_zaludy_Q.webp', '/cards/prsi/prsi_zaludy_K.webp', '/cards/prsi/prsi_zaludy_A.webp',
-            '/cards/prsi/prsi_kule_7.webp', '/cards/prsi/prsi_kule_8.webp', '/cards/prsi/prsi_kule_9.webp', '/cards/prsi/prsi_kule_10.webp', '/cards/prsi/prsi_kule_J.webp', '/cards/prsi/prsi_kule_Q.webp', '/cards/prsi/prsi_kule_K.webp', '/cards/prsi/prsi_kule_A.webp'
+            '/cards/epicka-draci-edice/Cervene_Eso.png', '/cards/epicka-draci-edice/Cervene_Kral.png', '/cards/epicka-draci-edice/Cervene_Svrsek.png', '/cards/epicka-draci-edice/Cervene_Spodek.png', '/cards/epicka-draci-edice/Cervene_10.png', '/cards/epicka-draci-edice/Cervene_9.png', '/cards/epicka-draci-edice/Cervene_8.png', '/cards/epicka-draci-edice/Cervene_7.png',
+            '/cards/epicka-draci-edice/Zelene_Eso.png', '/cards/epicka-draci-edice/Zelene_Kral.png', '/cards/epicka-draci-edice/Zelene_Svrsek.png', '/cards/epicka-draci-edice/Zelene_Spodek.png', '/cards/epicka-draci-edice/Zelene_10.png', '/cards/epicka-draci-edice/Zelene_9.png', '/cards/epicka-draci-edice/Zelene_8.png', '/cards/epicka-draci-edice/Zelene_7.png',
+            '/cards/epicka-draci-edice/Zaludy_Eso.png', '/cards/epicka-draci-edice/Zaludy_Kral.png', '/cards/epicka-draci-edice/Zaludy_Svrsek.png', '/cards/epicka-draci-edice/Zaludy_Spodek.png', '/cards/epicka-draci-edice/Zaludy_10.png', '/cards/epicka-draci-edice/Zaludy_9.png', '/cards/epicka-draci-edice/Zaludy_8.png', '/cards/epicka-draci-edice/Zaludy_7.png',
+            '/cards/epicka-draci-edice/Kule_Eso.png', '/cards/epicka-draci-edice/Kule_Kral.png', '/cards/epicka-draci-edice/Kule_Svrsek.png', '/cards/epicka-draci-edice/Kule_Spodek.png', '/cards/epicka-draci-edice/Kule_10.png', '/cards/epicka-draci-edice/Kule_9.png', '/cards/epicka-draci-edice/Kule_8.png', '/cards/epicka-draci-edice/Kule_7.png'
         ]
     },
     {
@@ -25,34 +25,34 @@ export const kartyProducts = [
         description: 'Mysteriózní sady čarodějnic. Každá hodnota (spodek, svršek, král, eso) nabízí jedinečnou detailní ilustraci od učednic ohně až po královny lesa.',
         price: 349,
         themeColor: '#ff4b4b',
-        images: ['/cards/carodejnice/eso_srdce_oznaceno.png', '/cards/carodejnice/kral_listy_oznaceno.png', '/cards/carodejnice/svrsek_zaludy_oznaceno.png'],
-        boxImage: '/cards/carodejnice/kral_srdce_oznaceno.png',
+        images: ['/cards/carodejnice/Cervene_Eso.png', '/cards/carodejnice/Zelene_Kral.png', '/cards/carodejnice/Zaludy_Svrsek.png'],
+        boxImage: '/cards/carodejnice/Cervene_Kral.png',
         isThematic: true,
         sampleValue: 'K',
         sampleSuit: '♥',
         allCards: [
-            '/cards/carodejnice/eso_srdce_oznaceno.png', '/cards/carodejnice/kral_srdce_oznaceno.png', '/cards/carodejnice/svrsek_srdce_oznaceno.png', '/cards/carodejnice/spodek_srdce_oznaceno.png', '/cards/carodejnice/desitka_srdce_oznaceno.png', '/cards/carodejnice/devitka_srdce_oznaceno.png', '/cards/carodejnice/osmicka_srdce_oznaceno.png', '/cards/carodejnice/sedmicka_srdce_oznaceno.png',
-            '/cards/carodejnice/eso_listy_oznaceno.png', '/cards/carodejnice/kral_listy_oznaceno.png', '/cards/carodejnice/svrsek_listy_oznaceno.png', '/cards/carodejnice/spodek_listy_oznaceno.png', '/cards/carodejnice/desitka_listy_oznaceno.png', '/cards/carodejnice/devitka_listy_oznaceno.png', '/cards/carodejnice/osmicka_listy_oznaceno.png', '/cards/carodejnice/sedmicka_listy_oznaceno.png',
-            '/cards/carodejnice/eso_zaludy_oznaceno.png', '/cards/carodejnice/kral_zaludy_oznaceno.png', '/cards/carodejnice/svrsek_zaludy_oznaceno.png', '/cards/carodejnice/spodek_zaludy_oznaceno.png', '/cards/carodejnice/desitka_zaludy_oznaceno.png', '/cards/carodejnice/devitka_zaludy_oznaceno.png', '/cards/carodejnice/osmicka_zaludy_oznaceno.png', '/cards/carodejnice/sedmicka_zaludy_oznaceno.png',
-            '/cards/carodejnice/eso_kule_oznaceno.png', '/cards/carodejnice/kral_kule_oznaceno.png', '/cards/carodejnice/svrsek_kule_oznaceno.png', '/cards/carodejnice/spodek_kule_oznaceno.png', '/cards/carodejnice/desitka_kule_oznaceno.png', '/cards/carodejnice/devitka_kule_oznaceno.png', '/cards/carodejnice/osmicka_kule_oznaceno.png', '/cards/carodejnice/sedmicka_kule_oznaceno.png'
+            '/cards/carodejnice/Cervene_Eso.png', '/cards/carodejnice/Cervene_Kral.png', '/cards/carodejnice/Cervene_Svrsek.png', '/cards/carodejnice/Cervene_Spodek.png', '/cards/carodejnice/Cervene_10.png', '/cards/carodejnice/Cervene_9.png', '/cards/carodejnice/Cervene_8.png', '/cards/carodejnice/Cervene_7.png',
+            '/cards/carodejnice/Zelene_Eso.png', '/cards/carodejnice/Zelene_Kral.png', '/cards/carodejnice/Zelene_Svrsek.png', '/cards/carodejnice/Zelene_Spodek.png', '/cards/carodejnice/Zelene_10.png', '/cards/carodejnice/Zelene_9.png', '/cards/carodejnice/Zelene_8.png', '/cards/carodejnice/Zelene_7.png',
+            '/cards/carodejnice/Zaludy_Eso.png', '/cards/carodejnice/Zaludy_Kral.png', '/cards/carodejnice/Zaludy_Svrsek.png', '/cards/carodejnice/Zaludy_Spodek.png', '/cards/carodejnice/Zaludy_10.png', '/cards/carodejnice/Zaludy_9.png', '/cards/carodejnice/Zaludy_8.png', '/cards/carodejnice/Zaludy_7.png',
+            '/cards/carodejnice/Kule_Eso.png', '/cards/carodejnice/Kule_Kral.png', '/cards/carodejnice/Kule_Svrsek.png', '/cards/carodejnice/Kule_Spodek.png', '/cards/carodejnice/Kule_10.png', '/cards/carodejnice/Kule_9.png', '/cards/carodejnice/Kule_8.png', '/cards/carodejnice/Kule_7.png'
         ]
     },
     {
-        id: 'karty-tema-princezny',
+        id: 'karty-tema-zamek',
         name: 'Hrací karty: Život na zámku',
         description: 'Pohádková edice s princeznami, princi a roztomilými zvířátky. Jemné pastelové barvy a minimalistický design na čistě bílém pozadí.',
         price: 249,
-        themeColor: '#ff66b2', // Růžová
-        images: ['/cards/princezny bez pozadi/eso_srdce.png', '/cards/princezny bez pozadi/kralovna_zelene.png', '/cards/princezny bez pozadi/sedmicka_srdce.png'],
-        boxImage: '/cards/princezny bez pozadi/eso_srdce.png',
+        themeColor: '#ff66b2',
+        images: ['/cards/zivot-na-zamku/Cervene_Eso.png', '/cards/zivot-na-zamku/Zelene_Kral.png', '/cards/zivot-na-zamku/Cervene_Svrsek.png'],
+        boxImage: '/cards/zivot-na-zamku/Cervene_Eso.png',
         isThematic: true,
         sampleValue: 'Q',
         sampleSuit: '♥',
         allCards: [
-            '/cards/princezny bez pozadi/eso_srdce.png', '/cards/princezny bez pozadi/kralovna_srdce.png', '/cards/princezny bez pozadi/svrsek_srdce.png', '/cards/princezny bez pozadi/spodek_srdce.png', '/cards/princezny bez pozadi/desitka_srdce.png', '/cards/princezny bez pozadi/devitka_srdce.png', '/cards/princezny bez pozadi/osmicka_srdce.png', '/cards/princezny bez pozadi/sedmicka_srdce.png',
-            '/cards/princezny bez pozadi/eso_zelene.png', '/cards/princezny bez pozadi/kralovna_zelene.png', '/cards/princezny bez pozadi/svrsek_zelene.png', '/cards/princezny bez pozadi/spodek_zelene.png', '/cards/princezny bez pozadi/desitka_zelene.png', '/cards/princezny bez pozadi/devitka_zelene.png', '/cards/princezny bez pozadi/osmicka_zelene.png', '/cards/princezny bez pozadi/sedmicka_zelene.png',
-            '/cards/princezny bez pozadi/eso_zaludy.png', '/cards/princezny bez pozadi/kral_zaludy.png', '/cards/princezny bez pozadi/svrsek_zaludy.png', '/cards/princezny bez pozadi/spodek_zaludy.png', '/cards/princezny bez pozadi/desitka_zaludy.png', '/cards/princezny bez pozadi/devitka_zaludy.png', '/cards/princezny bez pozadi/osmicka_zaludy.png', '/cards/princezny bez pozadi/sedmicka_zaludy.png',
-            '/cards/princezny bez pozadi/eso_kule.png', '/cards/princezny bez pozadi/kral_kule.png', '/cards/princezny bez pozadi/svrsek_kule.png', '/cards/princezny bez pozadi/spodek_kule.png', '/cards/princezny bez pozadi/desitka_kule.png', '/cards/princezny bez pozadi/devitka_kule.png', '/cards/princezny bez pozadi/osmicka_kule.png', '/cards/princezny bez pozadi/sedmicka_kule.png'
+            '/cards/zivot-na-zamku/Cervene_Eso.png', '/cards/zivot-na-zamku/Cervene_Kral.png', '/cards/zivot-na-zamku/Cervene_Svrsek.png', '/cards/zivot-na-zamku/Cervene_Spodek.png', '/cards/zivot-na-zamku/Cervene_10.png', '/cards/zivot-na-zamku/Cervene_9.png', '/cards/zivot-na-zamku/Cervene_8.png', '/cards/zivot-na-zamku/Cervene_7.png',
+            '/cards/zivot-na-zamku/Zelene_Eso.png', '/cards/zivot-na-zamku/Zelene_Kral.png', '/cards/zivot-na-zamku/Zelene_Svrsek.png', '/cards/zivot-na-zamku/Zelene_Spodek.png', '/cards/zivot-na-zamku/Zelene_10.png', '/cards/zivot-na-zamku/Zelene_9.png', '/cards/zivot-na-zamku/Zelene_8.png', '/cards/zivot-na-zamku/Zelene_7.png',
+            '/cards/zivot-na-zamku/Zaludy_Eso.png', '/cards/zivot-na-zamku/Zaludy_Kral.png', '/cards/zivot-na-zamku/Zaludy_Svrsek.png', '/cards/zivot-na-zamku/Zaludy_Spodek.png', '/cards/zivot-na-zamku/Zaludy_10.png', '/cards/zivot-na-zamku/Zaludy_9.png', '/cards/zivot-na-zamku/Zaludy_8.png', '/cards/zivot-na-zamku/Zaludy_7.png',
+            '/cards/zivot-na-zamku/Kule_Eso.png', '/cards/zivot-na-zamku/Kule_Kral.png', '/cards/zivot-na-zamku/Kule_Svrsek.png', '/cards/zivot-na-zamku/Kule_Spodek.png', '/cards/zivot-na-zamku/Kule_10.png', '/cards/zivot-na-zamku/Kule_9.png', '/cards/zivot-na-zamku/Kule_8.png', '/cards/zivot-na-zamku/Kule_7.png'
         ]
     },
     {

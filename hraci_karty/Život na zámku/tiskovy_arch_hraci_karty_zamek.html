@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Tiskový arch – Hrací karty: Život na zámku</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #fff; }
+        .page {
+            width: 210mm; height: 297mm;
+            position: relative; overflow: hidden;
+            page-break-after: always;
+        }
+        .card {
+            position: absolute;
+            width: 62mm; height: 88mm;
+            background-size: cover;
+            background-position: center;
+            border-radius: 4mm;
+            overflow: hidden;
+        }
+        @media print {
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Strana 1: Červené (8 karet) + 1 Zelená -->
+    <div class="page">
+        <div class="card" style="left:9mm; top:14mm; background-image: url('finalni_karty/Červené_Eso.png');"></div>
+        <div class="card" style="left:74mm; top:14mm; background-image: url('finalni_karty/Červené_Král.png');"></div>
+        <div class="card" style="left:139mm; top:14mm; background-image: url('finalni_karty/Červené_Svršek.png');"></div>
+        <div class="card" style="left:9mm; top:105mm; background-image: url('finalni_karty/Červené_Spodek.png');"></div>
+        <div class="card" style="left:74mm; top:105mm; background-image: url('finalni_karty/Červené_10.png');"></div>
+        <div class="card" style="left:139mm; top:105mm; background-image: url('finalni_karty/Červené_9.png');"></div>
+        <div class="card" style="left:9mm; top:196mm; background-image: url('finalni_karty/Červené_8.png');"></div>
+        <div class="card" style="left:74mm; top:196mm; background-image: url('finalni_karty/Červené_7.png');"></div>
+        <div class="card" style="left:139mm; top:196mm; background-image: url('finalni_karty/Zelené_Eso.png');"></div>
+    </div>
+
+    <!-- Strana 2: Zelené (7 karet) + 2 Kule -->
+    <div class="page">
+        <div class="card" style="left:9mm; top:14mm; background-image: url('finalni_karty/Zelené_Král.png');"></div>
+        <div class="card" style="left:74mm; top:14mm; background-image: url('finalni_karty/Zelené_Svršek.png');"></div>
+        <div class="card" style="left:139mm; top:14mm; background-image: url('finalni_karty/Zelené_Spodek.png');"></div>
+        <div class="card" style="left:9mm; top:105mm; background-image: url('finalni_karty/Zelené_10.png');"></div>
+        <div class="card" style="left:74mm; top:105mm; background-image: url('finalni_karty/Zelené_9.png');"></div>
+        <div class="card" style="left:139mm; top:105mm; background-image: url('finalni_karty/Zelené_8.png');"></div>
+        <div class="card" style="left:9mm; top:196mm; background-image: url('finalni_karty/Zelené_7.png');"></div>
+        <div class="card" style="left:74mm; top:196mm; background-image: url('finalni_karty/Kule_Eso.png');"></div>
+        <div class="card" style="left:139mm; top:196mm; background-image: url('finalni_karty/Kule_Král.png');"></div>
+    </div>
+
+    <!-- Strana 3: Kule (6 karet) + 3 Žaludy -->
+    <div class="page">
+        <div class="card" style="left:9mm; top:14mm; background-image: url('finalni_karty/Kule_Svršek.png');"></div>
+        <div class="card" style="left:74mm; top:14mm; background-image: url('finalni_karty/Kule_Spodek.png');"></div>
+        <div class="card" style="left:139mm; top:14mm; background-image: url('finalni_karty/Kule_10.png');"></div>
+        <div class="card" style="left:9mm; top:105mm; background-image: url('finalni_karty/Kule_9.png');"></div>
+        <div class="card" style="left:74mm; top:105mm; background-image: url('finalni_karty/Kule_8.png');"></div>
+        <div class="card" style="left:139mm; top:105mm; background-image: url('finalni_karty/Kule_7.png');"></div>
+        <div class="card" style="left:9mm; top:196mm; background-image: url('finalni_karty/Žaludy_Eso.png');"></div>
+        <div class="card" style="left:74mm; top:196mm; background-image: url('finalni_karty/Žaludy_Král.png');"></div>
+        <div class="card" style="left:139mm; top:196mm; background-image: url('finalni_karty/Žaludy_Svršek.png');"></div>
+    </div>
+
+    <!-- Strana 4: Žaludy (5 zbývajících karet) -->
+    <div class="page">
+        <div class="card" style="left:9mm; top:14mm; background-image: url('finalni_karty/Žaludy_Spodek.png');"></div>
+        <div class="card" style="left:74mm; top:14mm; background-image: url('finalni_karty/Žaludy_10.png');"></div>
+        <div class="card" style="left:139mm; top:14mm; background-image: url('finalni_karty/Žaludy_9.png');"></div>
+        <div class="card" style="left:9mm; top:105mm; background-image: url('finalni_karty/Žaludy_8.png');"></div>
+        <div class="card" style="left:74mm; top:105mm; background-image: url('finalni_karty/Žaludy_7.png');"></div>
+    </div>
+</body>
+</html>

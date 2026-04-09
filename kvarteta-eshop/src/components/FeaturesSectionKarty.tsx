@@ -17,10 +17,10 @@ const features = [
         subtitle: 'vizuály',
         desc: 'Každá edice má vlastní duši a nádherné, plně autorské ilustrace. Spojujeme tradiční herní zážitek s moderním uměním, které pozvedne každou partii.',
         images: [
-            '/cards/prsi/prsi_srdce_K.webp',
-            '/cards/prsi/prsi_kule_A.webp',
-            '/cards/prsi/prsi_listy_J.webp',
-            '/cards/prsi/prsi_zaludy_Q.webp'
+            '/cards/epicka-draci-edice/Cervene_Kral.png',
+            '/cards/epicka-draci-edice/Kule_Eso.png',
+            '/cards/epicka-draci-edice/Zelene_Spodek.png',
+            '/cards/epicka-draci-edice/Zaludy_Svrsek.png'
         ],
         imageAlt: 'Ukázka autorských ilustrací hracích karet'
     },
@@ -45,14 +45,14 @@ const features = [
         subtitle: 'fotografie',
         desc: 'Vytvořte z karet dokonalý osobní dárek. V našem jednoduchém editoru si na karty snadno vložíte vlastní fotografie nebo firemní logo.',
         images: [
-            '/cards/prsi/prsi_kule_K.webp',
-            '/cards/carodejnice/eso_srdce_oznaceno.png',
-            '/cards/prsi/prsi_srdce_A.webp',
-            '/cards/carodejnice/kral_listy_oznaceno.png',
-            '/cards/prsi/prsi_zaludy_10.webp',
-            '/cards/carodejnice/devitka_srdce_oznaceno.png',
-            '/cards/prsi/prsi_listy_A.webp',
-            '/cards/carodejnice/sedmicka_zaludy_oznaceno.png'
+            '/cards/epicka-draci-edice/Kule_Kral.png',
+            '/cards/carodejnice/Cervene_Eso.png',
+            '/cards/epicka-draci-edice/Cervene_Eso.png',
+            '/cards/carodejnice/Zelene_Kral.png',
+            '/cards/epicka-draci-edice/Zaludy_10.png',
+            '/cards/carodejnice/Cervene_9.png',
+            '/cards/epicka-draci-edice/Zelene_Eso.png',
+            '/cards/carodejnice/Zaludy_7.png'
         ],
         imageAlt: 'Možnost personalizace hracích karet'
     }

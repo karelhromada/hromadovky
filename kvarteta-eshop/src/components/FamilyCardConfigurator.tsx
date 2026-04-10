@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Upload, ZoomIn, Move, Trash2, Check, CreditCard, ChevronRight } from 'lucide-react';
+import { Upload, ZoomIn, Trash2, Check, CreditCard, ChevronRight } from 'lucide-react';
 import { backgrounds } from '../data/backgrounds';
 import './FamilyCardConfigurator.css';
 

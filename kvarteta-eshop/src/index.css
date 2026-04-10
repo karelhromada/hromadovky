@@ -71,11 +71,12 @@ button {
 /* Glass panel utility */
 .glass-panel {
   background: var(--glass-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
   border-radius: 24px;
+  transform: translateZ(0); /* Ensure hardware acceleration during scroll */
 }
 
 /* Animations */
@@ -171,8 +172,10 @@ button {
   height: 80vw;
   background: radial-gradient(circle, rgba(235, 203, 116, 0.4) 0%, rgba(255, 255, 255, 0) 70%);
   border-radius: 50%;
-  filter: blur(80px);
+  filter: blur(40px); /* Reduced from 80px for better Chrome performance */
   animation: meshFlow 20s infinite ease-in-out alternate;
+  will-change: transform; /* Force hardware acceleration */
+  pointer-events: none;
 }
 
 .pastel-mesh-bg::before {

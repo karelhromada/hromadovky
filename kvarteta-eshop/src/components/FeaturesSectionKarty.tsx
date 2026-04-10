@@ -30,12 +30,11 @@ const features = [
         subtitle: 'zadní strany',
         desc: 'Přizpůsobte si balíček svému stylu. Nabízíme desítky nádherných rubů od klasického plátna až po šupinaté dračí kůže a magickou noční oblohu.',
         images: [
-            '/cards/neutral_back_stars.webp',
-            '/cards/card_back_pattern.webp',
-            '/cards/pexeso_back_blue_geo.webp',
-            '/cards/pexeso_back_red_geo.webp',
-            '/cards/pexeso_back_linen.webp',
-            '/cards/dragon_scales_metallic.webp'
+            '/cards/backs/back_1.png',
+            '/cards/backs/back_2.png',
+            '/cards/backs/back_3.png',
+            '/cards/backs/back_7.png',
+            '/cards/backs/back_8.png'
         ],
         imageAlt: 'Ukázka zadní strany karet'
     },

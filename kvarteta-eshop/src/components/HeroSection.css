@@ -122,8 +122,8 @@
 
 .cards-stage {
     position: relative;
-    width: 300px;
-    height: 407px; /* Perfect aspect ratio for 678x921 cards */
+    width: 250px;
+    height: 339px; /* Perfect aspect ratio for 678x921 cards */
     transform-style: preserve-3d;
     z-index: 10;
     transition: transform 0.1s ease-out;

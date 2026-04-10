@@ -34,7 +34,7 @@
     grid-template-rows: repeat(3, 1fr);
     gap: 15px;
     width: 100%;
-    max-width: 500px;
+    max-width: 420px;
     transform-style: preserve-3d;
     /* This will be controlled by React for parallax, but provide a default base */
     transform: rotateX(15deg) rotateY(-15deg);

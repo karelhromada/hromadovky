@@ -43,7 +43,7 @@
 
 .karty-deck-visual {
     position: relative;
-    height: 240px;
+    height: 220px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -53,8 +53,8 @@
 
 /* Base deck box representation */
 .karty-deck-box {
-    width: 120px;
-    height: 200px;
+    width: 110px;
+    height: 183px;
     background-size: cover;
     background-position: center;
     border-radius: 8px;
@@ -68,8 +68,8 @@
 /* Cards sliding out on hover */
 .karty-slide-card {
     position: absolute;
-    width: 120px;
-    height: 200px;
+    width: 110px;
+    height: 183px;
     background-size: cover;
     background-position: center;
     border-radius: 8px;

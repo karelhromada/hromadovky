@@ -41,6 +41,9 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
+    will-change: transform;
+    contain: layout; /* Helps Chrome isolate this expensive grid */
+    transform: translateZ(0); /* Force GPU layer */
 }
 
 @media (min-width: 480px) {

@@ -342,17 +342,18 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
                             </div>
 
                             <button 
-                                className="finish-order-btn group"
+                                className="finish-order-btn"
                                 onClick={handleFinish}
                             >
-                                <span className="flex items-center justify-center gap-3">
+                                <div className="finish-btn-shine"></div>
+                                <div className="finish-btn-content">
                                     <CreditCard size={24} />
                                     Objednat vlastní sadu
-                                    <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
-                                </span>
+                                    <ChevronRight size={20} />
+                                </div>
                             </button>
                             
-                            <div className="flex items-center gap-2 mt-4 justify-center text-xs text-gray-400">
+                            <div className="shipping-info-row">
                                 <Check size={14} className="text-green-500" />
                                 <span>Expedujeme do 48 hodin od schválení</span>
                             </div>

@@ -361,22 +361,65 @@
 .finish-order-btn {
     margin-top: 2rem;
     width: 100%;
-    padding: 1.5rem;
-    background: #d4af37;
-    color: #ffffff;
+    padding: 1.2rem;
+    background: linear-gradient(135deg, #d4af37 0%, #f9e596 50%, #d4af37 100%);
+    color: #111;
     border: none;
-    border-radius: 1rem;
+    border-radius: 12px;
     font-size: 1.2rem;
     font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
 }
 
 .finish-order-btn:hover {
-    background: #ca8a04;
-    transform: translateY(-2px);
-    box-shadow: 0 15px 30px rgba(212, 175, 55, 0.3);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(212, 175, 55, 0.6);
+}
+
+.finish-order-btn:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.finish-btn-shine {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    transform: skewX(-20deg);
+    animation: btnShine 3s infinite;
+    z-index: 1;
+}
+
+.finish-btn-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.shipping-info-row {
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: #94a3b8;
+    font-size: 0.8rem;
+    font-weight: 600;
 }
 
 .price-tag {
@@ -401,4 +444,18 @@
 .backs-selection-horizontal::-webkit-scrollbar-thumb {
     background: #cbd5e1;
     border-radius: 3px;
+}
+
+@keyframes btnShine {
+    0% {
+        left: -100%;
+    }
+
+    20% {
+        left: 200%;
+    }
+
+    100% {
+        left: 200%;
+    }
 }

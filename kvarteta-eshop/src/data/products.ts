@@ -61,11 +61,9 @@ export const kartyProducts = [
         description: 'Epická Minecraft edice pro fanoušky kultovní hry. 32 unikátních full-art ilustrací v voxelovém stylu – postavy, příšery a předměty ze světa Minecraftu. Ideální pro děti i dospělé nadšence!',
         price: 349,
         themeColor: '#4CAF50',
-        images: [
             '/cards/minecraft-prsi/karta_Srdce_Kral.webp',
             '/cards/minecraft-prsi/karta_Kule_Eso.webp',
-            '/cards/minecraft-prsi/karta_Piky_Svrsek.webp'
-        ],
+            '/cards/minecraft-prsi/karta_Srdce_Svrsek.webp'
         boxImage: '/cards/minecraft-prsi/karta_Srdce_Kral.webp',
         isThematic: true,
         sampleValue: 'K',

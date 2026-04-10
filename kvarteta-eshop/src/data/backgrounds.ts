@@ -7,11 +7,11 @@ export interface Background {
 
 export const backgrounds: Background[] = [
   // EPIC SERIES
-  { id: 'epic_gold', name: 'Zlaté šupiny (Epic)', url: '/cards/backs/epic_gold_scales.png', category: 'epic' },
-  { id: 'epic_lava', name: 'Lávový proud (Epic)', url: '/cards/backs/epic_lava_flow.png', category: 'epic' },
-  { id: 'epic_ice', name: 'Ledový krystal (Epic)', url: '/cards/backs/epic_ice_crystal.png', category: 'epic' },
-  { id: 'epic_arcane', name: 'Magický pergamen (Epic)', url: '/cards/backs/epic_arcane_parchment.png', category: 'epic' },
-  { id: 'epic_obsidian', name: 'Runový obsidián (Epic)', url: '/cards/backs/epic_runed_obsidian.png', category: 'epic' },
+  { id: 'epic_gold', name: 'Zlaté šupiny (Epic)', url: '/cards/backs/epic_gold_scales.webp', category: 'epic' },
+  { id: 'epic_lava', name: 'Lávový proud (Epic)', url: '/cards/backs/epic_lava_flow.webp', category: 'epic' },
+  { id: 'epic_ice', name: 'Ledový krystal (Epic)', url: '/cards/backs/epic_ice_crystal.webp', category: 'epic' },
+  { id: 'epic_arcane', name: 'Magický pergamen (Epic)', url: '/cards/backs/epic_arcane_parchment.webp', category: 'epic' },
+  { id: 'epic_obsidian', name: 'Runový obsidián (Epic)', url: '/cards/backs/epic_runed_obsidian.webp', category: 'epic' },
 
   // DRAGON SERIES
   { id: 'drag_vibrant', name: 'Krvavé šupiny', url: '/cards/dragon_scales_vibrant.webp', category: 'dragon' },
@@ -32,7 +32,7 @@ export const backgrounds: Background[] = [
   { id: 'knight_pattern', name: 'Zámecký vzor', url: '/cards/knight_back_pattern.webp', category: 'knight' },
 
   // PATTERNS & CLASSIC
-  { id: 'magical_ruby', name: 'Magický rubín', url: '/cards/neutral_back_ruby_formatted.png', category: 'pattern' },
+  { id: 'magical_ruby', name: 'Magický rubín', url: '/cards/neutral_back_ruby_formatted.webp', category: 'pattern' },
   { id: 'pattern_dark', name: 'Tajemný vzor', url: '/cards/card_back_pattern.webp', category: 'pattern' },
   { id: 'sugar_glaze', name: 'Cukrová poleva', url: '/cards/sugar_glaze_pattern.webp', category: 'pattern' },
   { id: 'stars_night', name: 'Noční obloha', url: '/cards/neutral_back_stars.webp', category: 'pattern' },

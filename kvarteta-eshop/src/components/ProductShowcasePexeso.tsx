@@ -11,9 +11,9 @@ interface ProductShowcaseProps {
 }
 
 const backgrounds = [
-    '/cards/backs/epic_gold_scales.png', '/cards/backs/epic_lava_flow.png',
-    '/cards/backs/epic_ice_crystal.png', '/cards/backs/epic_arcane_parchment.png',
-    '/cards/backs/epic_runed_obsidian.png',
+    '/cards/backs/epic_gold_scales.webp', '/cards/backs/epic_lava_flow.webp',
+    '/cards/backs/epic_ice_crystal.webp', '/cards/backs/epic_arcane_parchment.webp',
+    '/cards/backs/epic_runed_obsidian.webp',
     '/cards/card_back_pattern.webp', 
     '/cards/dragon_scales_seamless.webp',
     '/cards/dragon_scales_realistic_1.webp', 
@@ -220,38 +220,32 @@ const ProductCardInteractive = ({ product, onAddToCartClick }: { product: any, o
                     style={{ backgroundImage: `url('${images[0]}')` }}
                 ></div>
 
-                {/* 3x3 Grid that appears on hover */}
-                <div className="pexeso-hover-grid">
-                    {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((index) => {
-                        // Spread the character images across the 9 tiles. 
-                        // If we have fewer than 9 images, modulo wrap them.
-                        const imgIndex = index % images.length;
-                        const img = images[imgIndex];
+                {/* 3x3 Grid that appears on hover - optimized to only render when needed */}
+                {isHovered && (
+                    <div className="pexeso-hover-grid">
+                        {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((index) => {
+                            // Spread the character images across the 9 tiles. 
+                            // If we have fewer than 9 images, modulo wrap them.
+                            const imgIndex = index % images.length;
+                            const img = images[imgIndex];
 
-                        // We stagger the reveal so it creates a sweeping effect
-                        const isRevealed = revealedCards.includes(index);
+                            // We stagger the reveal so it creates a sweeping effect
+                            const isRevealed = revealedCards.includes(index);
 
-                        // Generate a random stable back texture once per grid load
-                        const backTexture = React.useMemo(() => {
-                            // Assign different backs based on the product series name to keep it stable
-                            if (product.id.includes('kocky')) return '/cards/cat_fur_orange.webp';
-                            if (product.id.includes('dinosauri')) return '/cards/dragon_scales_realistic_1.webp';
-                            if (product.id.includes('dracci')) return '/cards/dragon_scales_realistic_2.webp';
-                            if (product.id.includes('draci')) return '/cards/dragon_scales_vibrant.webp';
-                            if (product.id.includes('dravci')) return '/cards/card_back_pattern.webp';
-                            return backgrounds[index % backgrounds.length];
-                        }, [product.id, index]);
+                            // Generate a random stable back texture once per grid load
+                            const backTexture = backgrounds[index % backgrounds.length];
 
-                        return (
-                            <div key={index} className={`pexeso-mini-card ${isRevealed ? 'revealed' : ''}`}>
-                                <div className="pexeso-mini-inner">
-                                    <div className="pexeso-mini-front" style={{ backgroundImage: `url('${backTexture}')` }}></div>
-                                    <div className="pexeso-mini-back" style={{ backgroundImage: `url('${img}')` }}></div>
+                            return (
+                                <div key={index} className={`pexeso-mini-card ${isRevealed ? 'revealed' : ''}`}>
+                                    <div className="pexeso-mini-inner">
+                                        <div className="pexeso-mini-front" style={{ backgroundImage: `url('${backTexture}')` }}></div>
+                                        <div className="pexeso-mini-back" style={{ backgroundImage: `url('${img}')` }}></div>
+                                    </div>
                                 </div>
-                            </div>
-                        );
-                    })}
-                </div>
+                            );
+                        })}
+                    </div>
+                )}
 
                 <div className="holographic-shine" style={{ transform: "translateZ(41px)" }}></div>
             </div>

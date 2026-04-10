@@ -3,7 +3,7 @@ import { Upload, Sparkles } from 'lucide-react';
 import './CardCreator.css';
 
 const backgrounds = [
-    { url: '/cards/neutral_back_ruby_formatted.png', name: 'Rubín' },
+    { url: '/cards/neutral_back_ruby_formatted.webp', name: 'Rubín' },
     { url: '/cards/knight_back_iron_steel.webp', name: 'Ocel' },
     { url: '/cards/knight_back_crest.webp', name: 'Erb' },
     { url: '/cards/knight_back_gate.webp', name: 'Brána' },
@@ -149,6 +149,98 @@ const StatBox = memo(({ index, value, label, shape }: StatBoxProps) => {
     );
 });
 
+interface LiveCardPreviewProps {
+    isBack: boolean;
+    isMini?: boolean;
+    extraWrapperStyles?: any;
+    mainTextColor: string;
+    safeFontFamily: string;
+    layout: string;
+    bgImage: string;
+    idText: string;
+    titleText: string;
+    hideStats: boolean;
+    stats: any[];
+    customStats: any;
+    previewSlot: string;
+    useCustomPhotos: boolean;
+    customDescriptions: any;
+}
+
+const LiveCardPreview = memo(({ 
+    isBack, 
+    isMini = false, 
+    extraWrapperStyles = {}, 
+    mainTextColor, 
+    safeFontFamily,
+    layout,
+    bgImage,
+    idText,
+    titleText,
+    hideStats,
+    stats,
+    customStats,
+    previewSlot,
+    useCustomPhotos,
+    customDescriptions
+}: LiveCardPreviewProps) => {
+    if (isBack) {
+        return (
+            <div className={`live-card-wrapper back-card-preview`} style={{ '--theme-color': mainTextColor, fontFamily: safeFontFamily, willChange: 'transform', transform: 'translateZ(0)', ...extraWrapperStyles } as any}>
+                <div className="live-card" style={isMini ? { width: '100%', height: '100%' } : {}}>
+                    <img src={bgImage} className="card-image-main" style={{ filter: 'none', ...(isMini ? { width: '100%', height: '100%', objectFit: 'cover', borderRadius: '16px' } : {}) }} alt="back design" />
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="live-card-wrapper" style={{ '--theme-color': mainTextColor, fontFamily: safeFontFamily, willChange: 'transform', transform: 'translateZ(0)', ...extraWrapperStyles } as any}>
+            <div className={`live-card ${isMini ? '' : 'front-card-preview'} has-layout-${layout}`} style={{ backgroundImage: `url('${bgImage}')`, backgroundSize: 'cover', backgroundPosition: 'center', border: 'none', overflow: 'hidden' }}>
+                <div className="card-overlay-bottom" style={{ boxShadow: 'inset 0 -130px 150px -20px rgba(0, 0, 0, 0.2)', zIndex: isMini ? 2 : undefined }}></div>
+
+                <div className={`card-id-badge ${layout === 'corners' ? '' : 'pos-tl'}`} style={{ background: '#f8f9fa', color: '#111', zIndex: isMini ? 15 : undefined }}>
+                    {idText}
+                </div>
+
+                {!hideStats && layout !== 'corners' && (
+                    <div className="card-header-info" style={{ zIndex: isMini ? 10 : undefined }}>
+                        <h1 className="card-hero-name" style={{ color: mainTextColor, fontFamily: safeFontFamily }}>
+                            {titleText}
+                        </h1>
+                    </div>
+                )}
+
+                {/* Hexagons */}
+                {!hideStats && (
+                    <div className={`stats-layout-wrapper layout-${layout}`} style={{ zIndex: isMini ? 10 : undefined }}>
+                        {[0, 1, 2, 3].map(i => (
+                            <StatBox
+                                key={i}
+                                index={i}
+                                value={useCustomPhotos ? (customStats[previewSlot]?.[i] ?? stats[i].value) : stats[i].value}
+                                label={stats[i].label}
+                                shape="hexagon" // assuming hexagon as default, could be dynamic
+                            />
+                        ))}
+                    </div>
+                )}
+
+                <div className="card-footer-info" style={{ zIndex: isMini ? 10 : undefined }}>
+                    {(!hideStats && layout === 'corners') && (
+                        <h1 className="card-hero-name" style={{ color: mainTextColor, fontFamily: safeFontFamily }}>
+                            {titleText}
+                        </h1>
+                    )}
+                    {useCustomPhotos && customDescriptions[previewSlot] && (
+                        <p className="card-hero-desc" style={{ fontFamily: safeFontFamily }}><i>{customDescriptions[previewSlot]}</i></p>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+});
+
 const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
     const [letDesignOnUs, setLetDesignOnUs] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -225,67 +317,19 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
     const mainTextColor = getMainTextColor(useCustomPhotos ? previewSlot : cardData.idBadge);
     const safeFontFamily = ['other', 'unknown'].includes(cardData.fontFamily) ? "'Outfit', sans-serif" : cardData.fontFamily;
 
-    const renderCardPreview = (isBack: boolean, extraWrapperStyles: any = {}, isMini: boolean = false) => {
-        if (isBack) {
-            return (
-                <div className={`live-card-wrapper back-card-preview`} style={{ '--theme-color': mainTextColor, fontFamily: safeFontFamily, ...extraWrapperStyles } as any}>
-                    <div className="live-card" style={isMini ? { width: '100%', height: '100%' } : {}}>
-                        <img src={cardData.bgImage} className="card-image-main" style={{ filter: 'none', ...(isMini ? { width: '100%', height: '100%', objectFit: 'cover', borderRadius: '16px' } : {}) }} alt="back design" />
-                    </div>
-                </div>
-            );
-        }
-
-        const layout = useCustomPhotos ? (customStatLayouts[previewSlot] || cardData.statLayout) : cardData.statLayout;
-        const bgImage = useCustomPhotos && customPhotos[previewSlot] ? customPhotos[previewSlot] : cardData.frontImage;
-        const idText = useCustomPhotos ? previewSlot : cardData.idBadge;
-        const titleText = useCustomPhotos ? (customCardNames[previewSlot] || 'NÁZEV KARTY') : 'NÁZEV KARTY';
-
-        return (
-            <div className="live-card-wrapper" style={{ '--theme-color': mainTextColor, fontFamily: safeFontFamily, ...extraWrapperStyles } as any}>
-                <div className={`live-card ${isMini ? '' : 'front-card-preview'} has-layout-${layout}`} style={{ backgroundImage: `url('${bgImage}')`, backgroundSize: 'cover', backgroundPosition: 'center', border: 'none', overflow: 'hidden' }}>
-                    <div className="card-overlay-bottom" style={{ boxShadow: 'inset 0 -130px 150px -20px rgba(0, 0, 0, 0.2)', zIndex: isMini ? 2 : undefined }}></div>
-
-                    <div className={`card-id-badge ${layout === 'corners' ? '' : 'pos-tl'}`} style={{ background: '#f8f9fa', color: '#111', zIndex: isMini ? 15 : undefined }}>
-                        {idText}
-                    </div>
-
-                    {!hideStats && layout !== 'corners' && (
-                        <div className="card-header-info" style={{ zIndex: isMini ? 10 : undefined }}>
-                            <h1 className="card-hero-name" style={{ color: mainTextColor, fontFamily: safeFontFamily }}>
-                                {titleText}
-                            </h1>
-                        </div>
-                    )}
-
-                    {/* Hexagons */}
-                    {!hideStats && (
-                        <div className={`stats-layout-wrapper layout-${layout}`} style={{ zIndex: isMini ? 10 : undefined }}>
-                            {[0, 1, 2, 3].map(i => (
-                                <StatBox
-                                    key={i}
-                                    index={i}
-                                    value={useCustomPhotos ? (customStats[previewSlot]?.[i] ?? cardData.stats[i].value) : cardData.stats[i].value}
-                                    label={cardData.stats[i].label}
-                                    shape={cardData.statShape}
-                                />
-                            ))}
-                        </div>
-                    )}
-
-                    <div className="card-footer-info" style={{ zIndex: isMini ? 10 : undefined }}>
-                        {(!hideStats && layout === 'corners') && (
-                            <h1 className="card-hero-name" style={{ color: mainTextColor, fontFamily: safeFontFamily }}>
-                                {titleText}
-                            </h1>
-                        )}
-                        {useCustomPhotos && customDescriptions[previewSlot] && (
-                            <p className="card-hero-desc" style={{ fontFamily: safeFontFamily }}><i>{customDescriptions[previewSlot]}</i></p>
-                        )}
-                    </div>
-                </div>
-            </div>
-        );
+    const previewProps = {
+        mainTextColor,
+        safeFontFamily,
+        layout: useCustomPhotos ? (customStatLayouts[previewSlot] || cardData.statLayout) : cardData.statLayout,
+        bgImage: useCustomPhotos && customPhotos[previewSlot] ? customPhotos[previewSlot] : cardData.frontImage,
+        idText: useCustomPhotos ? previewSlot : cardData.idBadge,
+        titleText: useCustomPhotos ? (customCardNames[previewSlot] || 'NÁZEV KARTY') : 'NÁZEV KARTY',
+        hideStats,
+        stats: cardData.stats,
+        customStats,
+        previewSlot,
+        useCustomPhotos,
+        customDescriptions
     };
 
     return (
@@ -756,10 +800,10 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
 
                 <div className="creator-preview">
                     {/* Přední strana */}
-                    {renderCardPreview(false)}
+                    <LiveCardPreview {...previewProps} isBack={false} />
 
                     {/* Zadní strana */}
-                    {renderCardPreview(true)}
+                    <LiveCardPreview {...previewProps} isBack={true} bgImage={cardData.bgImage} />
                 </div>
             </div>
 
@@ -797,12 +841,23 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
                                 }}>
                                     {/* Front Card Mini Preview */}
                                     <div style={{ backfaceVisibility: 'hidden', width: '100%' }}>
-                                        {renderCardPreview(false, { margin: 0, boxShadow: '0 20px 40px rgba(0,0,0,0.3)' }, true)}
+                                        <LiveCardPreview 
+                                            {...previewProps} 
+                                            isBack={false} 
+                                            isMini={true} 
+                                            extraWrapperStyles={{ margin: 0, boxShadow: '0 20px 40px rgba(0,0,0,0.3)' }} 
+                                        />
                                     </div>
 
                                     {/* Back Card Preview */}
                                     <div style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)', position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', height: '100%' }}>
-                                        {renderCardPreview(true, { margin: 0, boxShadow: '0 20px 40px rgba(0,0,0,0.3)', width: '100%', height: '100%' }, true)}
+                                        <LiveCardPreview 
+                                            {...previewProps} 
+                                            isBack={true} 
+                                            isMini={true} 
+                                            bgImage={cardData.bgImage}
+                                            extraWrapperStyles={{ margin: 0, boxShadow: '0 20px 40px rgba(0,0,0,0.3)', width: '100%', height: '100%' }} 
+                                        />
                                     </div>
                                 </div>
                             </div>

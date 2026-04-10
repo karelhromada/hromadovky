@@ -71,32 +71,46 @@ const ProductCardInteractive = ({ product, onAddToCartClick }: { product: any, o
                     </div>
                 )}
 
-                {/* Main and Fanned Cards (rendered concurrently for crossfade) */}
+                {/* Main Images Loop - Persistent in DOM for smooth crossfade */}
                 {shuffledImages.map((imgUrl: string, idx: number) => (
-                    <React.Fragment key={`${product.id}-${idx}`}>
-                        {/* Fanned Left */}
-                        <img
-                            src={shuffledImages[(idx + 1) % shuffledImages.length]}
-                            className={`ps-real-image ps-fanned ps-fanned-left`}
-                            style={{ opacity: isHovered && idx === activeIndex ? 0.9 : 0 }}
-                            alt=""
-                        />
-                        {/* Fanned Right */}
-                        <img
-                            src={shuffledImages[(idx + 2) % shuffledImages.length]}
-                            className={`ps-real-image ps-fanned ps-fanned-right`}
-                            style={{ opacity: isHovered && idx === activeIndex ? 0.9 : 0 }}
-                            alt=""
-                        />
-                        {/* Main Image */}
-                        <img
-                            src={imgUrl}
-                            alt={`${product.name} card ${idx}`}
-                            className="ps-real-image ps-main-image"
-                            style={{ opacity: idx === activeIndex ? 1 : 0 }}
-                        />
-                    </React.Fragment>
+                    <img
+                        key={`${product.id}-${idx}`}
+                        src={imgUrl}
+                        alt={`${product.name} card ${idx}`}
+                        className="ps-real-image ps-main-image"
+                        style={{ 
+                            opacity: idx === activeIndex ? 1 : 0,
+                            zIndex: idx === activeIndex ? 30 : 25,
+                            willChange: 'opacity'
+                        }}
+                    />
                 ))}
+
+                {/* Fanned decorations - Persistent in DOM for smooth fanning effect */}
+                {shuffledImages.length > 2 && (
+                    <>
+                        <img
+                            src={shuffledImages[(activeIndex + 1) % shuffledImages.length]}
+                            className="ps-real-image ps-fanned ps-fanned-left"
+                            style={{ 
+                                opacity: isHovered ? 0.9 : 0,
+                                visibility: isHovered ? 'visible' : 'hidden',
+                                willChange: 'transform, opacity'
+                            }}
+                            alt=""
+                        />
+                        <img
+                            src={shuffledImages[(activeIndex + 2) % shuffledImages.length]}
+                            className="ps-real-image ps-fanned ps-fanned-right"
+                            style={{ 
+                                opacity: isHovered ? 0.9 : 0,
+                                visibility: isHovered ? 'visible' : 'hidden',
+                                willChange: 'transform, opacity'
+                            }}
+                            alt=""
+                        />
+                    </>
+                )}
             </div>
 
             <div className="ps-info">

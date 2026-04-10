@@ -17,10 +17,10 @@ const features = [
         subtitle: 'vizuály',
         desc: 'Každá edice má vlastní duši a nádherné, plně autorské ilustrace. Spojujeme tradiční herní zážitek s moderním uměním, které pozvedne každou partii.',
         images: [
-            '/cards/epicka-draci-edice/Cervene_Kral.png',
-            '/cards/epicka-draci-edice/Kule_Eso.png',
-            '/cards/epicka-draci-edice/Zelene_Spodek.png',
-            '/cards/epicka-draci-edice/Zaludy_Svrsek.png'
+            '/cards/epicka-draci-edice/Cervene_Kral.webp',
+            '/cards/epicka-draci-edice/Kule_Eso.webp',
+            '/cards/epicka-draci-edice/Zelene_Spodek.webp',
+            '/cards/epicka-draci-edice/Zaludy_Svrsek.webp'
         ],
         imageAlt: 'Ukázka autorských ilustrací hracích karet'
     },
@@ -30,11 +30,11 @@ const features = [
         subtitle: 'zadní strany',
         desc: 'Přizpůsobte si balíček svému stylu. Nabízíme desítky nádherných rubů od klasického plátna až po šupinaté dračí kůže a magickou noční oblohu.',
         images: [
-            '/cards/backs/back_1.png',
-            '/cards/backs/back_2.png',
-            '/cards/backs/back_3.png',
-            '/cards/backs/back_7.png',
-            '/cards/backs/back_8.png'
+            '/cards/backs/back_1.webp',
+            '/cards/backs/back_2.webp',
+            '/cards/backs/back_3.webp',
+            '/cards/backs/back_7.webp',
+            '/cards/backs/back_8.webp'
         ],
         imageAlt: 'Ukázka zadní strany karet'
     },
@@ -44,14 +44,14 @@ const features = [
         subtitle: 'fotografie',
         desc: 'Vytvořte z karet dokonalý osobní dárek. V našem jednoduchém editoru si na karty snadno vložíte vlastní fotografie nebo firemní logo.',
         images: [
-            '/cards/epicka-draci-edice/Kule_Kral.png',
-            '/cards/carodejnice/Cervene_Eso.png',
-            '/cards/epicka-draci-edice/Cervene_Eso.png',
-            '/cards/carodejnice/Zelene_Kral.png',
-            '/cards/epicka-draci-edice/Zaludy_10.png',
-            '/cards/carodejnice/Cervene_9.png',
-            '/cards/epicka-draci-edice/Zelene_Eso.png',
-            '/cards/carodejnice/Zaludy_7.png'
+            '/cards/epicka-draci-edice/Kule_Kral.webp',
+            '/cards/carodejnice/Cervene_Eso.webp',
+            '/cards/epicka-draci-edice/Cervene_Eso.webp',
+            '/cards/carodejnice/Zelene_Kral.webp',
+            '/cards/epicka-draci-edice/Zaludy_10.webp',
+            '/cards/carodejnice/Cervene_9.webp',
+            '/cards/epicka-draci-edice/Zelene_Eso.webp',
+            '/cards/carodejnice/Zaludy_7.webp'
         ],
         imageAlt: 'Možnost personalizace hracích karet'
     }

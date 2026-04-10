@@ -84,7 +84,7 @@
 .btn-secondary {
     padding: 16px 32px;
     background: var(--glass-bg);
-    backdrop-filter: blur(16px);
+    backdrop-filter: blur(8px);
     border: 1px solid var(--glass-border);
     color: var(--text-primary);
     font-weight: 700;

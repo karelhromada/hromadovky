@@ -10,6 +10,8 @@
     gap: 3rem;
     margin-top: 3rem;
     align-items: flex-start;
+    transform: translateZ(0);
+    contain: paint; /* Isolate rendering for better scroll performance */
 }
 
 @media (min-width: 992px) {
@@ -20,11 +22,13 @@
 
 .creator-form {
     padding: 2rem;
-    background: var(--glass-bg);
+    background: rgba(255, 255, 255, 0.9); /* Higher opacity for performance */
     border: 1px solid var(--glass-border);
     border-radius: 20px;
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(4px); /* Minimum blur for Chrome stability */
     box-shadow: var(--glass-shadow);
+    transform: translateZ(0); 
+    contain: paint;
 }
 
 @media (max-width: 768px) {
@@ -903,19 +907,12 @@
 
 /* Original Authentic Quartet Style: Very delicate transparent fill + decorated glowing 1px border */
 .live-card-wrapper .card-hex {
-    background: rgba(0, 0, 0, 0.25) !important;
+    background: rgba(0, 0, 0, 0.4) !important;
     box-shadow: none !important;
-    border: none !important;
-    backdrop-filter: blur(2px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    backdrop-filter: none !important;
     isolation: auto !important;
-
-    /* 
-      4 drop-shadows combined simulate a crisp, glassy 1px white border.
-      The 5th drop-shadow adds a beautiful, soft aura tied to the card's theme color (A=red, B=blue, etc).
-      This perfectly decorates the shape without obscuring the background graphic!
-    */
-    filter:
-        drop-shadow(0 1px 0 rgba(255, 255, 255, 0.35)) drop-shadow(0 -1px 0 rgba(255, 255, 255, 0.35)) drop-shadow(1px 0 0 rgba(255, 255, 255, 0.35)) drop-shadow(-1px 0 0 rgba(255, 255, 255, 0.35)) drop-shadow(0 0 6px var(--theme-color)) !important;
+    filter: drop-shadow(0 0 5px var(--theme-color)) !important;
 }
 
 .live-card-wrapper .card-hex::before,

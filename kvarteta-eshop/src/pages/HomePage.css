@@ -224,13 +224,77 @@
     display: inline-flex;
     align-items: center;
     gap: 1.2rem;
-    transition: all 0.4s ease;
-    text-transform: none; /* No uppercase */
+    cursor: pointer;
+    border: none;
+    transition: box-shadow 0.3s ease;
+    text-transform: none;
 }
 
 .btn-v9-epic:hover {
-    transform: scale(1.05) translateY(-5px);
     box-shadow: 0 20px 40px rgba(197, 155, 39, 0.5);
+}
+
+/* Base pulse for main CTA */
+@keyframes pulse-gold {
+    0% {
+        box-shadow: 0 0 0 0 rgba(197, 155, 39, 0.6);
+        transform: scale(1);
+    }
+    70% {
+        box-shadow: 0 0 0 20px rgba(197, 155, 39, 0);
+        transform: scale(1.03);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(197, 155, 39, 0);
+        transform: scale(1);
+    }
+}
+
+.btn-v9-epic.pulse {
+    animation: pulse-gold 2.5s infinite ease-in-out;
+}
+
+/* Fan-out buttons container */
+.fan-buttons-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10rem;
+    z-index: 50;
+    width: 100%;
+    min-height: 400px; /* Large stable area for the fan */
+    pointer-events: none; /* Let clicks pass through to sub-buttons if needed */
+}
+
+.fan-buttons-container > * {
+    pointer-events: auto; /* Re-enable for children */
+}
+
+.sub-btn-fan {
+    position: absolute;
+    background: #fff;
+    color: var(--accent-gold);
+    border: 2px solid var(--accent-gold-light);
+    padding: 0.9rem 2.2rem;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 1.1rem;
+    white-space: nowrap;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    /* REMOVED transition: all 0.3s ease; - It was causing the jump! */
+    z-index: -1;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sub-btn-fan:hover {
+    background: var(--accent-gold);
+    color: #fff !important;
+    box-shadow: 0 15px 30px rgba(197, 155, 39, 0.3);
 }
 
 /* --- MEDIA QUERIES --- */

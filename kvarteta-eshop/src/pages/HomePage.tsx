@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { ArrowRight, Shield, Sparkles } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, Shield, Sparkles, X } from 'lucide-react';
 import './HomePage.css';
 
 const epicCards = [
@@ -18,6 +18,7 @@ const epicCards = [
 const HomePage: React.FC = () => {
     const [isOpen, setIsOpen] = React.useState(false);
     const [scale, setScale] = React.useState(1);
+    const [isExploded, setIsExploded] = React.useState(false);
 
     // Dynamic scale for the card explosion based on window width
     React.useEffect(() => {
@@ -125,16 +126,84 @@ const HomePage: React.FC = () => {
                     </div>
                 </div>
 
-                <motion.div 
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.2 }}
-                    style={{ marginTop: '10rem' }}
-                >
-                    <Link to="/kvarteta" className="btn-v9-epic">
-                        Prozkoumat naše sady <ArrowRight size={22} />
-                    </Link>
-                </motion.div>
+                {/* STABILIZED WRAPPER: Fixed height anchor to prevent Hero reflow */}
+                <div style={{ 
+                    minHeight: '80px', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    marginTop: '10rem',
+                    position: 'relative',
+                    width: '100%' 
+                }}>
+                    <div className="fan-buttons-container" style={{ margin: 0 }}>
+                        <motion.button 
+                            className={`btn-v9-epic ${!isExploded ? 'pulse' : ''}`}
+                            onClick={() => setIsExploded(!isExploded)}
+                            whileHover={{ scale: 1.05, translateY: -5 }}
+                            whileTap={{ scale: 0.98 }}
+                        >
+                            {isExploded ? 'Zavřít výběr' : 'Prozkoumat naše sady'} 
+                            {isExploded ? <X size={22} /> : <ArrowRight size={22} />}
+                        </motion.button>
+
+                        <AnimatePresence mode="popLayout">
+                            {isExploded && (
+                                <motion.div
+                                    key="kvarteta"
+                                    initial={{ x: 0, y: 0, opacity: 0, scale: 0.5 }}
+                                    animate={{ x: 320, y: -150, opacity: 1, scale: 1, rotate: 10 }}
+                                    exit={{ x: 0, y: 0, opacity: 0, scale: 0.5, rotate: 0 }}
+                                    whileHover={{ scale: 1.1, translateY: -5 }}
+                                    transition={{ 
+                                        duration: 0.8,
+                                        delay: 0.1,
+                                        ease: [0.34, 1.56, 0.64, 1]
+                                    }}
+                                    className="sub-btn-fan"
+                                >
+                                    <Link to="/kvarteta#products" style={{ color: 'inherit', textDecoration: 'none' }}>Kvarteta</Link>
+                                </motion.div>
+                            )}
+                            
+                            {isExploded && (
+                                <motion.div
+                                    key="pexeso"
+                                    initial={{ x: 0, y: 0, opacity: 0, scale: 0.5 }}
+                                    animate={{ x: 420, y: 0, opacity: 1, scale: 1, rotate: 0 }}
+                                    exit={{ x: 0, y: 0, opacity: 0, scale: 0.5, rotate: 0 }}
+                                    whileHover={{ scale: 1.1, translateY: -5 }}
+                                    transition={{ 
+                                        duration: 0.8,
+                                        delay: 0.25,
+                                        ease: [0.34, 1.56, 0.64, 1]
+                                    }}
+                                    className="sub-btn-fan"
+                                >
+                                    <Link to="/pexeso#products" style={{ color: 'inherit', textDecoration: 'none' }}>Pexeso</Link>
+                                </motion.div>
+                            )}
+
+                            {isExploded && (
+                                <motion.div
+                                    key="karty"
+                                    initial={{ x: 0, y: 0, opacity: 0, scale: 0.5 }}
+                                    animate={{ x: 320, y: 150, opacity: 1, scale: 1, rotate: -10 }}
+                                    exit={{ x: 0, y: 0, opacity: 0, scale: 0.5, rotate: 0 }}
+                                    whileHover={{ scale: 1.1, translateY: -5 }}
+                                    transition={{ 
+                                        duration: 0.8,
+                                        delay: 0.4,
+                                        ease: [0.34, 1.56, 0.64, 1]
+                                    }}
+                                    className="sub-btn-fan"
+                                >
+                                    <Link to="/karty#products" style={{ color: 'inherit', textDecoration: 'none' }}>Hrací karty</Link>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
+                </div>
             </section>
 
             {/* --- THE STORY (What the user liked) --- */}

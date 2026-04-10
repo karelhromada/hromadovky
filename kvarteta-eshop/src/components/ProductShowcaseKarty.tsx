@@ -186,12 +186,19 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
 
                         {/* Tabs Navigation */}
                         <div className="karty-modal-tabs">
-                            {['Všechny', 'Srdce', 'Kule', 'Žaludy', 'Listy', 'Zelené'].map(tab => {
-                                let searchStr = tab.toLowerCase();
-                                if (tab === 'Žaludy') searchStr = 'zaludy';
-                                if (tab === 'Zelené') searchStr = 'zelen';
+                            {['Všechny', 'Červené', 'Kule', 'Žaludy', 'Zelené'].map(tab => {
+                                const mapping: { [key: string]: string[] } = {
+                                    'Červené': ['cervene', 'srdce'],
+                                    'Kule': ['kule', 'kary'],
+                                    'Žaludy': ['zaludy', 'trefy'],
+                                    'Zelené': ['zelene', 'listy', 'piky', 'zelen']
+                                };
 
-                                const hasCardsForTab = tab === 'Všechny' || selectedProductForPreview.allCards?.some((url: string) => url.toLowerCase().includes(searchStr));
+                                const hasCardsForTab = tab === 'Všechny' || selectedProductForPreview.allCards?.some((url: string) => {
+                                    const lowerUrl = url.toLowerCase();
+                                    return mapping[tab]?.some(m => lowerUrl.includes(m));
+                                });
+                                
                                 if (!hasCardsForTab) return null;
 
                                 return (
@@ -208,12 +215,19 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
 
                         <div className="karty-modal-body">
                             <div className="karty-modal-suit-groups">
-                                {(activeTab === 'Všechny' ? ['Srdce', 'Kule', 'Žaludy', 'Listy', 'Zelené'] : [activeTab]).map(suitTab => {
-                                    let matchStr = suitTab.toLowerCase();
-                                    if (suitTab === 'Žaludy') matchStr = 'zaludy';
-                                    if (suitTab === 'Zelené') matchStr = 'zelen';
+                                {(activeTab === 'Všechny' ? ['Červené', 'Kule', 'Žaludy', 'Zelené'] : [activeTab]).map(suitTab => {
+                                    const mapping: { [key: string]: string[] } = {
+                                        'Červené': ['cervene', 'srdce'],
+                                        'Kule': ['kule', 'kary'],
+                                        'Žaludy': ['zaludy', 'trefy'],
+                                        'Zelené': ['zelene', 'listy', 'piky', 'zelen']
+                                    };
 
-                                    const suitCards = selectedProductForPreview.allCards?.filter((url: string) => url.toLowerCase().includes(matchStr));
+                                    const matchStrings = mapping[suitTab] || [];
+                                    const suitCards = selectedProductForPreview.allCards?.filter((url: string) => {
+                                        const lowerUrl = url.toLowerCase();
+                                        return matchStrings.some(m => lowerUrl.includes(m));
+                                    });
 
                                     if (!suitCards || suitCards.length === 0) return null;
 

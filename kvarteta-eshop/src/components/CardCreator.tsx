@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo, useCallback } from 'react';
 import { Upload, Sparkles } from 'lucide-react';
 import './CardCreator.css';
 
@@ -77,9 +77,77 @@ const cardStyles = [
     { label: 'Jiné', value: 'Jiné' }
 ];
 
-interface CardCreatorProps {
-    onAddToCart?: (item: any) => void;
+
+// --- MEMOIZED SUB-COMPONENTS FOR PERFORMANCE ---
+
+interface PhotoSlotProps {
+    slot: string;
+    photoUrl: string | undefined;
+    isActive: boolean;
+    onClick: (slot: string) => void;
+    onPhotoUpload: (slot: string, file: File) => void;
 }
+
+const PhotoSlot = memo(({ slot, photoUrl, isActive, onClick, onPhotoUpload }: PhotoSlotProps) => {
+    return (
+        <div
+            style={{
+                aspectRatio: '62/88',
+                borderRadius: '6px',
+                border: `2px solid ${isActive ? 'var(--accent-gold)' : 'rgba(0,0,0,0.1)'}`,
+                position: 'relative',
+                overflow: 'hidden',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: photoUrl ? '#111' : 'rgba(0,0,0,0.02)',
+                backgroundImage: photoUrl ? `url(${photoUrl})` : 'none',
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+                transition: 'border-color 0.2s',
+                willChange: 'border-color'
+            }}
+            onClick={() => onClick(slot)}
+        >
+            <div style={{ position: 'absolute', top: 0, left: 0, background: 'rgba(255,255,255,0.95)', padding: '2px 6px', fontSize: '0.75rem', fontWeight: 800, borderBottomRightRadius: '6px', color: '#111', zIndex: 1 }}>
+                {slot}
+            </div>
+            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', paddingBottom: '4px', opacity: 0, transition: 'opacity 0.2s', background: photoUrl ? 'rgba(0,0,0,0.4)' : 'transparent', zIndex: 2 }}
+                onMouseEnter={e => e.currentTarget.style.opacity = '1'}
+                onMouseLeave={e => e.currentTarget.style.opacity = '0'}
+            >
+                <label style={{ cursor: 'pointer', background: 'white', color: '#111', fontSize: '10px', padding: '2px 8px', borderRadius: '10px', fontWeight: 'bold' }} onClick={e => e.stopPropagation()}>
+                    {photoUrl ? 'Změnit' : 'Nahrát'}
+                    <input type="file" accept="image/*" style={{ display: 'none' }} onChange={e => {
+                        if (e.target.files && e.target.files[0]) {
+                            onPhotoUpload(slot, e.target.files[0]);
+                        }
+                    }} />
+                </label>
+            </div>
+        </div>
+    );
+});
+
+interface StatBoxProps {
+    index: number;
+    value: string;
+    label: string;
+    shape: string;
+}
+
+const StatBox = memo(({ index, value, label, shape }: StatBoxProps) => {
+    return (
+        <div className={`card-hex pos-${['tl', 'tr', 'bl', 'br'][index]} shape-${shape}`}>
+            <div className="card-hex-inner">
+                <div className="card-stat-val">{value}</div>
+                <div className="card-stat-lbl">{label}</div>
+            </div>
+        </div>
+    );
+});
 
 const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
     const [letDesignOnUs, setLetDesignOnUs] = useState(false);
@@ -119,13 +187,22 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
         ]
     });
 
-    const handleStatChange = (index: number, field: 'label' | 'value', val: string) => {
-        const newStats = [...cardData.stats];
-        newStats[index][field] = val;
-        setCardData({ ...cardData, stats: newStats });
-    };
+    const handleStatChange = useCallback((index: number, field: 'label' | 'value', val: string) => {
+        setCardData(prev => {
+            const newStats = [...prev.stats];
+            newStats[index] = { ...newStats[index], [field]: val };
+            return { ...prev, stats: newStats };
+        });
+    }, []);
 
+    const handleSlotClick = useCallback((slot: string) => {
+        setPreviewSlot(slot);
+    }, []);
 
+    const handlePhotoUpload = useCallback((slot: string, file: File) => {
+        setCustomPhotos(prev => ({ ...prev, [slot]: URL.createObjectURL(file) }));
+        setPreviewSlot(slot);
+    }, []);
 
     const getMainTextColor = (badge: string) => {
         const match = badge.match(/[A-Za-z0-9]/);
@@ -185,12 +262,13 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
                     {!hideStats && (
                         <div className={`stats-layout-wrapper layout-${layout}`} style={{ zIndex: isMini ? 10 : undefined }}>
                             {[0, 1, 2, 3].map(i => (
-                                <div key={i} className={`card-hex pos-${['tl', 'tr', 'bl', 'br'][i]} shape-${cardData.statShape}`}>
-                                    <div className="card-hex-inner">
-                                        <div className="card-stat-val">{useCustomPhotos ? (customStats[previewSlot]?.[i] ?? cardData.stats[i].value) : cardData.stats[i].value}</div>
-                                        <div className="card-stat-lbl">{cardData.stats[i].label}</div>
-                                    </div>
-                                </div>
+                                <StatBox
+                                    key={i}
+                                    index={i}
+                                    value={useCustomPhotos ? (customStats[previewSlot]?.[i] ?? cardData.stats[i].value) : cardData.stats[i].value}
+                                    label={cardData.stats[i].label}
+                                    shape={cardData.statShape}
+                                />
                             ))}
                         </div>
                     )}
@@ -574,45 +652,14 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
                                     </div>
                                     <div className="custom-photos-grid">
                                         {kvartetoSlots.map(slot => (
-                                            <div
+                                            <PhotoSlot
                                                 key={slot}
-                                                style={{
-                                                    aspectRatio: '62/88',
-                                                    borderRadius: '6px',
-                                                    border: `2px solid ${previewSlot === slot ? 'var(--accent-gold)' : 'rgba(0,0,0,0.1)'}`,
-                                                    position: 'relative',
-                                                    overflow: 'hidden',
-                                                    cursor: 'pointer',
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'center',
-                                                    backgroundColor: customPhotos[slot] ? '#111' : 'rgba(0,0,0,0.02)',
-                                                    backgroundImage: customPhotos[slot] ? `url(${customPhotos[slot]})` : 'none',
-                                                    backgroundSize: 'contain',
-                                                    backgroundRepeat: 'no-repeat',
-                                                    backgroundPosition: 'center',
-                                                    transition: 'border-color 0.2s'
-                                                }}
-                                                onClick={() => setPreviewSlot(slot)}
-                                            >
-                                                <div style={{ position: 'absolute', top: 0, left: 0, background: 'rgba(255,255,255,0.95)', padding: '2px 6px', fontSize: '0.75rem', fontWeight: 800, borderBottomRightRadius: '6px', color: '#111' }}>
-                                                    {slot}
-                                                </div>
-                                                <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', paddingBottom: '4px', opacity: 0, transition: 'opacity 0.2s', background: customPhotos[slot] ? 'rgba(0,0,0,0.4)' : 'none' }}
-                                                    onMouseEnter={e => e.currentTarget.style.opacity = '1'}
-                                                    onMouseLeave={e => e.currentTarget.style.opacity = '0'}
-                                                >
-                                                    <label style={{ cursor: 'pointer', background: 'white', color: '#111', fontSize: '10px', padding: '2px 8px', borderRadius: '10px', fontWeight: 'bold' }} onClick={e => e.stopPropagation()}>
-                                                        {customPhotos[slot] ? 'Změnit' : 'Nahrát'}
-                                                        <input type="file" accept="image/*" style={{ display: 'none' }} onChange={e => {
-                                                            if (e.target.files && e.target.files[0]) {
-                                                                setCustomPhotos(prev => ({ ...prev, [slot]: URL.createObjectURL(e.target.files![0]) }));
-                                                                setPreviewSlot(slot);
-                                                            }
-                                                        }} />
-                                                    </label>
-                                                </div>
-                                            </div>
+                                                slot={slot}
+                                                photoUrl={customPhotos[slot]}
+                                                isActive={previewSlot === slot}
+                                                onClick={handleSlotClick}
+                                                onPhotoUpload={handlePhotoUpload}
+                                            />
                                         ))}
                                     </div>
                                 </div>

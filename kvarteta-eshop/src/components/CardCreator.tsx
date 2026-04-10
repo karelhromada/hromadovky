@@ -149,6 +149,10 @@ const StatBox = memo(({ index, value, label, shape }: StatBoxProps) => {
     );
 });
 
+interface CardCreatorProps {
+    onAddToCart: (data: any) => void;
+}
+
 interface LiveCardPreviewProps {
     isBack: boolean;
     isMini?: boolean;

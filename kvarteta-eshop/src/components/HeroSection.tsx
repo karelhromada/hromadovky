@@ -25,7 +25,7 @@ const HeroSection: React.FC = () => {
     }, []);
 
     const cards = [
-        { id: 1, image: '/cards/mytologie_v4/zeus_v4_1773232441103.png' },     // Mytologie
+        { id: 1, image: '/cards/mytologie_v4/zeus_v4_1773232441103.webp' },     // Mytologie
         { id: 2, image: '/cards/knight_full_1.webp' },                          // Rytíři
         { id: 3, image: '/cards/drag_full_1.webp' },                            // Draci
         { id: 4, image: '/cards/cat_full_1.webp' },                             // Kočky

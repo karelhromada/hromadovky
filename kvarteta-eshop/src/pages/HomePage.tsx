@@ -12,7 +12,7 @@ const epicCards = [
     { id: 5, src: '/cards/knight_full_1.webp', x: -380, y: 380, rot: -5 },
     { id: 6, src: '/cards/eso_srdce.webp', x: 380, y: 380, rot: 8 },
     { id: 7, src: '/cards/kral_kule_final.webp', x: -150, y: 480, rot: -10 },
-    { id: 8, src: '/cards/witch_fire.png', x: 150, y: 480, rot: 5 },
+    { id: 8, src: '/cards/witch_fire.webp', x: 150, y: 480, rot: 5 },
 ];
 
 const HomePage: React.FC = () => {

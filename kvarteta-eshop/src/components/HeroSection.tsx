@@ -69,11 +69,7 @@ const HeroSection: React.FC = () => {
                             </div>
                         );
                     })}
-                    <div className="floating-particles">
-                        <div className="particle p1"></div>
-                        <div className="particle p2"></div>
-                        <div className="particle p3"></div>
-                    </div>
+
                 </div>
 
                 {/* Glow effect behind cards */}

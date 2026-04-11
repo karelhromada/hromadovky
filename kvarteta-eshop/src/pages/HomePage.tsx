@@ -5,6 +5,7 @@ import { ArrowRight, Shield, Sparkles, X } from 'lucide-react';
 import './HomePage.css';
 
 const epicCards = [
+    { id: 9, src: '/cards/mytologie_v4/thor_v4_1773232978954.webp', x: 0, y: -380, rot: 0 },
     { id: 1, src: '/cards/baby_full_1.webp', x: -350, y: -280, rot: -15 },
     { id: 2, src: '/cards/drag_full_1.webp', x: 350, y: -280, rot: 12 },
     { id: 3, src: '/cards/cat_full_1.webp', x: -500, y: 50, rot: -8 },
@@ -64,16 +65,18 @@ const HomePage: React.FC = () => {
                     <motion.div 
                         className="main-deck-wrapper"
                         animate={{ scale: isOpen ? 1.05 : 1 }}
-                        whileHover={{ scale: 1.02 }}
+                        whileHover={{ scale: 1.05 }}
                     >
-                        <div className="main-deck-back">
+                        <div className={`main-deck-back ${!isOpen ? 'pulse-all' : ''}`}>
                             <img src="/logo.webp" alt="Hromadovky" />
-                            <span>Otevřít balíček</span>
+                            <span className={!isOpen ? 'pulse-text' : ''}>
+                                Otevřít balíček
+                            </span>
                         </div>
                     </motion.div>
 
                     {/* Exploding Cards Background */}
-                    {epicCards.map((card) => (
+                    {epicCards.map((card, index) => (
                         <motion.div
                             key={card.id}
                             className="exploding-card"
@@ -88,7 +91,7 @@ const HomePage: React.FC = () => {
                                 type: "spring", 
                                 stiffness: 45, 
                                 damping: 14,
-                                delay: isOpen ? (card.id * 0.05) : 0
+                                delay: isOpen ? (index * 0.05) : 0
                             }}
                         >
                             <img src={card.src} alt={`Karta ${card.id}`} />

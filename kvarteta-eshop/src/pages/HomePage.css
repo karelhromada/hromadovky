@@ -104,11 +104,43 @@
     text-align: center;
 }
 
+@keyframes pulse-all {
+    0% { 
+        transform: scale(1);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    }
+    50% { 
+        transform: scale(1.025);
+        box-shadow: 0 25px 70px rgba(197, 155, 39, 0.25);
+    }
+    100% { 
+        transform: scale(1);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    }
+}
+
+.pulse-all {
+    animation: pulse-all 3s infinite ease-in-out;
+}
+
 .main-deck-back img {
     width: 100%;
     max-width: 200px;
     margin-bottom: 1.5rem;
     opacity: 0.95;
+}
+
+@keyframes bounce-all-sides {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    20% { transform: translate(-5px, -3px) rotate(-2deg); }
+    40% { transform: translate(5px, 2px) rotate(2deg); }
+    60% { transform: translate(-3px, 5px) rotate(-1deg); }
+    80% { transform: translate(4px, -4px) rotate(1deg); }
+}
+
+.pulse-text {
+    display: inline-block;
+    animation: bounce-all-sides 1.5s infinite ease-in-out;
 }
 
 .main-deck-back span {
@@ -126,13 +158,10 @@
     height: calc(310px * var(--card-scale));
     margin-top: calc(-155px * var(--card-scale));
     margin-left: calc(-110px * var(--card-scale));
-    background: #fff;
-    border-radius: calc(12px * var(--card-scale));
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    border: 1px solid rgba(0,0,0,0.1);
+    background: transparent;
     z-index: 15;
     pointer-events: none;
-    overflow: hidden;
+    overflow: visible;
     will-change: transform, opacity; /* Drastic performance boost in Chrome during explosion */
     transform: translateZ(0);
 }
@@ -140,7 +169,8 @@
 .exploding-card img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));
 }
 
 /* --- PROCESS SECTIONS (RE-INTEGRATED) --- */

@@ -134,21 +134,20 @@
     width: 100%;
     height: 100%;
     border-radius: 20px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    overflow: visible !important;
     animation: levitate 6s ease-in-out infinite;
     backface-visibility: hidden;
     background: transparent;
 }
 
 .hero-card-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: inherit;
+    width: 96% !important;
+    height: 96% !important;
+    object-fit: contain !important;
+    filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.25));
 }
 
 /* Removed holographic-overlay to fix the unwanted gold diagonal stripe */
@@ -158,7 +157,10 @@
     transform: translateZ(100px) rotate(5deg) translateX(40px) translateY(20px);
     z-index: 5;
     opacity: 1;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), 0 0 30px rgba(197, 155, 39, 0.3);
+}
+
+.card-pos-0 .hero-card-img {
+    filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 20px rgba(197, 155, 39, 0.3));
 }
 
 .card-pos-1 {

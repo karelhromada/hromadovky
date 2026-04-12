@@ -19,12 +19,14 @@ const epicCards = [
 const HomePage: React.FC = () => {
     const [isOpen, setIsOpen] = React.useState(false);
     const [scale, setScale] = React.useState(1);
+    const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
     const [isExploded, setIsExploded] = React.useState(false);
 
     // Dynamic scale for the card explosion based on window width
     React.useEffect(() => {
         const handleResize = () => {
             const width = window.innerWidth;
+            setIsMobile(width < 768);
             if (width < 480) setScale(0.4);
             else if (width < 768) setScale(0.55);
             else if (width < 1024) setScale(0.75);
@@ -155,7 +157,13 @@ const HomePage: React.FC = () => {
                                 <motion.div
                                     key="kvarteta"
                                     initial={{ x: 0, y: 0, opacity: 0, scale: 0.5 }}
-                                    animate={{ x: 320, y: -150, opacity: 1, scale: 1, rotate: 10 }}
+                                    animate={{ 
+                                        x: isMobile ? 0 : 320, 
+                                        y: isMobile ? -230 : -150, 
+                                        opacity: 1, 
+                                        scale: 1, 
+                                        rotate: isMobile ? 0 : 10 
+                                    }}
                                     exit={{ x: 0, y: 0, opacity: 0, scale: 0.5, rotate: 0 }}
                                     whileHover={{ scale: 1.1, translateY: -5 }}
                                     transition={{ 
@@ -173,7 +181,13 @@ const HomePage: React.FC = () => {
                                 <motion.div
                                     key="pexeso"
                                     initial={{ x: 0, y: 0, opacity: 0, scale: 0.5 }}
-                                    animate={{ x: 420, y: 0, opacity: 1, scale: 1, rotate: 0 }}
+                                    animate={{ 
+                                        x: isMobile ? 0 : 420, 
+                                        y: isMobile ? -155 : 0, 
+                                        opacity: 1, 
+                                        scale: 1, 
+                                        rotate: 0 
+                                    }}
                                     exit={{ x: 0, y: 0, opacity: 0, scale: 0.5, rotate: 0 }}
                                     whileHover={{ scale: 1.1, translateY: -5 }}
                                     transition={{ 
@@ -191,7 +205,13 @@ const HomePage: React.FC = () => {
                                 <motion.div
                                     key="karty"
                                     initial={{ x: 0, y: 0, opacity: 0, scale: 0.5 }}
-                                    animate={{ x: 320, y: 150, opacity: 1, scale: 1, rotate: -10 }}
+                                    animate={{ 
+                                        x: isMobile ? 0 : 320, 
+                                        y: isMobile ? -80 : 150, 
+                                        opacity: 1, 
+                                        scale: 1, 
+                                        rotate: isMobile ? 0 : -10 
+                                    }}
                                     exit={{ x: 0, y: 0, opacity: 0, scale: 0.5, rotate: 0 }}
                                     whileHover={{ scale: 1.1, translateY: -5 }}
                                     transition={{ 

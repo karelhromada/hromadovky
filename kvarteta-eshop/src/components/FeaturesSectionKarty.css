@@ -194,3 +194,25 @@
     filter: blur(40px);
     z-index: -1;
 }
+@media (max-width: 768px) {
+    .karty-scroll-section {
+        padding: 60px 0;
+    }
+
+    .karty-scroll-list {
+        gap: 80px;
+    }
+
+    .karty-scroll-image-inner {
+        max-width: 160px;
+    }
+
+    .karty-scroll-number {
+        font-size: 3.5rem;
+        margin-bottom: -20px;
+    }
+
+    .karty-scroll-title {
+        font-size: 2rem;
+    }
+}

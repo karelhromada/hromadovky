@@ -41,7 +41,8 @@
 }
 
 .poker-card-frame {
-    width: 350px;
+    width: 90vw;
+    max-width: 350px;
     aspect-ratio: 2.5 / 3.5;
     background: #ffffff;
     border-radius: 1.5rem;
@@ -457,5 +458,76 @@
 
     100% {
         left: 200%;
+    }
+}
+
+/* --- Mobile Fixes --- */
+@media (max-width: 768px) {
+    .fcc-main-panel {
+        padding: 1.5rem;
+        border-radius: 1.5rem;
+    }
+
+    .config-layout {
+        gap: 1.5rem;
+    }
+
+    .card-preview-container {
+        position: relative; /* Disable sticky */
+        top: 0;
+        gap: 1.5rem;
+        order: -1; /* Keep preview at top */
+    }
+
+    .poker-card-frame {
+        width: 80vw;
+        max-width: 300px;
+        border-radius: 1.2rem;
+    }
+
+    .idx-value {
+        font-size: 2rem;
+    }
+
+    .idx-suit {
+        font-size: 1.4rem;
+    }
+
+    .index-top-left {
+        top: 20px;
+        left: 20px;
+    }
+
+    .index-bottom-right {
+        bottom: 20px;
+        right: 20px;
+    }
+
+    .manipulation-controls {
+        padding: 1.2rem;
+        gap: 1rem;
+    }
+
+    .cards-selection-grid-mini {
+        grid-template-columns: repeat(3, 1fr); /* 3 columns is better for small screens */
+        padding: 10px;
+        gap: 8px;
+    }
+
+    .suit-tab-btn {
+        padding: 8px 4px;
+    }
+
+    .suit-tab-char {
+        font-size: 1.2rem;
+    }
+
+    .price-tag {
+        font-size: 2rem;
+    }
+
+    .finish-order-btn {
+        padding: 1rem;
+        font-size: 1rem;
     }
 }

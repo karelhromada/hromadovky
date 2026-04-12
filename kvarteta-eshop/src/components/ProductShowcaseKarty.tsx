@@ -81,8 +81,7 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
                             <div
                                 className="karty-deck-box"
                                 style={{
-                                    backgroundImage: `url('${product.boxImage}')`,
-                                    border: `2px solid ${product.themeColor}80`
+                                    backgroundImage: `url('${product.boxImage}')`
                                 }}
                             >
                             </div>

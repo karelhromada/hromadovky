@@ -32,8 +32,8 @@
 
 .poker-hand-stage {
     position: relative;
-    width: 260px;
-    height: 340px;
+    width: 320px;
+    height: 350px;
     transform-style: preserve-3d;
     transition: transform 0.2s ease-out;
 }
@@ -42,10 +42,10 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 162px;
-    height: 270px;
-    margin-top: -135px;
-    margin-left: -81px;
+    width: 150px;
+    height: 250px;
+    margin-top: -125px;
+    margin-left: -75px;
     transform-origin: bottom center;
     cursor: pointer;
     z-index: 1;
@@ -78,7 +78,7 @@
 /* Card 3: Center (Top card) */
 .fanned-3 {
     transform: rotate(0deg) translateX(0) translateY(0) translateZ(0);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
 }
 
 /* Card 4: Mid Right */
@@ -144,7 +144,7 @@
     }
 
     .poker-hand-stage {
-        transform: scale(0.8) rotateX(10deg) !important;
+        transform: scale(0.9) rotateX(10deg) !important;
     }
 }
 
@@ -154,7 +154,7 @@
     }
 
     .poker-hand-stage {
-        transform: scale(0.65) rotateX(10deg) !important;
+        transform: scale(0.8) rotateX(10deg) !important;
     }
 
     .karty-hero-visual {
@@ -164,7 +164,7 @@
 
 @media (max-width: 480px) {
     .poker-hand-stage {
-        transform: scale(0.55) rotateX(10deg) !important;
+        transform: scale(0.7) rotateX(10deg) !important;
     }
 
     .karty-hero-visual {

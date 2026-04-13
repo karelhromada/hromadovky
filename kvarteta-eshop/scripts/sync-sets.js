@@ -65,7 +65,15 @@ const sharedData = {
  */
 function findFinalFolder(productId) {
     const setFolderName = productId.replace('kvarteto-', '').replace('karty-tema-', '').replace(/-/g, '_');
-    const possibleNames = [setFolderName, setFolderName.replace(/_/g, '-'), productId];
+    
+    // Explicitní mapování pro případy, kdy ID neodpovídá názvu složky
+    const explicitMappings = {
+        'dracci': 'baby_dracci',
+        'draku': 'epicka_draci_edice'
+    };
+
+    const mappedName = explicitMappings[setFolderName] || setFolderName;
+    const possibleNames = [mappedName, setFolderName, setFolderName.replace(/_/g, '-'), productId];
     const masterRoots = ['kvarteta', 'hraci_karty', 'pexeso'];
     const finalFolderNames = ['finalni_karty', 'finální_karty', 'finální karty', 'finalni karty'];
 
@@ -103,8 +111,18 @@ function processSet(p, type) {
     // Prefer explicitly mapped e-shop allCards over the raw folder, as the web contains the optimized truth
     if (finalFolder && (!p.allCards || p.allCards.length === 0)) {
         console.log(`  - Nalezena složka s finálními kartami pro ${p.id}: ${finalFolder.fullPath}`);
-        const files = fs.readdirSync(finalFolder.fullPath).filter(f => f.endsWith('.webp') || f.endsWith('.png'));
+        let files = fs.readdirSync(finalFolder.fullPath).filter(f => f.endsWith('.webp') || f.endsWith('.png'));
         
+        // Pokud máme od stejné karty .webp i .png, preferujeme .webp
+        const webpFiles = files.filter(f => f.endsWith('.webp'));
+        files = files.filter(f => {
+            if (f.endsWith('.png')) {
+                const base = f.replace('.png', '');
+                if (webpFiles.some(wf => wf.startsWith(base))) return false;
+            }
+            return true;
+        });
+
         cardImages = files.map(filename => {
             const sourcePath = path.join(finalFolder.fullPath, filename);
             // Cíl v tisk-karet-deploy/cards/[set]/finalni_karty/

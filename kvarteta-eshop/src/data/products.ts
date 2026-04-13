@@ -140,9 +140,14 @@ export const kvartetaProducts = [
             { id: 1, text: 'Premium', icon: Shield, color: '#ef4444' }
         ],
         image: [
-            '/cards/drag_full_1.webp', '/cards/drag_full_2.webp', '/cards/drag_full_3.webp', '/cards/drag_full_4.webp',
-            '/cards/drag_full_5.webp', '/cards/drag_full_6.webp', '/cards/drag_full_7.webp', '/cards/drag_full_8.webp',
-            '/cards/drag_full_9.webp', '/cards/drag_full_10.webp', '/cards/drag_full_11.webp'
+            '/cards/draci/Aeris.webp', '/cards/draci/Astrál.webp', '/cards/draci/Bazilišek.webp', '/cards/draci/Bažináč.webp',
+            '/cards/draci/Blesk.webp', '/cards/draci/Brontos.webp', '/cards/draci/Chameleon.webp', '/cards/draci/Hmyzí_Král.webp',
+            '/cards/draci/Hydrus.webp', '/cards/draci/Ignis_Rex.webp', '/cards/draci/Jedový_Trn.webp', '/cards/draci/Knihovník.webp',
+            '/cards/draci/Kronos.webp', '/cards/draci/Křišťál.webp', '/cards/draci/Magmaton.webp', '/cards/draci/Moudré_Oko.webp',
+            '/cards/draci/Mrakošlap.webp', '/cards/draci/Nebeský_Poutník.webp', '/cards/draci/Nekromancer.webp', '/cards/draci/Ostrý_Hvizd.webp',
+            '/cards/draci/Popelavý_Dech.webp', '/cards/draci/Runový_Tesák.webp', '/cards/draci/Sonic.webp', '/cards/draci/Stařec_z_Hor.webp',
+            '/cards/draci/Stínový_Běžec.webp', '/cards/draci/Terrogor.webp', '/cards/draci/Tornádo.webp', '/cards/draci/Uhelný_Běžec.webp',
+            '/cards/draci/Vichřice.webp', '/cards/draci/Vulkanus.webp', '/cards/draci/Zlatý_Zloděj.webp', '/cards/draci/Železný_Dráp.webp'
         ]
     },
     {

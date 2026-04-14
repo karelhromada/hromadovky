@@ -41,7 +41,12 @@ function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>(() => {
     const saved = localStorage.getItem('hromadovky_cart');
-    return saved ? JSON.parse(saved) : [];
+    if (!saved) return [];
+    try {
+      return JSON.parse(saved) as CartItem[];
+    } catch {
+      return [];
+    }
   });
 
   // Save to localStorage whenever cartItems changes

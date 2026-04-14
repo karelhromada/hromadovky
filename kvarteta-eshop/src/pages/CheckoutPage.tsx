@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { CartItem } from '../App';
 import './CheckoutPage.css';
-import { PAYMENT_CONFIG, SHIPPING_CONFIG, AUTOMATION_CONFIG } from '../config/payment';
+import { SHIPPING_CONFIG, AUTOMATION_CONFIG } from '../config/payment';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import { User, LogIn } from 'lucide-react';
@@ -97,7 +97,6 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
             document.head.appendChild(pplStyle);
 
             const handlePPLEvent = (e: any) => {
-                console.log('PPL Event fired (window/document):', e.detail);
                 const point = e.detail;
                 if (point) {
                     const address = point.address || point.street || 
@@ -112,13 +111,11 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                 }
             };
             window.addEventListener('ppl-parcelshop-map', handlePPLEvent);
-            document.addEventListener('ppl-parcelshop-map', handlePPLEvent);
 
             return () => {
                 if (document.body.contains(pplScript)) document.body.removeChild(pplScript);
                 if (document.head.contains(pplStyle)) document.head.removeChild(pplStyle);
                 window.removeEventListener('ppl-parcelshop-map', handlePPLEvent);
-                document.removeEventListener('ppl-parcelshop-map', handlePPLEvent);
             };
         }
     }, [formData.delivery]);
@@ -193,8 +190,6 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                 if (!response.ok) {
                     throw new Error(`N8N response error: ${response.status}`);
                 }
-                
-                console.log('Objednávka úspěšně odeslána do n8n');
             } catch (fetchError) {
                 // Nechceme zastavit celou objednávku, pokud selže jen automatizace emailu,
                 // ale chceme o tom vědět v logu.
@@ -243,7 +238,6 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                             },
                             payment_method: formData.payment
                         });
-                    console.log('Objednávka uložena do historie');
                 } catch (orderError) {
                     console.error('Chyba při ukládání do historie objednávek:', orderError);
                 }
@@ -254,14 +248,10 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
             setFinalTotal(totalToPay);
             setOrderVS(orderData.variableSymbol);
 
-            // Pokud je to karta, provedeme redirect na GP Webpay Simulator
-            if (formData.payment === 'card') {
-                console.log('Redirecting to GP Webpay...', PAYMENT_CONFIG.GATEWAY_URL);
-                // Simulace přesměrování
-                setTimeout(() => {
-                   // window.location.href = `https://test.pay.gpwebpay.com/pay-sim/index.html?amount=${totalToPay}&orderId=${Math.floor(Date.now()/1000)}`;
-                }, 2000);
-            }
+            // TODO: GP Webpay redirect až bude integrace živá
+            // if (formData.payment === 'card') {
+            //     window.location.href = `${PAYMENT_CONFIG.GATEWAY_URL}?...`;
+            // }
             
             onClearCart();
             setIsSuccess(true);
@@ -286,7 +276,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                     <h1>Objednávka odeslána!</h1>
                     <p>Děkujeme za váš nákup. Potvrzení jsme odeslali na <strong>{formData.email}</strong>.</p>
                     <div className="success-details">
-                        <span>Číslo objednávky: <strong>#{Math.floor(100000 + Math.random() * 900000)}</strong></span>
+                        <span>Číslo objednávky: <strong>#{orderVS}</strong></span>
                         <span>Celkem k úhradě: <strong>{formatCurrency(finalTotal)}</strong></span>
                     </div>
 

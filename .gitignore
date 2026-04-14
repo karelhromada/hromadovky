@@ -28,6 +28,21 @@ pnpm-debug.log*
 
 # Local env files
 *.local
+.env
+.env.*
+!.env.example
+
+# Python
+venv/
+**/venv/
+__pycache__/
+*.pyc
+.pytest_cache/
 
 # Temp Excel lock files
 ~$*.xlsx
+
+# Archived backups (not for distribution)
+Záloha karet/
+_archive/
+tisk-karet-deploy/

@@ -12,6 +12,7 @@ const HraciKartyPage = lazy(() => import('./pages/HraciKartyPage'))
 const RulesPage = lazy(() => import('./pages/RulesPage'))
 const CheckoutPage = lazy(() => import('./pages/CheckoutPage'))
 const AuthPage = lazy(() => import('./pages/AuthPage'))
+const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage'))
 
 export interface CartItem {
   id: string;
@@ -108,6 +109,7 @@ function App() {
                 <Route path="/pravidla" element={<RulesPage />} />
                 <Route path="/checkout" element={<CheckoutPage items={cartItems} onClearCart={clearCart} />} />
                 <Route path="/login" element={<AuthPage />} />
+                <Route path="/reset-password" element={<ResetPasswordPage />} />
               </Routes>
             </Suspense>
           </main>

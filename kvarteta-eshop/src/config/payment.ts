@@ -16,5 +16,4 @@ export const SHIPPING_CONFIG = {
 
 export const AUTOMATION_CONFIG = {
     N8N_WEBHOOK_URL: import.meta.env.VITE_N8N_WEBHOOK_URL || 'https://n8n.srv1051339.hstgr.cloud/webhook/objednavka',
-    N8N_API_KEY: import.meta.env.VITE_N8N_API_KEY || '', // Není nutné pro webhook, ale ponecháno pro jiné integrace
 };

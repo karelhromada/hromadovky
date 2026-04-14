@@ -34,7 +34,7 @@ const Testimonials = () => {
                 <div className="section-header text-center">
                     <span className="badge mb-4">Ohlasy</span>
                     <h2 className="section-title">Co říkají <span className="text-gradient-gold">malí hráči a rodiče</span></h2>
-                    <p className="section-subtitle">Připojte se k tisícům spokojených rodin, které objevily zábavu s našimi kartami.</p>
+                    <p className="section-subtitle">Připojte se k ostatním spokojeným rodinám, které objevily zábavu s našimi kartami.</p>
                 </div>
 
                 <div className="testimonials-grid">

@@ -34,6 +34,7 @@ const products = [
         description: 'Poznejte prehistorické obry v luxusní sběratelské edici s nádherně ilustrovanými kartami.',
         price: 249,
         themeColor: '#ff8a00',
+        back: '/cards/backs/epic_lava_flow.webp',
         badges: [
             { id: 1, text: 'Bestseller', icon: Trophy, color: '#ffb703' }
         ],
@@ -51,6 +52,7 @@ const products = [
         description: 'Roztomilí dráčci v pexesu pro nejmenší i velké. Skvělý trénink paměti pro každého.',
         price: 249,
         themeColor: '#a100ff',
+        back: '/cards/pexeso_back_stars.webp',
         badges: [
             { id: 1, text: 'Roztomilé', icon: Star, color: '#d946ef' }
         ],
@@ -66,18 +68,19 @@ const products = [
         description: 'Mocní a legendární Draci přinášejí do hry epické souboje. Nejmocnější bytosti v prémiovém provedení.',
         price: 249,
         themeColor: '#ff0033',
+        back: '/cards/dragon_scales_realistic_1.webp',
         badges: [
             { id: 1, text: 'Premium', icon: Shield, color: '#ef4444' }
         ],
         image: [
-            '/cards/draci/Aeris.webp', '/cards/draci/Astrál.webp', '/cards/draci/Bazilišek.webp', '/cards/draci/Blesk.webp',
-            '/cards/draci/Bouře.webp', '/cards/draci/Golem.webp', '/cards/draci/Hlídač světů.webp', '/cards/draci/Hydrus.webp',
-            '/cards/draci/Ignis Rex.webp', '/cards/draci/Jedový trn.webp', '/cards/draci/Knihovník.webp', '/cards/draci/Kronos.webp',
-            '/cards/draci/Kříšťál.webp', '/cards/draci/Lávový král.webp', '/cards/draci/Magmaton.webp', '/cards/draci/Moudré oko.webp',
-            '/cards/draci/Mrakošlap.webp', '/cards/draci/Nebeský poutník.webp', '/cards/draci/Nekromancer.webp', '/cards/draci/Ohnivý pásovec.webp',
-            '/cards/draci/Ostrý hvizd.webp', '/cards/draci/Otec podzimu.webp', '/cards/draci/Popelavý dech.webp', '/cards/draci/Sonic.webp',
-            '/cards/draci/Stařec z hor.webp', '/cards/draci/Stínový běžec.webp', '/cards/draci/Terrogor.webp', '/cards/draci/Tornádo.webp',
-            '/cards/draci/Vesmírňák.webp', '/cards/draci/Vichřice.webp', '/cards/draci/Vulcanus.webp', '/cards/draci/Větrný živel.webp'
+            '/pexeso/draci/Aeris.png', '/pexeso/draci/Astrál.png', '/pexeso/draci/Bazilišek.png', '/pexeso/draci/Blesk.png',
+            '/pexeso/draci/Bouře.png', '/pexeso/draci/Golem.png', '/pexeso/draci/Hlídač světů.png', '/pexeso/draci/Hydrus.png',
+            '/pexeso/draci/Ignis Rex.png', '/pexeso/draci/Jedový trn.png', '/pexeso/draci/Knihovník.png', '/pexeso/draci/Kronos.png',
+            '/pexeso/draci/Kříšťál.png', '/pexeso/draci/Lávový král.png', '/pexeso/draci/Magmaton.png', '/pexeso/draci/Moudré oko.png',
+            '/pexeso/draci/Mrakošlap.png', '/pexeso/draci/Nebeský poutník.png', '/pexeso/draci/Nekromancer.png', '/pexeso/draci/Ohnivý pásovec.png',
+            '/pexeso/draci/Ostrý hvizd.png', '/pexeso/draci/Otec podzimu.png', '/pexeso/draci/Popelavý dech.png', '/pexeso/draci/Sonic.png',
+            '/pexeso/draci/Stařec z hor.png', '/pexeso/draci/Stínový běžec.png', '/pexeso/draci/Terrogor.png', '/pexeso/draci/Tornádo.png',
+            '/pexeso/draci/Vesmírňák.png', '/pexeso/draci/Vichřice.png', '/pexeso/draci/Vulcanus.png', '/pexeso/draci/Větrný živel.png'
         ]
     },
     {
@@ -86,6 +89,7 @@ const products = [
         description: 'Odvážné, mrštné a nebezpečně roztomilé kočičí válečnice. Získejte celou kočičí armádu.',
         price: 249,
         themeColor: '#00d2ff',
+        back: '/cards/cat_fur_silver.webp',
         badges: [
             { id: 1, text: 'Novinka', icon: Sparkles, color: '#0ea5e9' }
         ],
@@ -101,14 +105,15 @@ const products = [
         description: 'Odhalte sílu nejobávanějších dravců naší planety ve strhujícím pexesu pro odvážné.',
         price: 249,
         themeColor: '#8b5a2b',
+        back: '/cards/backs/epic_arcane_parchment.webp',
         badges: [
             { id: 1, text: 'Divoká příroda', icon: Star, color: '#d97706' }
         ],
         image: [
-            '/cards/dravci/Bengálský tygr.webp', '/cards/dravci/Hyeny.webp', '/cards/dravci/Jaguár.webp', '/cards/dravci/Lev.webp',
-            '/cards/dravci/Medvěd grizzly.webp', '/cards/dravci/Nilský krokodýl.webp', '/cards/dravci/Polární medvěd.webp', '/cards/dravci/Puma.webp',
-            '/cards/dravci/Sněžný levhart.webp', '/cards/dravci/Tygr usuryjský.webp', '/cards/dravci/Varan komodský.webp', '/cards/dravci/Vlci.webp',
-            '/cards/dravci/gepard.webp', '/cards/dravci/krokodýl.webp', '/cards/dravci/Černý panter.webp', '/cards/dravci/žralok bílý.webp'
+            '/pexeso/dravci/Bengálský tygr.png', '/pexeso/dravci/Hyeny.png', '/pexeso/dravci/Jaguár.png', '/pexeso/dravci/Lev.png',
+            '/pexeso/dravci/Medvěd grizzly.png', '/pexeso/dravci/Nilský krokodýl.png', '/pexeso/dravci/Polární medvěd.png', '/pexeso/dravci/Puma.png',
+            '/pexeso/dravci/Sněžný levhart.png', '/pexeso/dravci/Tygr usuryjský.png', '/pexeso/dravci/Varan komodský.png', '/pexeso/dravci/Vlci.png',
+            '/pexeso/dravci/gepard.png', '/pexeso/dravci/krokodýl.png', '/pexeso/dravci/Černý panter.png', '/pexeso/dravci/žralok bílý.png'
         ]
     }
 ];
@@ -232,8 +237,8 @@ const ProductCardInteractive = ({ product, onAddToCartClick }: { product: any, o
                             // We stagger the reveal so it creates a sweeping effect
                             const isRevealed = revealedCards.includes(index);
 
-                            // Generate a random stable back texture once per grid load
-                            const backTexture = backgrounds[index % backgrounds.length];
+                            // One consistent back per product sada
+                            const backTexture = product.back || backgrounds[0];
 
                             return (
                                 <div key={index} className={`pexeso-mini-card ${isRevealed ? 'revealed' : ''}`}>

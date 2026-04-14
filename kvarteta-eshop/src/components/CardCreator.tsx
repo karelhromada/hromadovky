@@ -394,7 +394,7 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
                             <div style={{ padding: '16px', background: letDesignOnUs ? 'var(--accent-gold)' : 'rgba(212, 175, 55, 0.1)', borderRadius: '50%', marginBottom: '16px', color: letDesignOnUs ? '#fff' : 'var(--accent-gold)' }}>
                                 <Sparkles size={32} />
                             </div>
-                            <h4 style={{ fontSize: '1.2rem', fontWeight: 800, marginBottom: '8px', color: 'var(--text-primary)' }}>Generovat design (AI)</h4>
+                            <h4 style={{ fontSize: '1.2rem', fontWeight: 800, marginBottom: '8px', color: 'var(--text-primary)' }}>Generovat design</h4>
                             <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Profesionálně sladíme barvy a obrázky na přání pro dokonalý výsledek.</p>
                         </div>
                     </div>

@@ -50,6 +50,19 @@ const SUITS = [
 ];
 
 const RANKS = ['7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+const JOKER_RANK = 'Ž';
+
+const buildJokers = (): CardConfig[] => SUITS.map(suit => ({
+    id: `${JOKER_RANK}-${suit.id}`,
+    suit: suit.id as any,
+    suitChar: suit.char,
+    label: 'Žolík',
+    rank: JOKER_RANK,
+    suitColor: suit.color,
+    imageUrl: null,
+    zoom: 1,
+    position: { x: 0, y: 0 }
+}));
 
 const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddToCart }) => {
     // Generate initial deck
@@ -75,6 +88,23 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
     const [selectedBackUrl, setSelectedBackUrl] = useState<string>(backgrounds[0].url);
     const [isDragging, setIsDragging] = useState(false);
     const [activeSuitId, setActiveSuitId] = useState<string>('H');
+    const [includeJoker, setIncludeJoker] = useState(false);
+
+    const toggleJoker = (enable: boolean) => {
+        if (enable) {
+            setDeck(prev => prev.some(c => c.rank === JOKER_RANK) ? prev : [...prev, ...buildJokers()]);
+        } else {
+            setDeck(prev => {
+                prev.filter(c => c.rank === JOKER_RANK && c.imageUrl?.startsWith('blob:'))
+                    .forEach(c => URL.revokeObjectURL(c.imageUrl!));
+                return prev.filter(c => c.rank !== JOKER_RANK);
+            });
+            if (selectedCardId.startsWith(`${JOKER_RANK}-`)) {
+                setSelectedCardId(initialDeck[0].id);
+            }
+        }
+        setIncludeJoker(enable);
+    };
     
     // Refs for performant dragging (no re-renders)
     const imageRef = useRef<HTMLImageElement>(null);
@@ -165,13 +195,14 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
             onAddToCart({
                 id: `rodinne-karty-${Date.now()}`,
                 name: 'Rodinné hrací karty na zakázku',
-                description: `Vlastní sada (${deck.length} karet) s vašimi fotografiemi.`,
+                description: `Vlastní sada (${deck.length} karet${includeJoker ? ', včetně 4 žolíků' : ''}) s vašimi fotografiemi.`,
                 price: 299,
                 image: selectedCard.imageUrl || backgrounds[0].url,
                 themeColor: '#d4af37',
                 selectedBack: backgrounds.find(b => b.url === selectedBackUrl)?.name || 'Klasika',
                 selectedBackUrl: selectedBackUrl,
                 isCustom: true,
+                includeJoker,
                 deckConfigs: deck.filter(c => c.imageUrl)
             });
         }
@@ -280,9 +311,20 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
 
                     {/* PRAVÁ STRANA: Výběr karet a shrnutí */}
                     <div className="config-controls">
+                        <div className="control-group" style={{ marginBottom: '14px' }}>
+                            <label className="control-label" style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', userSelect: 'none' }}>
+                                <input
+                                    type="checkbox"
+                                    checked={includeJoker}
+                                    onChange={(e) => toggleJoker(e.target.checked)}
+                                    style={{ width: '18px', height: '18px', accentColor: 'var(--gold-primary, #d4af37)', cursor: 'pointer' }}
+                                />
+                                <span>Přidat žolíky (1 ke každé barvě, zdarma)</span>
+                            </label>
+                        </div>
                         <div className="control-group">
                             <div className="flex justify-between items-center mb-2">
-                                <label className="control-label">Sada karet (32 ks)</label>
+                                <label className="control-label">Sada karet ({deck.length} ks)</label>
                                 <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Hotovo: {totalWithPhotos}/{deck.length}</span>
                             </div>
                             <div className="flex flex-col gap-4">

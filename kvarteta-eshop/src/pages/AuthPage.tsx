@@ -7,7 +7,7 @@ import './AuthPage.css';
 
 const AuthPage: React.FC = () => {
   const navigate = useNavigate();
-  const { user, profile, signOut, loading: contextLoading } = useAuth();
+  const { user, profile, signOut, refreshProfile, loading: contextLoading } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [editing, setEditing] = useState(false);
@@ -58,8 +58,14 @@ const AuthPage: React.FC = () => {
 
   const handleSignOut = async () => {
     setLoading(true);
-    await signOut();
-    setLoading(false);
+    try {
+      await signOut();
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Chyba při odhlašování';
+      setError(message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -92,7 +98,7 @@ const AuthPage: React.FC = () => {
 
       if (error) throw error;
       setEditing(false);
-      // Wait for AuthContext to refresh profile automatically or manually trigge it if needed
+      await refreshProfile();
     } catch (err: any) {
       setError(err.message || 'Chyba při ukládání profilu');
     } finally {
@@ -101,10 +107,12 @@ const AuthPage: React.FC = () => {
   };
 
   const fetchOrders = async () => {
+    if (!user) return;
     try {
       const { data, error } = await supabase
         .from('orders')
         .select('*')
+        .eq('user_id', user.id)
         .order('created_at', { ascending: false });
       
       if (error) throw error;

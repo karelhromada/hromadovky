@@ -65,12 +65,48 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         .from('profiles')
         .select('*')
         .eq('id', userId)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
-      setProfile(data);
-    } catch (error) {
-      console.error('Error fetching profile:', error);
+
+      if (data) {
+        setProfile(data);
+      } else {
+        // Profile missing — first login (typically OAuth). Create from auth metadata.
+        const { data: userData } = await supabase.auth.getUser();
+        const authUser = userData.user;
+        if (authUser) {
+          const meta = (authUser.user_metadata ?? {}) as Record<string, unknown>;
+          const fullName = typeof meta.full_name === 'string' ? meta.full_name : '';
+          const [metaFirst, ...metaRest] = fullName.split(' ');
+          const firstName =
+            (typeof meta.first_name === 'string' && meta.first_name) ||
+            (typeof meta.given_name === 'string' && meta.given_name) ||
+            metaFirst ||
+            '';
+          const lastName =
+            (typeof meta.last_name === 'string' && meta.last_name) ||
+            (typeof meta.family_name === 'string' && meta.family_name) ||
+            metaRest.join(' ') ||
+            '';
+
+          const { data: inserted, error: insertError } = await supabase
+            .from('profiles')
+            .insert({
+              id: authUser.id,
+              email: authUser.email ?? null,
+              first_name: firstName || null,
+              last_name: lastName || null,
+            })
+            .select()
+            .maybeSingle();
+
+          if (insertError) throw insertError;
+          setProfile(inserted);
+        }
+      }
+    } catch {
+      // Keep profile null on failure; UI handles missing profile gracefully.
     } finally {
       setLoading(false);
     }

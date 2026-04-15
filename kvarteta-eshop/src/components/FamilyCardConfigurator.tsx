@@ -117,7 +117,7 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
     const dragStartRef = useRef({ x: 0, y: 0 });
 
     // Refs for off-screen render of every card (pro export PNG do Supabase)
-    const exportRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+    const exportRefs = useRef<Map<string, HTMLElement>>(new Map());
     const [rendering, setRendering] = useState<{ done: number; total: number } | null>(null);
 
     const handleSelectCard = React.useCallback((id: string) => {

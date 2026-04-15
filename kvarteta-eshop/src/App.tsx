@@ -31,6 +31,8 @@ export interface CartItem {
   note?: string;
   customPhotos?: Record<string, string>;
   customPhotoPaths?: string[];
+  renderedCardPaths?: string[];
+  cardBackRef?: { name: string; publicUrl: string };
   customStats?: Record<string, string[]>;
   customCardNames?: Record<string, string>;
   customDescriptions?: Record<string, string>;

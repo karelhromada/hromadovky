@@ -372,7 +372,7 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
                         <div className="control-group mt-6">
                             <label className="control-label">Vybrat zadní stranu (Rub)</label>
                             <div className="backs-selection-horizontal">
-                                {backgrounds.filter(bg => !bg.category?.includes('pexeso')).slice(0, 12).map(bg => (
+                                {backgrounds.filter(bg => bg.games.includes('karty')).slice(0, 12).map(bg => (
                                     <div 
                                         key={bg.id}
                                         className={`back-thumb-item ${selectedBackUrl === bg.url ? 'active' : ''}`}

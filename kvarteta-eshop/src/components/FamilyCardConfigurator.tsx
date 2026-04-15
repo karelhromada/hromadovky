@@ -164,6 +164,18 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
         updateCard(selectedCardId, { zoom: parseFloat(e.target.value) });
     };
 
+    const handleShiftX = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const x = parseFloat(e.target.value);
+        updateCard(selectedCardId, { position: { ...selectedCard.position, x } });
+    };
+    const handleShiftY = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const y = parseFloat(e.target.value);
+        updateCard(selectedCardId, { position: { x: selectedCard.position.x, y } });
+    };
+    const handleResetPosition = () => {
+        updateCard(selectedCardId, { position: { x: 0, y: 0 } });
+    };
+
     const handleMouseDown = (e: React.MouseEvent) => {
         if (!selectedCard.imageUrl) return;
         setIsDragging(true);
@@ -291,16 +303,58 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
                                     </div>
                                     <div className="zoom-slider-container">
                                         <ZoomIn size={18} className="text-gray-500" />
-                                        <input 
-                                            type="range" 
-                                            min="0.5" 
-                                            max="3" 
-                                            step="0.01" 
-                                            value={selectedCard.zoom} 
+                                        <input
+                                            type="range"
+                                            min="0.5"
+                                            max="3"
+                                            step="0.01"
+                                            value={selectedCard.zoom}
                                             onChange={handleZoomChange}
                                             className="zoom-slider"
                                         />
                                     </div>
+                                </div>
+                                <div className="control-group">
+                                    <div className="flex justify-between items-center mb-1">
+                                        <label className="control-label">Posun vodorovně</label>
+                                        <span className="text-xs font-bold text-gold">{Math.round(selectedCard.position.x)} px</span>
+                                    </div>
+                                    <input
+                                        type="range"
+                                        min={-200}
+                                        max={200}
+                                        step={1}
+                                        value={selectedCard.position.x}
+                                        onChange={handleShiftX}
+                                        className="zoom-slider"
+                                        style={{ width: '100%' }}
+                                    />
+                                </div>
+                                <div className="control-group">
+                                    <div className="flex justify-between items-center mb-1">
+                                        <label className="control-label">Posun svisle</label>
+                                        <span className="text-xs font-bold text-gold">{Math.round(selectedCard.position.y)} px</span>
+                                    </div>
+                                    <input
+                                        type="range"
+                                        min={-200}
+                                        max={200}
+                                        step={1}
+                                        value={selectedCard.position.y}
+                                        onChange={handleShiftY}
+                                        className="zoom-slider"
+                                        style={{ width: '100%' }}
+                                    />
+                                </div>
+                                <div style={{ display: 'flex', gap: '10px' }}>
+                                    <button
+                                        className="btn-secondary py-2 px-4 text-sm"
+                                        style={{ flex: 1, justifyContent: 'center' }}
+                                        onClick={handleResetPosition}
+                                        type="button"
+                                    >
+                                        Vycentrovat
+                                    </button>
                                 </div>
                                 <div style={{ display: 'flex', gap: '10px' }}>
                                     <button 

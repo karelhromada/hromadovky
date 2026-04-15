@@ -1,7 +1,15 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { CartItem } from '../App';
+import { backgrounds } from '../data/backgrounds';
 import './Cart.css';
+
+const resolveBackImage = (value?: string): string | null => {
+    if (!value) return null;
+    if (value.startsWith('/') || value.startsWith('http')) return value;
+    const byName = backgrounds.find(b => b.name === value);
+    return byName?.url ?? null;
+};
 
 interface CartProps {
     isOpen: boolean;
@@ -80,12 +88,19 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
                                         </div>
                                     )}
 
-                                    {item.selectedBack && (
-                                        <div className="item-back-info" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                                            <span style={{ fontWeight: 600 }}>Vybraný rub:</span>
-                                            <img src={item.selectedBack} alt="Zadní strana" style={{ width: '24px', height: '34px', borderRadius: '4px', objectFit: 'cover', border: '1px solid rgba(0,0,0,0.1)', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }} />
-                                        </div>
-                                    )}
+                                    {item.selectedBack && (() => {
+                                        const backImg = resolveBackImage(item.selectedBack);
+                                        return (
+                                            <div className="item-back-info" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                                                <span style={{ fontWeight: 600 }}>Vybraný rub:</span>
+                                                {backImg ? (
+                                                    <img src={backImg} alt={item.selectedBack} style={{ width: '24px', height: '34px', borderRadius: '4px', objectFit: 'cover', border: '1px solid rgba(0,0,0,0.1)', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }} />
+                                                ) : (
+                                                    <span>{item.selectedBack}</span>
+                                                )}
+                                            </div>
+                                        );
+                                    })()}
                                     {item.size && (
                                         <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
                                             <span style={{ fontWeight: 600 }}>Rozměr karet:</span> {item.size}

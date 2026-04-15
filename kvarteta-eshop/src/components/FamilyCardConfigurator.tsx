@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Upload, ZoomIn, Trash2, Check, CreditCard, ChevronRight } from 'lucide-react';
 import { backgrounds } from '../data/backgrounds';
 import './FamilyCardConfigurator.css';
+import { uploadOrderPhoto } from '../lib/storage';
 
 interface FamilyCardConfiguratorProps {
     onAddToCart?: (item: any) => void;
@@ -14,7 +15,8 @@ interface CardConfig {
     label: string;
     rank: string;
     suitColor: 'red' | 'black';
-    imageUrl: string | null;
+    imageUrl: string | null;   // blob: preview URL
+    imagePath: string | null;  // supabase storage path — posílá se do košíku
     zoom: number;
     position: { x: number; y: number };
 }
@@ -60,6 +62,7 @@ const buildJokers = (): CardConfig[] => SUITS.map(suit => ({
     rank: JOKER_RANK,
     suitColor: suit.color,
     imageUrl: null,
+    imagePath: null,
     zoom: 1,
     position: { x: 0, y: 0 }
 }));
@@ -77,6 +80,7 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
                 rank: rank,
                 suitColor: suit.color,
                 imageUrl: null,
+                imagePath: null,
                 zoom: 1,
                 position: { x: 0, y: 0 }
             });
@@ -130,15 +134,25 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
         };
     }, []); // Only on unmount
 
-    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (file) {
-            // Revoke old URL if exists for this card
-            if (selectedCard.imageUrl && selectedCard.imageUrl.startsWith('blob:')) {
-                URL.revokeObjectURL(selectedCard.imageUrl);
-            }
-            const url = URL.createObjectURL(file);
-            updateCard(selectedCardId, { imageUrl: url, zoom: 1, position: { x: 0, y: 0 } });
+        if (!file) return;
+        e.target.value = '';
+
+        if (selectedCard.imageUrl && selectedCard.imageUrl.startsWith('blob:')) {
+            URL.revokeObjectURL(selectedCard.imageUrl);
+        }
+        const targetId = selectedCardId;
+        const previewUrl = URL.createObjectURL(file);
+        updateCard(targetId, { imageUrl: previewUrl, imagePath: null, zoom: 1, position: { x: 0, y: 0 } });
+
+        try {
+            const { path } = await uploadOrderPhoto(file);
+            updateCard(targetId, { imagePath: path });
+        } catch (err: any) {
+            alert(err?.message || 'Nahrání fotky se nezdařilo.');
+            URL.revokeObjectURL(previewUrl);
+            updateCard(targetId, { imageUrl: null, imagePath: null });
         }
     };
 
@@ -181,7 +195,7 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
     };
 
     const handleRemoveImage = () => {
-        updateCard(selectedCardId, { imageUrl: null, zoom: 1, position: { x: 0, y: 0 } });
+        updateCard(selectedCardId, { imageUrl: null, imagePath: null, zoom: 1, position: { x: 0, y: 0 } });
     };
 
     const handleFinish = () => {
@@ -203,7 +217,8 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
                 selectedBackUrl: selectedBackUrl,
                 isCustom: true,
                 includeJoker,
-                deckConfigs: deck.filter(c => c.imageUrl)
+                deckConfigs: deck.filter(c => c.imageUrl),
+                customPhotoPaths: deck.filter(c => c.imagePath).map(c => c.imagePath as string),
             });
         }
     };

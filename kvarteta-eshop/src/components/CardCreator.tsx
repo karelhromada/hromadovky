@@ -1,30 +1,11 @@
-import React, { useState, memo, useCallback } from 'react';
+import React, { useState, useRef, memo, useCallback } from 'react';
 import { Upload, Sparkles } from 'lucide-react';
 import './CardCreator.css';
 import { uploadOrderPhoto } from '../lib/storage';
+import { getBackgroundsForGame } from '../data/backgrounds';
+import { renderAndUploadBatch, type RenderTask } from '../lib/cardExporter';
 
-const backgrounds = [
-    { url: '/cards/neutral_back_ruby_formatted.webp', name: 'Rubín' },
-    { url: '/cards/knight_back_iron_steel.webp', name: 'Ocel' },
-    { url: '/cards/knight_back_crest.webp', name: 'Erb' },
-    { url: '/cards/knight_back_gate.webp', name: 'Brána' },
-    { url: '/cards/knight_back_pattern.webp', name: 'Vzor' },
-    { url: '/cards/dragon_scales_realistic_1.webp', name: 'Zelené šupiny' },
-    { url: '/cards/dragon_scales_metallic.webp', name: 'Kovový drak' },
-    { url: '/cards/dragon_scales_vibrant.webp', name: 'Krvavé šupiny' },
-    { url: '/cards/dragon_scales_realistic_2.webp', name: 'Zlaté šupiny' },
-    { url: '/cards/card_back_pattern.webp', name: 'Tajemný vzor' },
-    { url: '/cards/neutral_back_stars.webp', name: 'Noční obloha' },
-    { url: '/cards/cat_fur_orange.webp', name: 'Zrzavý kocour' },
-    { url: '/cards/cat_fur_silver.webp', name: 'Stříbrná srst' },
-    { url: '/cards/cat_fur_calico.webp', name: 'Tříbarevná srst' },
-    { url: '/cards/pexeso_back_blue_geo.webp', name: 'Modré diamanty' },
-    { url: '/cards/pexeso_back_red_geo.webp', name: 'Červené vzory' },
-    { url: '/cards/pexeso_back_linen.webp', name: 'Klasické plátno' },
-    { url: '/cards/pexeso_back_stars.webp', name: 'Hvězdná noc' },
-    { url: '/cards/dragon_scales_seamless.webp', name: 'Dračí plátování' },
-    { url: '/cards/neutral_back_gradient.webp', name: 'Temný gradient' }
-];
+const backgrounds = getBackgroundsForGame('karty');
 
 const frontImages = [
     '/cards/baby_1.webp', '/cards/baby_2.webp', '/cards/baby_7.webp',
@@ -261,6 +242,8 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
     const [customStatLayouts, setCustomStatLayouts] = useState<Record<string, string>>({});
     const [previewSlot, setPreviewSlot] = useState<string>('1A');
     const [wantsCustomBack, setWantsCustomBack] = useState(false);
+    const exportRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+    const [rendering, setRendering] = useState<{ done: number; total: number } | null>(null);
 
     const kvartetoSlots = Array.from({ length: 8 }, (_, i) =>
         ['A', 'B', 'C', 'D'].map(letter => `${i + 1}${letter}`)
@@ -348,6 +331,74 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
         previewSlot,
         useCustomPhotos,
         customDescriptions
+    };
+
+    const buildSlotPreviewProps = (slot: string) => ({
+        mainTextColor: getMainTextColor(slot),
+        safeFontFamily,
+        layout: customStatLayouts[slot] || cardData.statLayout,
+        bgImage: customPhotoPreviews[slot] || cardData.frontImage,
+        idText: slot,
+        titleText: customCardNames[slot] || 'NÁZEV KARTY',
+        hideStats,
+        stats: cardData.stats,
+        customStats,
+        previewSlot: slot,
+        useCustomPhotos: true,
+        customDescriptions,
+    });
+
+    const handleAddToCartClick = async () => {
+        if (!onAddToCart) { setIsModalOpen(false); return; }
+
+        let renderedCardPaths: string[] = [];
+        if (useCustomPhotos) {
+            const slotsWithPhotos = Object.keys(customPhotoPreviews).filter(s => customPhotoPreviews[s]);
+            const tasks: RenderTask[] = slotsWithPhotos
+                .map(slot => {
+                    const node = exportRefs.current.get(slot);
+                    return node ? { node, cardKey: `kvarteto-${slot}` } : null;
+                })
+                .filter((t): t is RenderTask => t !== null);
+            if (tasks.length > 0) {
+                setRendering({ done: 0, total: tasks.length });
+                const { paths, failed } = await renderAndUploadBatch(tasks, p => {
+                    setRendering({ done: p.done, total: p.total });
+                }, 3);
+                setRendering(null);
+                renderedCardPaths = paths;
+                if (failed.length && failed.length === tasks.length) {
+                    alert(`Generování karet selhalo (${failed.length}/${tasks.length}). Objednávka pokračuje jen se surovými fotkami.`);
+                } else if (failed.length) {
+                    console.warn('Některé karty se nepodařilo vyrenderovat:', failed);
+                }
+            }
+        }
+
+        const backName = (letDesignOnUs && !wantsCustomBack) ? 'Dle AI návrhu' : (backgrounds.find(b => b.url === cardData.bgImage)?.name || 'Vlastní');
+        const backUrl = (letDesignOnUs && !wantsCustomBack) ? '' : cardData.bgImage;
+
+        onAddToCart({
+            id: `custom-quartet-${Date.now()}`,
+            name: `Unikátní kvarteto: ${cardData.groupName}`,
+            price: 599,
+            image: '',
+            selectedBack: backName,
+            groupName: cardData.groupName,
+            statShape: statShapes.find(s => s.value === cardData.statShape)?.label || cardData.statShape,
+            statLayout: statLayouts.find(s => s.value === cardData.statLayout)?.label || cardData.statLayout,
+            style: cardData.style,
+            note: cardData.note,
+            customPhotos: useCustomPhotos ? customPhotos : undefined,
+            customStats: useCustomPhotos ? customStats : undefined,
+            customCardNames: useCustomPhotos ? customCardNames : undefined,
+            customDescriptions: useCustomPhotos ? customDescriptions : undefined,
+            customStatLayouts: useCustomPhotos ? customStatLayouts : undefined,
+            hideStats,
+            renderedCardPaths,
+            cardBackRef: backUrl ? { name: backName, publicUrl: backUrl } : undefined,
+        });
+        setIsModalOpen(false);
     };
 
     return (
@@ -992,29 +1043,8 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
 
                             <button
                                 className="btn-premium w-full"
-                                onClick={() => {
-                                    if (onAddToCart) {
-                                        onAddToCart({
-                                            id: `custom-quartet-${Date.now()}`,
-                                            name: `Unikátní kvarteto: ${cardData.groupName}`,
-                                            price: 599,
-                                            image: '', // Vlastní karty nemají v košíku přední ilustrační obrázek
-                                            selectedBack: (letDesignOnUs && !wantsCustomBack) ? 'Dle AI návrhu' : (backgrounds.find(b => b.url === cardData.bgImage)?.name || 'Vlastní'),
-                                            groupName: cardData.groupName,
-                                            statShape: statShapes.find(s => s.value === cardData.statShape)?.label || cardData.statShape,
-                                            statLayout: statLayouts.find(s => s.value === cardData.statLayout)?.label || cardData.statLayout,
-                                            style: cardData.style,
-                                            note: cardData.note,
-                                            customPhotos: useCustomPhotos ? customPhotos : undefined,
-                                            customStats: useCustomPhotos ? customStats : undefined,
-                                            customCardNames: useCustomPhotos ? customCardNames : undefined,
-                                            customDescriptions: useCustomPhotos ? customDescriptions : undefined,
-                                            customStatLayouts: useCustomPhotos ? customStatLayouts : undefined,
-                                            hideStats: hideStats
-                                        });
-                                    }
-                                    setIsModalOpen(false);
-                                }}
+                                onClick={handleAddToCartClick}
+                                disabled={rendering !== null}
                                 style={{
                                     padding: '1.2rem',
                                     fontSize: '1.2rem',
@@ -1042,7 +1072,7 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
                             >
                                 <span style={{ position: 'relative', zIndex: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                                    Vložit do košíku
+                                    {rendering ? `Generujeme karty… ${rendering.done}/${rendering.total}` : 'Vložit do košíku'}
                                 </span>
                                 <div style={{ position: 'absolute', top: 0, left: '-100%', width: '50%', height: '100%', background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent)', transform: 'skewX(-20deg)', animation: 'btnShine 3s infinite', zIndex: 1 }}></div>
                             </button>
@@ -1050,6 +1080,25 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
                     </div>
                 </div>
             )}
+
+            {/* Off-screen render container — pro export PNG každé karty do Supabase */}
+            <div
+                aria-hidden="true"
+                style={{ position: 'fixed', left: '-10000px', top: 0, pointerEvents: 'none', opacity: 0 }}
+            >
+                {useCustomPhotos && Object.keys(customPhotoPreviews).filter(s => customPhotoPreviews[s]).map(slot => (
+                    <div
+                        key={`export-${slot}`}
+                        ref={el => {
+                            if (el) exportRefs.current.set(slot, el);
+                            else exportRefs.current.delete(slot);
+                        }}
+                        style={{ margin: 0 }}
+                    >
+                        <LiveCardPreview isBack={false} {...buildSlotPreviewProps(slot)} />
+                    </div>
+                ))}
+            </div>
         </section>
     );
 };

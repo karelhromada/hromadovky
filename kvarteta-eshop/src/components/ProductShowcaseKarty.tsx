@@ -57,7 +57,7 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
             <div className="section-header">
                 <span className="badge mb-4">Klasické hry</span>
                 <h2 className="section-title">Naše <span className="text-gradient-gold">luxusní sady</span> hracích karet</h2>
-                <p className="text-center text-secondary max-w-2xl mt-4">
+                <p className="section-subtitle text-center">
                     Naše exkluzivní edice pro prší vás ohromí prémiovým zpracováním, odolností a luxusním vzhledem. Prohlédněte si všechny karty rovnou zde na webu!
                 </p>
             </div>

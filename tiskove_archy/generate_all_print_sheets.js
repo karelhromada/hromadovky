@@ -138,6 +138,60 @@ const products = [
         size: HRACI_KARTY_SIZE,
         subfolder: 'hraci_karty',
     },
+    {
+        name: 'Hrací karty – Minecraft',
+        slug: 'hraci_karty_minecraft',
+        folder: 'hraci_karty/Minecraft prší/Karty finále',
+        filter: f => /^karta_.*\.png$/.test(f),
+        sort: (a, b) => {
+            const suitOrder = ['Srdce', 'Zelene', 'Piky', 'Listy', 'Kule', 'Žaludy', 'Zaludy'];
+            const valOrder = ['7', '8', '9', '10', 'Spodek', 'Svršek', 'Svrsek', 'Král', 'Kral', 'Eso'];
+            const normSuit = s => {
+                const i = suitOrder.indexOf(s);
+                if (i === 3) return 2; // Listy == Piky
+                if (i === 6) return 5; // Zaludy == Žaludy
+                return i;
+            };
+            const normVal = v => {
+                const i = valOrder.indexOf(v);
+                if (i === 6) return 5; // Svrsek == Svršek
+                if (i === 8) return 7; // Kral == Král
+                return i;
+            };
+            const parts = name => {
+                const core = name.replace(/^karta_/, '').replace(/-\d+\.png$/, '').replace(/\.png$/, '');
+                const [suit, val] = core.split('_');
+                return { suit, val };
+            };
+            const pa = parts(a);
+            const pb = parts(b);
+            const suitDiff = normSuit(pa.suit) - normSuit(pb.suit);
+            if (suitDiff !== 0) return suitDiff;
+            return normVal(pa.val) - normVal(pb.val);
+        },
+        size: HRACI_KARTY_SIZE,
+        subfolder: 'hraci_karty',
+    },
+    {
+        name: 'Hrací karty – Minecraft (zadní strana tmavá)',
+        slug: 'hraci_karty_minecraft_back_dark',
+        folder: 'hraci_karty/Minecraft prší/Karty finále',
+        filter: f => f === 'Zadní_strana_tmavá.png',
+        sort: () => 0,
+        size: HRACI_KARTY_SIZE,
+        subfolder: 'hraci_karty',
+        repeat: 9,
+    },
+    {
+        name: 'Hrací karty – Minecraft (zadní strana světlá)',
+        slug: 'hraci_karty_minecraft_back_light',
+        folder: 'hraci_karty/Minecraft prší/Karty finále',
+        filter: f => f === 'Zadní_strana_světlá.png',
+        sort: () => 0,
+        size: HRACI_KARTY_SIZE,
+        subfolder: 'hraci_karty',
+        repeat: 9,
+    },
     // ── PEXESA ──
     {
         name: 'Pexeso – draci',
@@ -199,6 +253,10 @@ function generatePrintHTML(product, cardFiles) {
     let allCards = [...cardFiles];
     if (isPexeso) {
         allCards = [...cardFiles, ...cardFiles];
+    }
+    // Pro backside archy: opakovat jeden obrázek N× (typicky 9× pro 3×3)
+    if (product.repeat && cardFiles.length === 1) {
+        allCards = Array(product.repeat).fill(cardFiles[0]);
     }
     
     // Relativní cesta z místa šablony k obrázkům (nyní vždy ve stejné složce jako podsložka finalni_karty)

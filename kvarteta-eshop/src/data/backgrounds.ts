@@ -42,7 +42,11 @@ export const backgrounds: Background[] = [
   { id: 'pexeso_linen', name: 'Klasické plátno', url: '/cards/pexeso_back_linen.webp', category: 'classic' },
   { id: 'pexeso_stars', name: 'Hvězdná noc', url: '/cards/pexeso_back_stars.webp', category: 'classic' },
   { id: 'pexeso_geo_blue', name: 'Modré diamanty', url: '/cards/pexeso_back_blue_geo.webp', category: 'classic' },
-  { id: 'pexeso_geo_red', name: 'Červené vzory', url: '/cards/pexeso_back_red_geo.webp', category: 'classic' }
+  { id: 'pexeso_geo_red', name: 'Červené vzory', url: '/cards/pexeso_back_red_geo.webp', category: 'classic' },
+
+  // MINECRAFT SERIES
+  { id: 'minecraft_dark', name: 'Minecraft – tmavá', url: '/cards/minecraft-prsi/back_dark.png', category: 'pattern' },
+  { id: 'minecraft_light', name: 'Minecraft – světlá', url: '/cards/minecraft-prsi/back_light.png', category: 'pattern' }
 ];
 
 export const getBackgroundByUrl = (url: string) => {

@@ -40,6 +40,7 @@ export interface CartItem {
 }
 
 import { AuthProvider } from './context/AuthContext'
+import { migrateLegacyBackUrl } from './data/backgrounds'
 
 function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -47,7 +48,11 @@ function App() {
     const saved = localStorage.getItem('hromadovky_cart');
     if (!saved) return [];
     try {
-      return JSON.parse(saved) as CartItem[];
+      const parsed = JSON.parse(saved) as CartItem[];
+      return parsed.map((item) => ({
+        ...item,
+        selectedBack: migrateLegacyBackUrl(item.selectedBack) ?? item.selectedBack,
+      }));
     } catch {
       return [];
     }

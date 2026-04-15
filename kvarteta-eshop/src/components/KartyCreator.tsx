@@ -8,7 +8,9 @@ interface KartyCreatorProps {
 
 type PlayMode = 'classic' | 'thematic';
 
-import { backgrounds } from '../data/backgrounds';
+import { backgrounds, getBackgroundsForGame } from '../data/backgrounds';
+
+const KARTY_BACKS = getBackgroundsForGame('karty');
 
 const cardStyles = [
     { label: 'Roztomilé', value: 'Roztomilé' },
@@ -31,7 +33,7 @@ const themes = [
 
 const KartyCreator: React.FC<KartyCreatorProps> = ({ onAddToCart }) => {
     const [playMode, setPlayMode] = useState<PlayMode>('classic');
-    const [selectedBack, setSelectedBack] = useState<string>(backgrounds[0].url);
+    const [selectedBack, setSelectedBack] = useState<string>(KARTY_BACKS[0].url);
     const [selectedTheme, setSelectedTheme] = useState<string>(themes[0].id);
     const [leaveDesignToUs, setLeaveDesignToUs] = useState(false);
     const [customThemeDesc, setCustomThemeDesc] = useState('');
@@ -76,7 +78,7 @@ const KartyCreator: React.FC<KartyCreatorProps> = ({ onAddToCart }) => {
                 name: productName,
                 description: productDesc,
                 price: getPrice(),
-                image: productImage || backgrounds[0].url,
+                image: productImage || KARTY_BACKS[0].url,
                 selectedBack: backgrounds.find(b => b.url === selectedBack)?.name || 'Klasika',
                 themeColor: themeColor
             });
@@ -137,7 +139,7 @@ const KartyCreator: React.FC<KartyCreatorProps> = ({ onAddToCart }) => {
                                 </p>
                             </div>
                             <div className="k-back-options">
-                                {backgrounds.map((bg) => (
+                                {KARTY_BACKS.map((bg) => (
                                     <div
                                         key={bg.id}
                                         className={`k-back-option ${selectedBack === bg.url ? 'active' : ''}`}

@@ -7,7 +7,9 @@ interface PexesoCreatorProps {
     onAddToCart?: (item: any) => void;
 }
 
-import { backgrounds } from '../data/backgrounds';
+import { backgrounds, getBackgroundsForGame } from '../data/backgrounds';
+
+const PEXESO_BACKS = getBackgroundsForGame('pexeso');
 
 const dimensions = [
     { id: 'klasicke', label: 'Klasické', desc: '50 × 50 mm', priceAdd: 0 },
@@ -38,7 +40,7 @@ const PexesoCreator: React.FC<PexesoCreatorProps> = ({ onAddToCart }) => {
     const [deckSize, setDeckSize] = useState<DeckSize>(32);
     const [selectedSize, setSelectedSize] = useState<typeof dimensions[0]>(dimensions[0]);
     const [photos, setPhotos] = useState<UploadedPhoto[]>([]);
-    const [selectedBack, setSelectedBack] = useState<string>(backgrounds[0].url);
+    const [selectedBack, setSelectedBack] = useState<string>(PEXESO_BACKS[0].url);
     const [leaveDesignToUs, setLeaveDesignToUs] = useState(false);
     const [customThemeDesc, setCustomThemeDesc] = useState('');
     const [customThemeStyle, setCustomThemeStyle] = useState(cardStyles[0].value);
@@ -279,7 +281,7 @@ const PexesoCreator: React.FC<PexesoCreatorProps> = ({ onAddToCart }) => {
                         <h3 className="step-title">Zvolte zadní stranu karet</h3>
                     </div>
                     <div className="back-options">
-                        {backgrounds.map((bg) => (
+                        {PEXESO_BACKS.map((bg) => (
                             <div
                                 key={bg.id}
                                 className={`back-option ${selectedBack === bg.url ? 'active' : ''}`}

@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Sync target pro zadni_strany/ (generovano scripts/sync-backs.mjs pri predev/prebuild)
+public/zadni_strany/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

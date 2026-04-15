@@ -4,10 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "predev": "node scripts/sync-backs.mjs",
     "dev": "vite",
+    "prebuild": "node scripts/sync-backs.mjs",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "sync-backs": "node scripts/sync-backs.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.100.0",

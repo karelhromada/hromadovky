@@ -10,7 +10,9 @@ interface ProductShowcaseKartyProps {
 
 import { kartyProducts as products } from '../data/products';
 
-import { backgrounds } from '../data/backgrounds';
+import { getBackgroundsForGame } from '../data/backgrounds';
+
+const KARTY_BACKS = getBackgroundsForGame('karty');
 
 const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart }) => {
     const [selectedProductForPreview, setSelectedProductForPreview] = useState<any | null>(null);
@@ -18,7 +20,7 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
     const [isMaximized, setIsMaximized] = useState<boolean>(false);
     const [zoomedCardImage, setZoomedCardImage] = useState<string | null>(null);
     const [selectedProductForCart, setSelectedProductForCart] = useState<any | null>(null);
-    const [selectedBack, setSelectedBack] = useState<string>(backgrounds[0].url);
+    const [selectedBack, setSelectedBack] = useState<string>(KARTY_BACKS[0].url);
 
     // Prevent background scrolling when modal or lightbox is open
     React.useEffect(() => {
@@ -32,7 +34,7 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
 
     const handleAddToCart = (product: any) => {
         setSelectedProductForCart(product);
-        setSelectedBack(backgrounds[0].url);
+        setSelectedBack(KARTY_BACKS[0].url);
     };
 
     const confirmAddToCart = () => {
@@ -307,7 +309,7 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
                         <p className="modal-subtitle">Vybraná zadní strana se vytiskne na všechny karty v tomto balíčku.</p>
                         
                         <div className="backs-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', maxHeight: '300px', overflowY: 'auto', padding: '4px' }}>
-                            {backgrounds.map((bg, idx) => (
+                            {KARTY_BACKS.map((bg, idx) => (
                                 <div
                                     key={idx}
                                     className={`back-preview-item ${selectedBack === bg.url ? 'selected' : ''}`}

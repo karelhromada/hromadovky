@@ -5,6 +5,7 @@ import Cart from './components/Cart'
 import Footer from './components/Footer'
 import HomePage from './pages/HomePage'
 import './App.css'
+import './components/HeroSection.css'
 
 const KvartetaPage = lazy(() => import('./pages/KvartetaPage'))
 const PexesoPage = lazy(() => import('./pages/PexesoPage'))

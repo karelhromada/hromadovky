@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Root workspace pro migraci zadnich stran karet (sjednoceni zdroju pro eshop + tisk).",
   "private": true,
-  "type": "module",
   "scripts": {
     "migrate:backs": "node scripts/migrate_backs.mjs"
   },

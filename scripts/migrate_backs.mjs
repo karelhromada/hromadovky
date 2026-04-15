@@ -156,12 +156,45 @@ async function migrate(entries, outDir, manifestPath, aspectRatio) {
   );
 }
 
+async function injectDuplexConfig() {
+  const htmlPath = path.join(BASE, 'tiskove_archy/duplex_konfigurator_pro.html');
+  try {
+    await fs.access(htmlPath);
+  } catch {
+    console.warn(`[duplex] ${htmlPath} neexistuje, preskakuji injekci.`);
+    return;
+  }
+
+  // BACKS pro duplex konfigurator = pouze karty (ne pexeso, ma 1:1 pomer).
+  // Cesty jsou relativni z tiskove_archy/ -> ../zadni_strany/karty/webp/<id>.webp.
+  const lines = KARTY.map((e) => `            '../zadni_strany/karty/webp/${e.id}.webp'`);
+  const block =
+    '        // BACKS:START (automaticky generováno scripts/migrate_backs.mjs – needitovat ručně)\n' +
+    '        const BACKS = [\n' +
+    lines.join(',\n') +
+    '\n        ];\n' +
+    '        // BACKS:END';
+
+  const html = await fs.readFile(htmlPath, 'utf8');
+  const re = /\s*\/\/ BACKS:START[\s\S]*?\/\/ BACKS:END/;
+  if (!re.test(html)) {
+    console.warn('[duplex] Nenalezeny znacky BACKS:START / BACKS:END – injekce preskocena.');
+    return;
+  }
+  const updated = html.replace(re, '\n' + block);
+  await fs.writeFile(htmlPath, updated);
+  console.log(`[duplex] Injektovan BACKS (${KARTY.length} polozek) do ${path.relative(BASE, htmlPath)}`);
+}
+
 async function main() {
   console.log('Migrace KARTY ->', path.relative(BASE, OUT_KARTY));
   await migrate(KARTY, OUT_KARTY, MANIFEST_KARTY, '1:1.4194');
 
   console.log('\nMigrace PEXESO ->', path.relative(BASE, OUT_PEXESO));
   await migrate(PEXESO, OUT_PEXESO, MANIFEST_PEXESO, '1:1');
+
+  console.log('');
+  await injectDuplexConfig();
 
   console.log(`\nHotovo. karty: ${KARTY.length} | pexeso: ${PEXESO.length}`);
 }

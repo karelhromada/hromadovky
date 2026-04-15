@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Zadní strana – Zelene supiny (kvarteto) – tiskový arch</title>
+    <style>
+        /* ═══ PRINT RESET ═══ */
+        * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        body { margin: 0; padding: 0; background: #e8e8e8; font-family: system-ui, sans-serif; }
+        
+        /* ═══ PRINT HEADER (nepotiskne se) ═══ */
+        .no-print { text-align: center; padding: 12px 20px; background: #fff; border-bottom: 1px solid #ddd; position: sticky; top: 0; z-index: 100; }
+        .no-print h2 { margin: 0 0 4px; font-size: 16px; }
+        .no-print p { margin: 0 0 8px; color: #666; font-size: 13px; }
+        .btn-print { background: #ca8a04; color: white; border: none; padding: 8px 24px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 14px; }
+        .btn-print:hover { background: #a16207; }
+        
+        /* ═══ A4 STRÁNKA ═══ */
+        .page { width: 210mm; height: 297mm; background: #fff; margin: 8mm auto; position: relative; overflow: hidden; page-break-after: always; box-shadow: 0 0 10px rgba(0,0,0,0.15); }
+        .page:last-child { page-break-after: avoid; }
+        
+        /* ═══ KARTA ═══ */
+        .card { 
+            width: 60mm; height: 85mm; 
+            position: absolute; 
+            background-color: #000; 
+            background-size: cover; 
+            background-position: center; 
+            border-radius: 4mm; 
+            overflow: hidden; 
+        }
+        
+        /* ═══ LAMINAČNÍ KOMPENZACE ═══ */
+        /* Matná laminace ztlumí barvy a kontrast. Tyto filtry to předkompenzují. */
+        .card {
+            filter: brightness(1.08) contrast(1.06) saturate(1.08);
+        }
+        
+        @media print {
+            body { background: none; }
+            .page { margin: 0; box-shadow: none; }
+            .no-print { display: none; }
+            @page { size: A4 portrait; margin: 0; }
+            
+            /* Silnější kompenzace pro skutečný tisk */
+            .card {
+                filter: brightness(1.15) contrast(1.10) saturate(1.10);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="no-print">
+        <h2>Zadní strana – Zelene supiny (kvarteto) – tiskový arch</h2>
+        <p>Karty: 60mm × 85mm | 3×3 na stránku | Celkem 9 karet (1 stran) | Optimalizováno pro matnou laminaci</p>
+        <button class="btn-print" onclick="window.print()">Vytisknout karty</button>
+    </div>
+    <div class="page">
+        <div class="card" style="left:12mm; top:18mm; background-image:url('../../karty/webp/drak_zelene_supiny.webp');"></div>
+        <div class="card" style="left:75mm; top:18mm; background-image:url('../../karty/webp/drak_zelene_supiny.webp');"></div>
+        <div class="card" style="left:138mm; top:18mm; background-image:url('../../karty/webp/drak_zelene_supiny.webp');"></div>
+        <div class="card" style="left:12mm; top:106mm; background-image:url('../../karty/webp/drak_zelene_supiny.webp');"></div>
+        <div class="card" style="left:75mm; top:106mm; background-image:url('../../karty/webp/drak_zelene_supiny.webp');"></div>
+        <div class="card" style="left:138mm; top:106mm; background-image:url('../../karty/webp/drak_zelene_supiny.webp');"></div>
+        <div class="card" style="left:12mm; top:194mm; background-image:url('../../karty/webp/drak_zelene_supiny.webp');"></div>
+        <div class="card" style="left:75mm; top:194mm; background-image:url('../../karty/webp/drak_zelene_supiny.webp');"></div>
+        <div class="card" style="left:138mm; top:194mm; background-image:url('../../karty/webp/drak_zelene_supiny.webp');"></div>
+    </div>
+
+</body>
+</html>

@@ -172,26 +172,8 @@ const products = [
         size: HRACI_KARTY_SIZE,
         subfolder: 'hraci_karty',
     },
-    {
-        name: 'Hrací karty – Minecraft (zadní strana tmavá)',
-        slug: 'hraci_karty_minecraft_back_dark',
-        folder: 'hraci_karty/Minecraft prší/Karty finále',
-        filter: f => f === 'Zadní_strana_tmavá.png',
-        sort: () => 0,
-        size: HRACI_KARTY_SIZE,
-        subfolder: 'hraci_karty',
-        repeat: 9,
-    },
-    {
-        name: 'Hrací karty – Minecraft (zadní strana světlá)',
-        slug: 'hraci_karty_minecraft_back_light',
-        folder: 'hraci_karty/Minecraft prší/Karty finále',
-        filter: f => f === 'Zadní_strana_světlá.png',
-        sort: () => 0,
-        size: HRACI_KARTY_SIZE,
-        subfolder: 'hraci_karty',
-        repeat: 9,
-    },
+    // (Backside archy pro Minecraft + vsechny ostatni backy se generuji dynamicky
+    //  ze zadni_strany/karty/manifest.json a pexeso/manifest.json – viz konec souboru.)
     // ── PEXESA ──
     {
         name: 'Pexeso – draci',
@@ -259,8 +241,9 @@ function generatePrintHTML(product, cardFiles) {
         allCards = Array(product.repeat).fill(cardFiles[0]);
     }
     
-    // Relativní cesta z místa šablony k obrázkům (nyní vždy ve stejné složce jako podsložka finalni_karty)
-    const relPath = './finalni_karty';
+    // Relativní cesta z místa šablony k obrázkům.
+    // Default: obrázky jsou v podsložce ./finalni_karty. Lze přepsat přes product.relPath.
+    const relPath = product.relPath || './finalni_karty';
     
     // Rozdělit na stránky
     const pages = [];
@@ -351,32 +334,109 @@ ${cardsHTML}
 let total = 0;
 for (const product of products) {
     const folderPath = path.join(BASE, product.folder);
-    
+
     if (!fs.existsSync(folderPath)) {
         console.log(`⚠️  Složka nenalezena: ${product.folder} (přeskakuji ${product.name})`);
         continue;
     }
-    
+
     let files = fs.readdirSync(folderPath).filter(product.filter);
     files.sort(product.sort);
-    
+
     if (files.length === 0) {
         console.log(`⚠️  Žádné karty ve: ${product.folder} (přeskakuji ${product.name})`);
         continue;
     }
-    
+
     const html = generatePrintHTML(product, files);
-    
-    // Nový výstupní adresář: přímo v produktové složce (o úroveň výš než finalni_karty)
-    const outDir = path.dirname(path.join(BASE, product.folder));
+
+    // Výstup: buď přepsáno přes product.outDir, jinak produktová složka (o úroveň výš než finalni_karty)
+    const outDir = product.outDir
+        ? path.join(BASE, product.outDir)
+        : path.dirname(path.join(BASE, product.folder));
     fs.mkdirSync(outDir, { recursive: true });
-    
+
     const outFile = path.join(outDir, `tiskovy_arch_${product.slug}.html`);
     fs.writeFileSync(outFile, html, 'utf8');
-    
+
     const relOut = path.relative(BASE, outFile);
     console.log(`✅ ${product.name}: ${files.length} karet → ${relOut}`);
     total++;
 }
 
-console.log(`\n🎉 Vygenerováno ${total} tiskových šablon.`);
+// ════════════════════════════════════════════════════════════════════════
+// BACKSIDE ARCHY – generované z manifestu
+// ════════════════════════════════════════════════════════════════════════
+//
+// Pro každou zadní stranu v zadni_strany/karty/manifest.json vygenerujeme
+// dva archy (62×88 pro hrací karty, 60×85 pro kvarteta). Pro pexeso jeden
+// arch 60×60 (3×4 = 12 karet na stránce).
+//
+// Výstup: zadni_strany/archy/karty/tiskovy_arch_<id>_<hraci|kvarteto>.html
+//         zadni_strany/archy/pexeso/tiskovy_arch_<id>_pexeso.html
+
+function generateBacksideSheets() {
+    const kartyManifestPath = path.join(BASE, 'zadni_strany/karty/manifest.json');
+    const pexesoManifestPath = path.join(BASE, 'zadni_strany/pexeso/manifest.json');
+
+    let count = 0;
+
+    if (fs.existsSync(kartyManifestPath)) {
+        const manifest = JSON.parse(fs.readFileSync(kartyManifestPath, 'utf8'));
+        const variants = [
+            { suffix: 'hraci',    size: HRACI_KARTY_SIZE, repeat: 9  },
+            { suffix: 'kvarteto', size: KVARTETA_SIZE,    repeat: 9  },
+        ];
+        for (const back of manifest.backs) {
+            for (const { suffix, size, repeat } of variants) {
+                const virtualProduct = {
+                    name: `Zadní strana – ${back.name} (${suffix})`,
+                    slug: `zadni_strana_${back.id}_${suffix}`,
+                    size,
+                    repeat,
+                    relPath: '../../karty/webp',
+                    outDir: 'zadni_strany/archy/karty',
+                };
+                const html = generatePrintHTML(virtualProduct, [path.basename(back.file)]);
+                const outDir = path.join(BASE, virtualProduct.outDir);
+                fs.mkdirSync(outDir, { recursive: true });
+                const outFile = path.join(outDir, `tiskovy_arch_${virtualProduct.slug}.html`);
+                fs.writeFileSync(outFile, html, 'utf8');
+                count++;
+            }
+        }
+        console.log(`✅ Backside karty: ${manifest.backs.length} × 2 velikosti = ${manifest.backs.length * 2} archů → zadni_strany/archy/karty/`);
+    } else {
+        console.log('⚠️  zadni_strany/karty/manifest.json nenalezen – přeskakuji backside archy pro karty.');
+    }
+
+    if (fs.existsSync(pexesoManifestPath)) {
+        const manifest = JSON.parse(fs.readFileSync(pexesoManifestPath, 'utf8'));
+        for (const back of manifest.backs) {
+            const virtualProduct = {
+                name: `Zadní strana – ${back.name} (pexeso)`,
+                slug: `zadni_strana_${back.id}_pexeso`,
+                size: PEXESO_SIZE,
+                // 3×4 = 12, ale isPexeso=true v generatePrintHTML by zdvojilo array -> pouzijeme repeat
+                repeat: PEXESO_SIZE.cols * PEXESO_SIZE.rows,
+                relPath: '../../pexeso/webp',
+                outDir: 'zadni_strany/archy/pexeso',
+            };
+            const html = generatePrintHTML(virtualProduct, [path.basename(back.file)]);
+            const outDir = path.join(BASE, virtualProduct.outDir);
+            fs.mkdirSync(outDir, { recursive: true });
+            const outFile = path.join(outDir, `tiskovy_arch_${virtualProduct.slug}.html`);
+            fs.writeFileSync(outFile, html, 'utf8');
+            count++;
+        }
+        console.log(`✅ Backside pexeso: ${manifest.backs.length} archů → zadni_strany/archy/pexeso/`);
+    } else {
+        console.log('⚠️  zadni_strany/pexeso/manifest.json nenalezen – přeskakuji backside archy pro pexeso.');
+    }
+
+    return count;
+}
+
+const backsideCount = generateBacksideSheets();
+
+console.log(`\n🎉 Vygenerováno ${total + backsideCount} tiskových šablon (${total} produkty + ${backsideCount} zadních stran).`);

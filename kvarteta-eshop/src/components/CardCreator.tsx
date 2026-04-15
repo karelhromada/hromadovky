@@ -242,7 +242,7 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
     const [customStatLayouts, setCustomStatLayouts] = useState<Record<string, string>>({});
     const [previewSlot, setPreviewSlot] = useState<string>('1A');
     const [wantsCustomBack, setWantsCustomBack] = useState(false);
-    const exportRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+    const exportRefs = useRef<Map<string, HTMLElement>>(new Map());
     const [rendering, setRendering] = useState<{ done: number; total: number } | null>(null);
 
     const kvartetoSlots = Array.from({ length: 8 }, (_, i) =>

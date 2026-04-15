@@ -159,6 +159,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
             return [...fromArray, ...fromRecord];
         });
         const allPhotoPaths = photoPathsByItem.flat();
+        const allRenderedPaths = items.flatMap(i => i.renderedCardPaths ?? []);
 
         const orderData = {
             customer: formData,
@@ -176,8 +177,11 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                 customPhotos: item.customPhotos,
                 customPhotoPaths: item.customPhotoPaths,
                 photoPaths: photoPathsByItem[idx],
+                renderedCardPaths: item.renderedCardPaths ?? [],
+                cardBackRef: item.cardBackRef ?? null,
             })),
             allPhotoPaths,
+            allRenderedPaths,
             totalAmount: total,
             timestamp: new Date().toISOString(),
             variableSymbol: Math.floor(Date.now() / 1000).toString()

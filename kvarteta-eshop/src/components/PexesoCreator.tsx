@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { CheckCircle, Plus, Upload, Sparkles, LayoutGrid, Layers, Diamond } from 'lucide-react';
 import './PexesoCreator.css';
 import { uploadOrderPhoto } from '../lib/storage';
+import { renderAndUploadBatch, type RenderTask } from '../lib/cardExporter';
 
 interface PexesoCreatorProps {
     onAddToCart?: (item: any) => void;
@@ -45,6 +46,8 @@ const PexesoCreator: React.FC<PexesoCreatorProps> = ({ onAddToCart }) => {
     const [customThemeDesc, setCustomThemeDesc] = useState('');
     const [customThemeStyle, setCustomThemeStyle] = useState(cardStyles[0].value);
     const [uploading, setUploading] = useState(false);
+    const exportRefs = useRef<Map<string, HTMLElement>>(new Map());
+    const [rendering, setRendering] = useState<{ done: number; total: number } | null>(null);
 
     // Calculate required pairs based on deck size
     const requiredPairs = deckSize / 2;
@@ -76,7 +79,7 @@ const PexesoCreator: React.FC<PexesoCreatorProps> = ({ onAddToCart }) => {
         setPhotos(prev => prev.filter(p => p.id !== idToRemove));
     };
 
-    const handleAddToCart = () => {
+    const handleAddToCart = async () => {
         if (!leaveDesignToUs && photos.length < requiredPairs) {
             alert(`Prosím nahrajte ještě ${requiredPairs - photos.length} fotografií pro dokončení pexesa.`);
             return;
@@ -87,10 +90,32 @@ const PexesoCreator: React.FC<PexesoCreatorProps> = ({ onAddToCart }) => {
             return;
         }
 
+        let renderedCardPaths: string[] = [];
+        if (!leaveDesignToUs && photos.length > 0) {
+            const tasks: RenderTask[] = photos
+                .map((photo, idx) => {
+                    const node = exportRefs.current.get(photo.id);
+                    return node ? { node, cardKey: `pexeso-${String(idx + 1).padStart(2, '0')}` } : null;
+                })
+                .filter((t): t is RenderTask => t !== null);
+            if (tasks.length > 0) {
+                setRendering({ done: 0, total: tasks.length });
+                const { paths, failed } = await renderAndUploadBatch(tasks, p => {
+                    setRendering({ done: p.done, total: p.total });
+                }, 3);
+                setRendering(null);
+                renderedCardPaths = paths;
+                if (failed.length) {
+                    console.warn('Některé pexeso karty se nepodařilo vyrenderovat:', failed);
+                }
+            }
+        }
+
         if (onAddToCart) {
             const basePrice = deckSize === 16 ? 249 : deckSize === 32 ? 399 : 599;
             const finalPrice = basePrice + selectedSize.priceAdd;
             let desc = leaveDesignToUs ? `Ilustrace na přání (${customThemeStyle}): ${customThemeDesc}` : 'Unikátní pexeso vytvořené z vašich vlastních fotografií.';
+            const backName = backgrounds.find(b => b.url === selectedBack)?.name || 'Vlastní';
             onAddToCart({
                 id: `pexeso-custom-${Date.now()}`,
                 name: `Vlastní pexeso (${deckSize} karet) ${leaveDesignToUs ? '- Ilustrovaný design' : ''}`,
@@ -99,8 +124,10 @@ const PexesoCreator: React.FC<PexesoCreatorProps> = ({ onAddToCart }) => {
                 image: leaveDesignToUs ? '/cards/magic_runes_1.webp' : (photos[0]?.url || '/cards/placeholder.webp'),
                 themeColor: '#eab308',
                 size: `${selectedSize.label} (${selectedSize.desc})`,
-                selectedBack: backgrounds.find(b => b.url === selectedBack)?.name || 'Vlastní',
+                selectedBack: backName,
                 customPhotoPaths: leaveDesignToUs ? [] : photos.map(p => p.path),
+                renderedCardPaths,
+                cardBackRef: { name: backName, publicUrl: selectedBack },
             });
         }
     };
@@ -308,12 +335,32 @@ const PexesoCreator: React.FC<PexesoCreatorProps> = ({ onAddToCart }) => {
             <div className="creator-actions" style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
                 <button
                     className={`btn-primary btn-shine ${!leaveDesignToUs && photos.length < requiredPairs ? 'disabled' : ''}`}
-                    style={{ opacity: (!leaveDesignToUs && photos.length < requiredPairs) ? 0.5 : 1, cursor: (!leaveDesignToUs && photos.length < requiredPairs) ? 'not-allowed' : 'pointer', fontSize: '1.1rem', padding: '16px 32px' }}
+                    style={{ opacity: (!leaveDesignToUs && photos.length < requiredPairs) || rendering !== null ? 0.5 : 1, cursor: (!leaveDesignToUs && photos.length < requiredPairs) || rendering !== null ? 'not-allowed' : 'pointer', fontSize: '1.1rem', padding: '16px 32px' }}
                     onClick={handleAddToCart}
+                    disabled={rendering !== null}
                 >
-                    <span style={{ position: 'relative', zIndex: 2 }}>Přidat do košíku ({(deckSize === 16 ? 249 : deckSize === 32 ? 399 : 599) + selectedSize.priceAdd} Kč)</span>
+                    <span style={{ position: 'relative', zIndex: 2 }}>{rendering ? `Generujeme karty… ${rendering.done}/${rendering.total}` : `Přidat do košíku (${(deckSize === 16 ? 249 : deckSize === 32 ? 399 : 599) + selectedSize.priceAdd} Kč)`}</span>
                     <div style={{ position: 'absolute', top: 0, left: '-100%', width: '50%', height: '100%', background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent)', transform: 'skewX(-20deg)', animation: 'btnShine 3s infinite', zIndex: 1 }}></div>
                 </button>
+            </div>
+
+            {/* Off-screen render container — pro export PNG každé karty pexesa do Supabase */}
+            <div
+                aria-hidden="true"
+                style={{ position: 'fixed', left: '-10000px', top: 0, pointerEvents: 'none', opacity: 0 }}
+            >
+                {!leaveDesignToUs && photos.map(photo => (
+                    <div
+                        key={`export-${photo.id}`}
+                        ref={el => {
+                            if (el) exportRefs.current.set(photo.id, el);
+                            else exportRefs.current.delete(photo.id);
+                        }}
+                        style={{ width: '600px', height: '600px', background: '#ffffff', margin: 0, overflow: 'hidden' }}
+                    >
+                        <img src={photo.url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                    </div>
+                ))}
             </div>
         </section>
     );

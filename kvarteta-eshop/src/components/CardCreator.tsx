@@ -1,6 +1,7 @@
 import React, { useState, memo, useCallback } from 'react';
 import { Upload, Sparkles } from 'lucide-react';
 import './CardCreator.css';
+import { uploadOrderPhoto } from '../lib/storage';
 
 const backgrounds = [
     { url: '/cards/neutral_back_ruby_formatted.webp', name: 'Rubín' },
@@ -251,7 +252,9 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
     const [isModalCardFlipped, setIsModalCardFlipped] = useState(false);
     const [useCustomPhotos, setUseCustomPhotos] = useState(false);
     const [hideStats, setHideStats] = useState(false);
-    const [customPhotos, setCustomPhotos] = useState<Record<string, string>>({});
+    const [customPhotos, setCustomPhotos] = useState<Record<string, string>>({});        // slot -> storage path
+    const [customPhotoPreviews, setCustomPhotoPreviews] = useState<Record<string, string>>({}); // slot -> blob: URL pro UI
+    const [, setUploadingSlots] = useState<Set<string>>(new Set());
     const [customStats, setCustomStats] = useState<Record<string, string[]>>({});
     const [customCardNames, setCustomCardNames] = useState<Record<string, string>>({});
     const [customDescriptions, setCustomDescriptions] = useState<Record<string, string>>({});
@@ -295,9 +298,20 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
         setPreviewSlot(slot);
     }, []);
 
-    const handlePhotoUpload = useCallback((slot: string, file: File) => {
-        setCustomPhotos(prev => ({ ...prev, [slot]: URL.createObjectURL(file) }));
+    const handlePhotoUpload = useCallback(async (slot: string, file: File) => {
+        const previewUrl = URL.createObjectURL(file);
+        setCustomPhotoPreviews(prev => ({ ...prev, [slot]: previewUrl }));
         setPreviewSlot(slot);
+        setUploadingSlots(prev => { const next = new Set(prev); next.add(slot); return next; });
+        try {
+            const { path } = await uploadOrderPhoto(file);
+            setCustomPhotos(prev => ({ ...prev, [slot]: path }));
+        } catch (err: any) {
+            alert(err?.message || 'Nahrání fotky se nezdařilo.');
+            setCustomPhotoPreviews(prev => { const next = { ...prev }; delete next[slot]; return next; });
+        } finally {
+            setUploadingSlots(prev => { const next = new Set(prev); next.delete(slot); return next; });
+        }
     }, []);
 
     const getMainTextColor = (badge: string) => {
@@ -325,7 +339,7 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
         mainTextColor,
         safeFontFamily,
         layout: useCustomPhotos ? (customStatLayouts[previewSlot] || cardData.statLayout) : cardData.statLayout,
-        bgImage: useCustomPhotos && customPhotos[previewSlot] ? customPhotos[previewSlot] : cardData.frontImage,
+        bgImage: useCustomPhotos && customPhotoPreviews[previewSlot] ? customPhotoPreviews[previewSlot] : cardData.frontImage,
         idText: useCustomPhotos ? previewSlot : cardData.idBadge,
         titleText: useCustomPhotos ? (customCardNames[previewSlot] || 'NÁZEV KARTY') : 'NÁZEV KARTY',
         hideStats,
@@ -668,32 +682,59 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
                                     </p>
                                     <div style={{ marginBottom: '1.5rem', textAlign: 'center' }}>
                                         <label className="btn-secondary" style={{ display: 'inline-block', cursor: 'pointer', fontSize: '0.95rem', padding: '0.8rem 1.5rem', margin: 0 }}>
-                                            <input type="file" multiple accept="image/*" onChange={(e) => {
-                                                if (e.target.files) {
-                                                    const newPhotos = { ...customPhotos };
-                                                    let fileIndex = 0;
-                                                    const files = Array.from(e.target.files);
+                                            <input type="file" multiple accept="image/*" onChange={async (e) => {
+                                                if (!e.target.files) return;
+                                                const files = Array.from(e.target.files);
+                                                e.target.value = '';
 
-                                                    // Najít prázdná místa a zaplnit je
-                                                    for (const slot of kvartetoSlots) {
-                                                        if (!newPhotos[slot] && fileIndex < files.length) {
-                                                            newPhotos[slot] = URL.createObjectURL(files[fileIndex]);
-                                                            fileIndex++;
-                                                        }
+                                                // Naplánovat cílové sloty — nejdřív prázdné, pak přepisovat od začátku
+                                                const assignments: Array<{ slot: string; file: File }> = [];
+                                                const filled = new Set(Object.keys(customPhotos));
+                                                let fileIndex = 0;
+                                                for (const slot of kvartetoSlots) {
+                                                    if (!filled.has(slot) && fileIndex < files.length) {
+                                                        assignments.push({ slot, file: files[fileIndex++] });
                                                     }
-
-                                                    // Pokud stále zbývají soubory, přepisovat od začátku
-                                                    if (fileIndex < files.length) {
-                                                        for (const slot of kvartetoSlots) {
-                                                            if (fileIndex < files.length) {
-                                                                newPhotos[slot] = URL.createObjectURL(files[fileIndex]);
-                                                                fileIndex++;
-                                                            }
-                                                        }
-                                                    }
-
-                                                    setCustomPhotos(newPhotos);
                                                 }
+                                                if (fileIndex < files.length) {
+                                                    for (const slot of kvartetoSlots) {
+                                                        if (fileIndex < files.length) {
+                                                            assignments.push({ slot, file: files[fileIndex++] });
+                                                        }
+                                                    }
+                                                }
+
+                                                // Náhledy nastavit okamžitě
+                                                setCustomPhotoPreviews(prev => {
+                                                    const next = { ...prev };
+                                                    for (const a of assignments) next[a.slot] = URL.createObjectURL(a.file);
+                                                    return next;
+                                                });
+                                                setUploadingSlots(prev => {
+                                                    const next = new Set(prev);
+                                                    for (const a of assignments) next.add(a.slot);
+                                                    return next;
+                                                });
+
+                                                // Upload paralelně s limitem
+                                                const LIMIT = 4;
+                                                let i = 0;
+                                                const worker = async () => {
+                                                    while (i < assignments.length) {
+                                                        const idx = i++;
+                                                        const { slot, file } = assignments[idx];
+                                                        try {
+                                                            const { path } = await uploadOrderPhoto(file);
+                                                            setCustomPhotos(prev => ({ ...prev, [slot]: path }));
+                                                        } catch (err: any) {
+                                                            alert(`${slot}: ${err?.message || 'Nahrání se nezdařilo.'}`);
+                                                            setCustomPhotoPreviews(prev => { const next = { ...prev }; delete next[slot]; return next; });
+                                                        } finally {
+                                                            setUploadingSlots(prev => { const next = new Set(prev); next.delete(slot); return next; });
+                                                        }
+                                                    }
+                                                };
+                                                await Promise.all(Array.from({ length: Math.min(LIMIT, assignments.length) }, worker));
                                             }} style={{ display: 'none' }} />
                                             Hromadné nahrání fotografií
                                         </label>
@@ -703,7 +744,7 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
                                             <PhotoSlot
                                                 key={slot}
                                                 slot={slot}
-                                                photoUrl={customPhotos[slot]}
+                                                photoUrl={customPhotoPreviews[slot]}
                                                 isActive={previewSlot === slot}
                                                 onClick={handleSlotClick}
                                                 onPhotoUpload={handlePhotoUpload}

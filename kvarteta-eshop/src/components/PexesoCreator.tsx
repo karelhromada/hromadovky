@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { CheckCircle, Plus, Upload, Sparkles, LayoutGrid, Layers, Diamond } from 'lucide-react';
 import './PexesoCreator.css';
+import { uploadOrderPhoto } from '../lib/storage';
 
 interface PexesoCreatorProps {
     onAddToCart?: (item: any) => void;
@@ -29,7 +30,8 @@ const cardStyles = [
 
 interface UploadedPhoto {
     id: string;
-    url: string;
+    url: string;      // blob: preview URL pro UI
+    path: string;     // supabase storage path — posílá se do košíku/n8n
 }
 
 const PexesoCreator: React.FC<PexesoCreatorProps> = ({ onAddToCart }) => {
@@ -40,27 +42,31 @@ const PexesoCreator: React.FC<PexesoCreatorProps> = ({ onAddToCart }) => {
     const [leaveDesignToUs, setLeaveDesignToUs] = useState(false);
     const [customThemeDesc, setCustomThemeDesc] = useState('');
     const [customThemeStyle, setCustomThemeStyle] = useState(cardStyles[0].value);
+    const [uploading, setUploading] = useState(false);
 
     // Calculate required pairs based on deck size
     const requiredPairs = deckSize / 2;
 
-    const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            if (photos.length >= requiredPairs) {
-                alert(`Už máte nahráno všech ${requiredPairs} potřebných fotografií.`);
-                return;
-            }
-            const file = e.target.files[0];
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                if (event.target?.result && typeof event.target.result === 'string') {
-                    setPhotos(prev => [...prev, {
-                        id: Math.random().toString(36).substr(2, 9),
-                        url: event.target!.result as string
-                    }]);
-                }
-            };
-            reader.readAsDataURL(file);
+    const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!e.target.files || !e.target.files[0]) return;
+        if (photos.length >= requiredPairs) {
+            alert(`Už máte nahráno všech ${requiredPairs} potřebných fotografií.`);
+            return;
+        }
+        const file = e.target.files[0];
+        e.target.value = '';
+        setUploading(true);
+        try {
+            const { path, previewUrl } = await uploadOrderPhoto(file);
+            setPhotos(prev => [...prev, {
+                id: Math.random().toString(36).substr(2, 9),
+                url: previewUrl,
+                path,
+            }]);
+        } catch (err: any) {
+            alert(err?.message || 'Nahrání fotky se nezdařilo.');
+        } finally {
+            setUploading(false);
         }
     };
 
@@ -91,7 +97,8 @@ const PexesoCreator: React.FC<PexesoCreatorProps> = ({ onAddToCart }) => {
                 image: leaveDesignToUs ? '/cards/magic_runes_1.webp' : (photos[0]?.url || '/cards/placeholder.webp'),
                 themeColor: '#eab308',
                 size: `${selectedSize.label} (${selectedSize.desc})`,
-                selectedBack: backgrounds.find(b => b.url === selectedBack)?.name || 'Vlastní'
+                selectedBack: backgrounds.find(b => b.url === selectedBack)?.name || 'Vlastní',
+                customPhotoPaths: leaveDesignToUs ? [] : photos.map(p => p.path),
             });
         }
     };
@@ -248,14 +255,15 @@ const PexesoCreator: React.FC<PexesoCreatorProps> = ({ onAddToCart }) => {
 
                                 {/* Render remaining empty upload slots */}
                                 {emptySlots.map((_, index) => (
-                                    <label key={`empty-${index}`} className="upload-slot">
+                                    <label key={`empty-${index}`} className="upload-slot" style={uploading ? { opacity: 0.5, pointerEvents: 'none' } : undefined}>
                                         <Plus size={24} style={{ color: 'var(--text-secondary)', marginBottom: '8px' }} />
-                                        <span className="slot-placeholder">Přidat fotku</span>
+                                        <span className="slot-placeholder">{uploading && index === 0 ? 'Nahrávám…' : 'Přidat fotku'}</span>
                                         <input
                                             type="file"
                                             accept="image/*"
                                             style={{ display: 'none' }}
                                             onChange={handlePhotoUpload}
+                                            disabled={uploading}
                                         />
                                     </label>
                                 ))}

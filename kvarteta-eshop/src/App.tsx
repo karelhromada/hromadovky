@@ -30,6 +30,7 @@ export interface CartItem {
   style?: string;
   note?: string;
   customPhotos?: Record<string, string>;
+  customPhotoPaths?: string[];
   customStats?: Record<string, string[]>;
   customCardNames?: Record<string, string>;
   customDescriptions?: Record<string, string>;

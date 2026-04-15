@@ -5,6 +5,7 @@ import './CheckoutPage.css';
 import { SHIPPING_CONFIG, AUTOMATION_CONFIG } from '../config/payment';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
+import { resetDraftRef } from '../lib/storage';
 import { User, LogIn } from 'lucide-react';
 
 
@@ -152,9 +153,16 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
         e.preventDefault();
         setIsSubmitting(true);
 
+        const photoPathsByItem = items.map(item => {
+            const fromRecord = item.customPhotos ? Object.values(item.customPhotos) : [];
+            const fromArray = item.customPhotoPaths ?? [];
+            return [...fromArray, ...fromRecord];
+        });
+        const allPhotoPaths = photoPathsByItem.flat();
+
         const orderData = {
             customer: formData,
-            items: items.map(item => ({
+            items: items.map((item, idx) => ({
                 id: item.id,
                 name: item.name,
                 quantity: item.quantity,
@@ -164,8 +172,12 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                     back: item.selectedBack,
                     size: item.size,
                     note: item.note
-                }
+                },
+                customPhotos: item.customPhotos,
+                customPhotoPaths: item.customPhotoPaths,
+                photoPaths: photoPathsByItem[idx],
             })),
+            allPhotoPaths,
             totalAmount: total,
             timestamp: new Date().toISOString(),
             variableSymbol: Math.floor(Date.now() / 1000).toString()
@@ -254,6 +266,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
             // }
             
             onClearCart();
+            resetDraftRef();
             setIsSuccess(true);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } catch (error) {

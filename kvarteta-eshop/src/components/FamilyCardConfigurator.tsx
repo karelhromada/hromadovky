@@ -3,6 +3,7 @@ import { Upload, ZoomIn, Trash2, Check, CreditCard, ChevronRight } from 'lucide-
 import { backgrounds } from '../data/backgrounds';
 import './FamilyCardConfigurator.css';
 import { uploadOrderPhoto } from '../lib/storage';
+import { renderAndUploadBatch, type RenderTask } from '../lib/cardExporter';
 
 interface FamilyCardConfiguratorProps {
     onAddToCart?: (item: any) => void;
@@ -115,6 +116,10 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
     const posRef = useRef({ x: 0, y: 0 });
     const dragStartRef = useRef({ x: 0, y: 0 });
 
+    // Refs for off-screen render of every card (pro export PNG do Supabase)
+    const exportRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+    const [rendering, setRendering] = useState<{ done: number; total: number } | null>(null);
+
     const handleSelectCard = React.useCallback((id: string) => {
         setSelectedCardId(id);
     }, []);
@@ -210,12 +215,34 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
         updateCard(selectedCardId, { imageUrl: null, imagePath: null, zoom: 1, position: { x: 0, y: 0 } });
     };
 
-    const handleFinish = () => {
-        const withPhotos = deck.filter(c => c.imageUrl).length;
-        if (withPhotos === 0) {
+    const handleFinish = async () => {
+        const cardsWithPhotos = deck.filter(c => c.imageUrl && c.imagePath);
+        if (cardsWithPhotos.length === 0) {
             alert('Prosím, nahrajte alespoň jednu fotografii pro vaši sadu.');
             return;
         }
+
+        // Exportovat hotové karty přesně jak vypadají → PNG do Supabase
+        const tasks: RenderTask[] = cardsWithPhotos
+            .map(card => {
+                const node = exportRefs.current.get(card.id);
+                return node ? { node, cardKey: `pokerovka-${card.rank}${card.suit}` } : null;
+            })
+            .filter((t): t is RenderTask => t !== null);
+
+        setRendering({ done: 0, total: tasks.length });
+        const { paths, failed } = await renderAndUploadBatch(tasks, p => {
+            setRendering({ done: p.done, total: p.total });
+        }, 3);
+        setRendering(null);
+
+        if (failed.length && failed.length === tasks.length) {
+            alert(`Generování karet selhalo (${failed.length}/${tasks.length}). Objednávka bude pokračovat jen se surovými fotkami.`);
+        } else if (failed.length) {
+            console.warn('Některé karty se nepodařilo vyrenderovat:', failed);
+        }
+
+        const backName = backgrounds.find(b => b.url === selectedBackUrl)?.name || 'Klasika';
 
         if (onAddToCart) {
             onAddToCart({
@@ -225,12 +252,14 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
                 price: 299,
                 image: selectedCard.imageUrl || backgrounds[0].url,
                 themeColor: '#d4af37',
-                selectedBack: backgrounds.find(b => b.url === selectedBackUrl)?.name || 'Klasika',
+                selectedBack: backName,
                 selectedBackUrl: selectedBackUrl,
                 isCustom: true,
                 includeJoker,
-                deckConfigs: deck.filter(c => c.imageUrl),
-                customPhotoPaths: deck.filter(c => c.imagePath).map(c => c.imagePath as string),
+                deckConfigs: cardsWithPhotos,
+                customPhotoPaths: cardsWithPhotos.map(c => c.imagePath as string),
+                renderedCardPaths: paths,
+                cardBackRef: { name: backName, publicUrl: selectedBackUrl },
             });
         }
     };
@@ -426,7 +455,7 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
                         <div className="control-group mt-6">
                             <label className="control-label">Vybrat zadní stranu (Rub)</label>
                             <div className="backs-selection-horizontal">
-                                {backgrounds.filter(bg => bg.games.includes('karty')).slice(0, 12).map(bg => (
+                                {backgrounds.filter(bg => bg.games.includes('karty')).map(bg => (
                                     <div 
                                         key={bg.id}
                                         className={`back-thumb-item ${selectedBackUrl === bg.url ? 'active' : ''}`}
@@ -452,14 +481,17 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
                                 <div className="price-tag">299 Kč</div>
                             </div>
 
-                            <button 
+                            <button
                                 className="finish-order-btn"
                                 onClick={handleFinish}
+                                disabled={rendering !== null}
                             >
                                 <div className="finish-btn-shine"></div>
                                 <div className="finish-btn-content">
                                     <CreditCard size={24} />
-                                    Objednat vlastní sadu
+                                    {rendering
+                                        ? `Generujeme karty… ${rendering.done}/${rendering.total}`
+                                        : 'Objednat vlastní sadu'}
                                     <ChevronRight size={20} />
                                 </div>
                             </button>
@@ -471,6 +503,52 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
                         </div>
                     </div>
                 </div>
+            </div>
+
+            {/* Off-screen render container — používá se pro export PNG každé karty do Supabase */}
+            <div
+                aria-hidden="true"
+                style={{
+                    position: 'fixed',
+                    left: '-10000px',
+                    top: 0,
+                    pointerEvents: 'none',
+                    opacity: 0,
+                }}
+            >
+                {deck.filter(c => c.imageUrl).map(card => (
+                    <div
+                        key={`export-${card.id}`}
+                        ref={el => {
+                            if (el) exportRefs.current.set(card.id, el);
+                            else exportRefs.current.delete(card.id);
+                        }}
+                        className={`poker-card-frame frame-${card.suitColor}`}
+                        style={{ margin: 0 }}
+                    >
+                        <div className="card-inner-border"></div>
+                        <div className={`card-index index-top-left suit-${card.suitColor}`}>
+                            <span className="idx-value">{card.rank}</span>
+                            <span className="idx-suit">{card.suitChar}</span>
+                        </div>
+                        <div className={`card-index index-bottom-right suit-${card.suitColor}`}>
+                            <span className="idx-value">{card.rank}</span>
+                            <span className="idx-suit">{card.suitChar}</span>
+                        </div>
+                        <div className="card-photo-area">
+                            {card.imageUrl && (
+                                <img
+                                    src={card.imageUrl}
+                                    alt=""
+                                    style={{
+                                        transform: `translate(${card.position.x}px, ${card.position.y}px) scale(${card.zoom})`,
+                                        maxWidth: '100%',
+                                    }}
+                                />
+                            )}
+                        </div>
+                    </div>
+                ))}
             </div>
         </section>
     );

@@ -6,3 +6,33 @@
 main {
   padding-top: var(--nav-height);
 }
+
+/* ══════════════════════════════════════════════════════════════════
+   Sdilene primitivy pro section headery (pouzivaji je vsechny stranky).
+   Musi byt v App.css, aby fungovaly i pri tvrdem refreshi na lazy route
+   (/karty, /pexeso, /kvarteta), kde by jinak CSS konkretni stranky
+   jeste nebyl nacteny. Puvodni definice byla v ProductShowcasePexeso.css.
+   ══════════════════════════════════════════════════════════════════ */
+
+.section-header {
+  margin-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.section-title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+.section-subtitle {
+  color: var(--text-secondary);
+  max-width: 600px;
+  font-size: 1.1rem;
+}
+
+.text-center {
+  text-align: center;
+}

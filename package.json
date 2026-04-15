@@ -1,0 +1,13 @@
+{
+  "name": "kvarteta-vyssi-bere-root",
+  "version": "1.0.0",
+  "description": "Root workspace pro migraci zadnich stran karet (sjednoceni zdroju pro eshop + tisk).",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "migrate:backs": "node scripts/migrate_backs.mjs"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.5"
+  }
+}

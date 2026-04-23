@@ -1,19 +1,17 @@
-import { useState, useEffect, lazy, Suspense } from 'react'
+import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Cart from './components/Cart'
 import Footer from './components/Footer'
 import HomePage from './pages/HomePage'
+import KvartetaPage from './pages/KvartetaPage'
+import PexesoPage from './pages/PexesoPage'
+import HraciKartyPage from './pages/HraciKartyPage'
+import RulesPage from './pages/RulesPage'
+import CheckoutPage from './pages/CheckoutPage'
+import AuthPage from './pages/AuthPage'
+import ResetPasswordPage from './pages/ResetPasswordPage'
 import './App.css'
-import './components/HeroSection.css'
-
-const KvartetaPage = lazy(() => import('./pages/KvartetaPage'))
-const PexesoPage = lazy(() => import('./pages/PexesoPage'))
-const HraciKartyPage = lazy(() => import('./pages/HraciKartyPage'))
-const RulesPage = lazy(() => import('./pages/RulesPage'))
-const CheckoutPage = lazy(() => import('./pages/CheckoutPage'))
-const AuthPage = lazy(() => import('./pages/AuthPage'))
-const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage'))
 
 export interface CartItem {
   id: string;
@@ -109,18 +107,16 @@ function App() {
           <Navbar toggleCart={toggleCart} cartCount={cartItems.reduce((acc, item) => acc + item.quantity, 0)} />
 
           <main>
-            <Suspense fallback={<div style={{ minHeight: '60vh' }} />}>
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/kvarteta" element={<KvartetaPage onAddToCart={addToCart} />} />
-                <Route path="/pexeso" element={<PexesoPage onAddToCart={addToCart} />} />
-                <Route path="/karty" element={<HraciKartyPage onAddToCart={addToCart} />} />
-                <Route path="/pravidla" element={<RulesPage />} />
-                <Route path="/checkout" element={<CheckoutPage items={cartItems} onClearCart={clearCart} />} />
-                <Route path="/login" element={<AuthPage />} />
-                <Route path="/reset-password" element={<ResetPasswordPage />} />
-              </Routes>
-            </Suspense>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/kvarteta" element={<KvartetaPage onAddToCart={addToCart} />} />
+              <Route path="/pexeso" element={<PexesoPage onAddToCart={addToCart} />} />
+              <Route path="/karty" element={<HraciKartyPage onAddToCart={addToCart} />} />
+              <Route path="/pravidla" element={<RulesPage />} />
+              <Route path="/checkout" element={<CheckoutPage items={cartItems} onClearCart={clearCart} />} />
+              <Route path="/login" element={<AuthPage />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
+            </Routes>
           </main>
 
           <Footer />

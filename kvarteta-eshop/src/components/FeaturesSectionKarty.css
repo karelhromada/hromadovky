@@ -169,7 +169,7 @@
 .karty-scroll-image-inner {
     position: relative;
     width: 100%;
-    max-width: 400px;
+    max-width: 280px;
     aspect-ratio: 63 / 105;
     border-radius: 24px;
     overflow: hidden; /* Added to clip the image to card corners */

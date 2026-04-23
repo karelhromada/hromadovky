@@ -37,7 +37,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
         city: '',
         zip: '',
         delivery: 'zasilkovna',
-        payment: 'card',
+        payment: 'transfer',
         note: ''
     });
     const [finalTotal, setFinalTotal] = useState(0);
@@ -60,7 +60,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                 city: profile.city || prev.city,
                 zip: profile.zip || prev.zip,
                 delivery: profile.last_delivery || prev.delivery,
-                payment: profile.last_payment || prev.payment
+                payment: (profile.last_payment === 'card' ? 'transfer' : profile.last_payment) || prev.payment
             }));
             if (profile.last_delivery === 'ppl' || profile.last_delivery === 'zasilkovna') {
                 // If we have saved pickup point in the future, we could prefill it here
@@ -142,7 +142,8 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
 
     const total = items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
     const deliveryCost = formData.delivery === 'osobni' ? 0 : (formData.delivery === 'zasilkovna' ? 79 : 99);
-    const totalToPay = total + deliveryCost;
+    const paymentCost = formData.payment === 'cod' ? 39 : 0;
+    const totalToPay = total + deliveryCost + paymentCost;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -199,6 +200,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                         ...orderData, 
                         totalToPay,
                         deliveryCost,
+                        paymentCost,
                         pickupPoint 
                     }),
                 });
@@ -264,11 +266,6 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
             setFinalTotal(totalToPay);
             setOrderVS(orderData.variableSymbol);
 
-            // TODO: GP Webpay redirect až bude integrace živá
-            // if (formData.payment === 'card') {
-            //     window.location.href = `${PAYMENT_CONFIG.GATEWAY_URL}?...`;
-            // }
-            
             onClearCart();
             resetDraftRef();
             setIsSuccess(true);
@@ -318,12 +315,6 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                         </div>
                     )}
 
-                    {formData.payment === 'card' && (
-                        <div className="payment-card-status glass-panel">
-                            <p>Byli jste přesměrováni na platební bránu <strong>GP Webpay</strong>.</p>
-                            <p className="small">Pokud se okno nadeotevřelo, zkontrolujte prosím blokování pop-up oken.</p>
-                        </div>
-                    )}
                     <button className="btn-primary" onClick={() => navigate('/')}>Zpět do obchodu</button>
                     <div className="confetti-container"></div>
                 </div>
@@ -477,9 +468,8 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                             <div className="form-group">
                                 <label>Platba</label>
                                 <select name="payment" value={formData.payment} onChange={handleChange}>
-                                    <option value="card">Kartou online</option>
-                                    <option value="transfer">Bankovní převod</option>
-                                    <option value="cod">Dobírka</option>
+                                    <option value="transfer">QR kód / Bankovní převod</option>
+                                    <option value="cod">Dobírka (+39 Kč)</option>
                                 </select>
                             </div>
                         </div>
@@ -494,7 +484,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                             className="btn-primary btn-submit" 
                             disabled={isSubmitting || (['zasilkovna', 'ppl'].includes(formData.delivery) && !pickupPoint)}
                         >
-                            {isSubmitting ? 'Odesílám...' : `Dokončit objednávku (${formatCurrency(total + (formData.delivery === 'osobni' ? 0 : (formData.delivery === 'zasilkovna' ? 79 : 99)))})`}
+                            {isSubmitting ? 'Odesílám...' : `Dokončit objednávku (${formatCurrency(totalToPay)})`}
                         </button>
                     </form>
                 </div>
@@ -525,6 +515,12 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                             <span>Doprava:</span>
                             <span>{formData.delivery === 'osobni' ? 'Zdarma' : (formData.delivery === 'zasilkovna' ? '79 Kč' : '99 Kč')}</span>
                         </div>
+                        {formData.payment === 'cod' && (
+                            <div className="total-row">
+                                <span>Příplatek za dobírku:</span>
+                                <span>39 Kč</span>
+                            </div>
+                        )}
                         <div className="total-row grand-total">
                             <span>Celkem k úhradě:</span>
                             <span className="text-gradient-gold">{formatCurrency(totalToPay)}</span>

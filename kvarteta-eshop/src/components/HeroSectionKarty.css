@@ -32,8 +32,8 @@
 
 .poker-hand-stage {
     position: relative;
-    width: 320px;
-    height: 350px;
+    width: 480px;
+    height: 525px;
     transform-style: preserve-3d;
     transition: transform 0.2s ease-out;
 }
@@ -42,10 +42,10 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 150px;
-    height: 250px;
-    margin-top: -125px;
-    margin-left: -75px;
+    width: 225px;
+    height: 375px;
+    margin-top: -188px;
+    margin-left: -112px;
     transform-origin: bottom center;
     cursor: pointer;
     z-index: 1;
@@ -67,12 +67,12 @@
 /* The Fan Animation Classes */
 /* Card 1: Far Left */
 .fanned-1 {
-    transform: rotate(-25deg) translateX(-80px) translateY(20px) translateZ(-20px);
+    transform: rotate(-25deg) translateX(-120px) translateY(30px) translateZ(-20px);
 }
 
 /* Card 2: Mid Left */
 .fanned-2 {
-    transform: rotate(-12deg) translateX(-40px) translateY(5px) translateZ(-10px);
+    transform: rotate(-12deg) translateX(-60px) translateY(8px) translateZ(-10px);
 }
 
 /* Card 3: Center (Top card) */
@@ -83,22 +83,12 @@
 
 /* Card 4: Mid Right */
 .fanned-4 {
-    transform: rotate(12deg) translateX(40px) translateY(5px) translateZ(-10px);
+    transform: rotate(12deg) translateX(60px) translateY(8px) translateZ(-10px);
 }
 
 /* Card 5: Far Right */
 .fanned-5 {
-    transform: rotate(25deg) translateX(80px) translateY(20px) translateZ(-20px);
-}
-
-/* Hover effect on individual cards inside the fan */
-.playing-card-wrapper:hover {
-    z-index: 20 !important;
-}
-
-.playing-card-wrapper:hover .card-face-inner {
-    transform: translateY(-40px);
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 30px rgba(234, 179, 8, 0.4);
+    transform: rotate(25deg) translateX(120px) translateY(30px) translateZ(-20px);
 }
 
 .dragon-card-image {

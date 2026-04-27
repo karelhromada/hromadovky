@@ -29,7 +29,7 @@ const AboutPage: React.FC = () => {
                         se baví <strong>spolu</strong>, ne každý zvlášť.
                     </p>
                     <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '16px' }}>
-                        Když jsme naši vášeň pro karty začali přenášet na naše děti, velmi brzy začaly mít svoje specifické požadavky. A proč nemůžeme mít kvarteta, kde jsou draci? Nebo dinosauři? A protože jsme nikde nennašli nabídku, která by splňovala přísné požadavky našich dětí, tak jsme začali tvořit karty, kvarteta a pexesa pro ně. 
+                        Když jsme naši vášeň pro karty začali přenášet na naše děti, velmi brzy začaly mít svoje specifické požadavky. A proč nemůžeme mít kvarteta, kde jsou draci? Nebo dinosauři? A protože jsme nikde nenašli nabídku, která by splňovala přísné požadavky našich dětí, tak jsme začali tvořit karty, kvarteta a pexesa pro ně. 
                     </p>
                     <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '16px' }}>
                         A protože naše karty všude na dovolených, nebo kdekoliv jsme je vytáhli, vzbuzovaly velký ohlas, tak jsme se rozhodli, že si je nenecháme jen pro sebe. No a tak vznikly <strong>Hromadovky</strong>. Karty plné příběhů. 

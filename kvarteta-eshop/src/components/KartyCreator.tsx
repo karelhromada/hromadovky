@@ -10,7 +10,7 @@ type PlayMode = 'classic' | 'thematic';
 
 import { backgrounds, getBackgroundsForGame } from '../data/backgrounds';
 
-const KARTY_BACKS = getBackgroundsForGame('karty');
+const KARTY_BACKS = getBackgroundsForGame('hraci_karty');
 
 const cardStyles = [
     { label: 'Roztomilé', value: 'Roztomilé' },

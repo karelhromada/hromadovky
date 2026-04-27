@@ -1,0 +1,1320 @@
+{
+  "version": 2,
+  "generated_at": "2026-04-27T12:59:06.254Z",
+  "categories": {
+    "kvarteta": {
+      "size": "65x95mm",
+      "aspect_ratio": 1.4615384615384615,
+      "items": [
+        {
+          "id": "priroda_hnizdo_zazitky",
+          "name": "hnízdo s vejci v přírodě",
+          "file": "kvarteta/webp/priroda_hnizdo_zazitky.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "neutralni_ruzova_tkanina",
+          "name": "růžová tkanina/textil",
+          "file": "kvarteta/webp/neutralni_ruzova_tkanina.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "epic_zlaty_jantar",
+          "name": "vážka v jantaru / zlatý motiv",
+          "file": "kvarteta/webp/epic_zlaty_jantar.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "mytologie_magicky_symbol",
+          "name": "magický symbol",
+          "file": "kvarteta/webp/mytologie_magicky_symbol.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "mytologie_kristal_fialovy",
+          "name": "fialový krystal",
+          "file": "kvarteta/webp/mytologie_kristal_fialovy.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "neutralni_nocni_hvezdy_1",
+          "name": "noční hvězdy varianta 1",
+          "file": "kvarteta/webp/neutralni_nocni_hvezdy_1.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "dinosaurus_priroda_voda",
+          "name": "dinosauři u řeky v přírodě",
+          "file": "kvarteta/webp/dinosaurus_priroda_voda.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "epic_zlaty_ornament",
+          "name": "zlatý ornamentální vzor",
+          "file": "kvarteta/webp/epic_zlaty_ornament.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "priroda_zelene_listy_motiv",
+          "name": "zelené listy ornament",
+          "file": "kvarteta/webp/priroda_zelene_listy_motiv.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "neutralni_kremova_tkanina",
+          "name": "krémová tkanina/textil",
+          "file": "kvarteta/webp/neutralni_kremova_tkanina.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "drak_zlate_kovove_supiny",
+          "name": "drak zlaté kovové šupiny",
+          "file": "kvarteta/webp/drak_zlate_kovove_supiny.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "rytir_cervene_krizky_erb",
+          "name": "rytířský erb s červenými křížky",
+          "file": "kvarteta/webp/rytir_cervene_krizky_erb.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "drak_vicebarevne_supiny",
+          "name": "drak vícebarevné šupiny",
+          "file": "kvarteta/webp/drak_vicebarevne_supiny.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "neutralni_nocni_hvezdy_2",
+          "name": "noční hvězdy varianta 2",
+          "file": "kvarteta/webp/neutralni_nocni_hvezdy_2.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "priroda_zelene_listy",
+          "name": "zelené listy příroda",
+          "file": "kvarteta/webp/priroda_zelene_listy.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "neutralni_bezova_tkanina",
+          "name": "béžová tkanina/textil",
+          "file": "kvarteta/webp/neutralni_bezova_tkanina.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "led_kristaly_modre",
+          "name": "modré ledové krystaly",
+          "file": "kvarteta/webp/led_kristaly_modre.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "priroda_zelene_neonove_listy",
+          "name": "neonově zelené listy",
+          "file": "kvarteta/webp/priroda_zelene_neonove_listy.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "priroda_korova_supina_zrzava",
+          "name": "zrzavá kůra/šupiny",
+          "file": "kvarteta/webp/priroda_korova_supina_zrzava.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "drak_zlate_oko_ohnive",
+          "name": "zlaté ohnivé oko draka",
+          "file": "kvarteta/webp/drak_zlate_oko_ohnive.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "drak_cerveny_ohnivy",
+          "name": "červený ohnivý drak",
+          "file": "kvarteta/webp/drak_cerveny_ohnivy.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "mytologie_ledovy_drak_hvezdy",
+          "name": "ledový drak s hvězdami",
+          "file": "kvarteta/webp/mytologie_ledovy_drak_hvezdy.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "priroda_zeleny_demon_listi",
+          "name": "zelené démonické listí",
+          "file": "kvarteta/webp/priroda_zeleny_demon_listi.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "epic_zlate_perie",
+          "name": "zlaté peří motiv",
+          "file": "kvarteta/webp/epic_zlate_perie.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "priroda_kamen_supina_oranzova",
+          "name": "oranžové kamenné šupiny",
+          "file": "kvarteta/webp/priroda_kamen_supina_oranzova.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "neutralni_modra_geometrie",
+          "name": "modrá geometrie",
+          "file": "kvarteta/webp/neutralni_modra_geometrie.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "priroda_ohniva_lava",
+          "name": "ohnivá láva v přírodě",
+          "file": "kvarteta/webp/priroda_ohniva_lava.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "rytir_zamek_nocni_mesic",
+          "name": "zámek v noci s měsícem",
+          "file": "kvarteta/webp/rytir_zamek_nocni_mesic.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "led_snih_vlocky",
+          "name": "sněhové vločky",
+          "file": "kvarteta/webp/led_snih_vlocky.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "neutralni_rezava_metalika",
+          "name": "rezavě-červená metalická textura",
+          "file": "kvarteta/webp/neutralni_rezava_metalika.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "mytologie_alchymie_runy",
+          "name": "alchymistické runy",
+          "file": "kvarteta/webp/mytologie_alchymie_runy.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "neutralni_seda_textura",
+          "name": "šedá textura",
+          "file": "kvarteta/webp/neutralni_seda_textura.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "mytologie_runy_spiraly",
+          "name": "runy a spirály",
+          "file": "kvarteta/webp/mytologie_runy_spiraly.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "mytologie_hvezdy_gradient",
+          "name": "hvězdný gradient",
+          "file": "kvarteta/webp/mytologie_hvezdy_gradient.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "drak_zlate_supiny_detail",
+          "name": "detail zlatých dračích šupin",
+          "file": "kvarteta/webp/drak_zlate_supiny_detail.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "rytir_zbran_brneni_erb",
+          "name": "zbraně a brnění erbu",
+          "file": "kvarteta/webp/rytir_zbran_brneni_erb.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "mytologie_drak_fialovy_znak",
+          "name": "fialový drak symbol",
+          "file": "kvarteta/webp/mytologie_drak_fialovy_znak.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "rytir_erb_srdce_hvezdy",
+          "name": "rytířský erb se srdcem a hvězdami",
+          "file": "kvarteta/webp/rytir_erb_srdce_hvezdy.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "drak_cerveny_planouci_zivly",
+          "name": "červený planoucí drak živly",
+          "file": "kvarteta/webp/drak_cerveny_planouci_zivly.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "neutralni_zlata_metalika",
+          "name": "zlatá metalická textura",
+          "file": "kvarteta/webp/neutralni_zlata_metalika.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "kocka_seda_srst",
+          "name": "šedá kočičí srst",
+          "file": "kvarteta/webp/kocka_seda_srst.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "kocka_tribarevna_srst",
+          "name": "trojbarevná kočičí srst",
+          "file": "kvarteta/webp/kocka_tribarevna_srst.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "kocka_oranzova_srst",
+          "name": "oranžová kočičí srst",
+          "file": "kvarteta/webp/kocka_oranzova_srst.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "mytologie_zelena_mandala",
+          "name": "zelená mandala/geometrie",
+          "file": "kvarteta/webp/mytologie_zelena_mandala.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "mytologie_kristal_zarici_cyan",
+          "name": "zářící cyanový krystal",
+          "file": "kvarteta/webp/mytologie_kristal_zarici_cyan.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "mytologie_mec_blesk_zlaty",
+          "name": "zlatý meč s bleskem",
+          "file": "kvarteta/webp/mytologie_mec_blesk_zlaty.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "priroda_strom_pamatny",
+          "name": "památný/posvátný strom",
+          "file": "kvarteta/webp/priroda_strom_pamatny.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "mytologie_runy_zlate_modre",
+          "name": "zlato-modré runy s magií",
+          "file": "kvarteta/webp/mytologie_runy_zlate_modre.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        }
+      ]
+    },
+    "hraci_karty": {
+      "size": "63x105mm",
+      "aspect_ratio": 1.6666666666666667,
+      "items": [
+        {
+          "id": "priroda_hnizdo_zazitky",
+          "name": "hnízdo s vejci v přírodě",
+          "file": "hraci_karty/webp/priroda_hnizdo_zazitky.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "neutralni_ruzova_tkanina",
+          "name": "růžová tkanina/textil",
+          "file": "hraci_karty/webp/neutralni_ruzova_tkanina.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "epic_zlaty_jantar",
+          "name": "vážka v jantaru / zlatý motiv",
+          "file": "hraci_karty/webp/epic_zlaty_jantar.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "mytologie_magicky_symbol",
+          "name": "magický symbol",
+          "file": "hraci_karty/webp/mytologie_magicky_symbol.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "mytologie_kristal_fialovy",
+          "name": "fialový krystal",
+          "file": "hraci_karty/webp/mytologie_kristal_fialovy.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "neutralni_nocni_hvezdy_1",
+          "name": "noční hvězdy varianta 1",
+          "file": "hraci_karty/webp/neutralni_nocni_hvezdy_1.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "dinosaurus_priroda_voda",
+          "name": "dinosauři u řeky v přírodě",
+          "file": "hraci_karty/webp/dinosaurus_priroda_voda.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "epic_zlaty_ornament",
+          "name": "zlatý ornamentální vzor",
+          "file": "hraci_karty/webp/epic_zlaty_ornament.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "priroda_zelene_listy_motiv",
+          "name": "zelené listy ornament",
+          "file": "hraci_karty/webp/priroda_zelene_listy_motiv.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "neutralni_kremova_tkanina",
+          "name": "krémová tkanina/textil",
+          "file": "hraci_karty/webp/neutralni_kremova_tkanina.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "drak_zlate_kovove_supiny",
+          "name": "drak zlaté kovové šupiny",
+          "file": "hraci_karty/webp/drak_zlate_kovove_supiny.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "rytir_cervene_krizky_erb",
+          "name": "rytířský erb s červenými křížky",
+          "file": "hraci_karty/webp/rytir_cervene_krizky_erb.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "drak_vicebarevne_supiny",
+          "name": "drak vícebarevné šupiny",
+          "file": "hraci_karty/webp/drak_vicebarevne_supiny.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "neutralni_nocni_hvezdy_2",
+          "name": "noční hvězdy varianta 2",
+          "file": "hraci_karty/webp/neutralni_nocni_hvezdy_2.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "priroda_zelene_listy",
+          "name": "zelené listy příroda",
+          "file": "hraci_karty/webp/priroda_zelene_listy.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "neutralni_bezova_tkanina",
+          "name": "béžová tkanina/textil",
+          "file": "hraci_karty/webp/neutralni_bezova_tkanina.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "led_kristaly_modre",
+          "name": "modré ledové krystaly",
+          "file": "hraci_karty/webp/led_kristaly_modre.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "priroda_zelene_neonove_listy",
+          "name": "neonově zelené listy",
+          "file": "hraci_karty/webp/priroda_zelene_neonove_listy.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "priroda_korova_supina_zrzava",
+          "name": "zrzavá kůra/šupiny",
+          "file": "hraci_karty/webp/priroda_korova_supina_zrzava.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "drak_zlate_oko_ohnive",
+          "name": "zlaté ohnivé oko draka",
+          "file": "hraci_karty/webp/drak_zlate_oko_ohnive.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "drak_cerveny_ohnivy",
+          "name": "červený ohnivý drak",
+          "file": "hraci_karty/webp/drak_cerveny_ohnivy.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "mytologie_ledovy_drak_hvezdy",
+          "name": "ledový drak s hvězdami",
+          "file": "hraci_karty/webp/mytologie_ledovy_drak_hvezdy.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "priroda_zeleny_demon_listi",
+          "name": "zelené démonické listí",
+          "file": "hraci_karty/webp/priroda_zeleny_demon_listi.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "epic_zlate_perie",
+          "name": "zlaté peří motiv",
+          "file": "hraci_karty/webp/epic_zlate_perie.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "priroda_kamen_supina_oranzova",
+          "name": "oranžové kamenné šupiny",
+          "file": "hraci_karty/webp/priroda_kamen_supina_oranzova.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "neutralni_modra_geometrie",
+          "name": "modrá geometrie",
+          "file": "hraci_karty/webp/neutralni_modra_geometrie.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "priroda_ohniva_lava",
+          "name": "ohnivá láva v přírodě",
+          "file": "hraci_karty/webp/priroda_ohniva_lava.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "rytir_zamek_nocni_mesic",
+          "name": "zámek v noci s měsícem",
+          "file": "hraci_karty/webp/rytir_zamek_nocni_mesic.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "led_snih_vlocky",
+          "name": "sněhové vločky",
+          "file": "hraci_karty/webp/led_snih_vlocky.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "neutralni_rezava_metalika",
+          "name": "rezavě-červená metalická textura",
+          "file": "hraci_karty/webp/neutralni_rezava_metalika.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "mytologie_alchymie_runy",
+          "name": "alchymistické runy",
+          "file": "hraci_karty/webp/mytologie_alchymie_runy.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "neutralni_seda_textura",
+          "name": "šedá textura",
+          "file": "hraci_karty/webp/neutralni_seda_textura.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "mytologie_runy_spiraly",
+          "name": "runy a spirály",
+          "file": "hraci_karty/webp/mytologie_runy_spiraly.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "mytologie_hvezdy_gradient",
+          "name": "hvězdný gradient",
+          "file": "hraci_karty/webp/mytologie_hvezdy_gradient.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "drak_zlate_supiny_detail",
+          "name": "detail zlatých dračích šupin",
+          "file": "hraci_karty/webp/drak_zlate_supiny_detail.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "rytir_zbran_brneni_erb",
+          "name": "zbraně a brnění erbu",
+          "file": "hraci_karty/webp/rytir_zbran_brneni_erb.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "mytologie_drak_fialovy_znak",
+          "name": "fialový drak symbol",
+          "file": "hraci_karty/webp/mytologie_drak_fialovy_znak.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "rytir_erb_srdce_hvezdy",
+          "name": "rytířský erb se srdcem a hvězdami",
+          "file": "hraci_karty/webp/rytir_erb_srdce_hvezdy.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "drak_cerveny_planouci_zivly",
+          "name": "červený planoucí drak živly",
+          "file": "hraci_karty/webp/drak_cerveny_planouci_zivly.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "neutralni_zlata_metalika",
+          "name": "zlatá metalická textura",
+          "file": "hraci_karty/webp/neutralni_zlata_metalika.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "kocka_seda_srst",
+          "name": "šedá kočičí srst",
+          "file": "hraci_karty/webp/kocka_seda_srst.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "kocka_tribarevna_srst",
+          "name": "trojbarevná kočičí srst",
+          "file": "hraci_karty/webp/kocka_tribarevna_srst.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "kocka_oranzova_srst",
+          "name": "oranžová kočičí srst",
+          "file": "hraci_karty/webp/kocka_oranzova_srst.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "mytologie_zelena_mandala",
+          "name": "zelená mandala/geometrie",
+          "file": "hraci_karty/webp/mytologie_zelena_mandala.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "mytologie_kristal_zarici_cyan",
+          "name": "zářící cyanový krystal",
+          "file": "hraci_karty/webp/mytologie_kristal_zarici_cyan.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "mytologie_mec_blesk_zlaty",
+          "name": "zlatý meč s bleskem",
+          "file": "hraci_karty/webp/mytologie_mec_blesk_zlaty.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "priroda_strom_pamatny",
+          "name": "památný/posvátný strom",
+          "file": "hraci_karty/webp/priroda_strom_pamatny.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "mytologie_runy_zlate_modre",
+          "name": "zlato-modré runy s magií",
+          "file": "hraci_karty/webp/mytologie_runy_zlate_modre.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        }
+      ]
+    },
+    "pexeso": {
+      "size": "square",
+      "aspect_ratio": 1,
+      "items": [
+        {
+          "id": "pexeso_hnizdo_vejce",
+          "name": "hnízdo s vejci",
+          "file": "pexeso/webp/pexeso_hnizdo_vejce.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_ledova_mandala",
+          "name": "ledová mandala",
+          "file": "pexeso/webp/pexeso_ledova_mandala.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_rozeta_ruzova",
+          "name": "růžová rozeta",
+          "file": "pexeso/webp/pexeso_rozeta_ruzova.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_vaza_libka",
+          "name": "váza s lebkou",
+          "file": "pexeso/webp/pexeso_vaza_libka.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_listnaty_motiv",
+          "name": "listnatý vzor",
+          "file": "pexeso/webp/pexeso_listnaty_motiv.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_zlata_divka",
+          "name": "zlatá dívka",
+          "file": "pexeso/webp/pexeso_zlata_divka.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_lotus_fialovy",
+          "name": "fialový lotos",
+          "file": "pexeso/webp/pexeso_lotus_fialovy.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_kridla_andelska",
+          "name": "andělská křídla",
+          "file": "pexeso/webp/pexeso_kridla_andelska.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_hvezdy_modre",
+          "name": "modré hvězdy",
+          "file": "pexeso/webp/pexeso_hvezdy_modre.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_dinosaurus_jungle",
+          "name": "dinosaurus v džungli",
+          "file": "pexeso/webp/pexeso_dinosaurus_jungle.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_dracich_oci",
+          "name": "dračí oči",
+          "file": "pexeso/webp/pexeso_dracich_oci.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_spiraly_zlate",
+          "name": "zlaté spirály",
+          "file": "pexeso/webp/pexeso_spiraly_zlate.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_ptak_ornament",
+          "name": "pták v ornamentu",
+          "file": "pexeso/webp/pexeso_ptak_ornament.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_netopyr_kostry",
+          "name": "netopýr s kostmi",
+          "file": "pexeso/webp/pexeso_netopyr_kostry.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_gradient_ruzovy",
+          "name": "růžový gradient",
+          "file": "pexeso/webp/pexeso_gradient_ruzovy.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_mrizka_zlata",
+          "name": "zlatá mřížka",
+          "file": "pexeso/webp/pexeso_mrizka_zlata.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_vir_nocni_modry",
+          "name": "noční modrý vír",
+          "file": "pexeso/webp/pexeso_vir_nocni_modry.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_kriz_cerveny",
+          "name": "červený kříž",
+          "file": "pexeso/webp/pexeso_kriz_cerveny.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_diamanty_barevne",
+          "name": "barevné diamanty",
+          "file": "pexeso/webp/pexeso_diamanty_barevne.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_koren_zeleny",
+          "name": "zelený kořen",
+          "file": "pexeso/webp/pexeso_koren_zeleny.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_hvezdy_bile_v_mraku",
+          "name": "bílé hvězdy v mraku",
+          "file": "pexeso/webp/pexeso_hvezdy_bile_v_mraku.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_listy_zelene",
+          "name": "zelené listy",
+          "file": "pexeso/webp/pexeso_listy_zelene.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_peritka_zlata",
+          "name": "zlatá peříčka",
+          "file": "pexeso/webp/pexeso_peritka_zlata.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_platno_bezove",
+          "name": "béžové plátno",
+          "file": "pexeso/webp/pexeso_platno_bezove.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_damask_hnedy",
+          "name": "hnědý damask",
+          "file": "pexeso/webp/pexeso_damask_hnedy.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_srst_seda",
+          "name": "šedá srst",
+          "file": "pexeso/webp/pexeso_srst_seda.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_tvar_modry",
+          "name": "modrý tvar",
+          "file": "pexeso/webp/pexeso_tvar_modry.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_lava_cervena",
+          "name": "červená láva",
+          "file": "pexeso/webp/pexeso_lava_cervena.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_srstenec_hnedy",
+          "name": "hnědé srstí",
+          "file": "pexeso/webp/pexeso_srstenec_hnedy.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_zamek_sny",
+          "name": "pohádkový zámek",
+          "file": "pexeso/webp/pexeso_zamek_sny.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_led_modry",
+          "name": "modrý led",
+          "file": "pexeso/webp/pexeso_led_modry.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_srst_rezava",
+          "name": "rezavá srst",
+          "file": "pexeso/webp/pexeso_srst_rezava.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_miska_rezava",
+          "name": "rezavá miska",
+          "file": "pexeso/webp/pexeso_miska_rezava.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_astrologie_zlata",
+          "name": "zlatá astrologie",
+          "file": "pexeso/webp/pexeso_astrologie_zlata.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_ctverec_zeleny",
+          "name": "zelený čtverec",
+          "file": "pexeso/webp/pexeso_ctverec_zeleny.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_material_sedy",
+          "name": "šedý materiál",
+          "file": "pexeso/webp/pexeso_material_sedy.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_mandala_vesmir",
+          "name": "vesmírná mandala",
+          "file": "pexeso/webp/pexeso_mandala_vesmir.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_mandala_tyrkysova",
+          "name": "tyrkysová mandala",
+          "file": "pexeso/webp/pexeso_mandala_tyrkysova.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_hvezdy_jemne",
+          "name": "jemné hvězdy",
+          "file": "pexeso/webp/pexeso_hvezdy_jemne.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_phoenix_zlaty",
+          "name": "zlatý fénix",
+          "file": "pexeso/webp/pexeso_phoenix_zlaty.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_kriz_blesk",
+          "name": "kříž s bleskem",
+          "file": "pexeso/webp/pexeso_kriz_blesk.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_maska_lidska",
+          "name": "lidská maska",
+          "file": "pexeso/webp/pexeso_maska_lidska.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_zmije_fialova",
+          "name": "fialová zmije",
+          "file": "pexeso/webp/pexeso_zmije_fialova.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_strom_zapad",
+          "name": "strom při západu slunce",
+          "file": "pexeso/webp/pexeso_strom_zapad.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_rytir_srdce",
+          "name": "rytíř se srdcem",
+          "file": "pexeso/webp/pexeso_rytir_srdce.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_drak_plameny",
+          "name": "drak v plamenech",
+          "file": "pexeso/webp/pexeso_drak_plameny.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_zodiak_modry",
+          "name": "modrý zodiak",
+          "file": "pexeso/webp/pexeso_zodiak_modry.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_material_zlaty",
+          "name": "zlatý materiál",
+          "file": "pexeso/webp/pexeso_material_zlaty.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        }
+      ]
+    }
+  }
+}

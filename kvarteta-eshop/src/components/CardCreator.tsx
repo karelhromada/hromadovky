@@ -5,7 +5,7 @@ import { uploadOrderPhoto } from '../lib/storage';
 import { getBackgroundsForGame } from '../data/backgrounds';
 import { renderAndUploadBatch, type RenderTask } from '../lib/cardExporter';
 
-const backgrounds = getBackgroundsForGame('karty');
+const backgrounds = getBackgroundsForGame('kvarteta');
 
 const frontImages = [
     '/cards/baby_1.webp', '/cards/baby_2.webp', '/cards/baby_7.webp',

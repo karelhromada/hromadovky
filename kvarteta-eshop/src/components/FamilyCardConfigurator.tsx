@@ -455,14 +455,15 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
                         <div className="control-group mt-6">
                             <label className="control-label">Vybrat zadní stranu (Rub)</label>
                             <div className="backs-selection-horizontal">
-                                {backgrounds.filter(bg => bg.games.includes('karty')).map(bg => (
-                                    <div 
+                                {backgrounds.filter(bg => bg.game === 'hraci_karty').map(bg => (
+                                    <div
                                         key={bg.id}
                                         className={`back-thumb-item ${selectedBackUrl === bg.url ? 'active' : ''}`}
                                         onClick={() => setSelectedBackUrl(bg.url)}
                                         title={bg.name}
+                                        style={{ aspectRatio: bg.aspectRatio }}
                                     >
-                                        <img src={bg.url} alt={bg.name} className="back-thumb-img" />
+                                        <img src={bg.url} alt={bg.name} className="back-thumb-img" style={{ objectFit: 'contain' }} />
                                         {selectedBackUrl === bg.url && <div className="back-check-badge"><Check size={12} /></div>}
                                     </div>
                                 ))}

@@ -294,18 +294,24 @@
             }
         };
 
-        const BACKS = [
-            '../kvarteta/backs/card_back_pattern.png',
-            '../kvarteta/backs/knight_back_pattern.png',
-            '../kvarteta/backs/knight_back_gold.png',
-            '../kvarteta/backs/knight_back_iron_steel.png',
-            '../kvarteta/backs/knight_back_copper.png',
-            '../hraci_karty/epicka_draci_edice/epic_backs/back_arcane.webp',
-            '../hraci_karty/epicka_draci_edice/epic_backs/back_fire.webp',
-            '../hraci_karty/epicka_draci_edice/epic_backs/back_ice.webp',
-            '../hraci_karty/epicka_draci_edice/epic_backs/back_nature.webp',
-            '../hraci_karty/epicka_draci_edice/epic_backs/back_shadow.webp'
-        ];
+        // BACKS: nactene asynchronne z zadni_strany/manifest.json (single source of truth).
+        // Drzi vsechny finalni zadni strany ze 3 kategorii (kvarteta, hraci_karty, pexeso).
+        let BACKS = [];
+        (async () => {
+            try {
+                const res = await fetch('../zadni_strany/manifest.json');
+                const m = await res.json();
+                BACKS = ['kvarteta', 'hraci_karty', 'pexeso'].flatMap(cat =>
+                    (m.categories[cat]?.items ?? []).map(it => `../zadni_strany/${cat}/webp/${it.id}.webp`)
+                );
+                if (BACKS.length && typeof currentBack !== 'undefined' && !currentBack) {
+                    currentBack = BACKS[0];
+                    if (typeof render === 'function') render();
+                }
+            } catch (e) {
+                console.error('Nelze nacist zadni_strany/manifest.json:', e);
+            }
+        })();
 
 
         // ═══ STATE ═══

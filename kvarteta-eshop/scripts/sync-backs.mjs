@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// Kopiruje zadni_strany/{karty,pexeso}/webp/* z rootu do kvarteta-eshop/public/zadni_strany/.
+// Kopiruje zadni_strany/{kvarteta,hraci_karty,pexeso}/webp/* z rootu do kvarteta-eshop/public/zadni_strany/.
+// Take kopiruje manifest do src/data/backs-manifest.json pro TypeScript import.
 // Spousti se automaticky v predev / prebuild.
 
 import fs from 'node:fs/promises';
@@ -12,7 +13,11 @@ const ESHOP_ROOT = path.resolve(__dirname, '..');
 const REPO_ROOT = path.resolve(ESHOP_ROOT, '..');
 
 const SRC_ROOT = path.join(REPO_ROOT, 'zadni_strany');
-const DST_ROOT = path.join(ESHOP_ROOT, 'public', 'zadni_strany');
+const SRC_MANIFEST = path.join(SRC_ROOT, 'manifest.json');
+const DST_PUBLIC = path.join(ESHOP_ROOT, 'public', 'zadni_strany');
+const DST_TS_MANIFEST = path.join(ESHOP_ROOT, 'src', 'data', 'backs-manifest.json');
+
+const CATEGORIES = ['kvarteta', 'hraci_karty', 'pexeso'];
 
 async function copyDir(src, dst) {
   await fs.mkdir(dst, { recursive: true });
@@ -36,21 +41,37 @@ async function main() {
     return;
   }
 
-  // Vycistime cilovy adresar, abychom nenechali smazane backy za sebou.
-  await fs.rm(DST_ROOT, { recursive: true, force: true });
+  // Vycistime cilovy public adresar, abychom nenechali stare backy za sebou.
+  await fs.rm(DST_PUBLIC, { recursive: true, force: true });
 
-  for (const subset of ['karty', 'pexeso']) {
-    const src = path.join(SRC_ROOT, subset);
+  for (const category of CATEGORIES) {
+    const src = path.join(SRC_ROOT, category);
     try {
       await fs.access(src);
     } catch {
       console.warn(`[sync-backs] ${src} neexistuje, preskakuji.`);
       continue;
     }
-    await copyDir(src, path.join(DST_ROOT, subset));
+    await copyDir(src, path.join(DST_PUBLIC, category));
   }
 
-  console.log(`[sync-backs] OK -> ${path.relative(ESHOP_ROOT, DST_ROOT)}`);
+  // Kopirujeme manifest take do public/ pro pripadne runtime cteni.
+  try {
+    await fs.copyFile(SRC_MANIFEST, path.join(DST_PUBLIC, 'manifest.json'));
+  } catch (err) {
+    console.warn(`[sync-backs] manifest.json se nepodarilo zkopirovat do public/: ${err.message}`);
+  }
+
+  // Kopirujeme manifest do src/data/ pro TypeScript import.
+  try {
+    await fs.mkdir(path.dirname(DST_TS_MANIFEST), { recursive: true });
+    await fs.copyFile(SRC_MANIFEST, DST_TS_MANIFEST);
+  } catch (err) {
+    console.warn(`[sync-backs] manifest.json se nepodarilo zkopirovat do src/data/: ${err.message}`);
+  }
+
+  console.log(`[sync-backs] OK -> public/${path.relative(path.join(ESHOP_ROOT, 'public'), DST_PUBLIC)}`);
+  console.log(`[sync-backs] manifest -> src/data/backs-manifest.json`);
 }
 
 main().catch((err) => {

@@ -7,7 +7,9 @@ interface ProductShowcaseProps {
     onAddToCart: (product: Omit<CartItem, 'quantity'>) => void;
 }
 
-import { backgrounds } from '../data/backgrounds';
+import { getBackgroundsForGame } from '../data/backgrounds';
+
+const backgrounds = getBackgroundsForGame('kvarteta');
 
 import { kvartetaProducts as products } from '../data/products';
 
@@ -196,7 +198,12 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onAddToCart }) => {
                                     key={idx}
                                     className={`back-preview-item ${selectedBack === bg.url ? 'selected' : ''}`}
                                     onClick={() => setSelectedBack(bg.url)}
-                                    style={{ backgroundImage: `url('${bg.url}')` }}
+                                    style={{
+                                        backgroundImage: `url('${bg.url}')`,
+                                        aspectRatio: bg.aspectRatio,
+                                        backgroundSize: 'contain',
+                                        backgroundRepeat: 'no-repeat',
+                                    }}
                                 >
                                     {selectedBack === bg.url && (
                                         <div className="selection-check">

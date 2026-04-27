@@ -20,31 +20,24 @@ const AboutPage: React.FC = () => {
                 <div className="glass-panel" style={{ padding: '48px', maxWidth: '780px', margin: '0 auto' }}>
                     <h2 style={{ fontSize: '1.8rem', marginBottom: '20px' }}>Jak to celé začalo</h2>
                     <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '16px' }}>
-                        Jsme čtyřčlenná rodina — <strong>Karel</strong> a <strong>Nikola</strong> a naše dvě úžasná stvoření,
+                        Jsme čtyřčlenná rodina — <strong>Karel</strong> a <strong>Nikola</strong> a naše dvě úžasné děti,
                         sedmiletá <strong>Valinka</strong> a šestiletý <strong>Kájík</strong>.
                     </p>
                     <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '16px' }}>
-                        Hry a karty nás v rodině provázely odjakživa. Snad od dětství máme oba dva ten
-                        zvláštní pocit, že kolem rozdaných karet se vždycky stane něco kouzelného —
-                        čas se na chvíli zastaví, telefon zůstane v kapse a u stolu sedí rodina, která
+                        Hry a karty nás v rodině provázely odjakživa. Ať už to byl mariáš, prší nebo žolíky. Když rodina zasedne ke karetnímu stolu, vždy se
+                        čas na chvíli zastaví, telefon zůstane v kapse a rodina 
                         se baví <strong>spolu</strong>, ne každý zvlášť.
                     </p>
                     <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '16px' }}>
-                        Když naše děti začaly objevovat svět, všimli jsme si něčeho krásného: stačily karty
-                        se správnými motivy — draky, dinosaury, princeznami nebo postavičkami z Minecraftu —
-                        a tahle magie se přenesla i na ně. Soustředění, smích, „ještě jednu kolu, prosím!“
-                        Chvíle, na které se nezapomíná.
+                        Když jsme naši vášeň pro karty začali přenášet na naše děti, velmi brzy začaly mít svoje specifické požadavky. A proč nemůžeme mít kvarteta, kde jsou draci? Nebo dinosauři? A protože jsme nikde nennašli nabídku, která by splňovala přísné požadavky našich dětí, tak jsme začali tvořit karty, kvarteta a pexesa pro ně. 
                     </p>
                     <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '16px' }}>
-                        A protože nám tahle radost přijde příliš krásná na to, aby zůstala jen u nás doma,
-                        vznikly <strong>Hromadovky</strong>. Karty plné příběhů, které dělají z obyčejného
-                        večera u stolu malé dobrodružství. V dnešním uspěchaném digitálním světě jsou pro nás
-                        takovým malým mostem — mezi rodiči a dětmi, mezi generacemi, mezi všedním dnem
-                        a chvílemi, které si rodiny pamatují.
+                        A protože naše karty všude na dovolených, nebo kdekoliv jsme je vytáhli, vzbuzovaly velký ohlas, tak jsme se rozhodli, že si je nenecháme jen pro sebe. No a tak vznikly <strong>Hromadovky</strong>. Karty plné příběhů. 
+                     
                     </p>
                     <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8 }}>
-                        Navrhujeme je nejdřív pro naše vlastní děti. A teprve když projdou jejich přísným
-                        testem, podáváme je dál vaší rodině.
+                        Navrhujeme je nejdřív pro naše vlastní děti. A teprve když projdou jejich přísným 
+                        testem a nekompromisním hodnocením, podáváme je dál do dalších rodin.
                     </p>
                 </div>
             </section>

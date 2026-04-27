@@ -46,7 +46,9 @@ const Navbar: React.FC<NavbarProps> = ({ toggleCart, cartCount }) => {
         { path: '/kvarteta', label: 'Kvarteta' },
         { path: '/pexeso', label: 'Pexeso' },
         { path: '/karty', label: 'Hrací karty' },
-        { path: '/pravidla', label: 'Pravidla hry' }
+        { path: '/pravidla', label: 'Pravidla hry' },
+        { path: '/faq', label: 'FAQ' },
+        { path: '/o-nas', label: 'O nás' }
     ];
 
     return (

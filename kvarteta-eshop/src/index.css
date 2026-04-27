@@ -329,3 +329,71 @@ button {
 .size-pill { flex: 1; padding: 10px 2px; font-size: 0.85rem; font-weight: 800; border-radius: 10px; border: 1px solid transparent; background: transparent; color: var(--text-secondary); transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); cursor: pointer; text-align: center; }
 .size-pill:hover:not(.active) { background: rgba(255, 255, 255, 0.1); color: var(--text-primary); transform: translateY(-1px); }
 .size-pill.active { background: var(--accent-gold); color: white; box-shadow: 0 4px 12px rgba(197, 155, 39, 0.3); transform: scale(1.02); }
+
+/* --- Legal Page Typography (Obchodní podmínky / Reklamační řád) --- */
+.legal-content { font-size: 0.98rem; line-height: 1.75; color: var(--text-primary); }
+.legal-content h2 { font-size: 1.4rem; margin: 32px 0 12px; color: var(--text-primary); }
+.legal-content h2:first-child { margin-top: 0; }
+.legal-content h3 { font-size: 1.1rem; margin: 20px 0 8px; color: var(--text-primary); }
+.legal-content p { margin: 0 0 12px; color: var(--text-secondary); }
+.legal-content ul, .legal-content ol { margin: 0 0 16px; padding-left: 24px; color: var(--text-secondary); }
+.legal-content li { margin-bottom: 6px; }
+.legal-content a { color: var(--accent-gold-dark); text-decoration: underline; }
+.legal-content a:hover { color: var(--accent-gold); }
+.legal-content strong { color: var(--text-primary); }
+.legal-content .placeholder {
+    background: rgba(197, 155, 39, 0.15);
+    border: 1px dashed rgba(197, 155, 39, 0.45);
+    padding: 1px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    color: var(--accent-gold-dark);
+    font-size: 0.9em;
+}
+.legal-content .legal-meta {
+    background: rgba(0, 0, 0, 0.04);
+    border-left: 3px solid var(--accent-gold);
+    padding: 12px 16px;
+    margin: 0 0 20px;
+    border-radius: 4px;
+    font-size: 0.92rem;
+}
+
+/* --- Cookie reset box (GDPR section) --- */
+.cookie-reset-box {
+    margin: 16px 0 20px;
+    padding: 16px 20px;
+    background: rgba(197, 155, 39, 0.07);
+    border: 1px solid rgba(197, 155, 39, 0.25);
+    border-radius: 12px;
+}
+.cookie-reset-status {
+    margin: 0 0 12px;
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+}
+.cookie-reset-status strong {
+    color: var(--text-primary);
+    margin-right: 4px;
+}
+.cookie-reset-btn {
+    border: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.92rem;
+    background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-dark));
+    color: white;
+    box-shadow: 0 4px 14px rgba(212, 175, 55, 0.25);
+    transition: all 0.25s ease;
+}
+.cookie-reset-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(212, 175, 55, 0.35);
+}
+.cookie-reset-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    box-shadow: none;
+}

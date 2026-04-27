@@ -46,6 +46,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
     const { profile, user } = useAuth();
     const [pickupPoint, setPickupPoint] = useState<string | null>(null);
     const [showPickupModal, setShowPickupModal] = useState(false);
+    const [agreedToTerms, setAgreedToTerms] = useState(false);
 
     // Pre-fill form from profile when it loads
     useEffect(() => {
@@ -479,10 +480,32 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                             <textarea name="note" value={formData.note} onChange={handleChange} placeholder="Např. kód brány, specifické přání..." rows={3} />
                         </div>
 
-                        <button 
-                            type="submit" 
-                            className="btn-primary btn-submit" 
-                            disabled={isSubmitting || (['zasilkovna', 'ppl'].includes(formData.delivery) && !pickupPoint)}
+                        <div className="form-group checkout-consent">
+                            <label className="checkout-consent-label">
+                                <input
+                                    type="checkbox"
+                                    checked={agreedToTerms}
+                                    onChange={(e) => setAgreedToTerms(e.target.checked)}
+                                    required
+                                />
+                                <span>
+                                    Souhlasím s{' '}
+                                    <a href="/obchodni-podminky" target="_blank" rel="noopener noreferrer">obchodními podmínkami</a>
+                                    {' '}a{' '}
+                                    <a href="/reklamacni-rad" target="_blank" rel="noopener noreferrer">reklamačním řádem</a>.
+                                </span>
+                            </label>
+                            <p className="checkout-consent-info">
+                                Odesláním objednávky berete na vědomí, že vaše osobní údaje budou zpracovány
+                                pro účely vyřízení objednávky podle{' '}
+                                <a href="/gdpr" target="_blank" rel="noopener noreferrer">Zásad ochrany osobních údajů</a>.
+                            </p>
+                        </div>
+
+                        <button
+                            type="submit"
+                            className="btn-primary btn-submit"
+                            disabled={isSubmitting || !agreedToTerms || (['zasilkovna', 'ppl'].includes(formData.delivery) && !pickupPoint)}
                         >
                             {isSubmitting ? 'Odesílám...' : `Dokončit objednávku (${formatCurrency(totalToPay)})`}
                         </button>

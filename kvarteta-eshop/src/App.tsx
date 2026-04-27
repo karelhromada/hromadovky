@@ -3,11 +3,17 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Cart from './components/Cart'
 import Footer from './components/Footer'
+import CookieBanner from './components/CookieBanner'
 import HomePage from './pages/HomePage'
 import KvartetaPage from './pages/KvartetaPage'
 import PexesoPage from './pages/PexesoPage'
 import HraciKartyPage from './pages/HraciKartyPage'
 import RulesPage from './pages/RulesPage'
+import FAQPage from './pages/FAQPage'
+import AboutPage from './pages/AboutPage'
+import TermsPage from './pages/TermsPage'
+import ReturnsPage from './pages/ReturnsPage'
+import PrivacyPage from './pages/PrivacyPage'
 import CheckoutPage from './pages/CheckoutPage'
 import AuthPage from './pages/AuthPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
@@ -113,6 +119,11 @@ function App() {
               <Route path="/pexeso" element={<PexesoPage onAddToCart={addToCart} />} />
               <Route path="/karty" element={<HraciKartyPage onAddToCart={addToCart} />} />
               <Route path="/pravidla" element={<RulesPage />} />
+              <Route path="/faq" element={<FAQPage />} />
+              <Route path="/o-nas" element={<AboutPage />} />
+              <Route path="/obchodni-podminky" element={<TermsPage />} />
+              <Route path="/reklamacni-rad" element={<ReturnsPage />} />
+              <Route path="/gdpr" element={<PrivacyPage />} />
               <Route path="/checkout" element={<CheckoutPage items={cartItems} onClearCart={clearCart} />} />
               <Route path="/login" element={<AuthPage />} />
               <Route path="/reset-password" element={<ResetPasswordPage />} />
@@ -128,6 +139,8 @@ function App() {
             onRemove={removeFromCart}
             onUpdateQuantity={updateQuantity}
           />
+
+          <CookieBanner />
         </div>
       </Router>
     </AuthProvider>

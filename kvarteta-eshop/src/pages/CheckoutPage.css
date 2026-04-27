@@ -546,3 +546,48 @@
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+/* --- Checkout consent (Obchodní podmínky + GDPR info) --- */
+.checkout-consent {
+    margin: 16px 0 8px;
+    padding: 14px 16px;
+    background: rgba(197, 155, 39, 0.06);
+    border: 1px solid rgba(197, 155, 39, 0.2);
+    border-radius: 10px;
+}
+.checkout-consent-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    line-height: 1.5;
+}
+.checkout-consent-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    accent-color: var(--accent-gold);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+.checkout-consent-label a {
+    color: var(--accent-gold-dark);
+    text-decoration: underline;
+    font-weight: 600;
+}
+.checkout-consent-label a:hover {
+    color: var(--accent-gold);
+}
+.checkout-consent-info {
+    margin: 10px 0 0;
+    padding-left: 28px;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+.checkout-consent-info a {
+    color: var(--accent-gold-dark);
+    text-decoration: underline;
+}

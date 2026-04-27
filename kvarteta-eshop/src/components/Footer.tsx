@@ -22,6 +22,17 @@ const Footer: React.FC = () => {
                         <ul>
                             <li><a href="#products">Naše sady</a></li>
                             <li><a href="/pravidla">O hře a pravidla</a></li>
+                            <li><a href="/faq">FAQ</a></li>
+                            <li><a href="/o-nas">O nás</a></li>
+                        </ul>
+                    </div>
+
+                    <div className="link-column">
+                        <h4>Právní informace</h4>
+                        <ul>
+                            <li><a href="/obchodni-podminky">Obchodní podmínky</a></li>
+                            <li><a href="/reklamacni-rad">Reklamační řád</a></li>
+                            <li><a href="/gdpr">Zásady ochrany osobních údajů</a></li>
                         </ul>
                     </div>
 

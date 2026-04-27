@@ -1,5 +1,9 @@
 # Dependencies
-node_modules/
+node_modules
+**/node_modules
+
+# Claude Code private session files (plans, memory, settings)
+.claude/
 
 # Build output
 dist/

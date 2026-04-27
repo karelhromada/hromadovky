@@ -4,7 +4,7 @@
   "description": "Root workspace pro migraci zadnich stran karet (sjednoceni zdroju pro eshop + tisk).",
   "private": true,
   "scripts": {
-    "migrate:backs": "node scripts/migrate_backs.mjs"
+    "migrate:backs": "node scripts/migrate_final_backs.mjs"
   },
   "devDependencies": {
     "sharp": "^0.33.5"

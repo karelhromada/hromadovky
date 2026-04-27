@@ -12,7 +12,7 @@ import { kartyProducts as products } from '../data/products';
 
 import { getBackgroundsForGame } from '../data/backgrounds';
 
-const KARTY_BACKS = getBackgroundsForGame('karty');
+const KARTY_BACKS = getBackgroundsForGame('hraci_karty');
 
 const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart }) => {
     const [selectedProductForPreview, setSelectedProductForPreview] = useState<any | null>(null);
@@ -314,13 +314,15 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
                                     key={idx}
                                     className={`back-preview-item ${selectedBack === bg.url ? 'selected' : ''}`}
                                     onClick={() => setSelectedBack(bg.url)}
-                                    style={{ 
+                                    style={{
                                         backgroundImage: `url('${bg.url}')`,
-                                        height: '120px',
+                                        aspectRatio: bg.aspectRatio,
                                         borderRadius: '8px',
                                         cursor: 'pointer',
                                         border: selectedBack === bg.url ? '2px solid var(--accent-gold)' : '2px solid transparent',
-                                        backgroundSize: 'cover',
+                                        backgroundSize: 'contain',
+                                        backgroundRepeat: 'no-repeat',
+                                        backgroundPosition: 'center',
                                         position: 'relative'
                                     }}
                                 >

@@ -20,6 +20,12 @@ const IMAGE_NAME_MAP = {
     'Tyrannosaurus': 'Tyrannosaurus - Rex'
 };
 
+// Dinosauři, jejichž zdrojový obrázek má extrémně úzký poměr stran
+// (užší než canvas) a v default cover režimu by se subjekt vertikálně
+// ořízl. Pro tyto vykreslíme obrázek v contain režimu (celý vidět)
+// s rozmazanou kopií jako pozadím.
+const CONTAIN_LIST = new Set(['Therizinosaurus']);
+
 // Barvy a témata (přesně podle kvarteta/dinosauri/generate_dinosaurs.js, rozšířeno o statBaseColor)
 const THEMES = {
     PREDATORS:  { name: 'PREDÁTOŘI',  gold: '#ff4444', goldDark: '#880000', statBaseColor: 'rgba(40, 5, 5, 0.5)' },
@@ -127,19 +133,57 @@ async function generateCard(dino, info) {
         const img = await loadImage(imagePath);
         const imgRatio = img.width / img.height;
         const canvasRatio = WIDTH / HEIGHT;
-        let dw, dh, dx, dy;
-        if (imgRatio > canvasRatio) {
-            dh = HEIGHT;
-            dw = HEIGHT * imgRatio;
-            dx = (WIDTH - dw) / 2;
-            dy = 0;
+
+        if (CONTAIN_LIST.has(dino['Jméno'])) {
+            // CONTAIN režim: celý obrázek viditelný, rozmazaná kopie jako pozadí.
+            let bgDw, bgDh, bgDx, bgDy;
+            if (imgRatio > canvasRatio) {
+                bgDh = HEIGHT;
+                bgDw = HEIGHT * imgRatio;
+                bgDx = (WIDTH - bgDw) / 2;
+                bgDy = 0;
+            } else {
+                bgDw = WIDTH;
+                bgDh = WIDTH / imgRatio;
+                bgDx = 0;
+                bgDy = (HEIGHT - bgDh) / 2;
+            }
+            ctx.save();
+            ctx.filter = 'blur(30px)';
+            ctx.drawImage(img, bgDx, bgDy, bgDw, bgDh);
+            ctx.restore();
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
+            ctx.fillRect(0, 0, WIDTH, HEIGHT);
+
+            let dw, dh, dx, dy;
+            if (imgRatio > canvasRatio) {
+                dw = WIDTH;
+                dh = WIDTH / imgRatio;
+                dx = 0;
+                dy = (HEIGHT - dh) / 2;
+            } else {
+                dh = HEIGHT;
+                dw = HEIGHT * imgRatio;
+                dx = (WIDTH - dw) / 2;
+                dy = 0;
+            }
+            ctx.drawImage(img, dx, dy, dw, dh);
         } else {
-            dw = WIDTH;
-            dh = WIDTH / imgRatio;
-            dx = 0;
-            dy = (HEIGHT - dh) / 2;
+            // COVER režim (výchozí): vyplní canvas, ořeže přebytek.
+            let dw, dh, dx, dy;
+            if (imgRatio > canvasRatio) {
+                dh = HEIGHT;
+                dw = HEIGHT * imgRatio;
+                dx = (WIDTH - dw) / 2;
+                dy = 0;
+            } else {
+                dw = WIDTH;
+                dh = WIDTH / imgRatio;
+                dx = 0;
+                dy = (HEIGHT - dh) / 2;
+            }
+            ctx.drawImage(img, dx, dy, dw, dh);
         }
-        ctx.drawImage(img, dx, dy, dw, dh);
     } else {
         ctx.fillStyle = '#222';
         ctx.fillRect(0, 0, WIDTH, HEIGHT);
@@ -268,10 +312,15 @@ async function run() {
     const workbook = XLSX.readFile(EXCEL_FILE);
     const data = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
 
+    // Volitelný CLI filtr: `node generate_final_dinosaur_images.cjs Quetzalcoatlus`
+    // vygeneruje pouze jednu kartu místo všech 32.
+    const filterName = process.argv[2];
+
     const skipped = [];
     let count = 0;
     for (const d of data) {
         if (!d['Jméno']) continue;
+        if (filterName && d['Jméno'] !== filterName) continue;
         const info = getKvartetaInfo(d);
         if (!info) {
             skipped.push(`${d['Jméno']} (Skupina: ${d['Skupina']})`);

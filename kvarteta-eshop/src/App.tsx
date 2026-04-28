@@ -8,7 +8,6 @@ import HomePage from './pages/HomePage'
 import KvartetaPage from './pages/KvartetaPage'
 import PexesoPage from './pages/PexesoPage'
 import HraciKartyPage from './pages/HraciKartyPage'
-import RulesPage from './pages/RulesPage'
 import FAQPage from './pages/FAQPage'
 import AboutPage from './pages/AboutPage'
 import TermsPage from './pages/TermsPage'
@@ -118,7 +117,6 @@ function App() {
               <Route path="/kvarteta" element={<KvartetaPage onAddToCart={addToCart} />} />
               <Route path="/pexeso" element={<PexesoPage onAddToCart={addToCart} />} />
               <Route path="/karty" element={<HraciKartyPage onAddToCart={addToCart} />} />
-              <Route path="/pravidla" element={<RulesPage />} />
               <Route path="/faq" element={<FAQPage />} />
               <Route path="/o-nas" element={<AboutPage />} />
               <Route path="/obchodni-podminky" element={<TermsPage />} />

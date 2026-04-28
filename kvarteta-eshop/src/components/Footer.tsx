@@ -21,7 +21,7 @@ const Footer: React.FC = () => {
                         <h4>Navigace</h4>
                         <ul>
                             <li><a href="/faq">FAQ</a></li>
-                            <li><a href="/pravidla">O hře a pravidla</a></li>
+                            <li><a href="/kvarteta#pravidla">Pravidla hry</a></li>
                             <li><a href="/o-nas">O nás</a></li>
                         </ul>
                     </div>

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8" />
+<title>{{DOC_TITLE}} {{NUMBER}}</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: 'Helvetica Neue', Arial, sans-serif; color: #1a1a1a; font-size: 11pt; padding: 20px 0; }
+  .doc-title { font-size: 18pt; font-weight: 700; margin: 0 0 4px; letter-spacing: 0.02em; }
+  .doc-subtitle { font-size: 10pt; color: #666; margin-bottom: 24px; }
+  .top-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+  .party h3 { font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.06em; color: #888; margin: 0 0 6px; font-weight: 600; }
+  .party div { line-height: 1.5; }
+  .meta { background: #f7f5ee; padding: 14px 16px; border-radius: 8px; margin-bottom: 24px; }
+  .meta-row { display: flex; justify-content: space-between; padding: 3px 0; }
+  .meta-row span:first-child { color: #666; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+  th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid #e5e2d6; }
+  th { background: #f7f5ee; font-weight: 600; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.04em; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .totals { margin-left: auto; width: 50%; }
+  .totals .row { display: flex; justify-content: space-between; padding: 4px 0; }
+  .totals .grand { border-top: 2px solid #1a1a1a; padding-top: 8px; margin-top: 8px; font-weight: 700; font-size: 13pt; }
+  .payment { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin: 28px 0; padding: 16px; background: #f7f5ee; border-radius: 8px; }
+  .payment h3 { margin: 0 0 8px; font-size: 10.5pt; }
+  .qr { text-align: center; }
+  .qr img { width: 160px; height: 160px; }
+  .qr small { display: block; font-size: 8.5pt; color: #666; margin-top: 4px; }
+  .footer-note { margin-top: 32px; padding-top: 12px; border-top: 1px solid #e5e2d6; font-size: 9pt; color: #888; line-height: 1.6; }
+  .credit-block { margin-top: 16px; padding: 12px 14px; background: #fff5f5; border-left: 4px solid #c33; border-radius: 4px; }
+  .credit-block p { margin: 4px 0; font-size: 10pt; }
+</style>
+</head>
+<body>
+  <h1 class="doc-title">{{DOC_TITLE}}</h1>
+  <p class="doc-subtitle">Číslo dokladu: <strong>{{NUMBER}}</strong></p>
+
+  {{ORIGINAL_REF_BLOCK}}
+  {{CREDIT_REASON_BLOCK}}
+
+  <div class="top-grid">
+    <div class="party">
+      <h3>Dodavatel</h3>
+      <div><strong>Karel Hromada</strong></div>
+      <div>Zeyerova alej 20</div>
+      <div>160 00 Praha 6</div>
+      <div>IČO: 76137767</div>
+      <div>Není plátce DPH dle §6 ZDPH</div>
+      <div style="margin-top:8px; color:#666; font-size: 9.5pt;">info@hromadovky.cz</div>
+    </div>
+    <div class="party">
+      <h3>Odběratel</h3>
+      {{CUSTOMER_BLOCK}}
+    </div>
+  </div>
+
+  <div class="meta">
+    <div class="meta-row"><span>Datum vystavení:</span><strong>{{ISSUED_AT}}</strong></div>
+    <div class="meta-row"><span>Datum uskutečnění zdanitelného plnění (DUZP):</span><strong>{{ISSUED_AT}}</strong></div>
+    <div class="meta-row"><span>Datum splatnosti:</span><strong>{{DUE_AT}}</strong></div>
+    <div class="meta-row"><span>Forma úhrady:</span><strong>{{PAYMENT_METHOD}}</strong></div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Popis</th>
+        <th class="num">Množství</th>
+        <th class="num">Cena/ks</th>
+        <th class="num">Celkem</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ITEMS_ROWS}}
+    </tbody>
+  </table>
+
+  <div class="totals">
+    <div class="row"><span>Mezisoučet:</span><span>{{SUBTOTAL}} Kč</span></div>
+    <div class="row"><span>Doprava:</span><span>{{SHIPPING}} Kč</span></div>
+    <div class="row"><span>Příplatek za dobírku:</span><span>{{COD}} Kč</span></div>
+    <div class="row grand"><span>Celkem k úhradě:</span><span>{{TOTAL}} Kč</span></div>
+  </div>
+
+  <div class="payment">
+    <div>
+      <h3>Údaje pro platbu převodem</h3>
+      <div>Bankovní účet: <strong>670100-2202858274 / 6210</strong> (mBank)</div>
+      <div>IBAN: <strong>CZ07 6210 0000 0022 0285 8274</strong></div>
+      <div>Variabilní symbol: <strong>{{VARIABLE_SYMBOL}}</strong></div>
+      <div>Splatnost: <strong>{{DUE_AT}}</strong></div>
+    </div>
+    <div class="qr">
+      <img src="{{QR_URL}}" alt="QR Platba" />
+      <small>QR Platba — naskenujte pro rychlou platbu</small>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    Dodavatel není plátcem DPH dle §6 zákona č. 235/2004 Sb. o dani z přidané hodnoty.
+    Tento doklad je vystaven podle §11 zákona č. 563/1991 Sb. o účetnictví. Děkujeme za nákup.
+  </div>
+</body>
+</html>

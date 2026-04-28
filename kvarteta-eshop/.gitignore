@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Environment files (never commit secrets)
+.env
+.env.*
+!.env.example
+
 # Sync target pro zadni_strany/ (generovano scripts/sync-backs.mjs pri predev/prebuild)
 public/zadni_strany/
 

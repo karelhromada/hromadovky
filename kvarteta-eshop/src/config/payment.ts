@@ -16,4 +16,7 @@ export const SHIPPING_CONFIG = {
 
 export const AUTOMATION_CONFIG = {
     N8N_WEBHOOK_URL: import.meta.env.VITE_N8N_WEBHOOK_URL || 'https://n8n.hromadovky.cz/webhook/new-order',
+    N8N_CREDIT_NOTE_WEBHOOK_URL:
+        import.meta.env.VITE_N8N_CREDIT_NOTE_WEBHOOK_URL ||
+        'https://n8n.hromadovky.cz/webhook/dobropis',
 };

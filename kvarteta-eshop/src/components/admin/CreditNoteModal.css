@@ -1,0 +1,60 @@
+.credit-note-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    z-index: 1000;
+}
+
+.credit-note-modal {
+    width: min(560px, 100%);
+    padding: 28px;
+    color: var(--text-primary);
+    border-radius: 14px;
+}
+
+.credit-note-header h2 {
+    margin: 0 0 8px;
+    font-size: 1.4rem;
+}
+
+.credit-note-header p {
+    margin: 0 0 20px;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.credit-note-form .form-group { margin-bottom: 18px; display: flex; flex-direction: column; gap: 6px; }
+.credit-note-form label { font-size: 0.9rem; }
+.form-group-label { font-size: 0.9rem; }
+.form-hint { font-size: 0.78rem; color: var(--text-secondary); }
+
+.credit-note-form textarea,
+.credit-note-form input[type="number"] {
+    padding: 8px 10px;
+    border: 1px solid rgba(197, 155, 39, 0.3);
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.2);
+    color: var(--text-primary);
+    font: inherit;
+}
+
+.radio-row { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.partial-amount-input { margin-top: 6px; max-width: 220px; }
+
+.credit-note-error {
+    color: #e57373;
+    font-size: 0.88rem;
+    margin: 0 0 12px;
+}
+
+.credit-note-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 8px;
+}

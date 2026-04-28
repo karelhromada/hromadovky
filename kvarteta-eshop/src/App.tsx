@@ -16,6 +16,8 @@ import PrivacyPage from './pages/PrivacyPage'
 import CheckoutPage from './pages/CheckoutPage'
 import AuthPage from './pages/AuthPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
+import AdminInvoicesPage from './pages/AdminInvoicesPage'
+import { RequireAdmin } from './components/RequireAdmin'
 import './App.css'
 
 export interface CartItem {
@@ -125,6 +127,14 @@ function App() {
               <Route path="/checkout" element={<CheckoutPage items={cartItems} onClearCart={clearCart} />} />
               <Route path="/login" element={<AuthPage />} />
               <Route path="/reset-password" element={<ResetPasswordPage />} />
+              <Route
+                path="/admin/invoices"
+                element={
+                  <RequireAdmin>
+                    <AdminInvoicesPage />
+                  </RequireAdmin>
+                }
+              />
             </Routes>
           </main>
 

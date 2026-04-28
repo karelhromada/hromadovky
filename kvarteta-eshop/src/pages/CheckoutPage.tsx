@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { CartItem } from '../App';
 import './CheckoutPage.css';
@@ -6,6 +6,7 @@ import { SHIPPING_CONFIG, AUTOMATION_CONFIG } from '../config/payment';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import { resetDraftRef } from '../lib/storage';
+import { isValidIco, lookupAres } from '../lib/ares';
 import { User, LogIn } from 'lucide-react';
 
 
@@ -36,10 +37,16 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
         street: '',
         city: '',
         zip: '',
+        companyName: '',
+        ico: '',
+        dic: '',
         delivery: 'zasilkovna',
         payment: 'transfer',
         note: ''
     });
+    const [isB2B, setIsB2B] = useState(false);
+    const [aresStatus, setAresStatus] = useState<'idle' | 'loading' | 'ok' | 'invalid' | 'notfound'>('idle');
+    const aresAbortRef = useRef<AbortController | null>(null);
     const [finalTotal, setFinalTotal] = useState(0);
     const [orderVS, setOrderVS] = useState<string>('');
     const [isSuccess, setIsSuccess] = useState(false);
@@ -151,6 +158,44 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
         setFormData((prev: any) => ({ ...prev, [name]: value }));
     };
 
+    const handleIcoBlur = async () => {
+        const ico = formData.ico.replace(/\s+/g, '');
+        if (!ico) {
+            setAresStatus('idle');
+            return;
+        }
+        if (!isValidIco(ico)) {
+            setAresStatus('invalid');
+            return;
+        }
+
+        aresAbortRef.current?.abort();
+        const controller = new AbortController();
+        aresAbortRef.current = controller;
+
+        setAresStatus('loading');
+        try {
+            const result = await lookupAres(ico, controller.signal);
+            if (controller.signal.aborted) return;
+
+            if (!result) {
+                setAresStatus('notfound');
+                return;
+            }
+            setFormData((prev: any) => ({
+                ...prev,
+                companyName: prev.companyName || result.companyName,
+                dic: prev.dic || result.dic || '',
+            }));
+            setAresStatus('ok');
+        } catch (error) {
+            if (controller.signal.aborted) return;
+            // Fail-soft — povolit pokračovat, jen oznámit, že ARES nedostupný.
+            console.warn('ARES lookup failed:', error);
+            setAresStatus('idle');
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
@@ -164,7 +209,13 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
         const allRenderedPaths = items.flatMap(i => i.renderedCardPaths ?? []);
 
         const orderData = {
-            customer: formData,
+            customer: {
+                ...formData,
+                isB2B,
+                companyName: isB2B ? formData.companyName : '',
+                ico: isB2B ? formData.ico : '',
+                dic: isB2B ? formData.dic : ''
+            },
             items: items.map((item, idx) => ({
                 id: item.id,
                 name: item.name,
@@ -394,6 +445,54 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                                 <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required placeholder="+420 123 456 789" />
                             </div>
                         </div>
+
+                        <div className="form-group checkout-b2b-toggle">
+                            <label className="checkout-consent-label">
+                                <input
+                                    type="checkbox"
+                                    checked={isB2B}
+                                    onChange={(e) => {
+                                        setIsB2B(e.target.checked);
+                                        if (!e.target.checked) {
+                                            setAresStatus('idle');
+                                        }
+                                    }}
+                                />
+                                <span>Nakupuji na firmu (uvést IČO/DIČ na faktuře)</span>
+                            </label>
+                        </div>
+
+                        {isB2B && (
+                            <div className="b2b-section animate-fade-in">
+                                <div className="form-group">
+                                    <label>Název firmy</label>
+                                    <input type="text" name="companyName" value={formData.companyName} onChange={handleChange} placeholder="ACME s.r.o." />
+                                </div>
+                                <div className="form-row">
+                                    <div className="form-group">
+                                        <label>IČO</label>
+                                        <input
+                                            type="text"
+                                            name="ico"
+                                            value={formData.ico}
+                                            onChange={handleChange}
+                                            onBlur={handleIcoBlur}
+                                            placeholder="12345678"
+                                            inputMode="numeric"
+                                            maxLength={8}
+                                        />
+                                        {aresStatus === 'loading' && <span className="ares-status">Ověřuji v ARES…</span>}
+                                        {aresStatus === 'ok' && <span className="ares-status ares-ok">✓ Údaje vyplněny z ARES</span>}
+                                        {aresStatus === 'invalid' && <span className="error-text">Neplatné IČO</span>}
+                                        {aresStatus === 'notfound' && <span className="error-text">IČO v ARES nenalezeno (lze pokračovat)</span>}
+                                    </div>
+                                    <div className="form-group">
+                                        <label>DIČ (nepovinné)</label>
+                                        <input type="text" name="dic" value={formData.dic} onChange={handleChange} placeholder="CZ12345678" />
+                                    </div>
+                                </div>
+                            </div>
+                        )}
 
                         {formData.delivery === 'gls' && (
                             <div className="address-section animate-fade-in">

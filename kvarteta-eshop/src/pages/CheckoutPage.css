@@ -591,3 +591,29 @@
     color: var(--accent-gold-dark);
     text-decoration: underline;
 }
+
+/* --- B2B section (firemní fakturace) --- */
+.checkout-b2b-toggle {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: rgba(197, 155, 39, 0.04);
+    border: 1px dashed rgba(197, 155, 39, 0.25);
+    border-radius: 8px;
+}
+.b2b-section {
+    margin-top: 4px;
+    padding: 14px 16px;
+    border: 1px solid rgba(197, 155, 39, 0.2);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.03);
+}
+.ares-status {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+}
+.ares-status.ares-ok {
+    color: var(--accent-gold-dark);
+    font-weight: 500;
+}

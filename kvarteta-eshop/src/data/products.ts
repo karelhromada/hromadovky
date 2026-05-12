@@ -76,6 +76,24 @@ export const kartyProducts = [
             '/cards/minecraft-prsi/karta_Zelene_7.webp', '/cards/minecraft-prsi/karta_Zelene_8.webp', '/cards/minecraft-prsi/karta_Zelene_9.webp', '/cards/minecraft-prsi/karta_Zelene_10.webp', '/cards/minecraft-prsi/karta_Zelene_Spodek.webp', '/cards/minecraft-prsi/karta_Zelene_Svrsek.webp', '/cards/minecraft-prsi/karta_Zelene_Kral.webp', '/cards/minecraft-prsi/karta_Zelene_Eso.webp',
             '/cards/minecraft-prsi/karta_Kule_7.webp', '/cards/minecraft-prsi/karta_Kule_8.webp', '/cards/minecraft-prsi/karta_Kule_9.webp', '/cards/minecraft-prsi/karta_Kule_10.webp', '/cards/minecraft-prsi/karta_Kule_Spodek.webp', '/cards/minecraft-prsi/karta_Kule_Svrsek.webp', '/cards/minecraft-prsi/karta_Kule_Kral.webp', '/cards/minecraft-prsi/karta_Kule_Eso.webp'
         ]
+    },
+    {
+        id: 'karty-tema-star-wars',
+        name: 'Hrací karty: Star Wars',
+        description: 'Galaktická edice s hrdiny i padouchy ze ságy Star Wars. Mariášové barvy se 32 unikátními ilustracemi z dalekých galaxií – ideální dárek pro každého fanouška.',
+        price: 349,
+        themeColor: '#000000',
+        images: ['/cards/star-wars/Cervene_Eso.webp', '/cards/star-wars/Zelene_Kral.webp', '/cards/star-wars/Kule_Svrsek.webp'],
+        boxImage: '/cards/star-wars/Cervene_Eso.webp',
+        isThematic: true,
+        sampleValue: 'A',
+        sampleSuit: '♥',
+        allCards: [
+            '/cards/star-wars/Cervene_Eso.webp', '/cards/star-wars/Cervene_Kral.webp', '/cards/star-wars/Cervene_Svrsek.webp', '/cards/star-wars/Cervene_Spodek.webp', '/cards/star-wars/Cervene_10.webp', '/cards/star-wars/Cervene_9.webp', '/cards/star-wars/Cervene_8.webp', '/cards/star-wars/Cervene_7.webp',
+            '/cards/star-wars/Zelene_Eso.webp', '/cards/star-wars/Zelene_Kral.webp', '/cards/star-wars/Zelene_Svrsek.webp', '/cards/star-wars/Zelene_Spodek.webp', '/cards/star-wars/Zelene_10.webp', '/cards/star-wars/Zelene_9.webp', '/cards/star-wars/Zelene_8.webp', '/cards/star-wars/Zelene_7.webp',
+            '/cards/star-wars/Zaludy_Eso.webp', '/cards/star-wars/Zaludy_Kral.webp', '/cards/star-wars/Zaludy_Svrsek.webp', '/cards/star-wars/Zaludy_Spodek.webp', '/cards/star-wars/Zaludy_10.webp', '/cards/star-wars/Zaludy_9.webp', '/cards/star-wars/Zaludy_8.webp', '/cards/star-wars/Zaludy_7.webp',
+            '/cards/star-wars/Kule_Eso.webp', '/cards/star-wars/Kule_Kral.webp', '/cards/star-wars/Kule_Svrsek.webp', '/cards/star-wars/Kule_Spodek.webp', '/cards/star-wars/Kule_10.webp', '/cards/star-wars/Kule_9.webp', '/cards/star-wars/Kule_8.webp', '/cards/star-wars/Kule_7.webp'
+        ]
     }
 ];
 

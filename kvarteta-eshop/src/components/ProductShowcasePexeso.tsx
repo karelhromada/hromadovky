@@ -100,6 +100,23 @@ const products = [
         ]
     },
     {
+        id: 'pexeso-frozen',
+        name: 'Pexeso: Ledové království',
+        description: 'Mrazivě krásná pexesová sada inspirovaná světem Frozen. 16 párů karet s pohádkovými hrdiny pro skvělý trénink paměti.',
+        price: 249,
+        themeColor: '#4dc9ff',
+        back: '/cards/backs/epic_ice_crystal.webp',
+        badges: [
+            { id: 1, text: 'Novinka', icon: Sparkles, color: '#4dc9ff' }
+        ],
+        image: [
+            '/pexeso/ledove-kralovstvi/pex_1.webp', '/pexeso/ledove-kralovstvi/pex_2.webp', '/pexeso/ledove-kralovstvi/pex_3.webp', '/pexeso/ledove-kralovstvi/pex_4.webp',
+            '/pexeso/ledove-kralovstvi/pex_5.webp', '/pexeso/ledove-kralovstvi/pex_6.webp', '/pexeso/ledove-kralovstvi/pex_7.webp', '/pexeso/ledove-kralovstvi/pex_8.webp',
+            '/pexeso/ledove-kralovstvi/pex_9.webp', '/pexeso/ledove-kralovstvi/pex_10.webp', '/pexeso/ledove-kralovstvi/pex_11.webp', '/pexeso/ledove-kralovstvi/pex_12.webp',
+            '/pexeso/ledove-kralovstvi/pex_13.webp', '/pexeso/ledove-kralovstvi/pex_14.webp', '/pexeso/ledove-kralovstvi/pex_15.webp', '/pexeso/ledove-kralovstvi/pex_16.webp'
+        ]
+    },
+    {
         id: 'pexeso-dravci',
         name: 'Pexeso: Velcí lovci',
         description: 'Odhalte sílu nejobávanějších dravců naší planety ve strhujícím pexesu pro odvážné.',

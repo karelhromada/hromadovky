@@ -60,6 +60,9 @@ async function loadRenameMap() {
       // Stejny soubor (jen jiny rozmer) jde do obou kategorii
       map.kvarteta.push({ src: puvodni, id: novy.replace(/\.webp$/, ''), name: popis || novy });
       map.hraci_karty.push({ src: puvodni, id: novy.replace(/\.webp$/, ''), name: popis || novy });
+    } else if (kategorie === 'hraci_karty') {
+      // Pouze do hraci_karty (zdroj jen v 63x105 slozce)
+      map.hraci_karty.push({ src: puvodni, id: novy.replace(/\.webp$/, ''), name: popis || novy });
     } else if (kategorie === 'pexeso') {
       map.pexeso.push({ src: puvodni, id: novy.replace(/\.webp$/, ''), name: popis || novy });
     } else {

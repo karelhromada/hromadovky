@@ -101,7 +101,7 @@ const products = [
     },
     {
         id: 'pexeso-frozen',
-        name: 'Pexeso: Ledové království',
+        name: 'Pexeso: Království sněhu',
         description: 'Mrazivě krásná pexesová sada inspirovaná světem Frozen. 16 párů karet s pohádkovými hrdiny pro skvělý trénink paměti.',
         price: 249,
         themeColor: '#4dc9ff',

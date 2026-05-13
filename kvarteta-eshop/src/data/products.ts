@@ -57,7 +57,7 @@ export const kartyProducts = [
     },
     {
         id: 'karty-tema-minecraft',
-        name: 'Hrací karty: Minecraft',
+        name: 'Hrací karty: Pixelový svět',
         description: 'Epická Minecraft edice pro fanoušky kultovní hry. 32 unikátních full-art ilustrací v voxelovém stylu – postavy, příšery a předměty ze světa Minecraftu. Ideální pro děti i dospělé nadšence!',
         price: 349,
         themeColor: '#4CAF50',
@@ -79,7 +79,7 @@ export const kartyProducts = [
     },
     {
         id: 'karty-tema-star-wars',
-        name: 'Hrací karty: Star Wars',
+        name: 'Hrací karty: Galaktické prší',
         description: 'Galaktická edice s hrdiny i padouchy ze ságy Star Wars. Mariášové barvy se 32 unikátními ilustracemi z dalekých galaxií – ideální dárek pro každého fanouška.',
         price: 349,
         themeColor: '#000000',

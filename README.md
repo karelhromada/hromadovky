@@ -12,13 +12,13 @@ Eshop pro autorské hrací karty, kvarteta a pexeso.
 
 ## Vercel build
 
-Build command (nastavený v Vercel UI Project Settings → Build and Deployment):
+Build command (definovaný v `vercel.json`):
 
 ```bash
-cd kvarteta-eshop && PUPPETEER_SKIP_DOWNLOAD=true npm install && npm run build:no-prerender
+cd kvarteta-eshop && PUPPETEER_SKIP_DOWNLOAD=true npm install && npm run build
 ```
 
-`PUPPETEER_SKIP_DOWNLOAD=true` skipne 200 MB Chromium download (Puppeteer používá jen lokální prerender, na Vercel se nepoužívá). `build:no-prerender` skipne static prerender 9 routes — react-helmet-async funguje runtime.
+`PUPPETEER_SKIP_DOWNLOAD=true` skipne 200 MB Chromium download (Puppeteer používá jen lokální prerender, na Vercel se nepoužívá). `npm run build` = `tsc -b && vite build` — bez prerenderu, ten je samostatný `npm run prerender` skript.
 
 ## Lokální development
 

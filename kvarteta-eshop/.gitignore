@@ -16,6 +16,7 @@ dist-ssr
 .env
 .env.*
 !.env.example
+!.env.local.example
 
 # Sync target pro zadni_strany/ (generovano scripts/sync-backs.mjs pri predev/prebuild)
 public/zadni_strany/

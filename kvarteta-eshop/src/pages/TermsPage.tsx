@@ -1,8 +1,13 @@
 import React from 'react';
 import LegalPage from '../components/LegalPage';
+import { PageHead } from '../components/seo/PageHead';
+import { SEO } from '../data/seo';
+import { PAYMENT_CONFIG } from '../config/payment';
 
 const TermsPage: React.FC = () => {
     return (
+        <>
+        <PageHead {...SEO.terms} />
         <LegalPage
             title="Obchodní podmínky"
             subtitle="Podmínky nákupu prémiových karetních her Hromadovky"
@@ -56,7 +61,7 @@ const TermsPage: React.FC = () => {
             </p>
             <p>Cenu zboží a případné náklady na dodání může kupující uhradit Prodávajícímu těmito způsoby:</p>
             <ul>
-                <li>bezhotovostně převodem na bankovní účet Prodávajícího č. <strong>670100-2202858274/6210</strong>;</li>
+                <li>bezhotovostně převodem na bankovní účet Prodávajícího č. <strong>{PAYMENT_CONFIG.BANK_ACCOUNT}</strong> (IBAN <strong>{PAYMENT_CONFIG.IBAN}</strong>);</li>
                 <li>bezhotovostně platební kartou prostřednictvím platební brány provozované poskytovatelem platebních služeb;</li>
                 <li>dobírkou v místě určeném kupujícím v objednávce (pokud je tato volba nabízena).</li>
             </ul>
@@ -157,6 +162,7 @@ const TermsPage: React.FC = () => {
                 předchozího znění.
             </p>
         </LegalPage>
+        </>
     );
 };
 

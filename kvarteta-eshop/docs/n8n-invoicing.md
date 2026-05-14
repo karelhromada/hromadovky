@@ -97,8 +97,17 @@ node (typicky email-notify zákazníkovi) **přidej** následujících 6 nodů.
     isB2B && customer.dic ? `DIČ: ${customer.dic}` : null,
   ].filter(Boolean);
 
+  // Fio Banka (kód 2010) — Fio účty nemají prefix, proto parametr `prefix` vynechán.
+  // POZOR: Při změně bankovního účtu musíš aktualizovat tento Code node v živém n8n
+  // workflow `objednavka`, ne jen tento markdown. Markdown je dokumentace.
+  //
+  // UPDATE 2026-05-14: Email s fakturou (PDF příloha) se NEPOSÍLÁ z tohoto workflow.
+  // Připojení `Faktura: Update DB + email body` → `Faktura: Má email?` bylo odebráno.
+  // Faktura se vygeneruje, nahraje do Drive a `pdf_path` se uloží do `invoices`,
+  // ale email s PDF přílohou se posílá až po spárování platby ve workflow
+  // `fio-payment-matcher` (viz docs/n8n-fio-matching.md).
   const qrUrl = `https://api.paylibo.com/paylibo/generator/czech/image?` +
-    `accountNumber=2202858274&bankCode=6210&prefix=670100` +
+    `accountNumber=2202066277&bankCode=2010` +
     `&amount=${total}&currency=CZK&vs=${order.variableSymbol}&size=220`;
 
   return [{

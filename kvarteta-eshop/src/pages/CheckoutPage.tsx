@@ -2,7 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { CartItem } from '../App';
 import './CheckoutPage.css';
-import { SHIPPING_CONFIG, AUTOMATION_CONFIG } from '../config/payment';
+import { PAYMENT_CONFIG, SHIPPING_CONFIG, AUTOMATION_CONFIG } from '../config/payment';
+import { getQRPaymentImageUrl } from '../utils/qrUtils';
+import { PageHead } from '../components/seo/PageHead';
+import { SEO } from '../data/seo';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import { resetDraftRef } from '../lib/storage';
@@ -243,17 +246,21 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
         try {
             // Odeslání do n8n (pro automatizaci emailů a evidenci)
             try {
+                const webhookHeaders: Record<string, string> = {
+                    'Content-Type': 'application/json',
+                };
+                if (AUTOMATION_CONFIG.N8N_WEBHOOK_SECRET) {
+                    webhookHeaders['X-Webhook-Secret'] = AUTOMATION_CONFIG.N8N_WEBHOOK_SECRET;
+                }
                 const response = await fetch(AUTOMATION_CONFIG.N8N_WEBHOOK_URL, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ 
-                        ...orderData, 
+                    headers: webhookHeaders,
+                    body: JSON.stringify({
+                        ...orderData,
                         totalToPay,
                         deliveryCost,
                         paymentCost,
-                        pickupPoint 
+                        pickupPoint
                     }),
                 });
                 
@@ -351,13 +358,19 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                             <h3>🔍 Údaje pro platbu převodem</h3>
                             <div className="transfer-flex">
                                 <div className="transfer-text">
-                                    <p>Číslo účtu: <strong>670100-2202858274 / 6210</strong></p>
+                                    <p>Číslo účtu: <strong>{PAYMENT_CONFIG.BANK_ACCOUNT}</strong></p>
+                                    <p>IBAN: <strong>{PAYMENT_CONFIG.IBAN}</strong></p>
                                     <p>Variabilní symbol: <strong>{orderVS}</strong></p>
                                     <p>Částka: <strong>{formatCurrency(finalTotal)}</strong></p>
                                 </div>
                                 <div className="qr-code-wrap">
-                                    <img 
-                                        src={`https://api.paylibo.com/paylibo/generator/czech/image?accountNumber=2202858274&bankCode=6210&prefix=670100&amount=${finalTotal}&currency=CZK&vs=${orderVS}&size=250`}
+                                    <img
+                                        src={getQRPaymentImageUrl({
+                                            account: PAYMENT_CONFIG.BANK_ACCOUNT,
+                                            amount: finalTotal,
+                                            currency: 'CZK',
+                                            variableSymbol: orderVS,
+                                        })}
                                         alt="QR Platba"
                                         className="qr-image"
                                     />
@@ -386,6 +399,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
 
     return (
         <div className="checkout-container">
+            <PageHead {...SEO.checkout} />
             {showPickupModal && (
                 <div className="modal-overlay" onClick={() => setShowPickupModal(false)}>
                     <div className="modal-content glass-panel" onClick={e => e.stopPropagation()}>

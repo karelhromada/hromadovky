@@ -1,5 +1,7 @@
 import React from 'react';
 import type { CartItem } from '../App';
+import { PageHead } from '../components/seo/PageHead';
+import { SEO } from '../data/seo';
 import HeroSectionKarty from '../components/HeroSectionKarty';
 import FeaturesSectionKarty from '../components/FeaturesSectionKarty';
 import ProductShowcaseKarty from '../components/ProductShowcaseKarty';
@@ -27,6 +29,7 @@ const HraciKartyPage: React.FC<HraciKartyPageProps> = ({ onAddToCart }) => {
 
     return (
         <>
+            <PageHead {...SEO.karty} />
             <HeroSectionKarty />
             <FeaturesSectionKarty />
             <ProductShowcaseKarty onAddToCart={onAddToCart} />

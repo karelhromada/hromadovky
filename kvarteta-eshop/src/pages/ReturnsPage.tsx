@@ -1,8 +1,12 @@
 import React from 'react';
 import LegalPage from '../components/LegalPage';
+import { PageHead } from '../components/seo/PageHead';
+import { SEO } from '../data/seo';
 
 const ReturnsPage: React.FC = () => {
     return (
+        <>
+        <PageHead {...SEO.returns} />
         <LegalPage
             title="Reklamační řád"
             subtitle="Postup při uplatnění práv z vadného plnění a vyřízení reklamace"
@@ -135,6 +139,7 @@ const ReturnsPage: React.FC = () => {
                 řádu vyhrazeny. Aktuální znění je vždy zveřejněno na stránkách E-shopu.
             </p>
         </LegalPage>
+        </>
     );
 };
 

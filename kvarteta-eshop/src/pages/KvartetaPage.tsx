@@ -1,4 +1,6 @@
 import React from 'react';
+import { PageHead } from '../components/seo/PageHead';
+import { SEO } from '../data/seo';
 import HeroSection from '../components/HeroSection';
 import FeaturesSection from '../components/FeaturesSection';
 import ProductShowcase from '../components/ProductShowcase';
@@ -29,6 +31,7 @@ const KvartetaPage: React.FC<KvartetaPageProps> = ({ onAddToCart }) => {
 
     return (
         <>
+            <PageHead {...SEO.kvarteta} />
             <HeroSection />
             <FeaturesSection />
             <ProductShowcase onAddToCart={onAddToCart} />

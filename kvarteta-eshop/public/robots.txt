@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /login
+Disallow: /reset-password
+Disallow: /checkout
+Crawl-delay: 1
+
+User-agent: SeznamBot
+Allow: /
+Disallow: /admin/
+Disallow: /login
+Disallow: /reset-password
+Disallow: /checkout
+
+Sitemap: https://hromadovky.cz/sitemap.xml

@@ -1,21 +1,78 @@
 <!doctype html>
-<html lang="en">
+<html lang="cs">
 
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#fcfbfa" />
+
+  <!-- Favicon & PWA -->
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="/site.webmanifest" />
+
+  <!-- Title and meta are managed by react-helmet-async per route (see PageHead). -->
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Bricolage+Grotesque:wght@500;700;800&display=swap" />
-  <title>Hromadovky - karty plné příběhů</title>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Bricolage+Grotesque:wght@700&display=swap" />
+
+  <!-- Organization JSON-LD (global; Helmet adds page-specific schemas) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Hromadovky",
+      "url": "https://hromadovky.cz/",
+      "logo": "https://hromadovky.cz/logo.webp",
+      "email": "info@hromadovky.cz",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "CZ"
+      },
+      "sameAs": []
+    }
+  </script>
 </head>
 
 <body>
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
+  <script>
+    // Fallback: pokud se React nenamountuje do 10 sekund (např. module-level throw
+    // při missing env, pomalá 3G síť, Vercel cold-start), zobrazíme uživateli
+    // srozumitelnou hlášku místo bílého okna. Pokud React mountoval a obsah je v
+    // root (i kdyby pak crashnul, ErrorBoundary by zachytil), fallback se neuplatní.
+    setTimeout(function () {
+      var root = document.getElementById('root');
+      if (!root || root.childElementCount > 0) return;
+      var wrap = document.createElement('div');
+      wrap.style.cssText = 'font-family:system-ui,sans-serif;max-width:520px;margin:80px auto;padding:32px;text-align:center;color:#121826';
+      var h = document.createElement('h1');
+      h.textContent = 'Aplikace se nepodařilo načíst';
+      h.style.cssText = 'font-size:1.5rem;margin-bottom:12px';
+      var p = document.createElement('p');
+      p.style.cssText = 'color:#4b5563;margin-bottom:20px';
+      p.appendChild(document.createTextNode('Zkuste prosím obnovit stránku. Pokud problém přetrvává, napište nám na '));
+      var a = document.createElement('a');
+      a.href = 'mailto:info@hromadovky.cz';
+      a.textContent = 'info@hromadovky.cz';
+      a.style.cssText = 'color:#8e6b10';
+      p.appendChild(a);
+      p.appendChild(document.createTextNode('.'));
+      var btn = document.createElement('button');
+      btn.textContent = 'Obnovit';
+      btn.style.cssText = 'background:#c59b27;color:#fff;border:none;padding:10px 24px;border-radius:8px;cursor:pointer;font-size:1rem';
+      btn.addEventListener('click', function () { location.reload(); });
+      wrap.appendChild(h);
+      wrap.appendChild(p);
+      wrap.appendChild(btn);
+      root.appendChild(wrap);
+    }, 10000);
+  </script>
 </body>
 
 </html>

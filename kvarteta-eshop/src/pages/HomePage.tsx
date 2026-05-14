@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Shield, Sparkles, X } from 'lucide-react';
+import { PageHead } from '../components/seo/PageHead';
+import { SEO } from '../data/seo';
 import './HomePage.css';
 
 const epicCards = [
@@ -41,6 +43,7 @@ const HomePage: React.FC = () => {
 
     return (
         <div className="homepage-v5">
+            <PageHead {...SEO.home} />
             {/* --- HERO: EPIC UNBOXING --- */}
             <section className="hero-epic">
                 <div className="hero-epic-container">

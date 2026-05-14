@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import { PageHead } from '../components/seo/PageHead';
+import { SEO } from '../data/seo';
 
 const AboutPage: React.FC = () => {
     useEffect(() => {
@@ -6,7 +8,9 @@ const AboutPage: React.FC = () => {
     }, []);
 
     return (
-        <div className="about-page" style={{ paddingTop: '100px', minHeight: '80vh' }}>
+        <>
+            <PageHead {...SEO.about} />
+            <div className="about-page" style={{ paddingTop: '100px', minHeight: '80vh' }}>
             <section className="container" style={{ paddingTop: '60px', paddingBottom: '40px', textAlign: 'center' }}>
                 <h1 style={{ fontSize: '3rem', marginBottom: '16px' }}>
                     O <span className="text-gradient-gold">nás</span>
@@ -53,7 +57,8 @@ const AboutPage: React.FC = () => {
                     </a>
                 </div>
             </section>
-        </div>
+            </div>
+        </>
     );
 };
 

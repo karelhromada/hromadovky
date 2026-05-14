@@ -65,7 +65,16 @@ const HeroSection: React.FC = () => {
                                     animationDelay: `${index * 0.5}s`
                                 }}
                             >
-                                <img src={card.image} alt="Kvarteta card" className="hero-card-img" />
+                                <img
+                                    src={card.image}
+                                    alt="Kvarteta card"
+                                    className="hero-card-img"
+                                    width={300}
+                                    height={420}
+                                    loading={index === 0 ? 'eager' : 'lazy'}
+                                    fetchPriority={index === 0 ? 'high' : 'auto'}
+                                    decoding="async"
+                                />
                             </div>
                         );
                     })}

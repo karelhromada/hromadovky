@@ -8,6 +8,8 @@ import {
   type InvoiceFilters,
 } from '../lib/invoices';
 import { CreditNoteModal } from '../components/admin/CreditNoteModal';
+import { PageHead } from '../components/seo/PageHead';
+import { SEO } from '../data/seo';
 import './AdminInvoicesPage.css';
 
 const STATUS_LABEL: Record<InvoiceStatus, string> = {
@@ -103,6 +105,7 @@ export default function AdminInvoicesPage() {
 
   return (
     <div className="admin-invoices-container">
+      <PageHead {...SEO.adminInvoices} />
       <header className="admin-invoices-header">
         <h1>Faktury a dobropisy</h1>
         <div className="admin-stats-grid">

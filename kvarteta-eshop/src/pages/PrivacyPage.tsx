@@ -1,9 +1,13 @@
 import React from 'react';
 import LegalPage from '../components/LegalPage';
 import CookieResetButton from '../components/CookieResetButton';
+import { PageHead } from '../components/seo/PageHead';
+import { SEO } from '../data/seo';
 
 const PrivacyPage: React.FC = () => {
     return (
+        <>
+        <PageHead {...SEO.privacy} />
         <LegalPage
             title="Zásady zpracování osobních údajů"
             subtitle="Informace o zpracování osobních údajů podle GDPR"
@@ -154,6 +158,7 @@ const PrivacyPage: React.FC = () => {
                 {' '}<a href="mailto:info@hromadovky.cz">info@hromadovky.cz</a>.
             </p>
         </LegalPage>
+        </>
     );
 };
 

@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import { PageHead } from '../components/seo/PageHead';
+import { SEO } from '../data/seo';
 import FAQ from '../components/FAQ';
 
 const FAQPage: React.FC = () => {
@@ -8,6 +10,7 @@ const FAQPage: React.FC = () => {
 
     return (
         <div className="faq-page" style={{ paddingTop: '100px', minHeight: '80vh', paddingBottom: '40px' }}>
+            <PageHead {...SEO.faq} />
             <FAQ />
 
             <section className="container" style={{ paddingTop: '20px', paddingBottom: '60px' }}>

@@ -1,24 +1,38 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { HelmetProvider } from 'react-helmet-async'
 import Navbar from './components/Navbar'
 import Cart from './components/Cart'
 import Footer from './components/Footer'
 import CookieBanner from './components/CookieBanner'
 import HomePage from './pages/HomePage'
-import KvartetaPage from './pages/KvartetaPage'
-import PexesoPage from './pages/PexesoPage'
-import HraciKartyPage from './pages/HraciKartyPage'
-import FAQPage from './pages/FAQPage'
-import AboutPage from './pages/AboutPage'
-import TermsPage from './pages/TermsPage'
-import ReturnsPage from './pages/ReturnsPage'
-import PrivacyPage from './pages/PrivacyPage'
-import CheckoutPage from './pages/CheckoutPage'
-import AuthPage from './pages/AuthPage'
-import ResetPasswordPage from './pages/ResetPasswordPage'
-import AdminInvoicesPage from './pages/AdminInvoicesPage'
 import { RequireAdmin } from './components/RequireAdmin'
 import './App.css'
+
+// Lazy-loaded routes — reduce initial bundle for non-home pages
+const KvartetaPage = lazy(() => import('./pages/KvartetaPage'))
+const PexesoPage = lazy(() => import('./pages/PexesoPage'))
+const HraciKartyPage = lazy(() => import('./pages/HraciKartyPage'))
+const FAQPage = lazy(() => import('./pages/FAQPage'))
+const AboutPage = lazy(() => import('./pages/AboutPage'))
+const TermsPage = lazy(() => import('./pages/TermsPage'))
+const ReturnsPage = lazy(() => import('./pages/ReturnsPage'))
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage'))
+const CheckoutPage = lazy(() => import('./pages/CheckoutPage'))
+const AuthPage = lazy(() => import('./pages/AuthPage'))
+const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage'))
+const AdminInvoicesPage = lazy(() => import('./pages/AdminInvoicesPage'))
+
+const RouteFallback = () => (
+  <div
+    role="status"
+    aria-live="polite"
+    aria-busy="true"
+    style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+  >
+    <div style={{ opacity: 0.5 }}>Načítám…</div>
+  </div>
+)
 
 export interface CartItem {
   id: string;
@@ -103,9 +117,10 @@ function App() {
   };
 
   return (
-    <AuthProvider>
-      <Router>
-        <div className="app-container">
+    <HelmetProvider>
+      <AuthProvider>
+        <Router>
+          <div className="app-container">
           {/* Animated Pastel Mesh Background */}
           <div className="pastel-mesh-bg">
             <div className="blob"></div>
@@ -114,28 +129,30 @@ function App() {
           <Navbar toggleCart={toggleCart} cartCount={cartItems.reduce((acc, item) => acc + item.quantity, 0)} />
 
           <main>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/kvarteta" element={<KvartetaPage onAddToCart={addToCart} />} />
-              <Route path="/pexeso" element={<PexesoPage onAddToCart={addToCart} />} />
-              <Route path="/karty" element={<HraciKartyPage onAddToCart={addToCart} />} />
-              <Route path="/faq" element={<FAQPage />} />
-              <Route path="/o-nas" element={<AboutPage />} />
-              <Route path="/obchodni-podminky" element={<TermsPage />} />
-              <Route path="/reklamacni-rad" element={<ReturnsPage />} />
-              <Route path="/gdpr" element={<PrivacyPage />} />
-              <Route path="/checkout" element={<CheckoutPage items={cartItems} onClearCart={clearCart} />} />
-              <Route path="/login" element={<AuthPage />} />
-              <Route path="/reset-password" element={<ResetPasswordPage />} />
-              <Route
-                path="/admin/invoices"
-                element={
-                  <RequireAdmin>
-                    <AdminInvoicesPage />
-                  </RequireAdmin>
-                }
-              />
-            </Routes>
+            <Suspense fallback={<RouteFallback />}>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/kvarteta" element={<KvartetaPage onAddToCart={addToCart} />} />
+                <Route path="/pexeso" element={<PexesoPage onAddToCart={addToCart} />} />
+                <Route path="/karty" element={<HraciKartyPage onAddToCart={addToCart} />} />
+                <Route path="/faq" element={<FAQPage />} />
+                <Route path="/o-nas" element={<AboutPage />} />
+                <Route path="/obchodni-podminky" element={<TermsPage />} />
+                <Route path="/reklamacni-rad" element={<ReturnsPage />} />
+                <Route path="/gdpr" element={<PrivacyPage />} />
+                <Route path="/checkout" element={<CheckoutPage items={cartItems} onClearCart={clearCart} />} />
+                <Route path="/login" element={<AuthPage />} />
+                <Route path="/reset-password" element={<ResetPasswordPage />} />
+                <Route
+                  path="/admin/invoices"
+                  element={
+                    <RequireAdmin>
+                      <AdminInvoicesPage />
+                    </RequireAdmin>
+                  }
+                />
+              </Routes>
+            </Suspense>
           </main>
 
           <Footer />
@@ -149,9 +166,10 @@ function App() {
           />
 
           <CookieBanner />
-        </div>
-      </Router>
-    </AuthProvider>
+          </div>
+        </Router>
+      </AuthProvider>
+    </HelmetProvider>
   )
 }
 

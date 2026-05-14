@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "generated_at": "2026-04-27T12:59:06.254Z",
+  "generated_at": "2026-05-13T16:18:14.926Z",
   "categories": {
     "kvarteta": {
       "size": "65x95mm",
@@ -871,6 +871,69 @@
           "id": "mytologie_runy_zlate_modre",
           "name": "zlato-modré runy s magií",
           "file": "hraci_karty/webp/mytologie_runy_zlate_modre.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "hraci_roztomili_jednorozci_1",
+          "name": "roztomilí jednorožci varianta 1",
+          "file": "hraci_karty/webp/hraci_roztomili_jednorozci_1.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "hraci_roztomili_jednorozci_2",
+          "name": "roztomilí jednorožci varianta 2",
+          "file": "hraci_karty/webp/hraci_roztomili_jednorozci_2.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "hraci_roztomili_jednorozci_3",
+          "name": "roztomilí jednorožci varianta 3",
+          "file": "hraci_karty/webp/hraci_roztomili_jednorozci_3.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "hraci_husty_jednorozci_1",
+          "name": "hustá kompozice jednorožců varianta 1",
+          "file": "hraci_karty/webp/hraci_husty_jednorozci_1.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "hraci_husty_jednorozci_2",
+          "name": "hustá kompozice jednorožců varianta 2",
+          "file": "hraci_karty/webp/hraci_husty_jednorozci_2.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "hraci_mandala",
+          "name": "mandala",
+          "file": "hraci_karty/webp/hraci_mandala.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "hraci_mece_blizko",
+          "name": "meče zblízka",
+          "file": "hraci_karty/webp/hraci_mece_blizko.webp",
           "width": 956,
           "height": 1596,
           "source_width": 956,

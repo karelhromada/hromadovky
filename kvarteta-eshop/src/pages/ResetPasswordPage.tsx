@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { KeyRound, Lock, Loader2, ArrowLeft } from 'lucide-react';
 import { translateAuthError, checkPassword } from '../lib/authErrors';
+import { PageHead } from '../components/seo/PageHead';
+import { SEO } from '../data/seo';
 import './AuthPage.css';
 
 const ResetPasswordPage: React.FC = () => {
@@ -106,6 +108,7 @@ const ResetPasswordPage: React.FC = () => {
 
   return (
     <div className="auth-container">
+      <PageHead {...SEO.resetPassword} />
       <button className="btn-back" onClick={() => navigate('/login')}>
         <ArrowLeft size={20} /> Zpět
       </button>

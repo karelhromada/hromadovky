@@ -6,8 +6,9 @@
   "scripts": {
     "predev": "node scripts/sync-backs.mjs",
     "dev": "vite",
-    "prebuild": "node scripts/sync-backs.mjs",
-    "build": "tsc -b && vite build",
+    "prebuild": "node scripts/sync-backs.mjs && node scripts/generate-sitemap.mjs",
+    "build": "tsc -b && vite build && node scripts/prerender.mjs",
+    "build:no-prerender": "DISABLE_PRERENDER=1 npm run build",
     "lint": "eslint .",
     "preview": "vite preview",
     "sync-backs": "node scripts/sync-backs.mjs"
@@ -19,6 +20,7 @@
     "lucide-react": "^0.575.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-helmet-async": "^3.0.0",
     "react-router-dom": "^7.13.1"
   },
   "devDependencies": {
@@ -32,6 +34,7 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+    "puppeteer": "^24.43.1",
     "sharp": "^0.34.5",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.48.0",

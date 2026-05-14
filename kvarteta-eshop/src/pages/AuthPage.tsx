@@ -4,6 +4,8 @@ import { supabase } from '../lib/supabase';
 import { LogIn, UserPlus, Mail, Lock, Loader2, ArrowLeft, LogOut, User as UserIcon, KeyRound } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { translateAuthError, isValidEmail, checkPassword } from '../lib/authErrors';
+import { PageHead } from '../components/seo/PageHead';
+import { SEO } from '../data/seo';
 import './AuthPage.css';
 
 type Mode = 'login' | 'signup' | 'forgot';
@@ -485,6 +487,7 @@ const AuthPage: React.FC = () => {
 
   return (
     <div className="auth-container">
+      <PageHead {...SEO.login} />
       <button className="btn-back" onClick={() => navigate(-1)}>
         <ArrowLeft size={20} /> Zpět
       </button>

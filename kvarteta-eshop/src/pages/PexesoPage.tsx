@@ -1,5 +1,7 @@
 import React from 'react';
 import type { CartItem } from '../App';
+import { PageHead } from '../components/seo/PageHead';
+import { SEO } from '../data/seo';
 import HeroSectionPexeso from '../components/HeroSectionPexeso';
 import FeaturesSectionPexeso from '../components/FeaturesSectionPexeso';
 import ProductShowcasePexeso from '../components/ProductShowcasePexeso';
@@ -27,6 +29,7 @@ const PexesoPage: React.FC<PexesoPageProps> = ({ onAddToCart }) => {
 
     return (
         <>
+            <PageHead {...SEO.pexeso} />
             <HeroSectionPexeso />
             <FeaturesSectionPexeso />
             <ProductShowcasePexeso onAddToCart={onAddToCart} />

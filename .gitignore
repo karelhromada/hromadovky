@@ -50,3 +50,22 @@ __pycache__/
 Záloha karet/
 _archive/
 tisk-karet-deploy/
+
+# Source design assets (NOT in production build, kept on disk)
+/kvarteta/
+/hraci_karty/
+/pexeso/
+/tiskove_archy/
+/zadni_strany/
+/generator_karet/
+/Balení karet/
+/AUDIT/
+/data_sources/
+/Zadní strany_finále_ostatní smažem/
+/kvarteta-generator-pro-standalone/
+/Logo na karty bez pozadí.png
+/all_cards.html
+
+# Source PDFs in eshop public/ (zdrojové tiskové, frontend nelinkuje)
+/kvarteta-eshop/public/cards/**/*.pdf
+/kvarteta-eshop/public/cards/temp_pdf_extract/

@@ -1,5 +1,5 @@
 {
-    "buildCommand": "cd kvarteta-eshop && PUPPETEER_SKIP_DOWNLOAD=true npm install && npm run build:no-prerender",
+    "buildCommand": "cd kvarteta-eshop && PUPPETEER_SKIP_DOWNLOAD=true npm install && npm run build",
     "outputDirectory": "kvarteta-eshop/dist",
     "framework": "vite",
     "rewrites": [

@@ -69,3 +69,15 @@ tisk-karet-deploy/
 # Source PDFs in eshop public/ (zdrojové tiskové, frontend nelinkuje)
 /kvarteta-eshop/public/cards/**/*.pdf
 /kvarteta-eshop/public/cards/temp_pdf_extract/
+
+# Playwright MCP cache (browser session artifacts)
+.playwright-mcp/
+
+# Dev/test screenshots (lokální debug, ne do repa)
+/*-after.png
+/*-before.png
+/karty-*.png
+/pexeso-*.png
+
+# Lokální design assets, nepatří do repa
+/logo v řádku bez pozadí.png

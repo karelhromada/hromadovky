@@ -64,11 +64,60 @@ const tests = [
     },
   },
   {
-    name: 'faktura už paid → duplicate_payment',
+    name: 'faktura paid bez paid_amount metadata → duplicate_payment (legacy fallback)',
     run: () => {
       const out = decideMatchAction(250, fakeInvoice({ status: 'paid' }));
       assert.equal(out.action, 'unmatched');
       assert.equal(out.reason, 'duplicate_payment');
+    },
+  },
+  {
+    name: 'paid + stejná částka + nedávno (<24h) → noop (same_payment_seen) — cross-run idempotence',
+    run: () => {
+      const now = new Date('2026-05-15T12:00:00Z');
+      const recentPaid = new Date('2026-05-15T11:50:00Z'); // 10 min předtím
+      const inv = fakeInvoice({ status: 'paid', paid_amount: 250, paid_at: recentPaid.toISOString() });
+      const out = decideMatchAction(250, inv, now);
+      assert.equal(out.action, 'noop');
+      assert.equal(out.reason, 'same_payment_seen');
+    },
+  },
+  {
+    name: 'paid + stejná částka (±0.5 v toleranci) + nedávno → noop',
+    run: () => {
+      const now = new Date('2026-05-15T12:00:00Z');
+      const inv = fakeInvoice({ status: 'paid', paid_amount: 250, paid_at: new Date('2026-05-15T11:30:00Z').toISOString() });
+      assert.equal(decideMatchAction(250.5, inv, now).action, 'noop');
+      assert.equal(decideMatchAction(249.5, inv, now).action, 'noop');
+    },
+  },
+  {
+    name: 'paid + JINÁ částka + nedávno → duplicate_payment (klient zaplatil 2× různě)',
+    run: () => {
+      const now = new Date('2026-05-15T12:00:00Z');
+      const inv = fakeInvoice({ status: 'paid', paid_amount: 250, paid_at: new Date('2026-05-15T11:50:00Z').toISOString() });
+      const out = decideMatchAction(100, inv, now);
+      assert.equal(out.action, 'unmatched');
+      assert.equal(out.reason, 'duplicate_payment');
+    },
+  },
+  {
+    name: 'paid + stejná částka + dávno (>24h) → duplicate_payment',
+    run: () => {
+      const now = new Date('2026-05-17T12:00:00Z');
+      const inv = fakeInvoice({ status: 'paid', paid_amount: 250, paid_at: new Date('2026-05-15T11:50:00Z').toISOString() });
+      const out = decideMatchAction(250, inv, now);
+      assert.equal(out.action, 'unmatched');
+      assert.equal(out.reason, 'duplicate_payment');
+    },
+  },
+  {
+    name: 'paid + stejná částka přesně na hranici 24h → duplicate_payment (>= 24h)',
+    run: () => {
+      const now = new Date('2026-05-16T12:00:00Z');
+      const inv = fakeInvoice({ status: 'paid', paid_amount: 250, paid_at: new Date('2026-05-15T12:00:00Z').toISOString() });
+      const out = decideMatchAction(250, inv, now);
+      assert.equal(out.action, 'unmatched');
     },
   },
   {

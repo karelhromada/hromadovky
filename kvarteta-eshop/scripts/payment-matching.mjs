@@ -34,30 +34,41 @@
 
 /**
  * @typedef {Object} MatchAction
- * @property {'mark_paid'|'unmatched'|'mark_paid_with_overpayment'} action
- * @property {string} reason          - kódový důvod (matchuje payment_unmatched.reason check)
+ * @property {'mark_paid'|'unmatched'|'mark_paid_with_overpayment'|'noop'} action
+ * @property {string} reason          - kódový důvod (matchuje payment_unmatched.reason check NEBO interní 'same_payment_seen')
  * @property {string} humanReason     - lidsky čitelný popis pro email/log
  */
 
 // Konstanty pro byznys pravidla — změň zde, ne v inline kódu uvnitř funkce
 export const TOLERANCE_KC = 1.00;  // ±1 Kč = stále considered "přesná shoda"
+export const SAME_PAYMENT_WINDOW_MS = 24 * 60 * 60 * 1000;  // 24 h pro detekci "stejné platby viděné znovu"
 
 /**
  * Rozhodne, co dělat s příchozí Fio transakcí na základě stavu faktury.
  *
  * Pravidla (viz docs/n8n-fio-matching.md, sekce "Edge case matrix"):
- *   1. Faktura neexistuje                          → unmatched (no_invoice_match)
- *   2. Faktura paid (už spárováno)                 → unmatched (duplicate_payment)
- *   3. Faktura cancelled/refunded                  → unmatched (payment_to_cancelled)
- *   4. amount < total - TOLERANCE (nedoplatek)     → unmatched (underpayment), nechat unpaid
- *   5. amount > total + TOLERANCE (přeplatek)      → mark_paid_with_overpayment + log
- *   6. |amount - total| ≤ TOLERANCE                → mark_paid (standardní happy path)
+ *   1. Faktura neexistuje                                            → unmatched (no_invoice_match)
+ *   2a. Faktura paid + paid_amount≈amount + paid_at < 24h            → noop (same_payment_seen) ⚠ NEnastat email
+ *   2b. Faktura paid + paid_amount nepasuje NEBO paid_at > 24h       → unmatched (duplicate_payment)
+ *   3. Faktura cancelled/refunded                                    → unmatched (payment_to_cancelled)
+ *   4. amount < total - TOLERANCE (nedoplatek)                       → unmatched (underpayment), nechat unpaid
+ *   5. amount > total + TOLERANCE (přeplatek)                        → mark_paid_with_overpayment + log
+ *   6. |amount - total| ≤ TOLERANCE                                  → mark_paid (standardní happy path)
+ *
+ * **Cross-channel / cross-run idempotence (přidáno 2026-05-15):**
+ * Polling Fio API vrací `/periods/last 7 days/`, takže každý běh znovu vidí staré paid platby.
+ * Email kanál (Gmail Trigger) může zachytit stejnou platbu paralelně. Bez kontroly
+ * `paid_amount` by polling i email hlásily falešný `duplicate_payment` při každém běhu.
+ * Pravidlo 2a tento case detekuje: faktura paid se stejnou částkou v posledních 24h
+ * = tatáž platba ze stejného nebo jiného kanálu → noop (žádný email, žádný DB zápis).
  *
  * @param {number} amount - paid amount z Fio transakce (CZK)
- * @param {InvoiceLookup|null} invoice - výsledek SELECT FROM invoices WHERE vs=? AND type='invoice', nebo null
+ * @param {InvoiceLookup|null} invoice - výsledek SELECT FROM invoices, musí obsahovat
+ *   `paid_amount` a `paid_at` pro kontrolu cross-channel idempotence
+ * @param {Date} [now] - "teď" pro porovnání s paid_at (default new Date(), parametr kvůli testovatelnosti)
  * @returns {MatchAction}
  */
-export function decideMatchAction(amount, invoice) {
+export function decideMatchAction(amount, invoice, now = new Date()) {
   // 1) Faktura podle VS neexistuje
   if (!invoice) {
     return {
@@ -67,12 +78,27 @@ export function decideMatchAction(amount, invoice) {
     };
   }
 
-  // 2) Faktura už zaplacená — duplikovaná platba (klient zaplatil dvakrát)
+  // 2) Faktura už zaplacená — rozlišit "tatáž platba viděná znovu" vs "real duplicate"
   if (invoice.status === 'paid') {
+    const paidAmount = Number(invoice.paid_amount);
+    const paidAt = invoice.paid_at ? new Date(invoice.paid_at) : null;
+    const samePaymentDiff = Number.isFinite(paidAmount) ? Math.abs(paidAmount - amount) : Infinity;
+    const ageMs = paidAt ? now.getTime() - paidAt.getTime() : Infinity;
+
+    // 2a) Stejná částka + nedávno zaplaceno → tatáž platba zachycená znovu (cross-run / cross-channel)
+    if (samePaymentDiff <= TOLERANCE_KC && ageMs >= 0 && ageMs < SAME_PAYMENT_WINDOW_MS) {
+      return {
+        action: 'noop',
+        reason: 'same_payment_seen',
+        humanReason: `Faktura ${invoice.number} už paid se stejnou částkou (${paidAmount} Kč, před ${Math.round(ageMs / 60000)} min). Skipping — same payment seen again.`,
+      };
+    }
+
+    // 2b) Jiná částka NEBO dávno zaplaceno → reálný duplikát, vyžaduje pozornost
     return {
       action: 'unmatched',
       reason: 'duplicate_payment',
-      humanReason: `Faktura ${invoice.number} je už označená jako zaplacená, ale přišla další platba ${amount} Kč se stejným VS. Pravděpodobně klient zaplatil omylem dvakrát — zvaž vrácení.`,
+      humanReason: `Faktura ${invoice.number} je už zaplacená (${paidAmount} Kč, ${paidAt ? paidAt.toISOString() : 'neznámo'}), ale přišla další platba ${amount} Kč. Pravděpodobně klient zaplatil omylem dvakrát — zvaž vrácení.`,
     };
   }
 

@@ -1,26 +1,63 @@
-# n8n workflow: `fio-payment-matcher`
+# n8n workflows: Fio payment matching (dual-channel)
 
-> Cron-driven workflow, který každou minutu volá Fio Banka REST API, načte příchozí transakce za posledních 7 dní, spáruje je s fakturami v Supabase podle variabilního symbolu a označí faktury jako zaplacené. Nespárované nebo problémové platby zapíše do tabulky `payment_unmatched` a pošle email Karlovi.
+> Od **2026-05-15** běží párování plateb ve **dvou kanálech současně**, oba sdílí identickou match logiku a DB-level idempotenci:
+>
+> 1. **Primární — `Hromadovky – Fio Email Matcher`**: Gmail Trigger sleduje label `fio-platby`, kam Fio Hlásič posílá emaily o příchozích platbách. Latence < 5 min. Žádný polling Fio API ani Supabase při klidovém stavu.
+> 2. **Záloha — `Hromadovky – Fio Payment Matcher`** (legacy polling): běží 4× denně (po 6 h), volá Fio `/periods/` a procesí transakce za posledních 7 dní. Slouží jako safety net pro výpadek Hlásiče / Gmail filtru.
+>
+> Idempotence (`fio_transaction_id UNIQUE` + `ON CONFLICT DO NOTHING` + `WHERE status='unpaid'`) zajišťuje, že platba zachycená oběma kanály se zpracuje právě jednou.
 
 ## Architektonický kontext
 
-- **Stack:** n8n (self-hosted, `n8n.hromadovky.cz`) → Fio REST API → Supabase Postgres
-- **Trigger:** Schedule Trigger každou minutu (Fio limit 1 dotaz / 30 s — máme 50 % rezervu)
+- **Stack:** n8n (self-hosted, `n8n.hromadovky.cz`) → Gmail API (primary) / Fio REST API (backup) → Supabase Postgres
+- **Trigger primary:** Gmail Trigger (label `fio-platby`, poll 2 min) — Fio API webhooky nepodporuje, ale Hlásič → email je nejbližší ekvivalent
+- **Trigger backup:** Schedule Trigger každých 6 h (Fio limit 1 dotaz / 30 s — máme obří rezervu, frekvence je daná pouze potřebou recovery, ne rate-limity)
 - **Idempotence:** `fio_transaction_id UNIQUE` v DB + `/periods/{from}/{to}/` endpoint (ne `/last/`, který posunuje kurzor)
-- **Rolback po výpadku:** `from = today - 7d` — workflow zachytí všechny transakce z období, kdy neběžel
-- **Token:** uložen v **n8n environment variable `FIO_API_TOKEN`** (nikoli v credentials, protože n8n z bezpečnostních důvodů nedovoluje číst credential hodnoty v expressions). Credential `hromadovky_fio` v n8n credentials zůstává v evidenci pro budoucí použití na POST endpointu (placení). V repu ani v client buildu token NIKDY není.
+- **Rolback po výpadku:** `from = today - 7d` — backup workflow zachytí všechny transakce z období, kdy email kanál nezachytil
+- **Token (jen backup):** uložen v **n8n environment variable `FIO_API_TOKEN`** (nikoli v credentials, protože n8n z bezpečnostních důvodů nedovoluje číst credential hodnoty v expressions). V repu ani v client buildu token NIKDY není.
 - **Související soubory v repu:**
-  - `kvarteta-eshop/scripts/payment-matching.mjs` — pure rozhodovací logika (zdroj pravdy, testovatelná)
-  - `kvarteta-eshop/scripts/payment-matching.test.mjs` — unit testy
+  - `kvarteta-eshop/scripts/payment-matching.mjs` — pure rozhodovací logika `decideMatchAction()` (zdroj pravdy, sdílená oběma kanály)
+  - `kvarteta-eshop/scripts/payment-matching.test.mjs` — unit testy match logiky
+  - `kvarteta-eshop/scripts/fio-email-parser.mjs` — parser Fio Hlásič emailu (primary kanál)
+  - `kvarteta-eshop/scripts/fio-email-parser.test.mjs` — unit testy parseru
+  - `kvarteta-eshop/scripts/fixtures/fio-email-sample.txt` — vzor reálného emailu pro fixture testů
   - `kvarteta-eshop/scripts/test-fio.mjs` — lokální ověření Fio API tokenu
   - `kvarteta-eshop/supabase/migrations/20260514120000_fio_payment_matching.sql` — DB schema
 
-## Node graph
+## Primary: `Hromadovky – Fio Email Matcher` (2026-05-15+)
 
-> **Update 2026-05-14:** Workflow nově **posílá fakturu emailem až po úspěšném spárování platby** (před tím přicházela hned po objednávce). Po `mark_paid` se stáhne PDF faktury z Google Drive (přes `pdf_path` uložený v `invoices` během workflow `objednavka`) a připojí se k emailu zákazníkovi. Admin emaily (`unmatched`, `overpayment`) jdou separátní SMTP větví bez přílohy.
+Trigger emailem od Fio Hlásiče. Bez polling, latence < 5 min od přijetí platby.
 
 ```
-[Schedule Trigger] (each 1 min)
+[Gmail Trigger] (label: fio-platby, poll 2 min)
+   subject "Fio banka - prijem na konte"
+        │
+        ▼
+[Code: parse-fio-email]
+   parseFioEmail(emailBody) → { fioId, amount, vs, date, counterAccount, note }
+   Zdroj pravdy: scripts/fio-email-parser.mjs
+        │
+        ▼
+[IF: parsed !== null]
+        ├── FALSE ──► [STOP] (mail není platební nebo parsing selhal)
+        └── TRUE  ──┐
+                    ▼
+            [Code: Process + Match] (stejný jako v polling matcher, jen vstupem je 1 transakce z parseru, ne pole z Fio JSON)
+                    │
+                    ▼
+            [stejné větve: IF emailType / Drive PDF / SMTP customer / SMTP admin]
+```
+
+**Gmail credentials:** vyžaduje nový OAuth credential v n8n typu `gmailOAuth2` pro účet `karel.hromada30@gmail.com`. Scope: read-only (`https://www.googleapis.com/auth/gmail.readonly`).
+
+## Backup (legacy): `Hromadovky – Fio Payment Matcher` (běží 4×/den)
+
+> **Update 2026-05-14:** Workflow nově **posílá fakturu emailem až po úspěšném spárování platby** (před tím přicházela hned po objednávce). Po `mark_paid` se stáhne PDF faktury z Google Drive (přes `pdf_path` uložený v `invoices` během workflow `objednavka`) a připojí se k emailu zákazníkovi. Admin emaily (`unmatched`, `overpayment`) jdou separátní SMTP větví bez přílohy.
+>
+> **Update 2026-05-15:** Frekvence Schedule Trigger snížena z 1 min na 6 h. Slouží jako záloha pro výpadek emailového kanálu — DB idempotence (`fio_transaction_id UNIQUE`) zajišťuje, že žádná platba nebude zpracována dvakrát ani při souběhu obou kanálů.
+
+```
+[Schedule Trigger] (each 6 hours)
         │
         ▼
 [HTTP Request: Fio /periods/]
@@ -191,11 +228,14 @@ Parametry: `$1..$8` z `{{ $json.fioId }}` atd. `$8` je `{{ $json.invoice.id ?? n
 | 2 | unpaid | +0.50 Kč (v toleranci) | `mark_paid` | — |
 | 3 | unpaid | +5 Kč (přeplatek) | `mark_paid_with_overpayment` | `overpayment` |
 | 4 | unpaid | -5 Kč (nedoplatek) | `unmatched` | `underpayment` |
-| 5 | paid | jakákoli | `unmatched` | `duplicate_payment` |
+| 5a | paid, paid_amount ≈ amount, paid_at < 24h | tatáž částka | **`noop`** (same_payment_seen) — žádný email, žádný DB zápis | — |
+| 5b | paid, paid_amount JINÁ NEBO paid_at > 24h | jakákoli | `unmatched` | `duplicate_payment` |
 | 6 | cancelled | jakákoli | `unmatched` | `payment_to_cancelled` |
 | 7 | refunded | jakákoli | `unmatched` | `payment_to_cancelled` |
 | 8 | (neexistuje) | jakákoli | `unmatched` | `no_invoice_match` |
 | 9 | stejný `fio_transaction_id` 2× | — | DB UNIQUE constraint blokuje druhý INSERT/UPDATE |
+
+**Pravidlo 5a (přidáno 2026-05-15):** Polling Fio API vrací `/periods/last 7 days/`, takže každý běh vidí staré paid platby znovu. Email kanál (Gmail Trigger) může zachytit stejnou platbu paralelně s polling. Pravidlo 5a tento case detekuje a **silently skipuje** — žádný admin email, žádný řádek v `payment_unmatched`. Klíčové parametry: `TOLERANCE_KC=1.00`, `SAME_PAYMENT_WINDOW_MS=24*60*60*1000` (24h). Past tense check: `now - paid_at` musí být >= 0 a < 24h. Po 24h se opětovné zachycení považuje za real duplicate (klient si vzpomněl po dnech).
 
 Všechny scénáře jsou pokryté v `scripts/payment-matching.test.mjs`. Spusť před každou změnou:
 ```bash
@@ -303,5 +343,5 @@ Pokud máš podezření na únik: okamžitě vymaž token ve Fio IB. Útočník 
 - Admin UI `/admin/payments` pro řešení záznamů v `payment_unmatched`
 - RPC `resolve_payment(unmatched_id, invoice_id)` pro ruční přiřazení
 - Vícenásobné účty (EUR, sekundární CZK)
-- Webhook od Fio místo pollingu (Fio nepodporuje spolehlivě)
+- Monitoring „kolik plateb prošlo emailem vs polling backupem" — vhodné pro odhalení tichého výpadku Hlásiče
 - CAMT.053 / ISDOC účetní export

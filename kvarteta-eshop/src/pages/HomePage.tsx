@@ -13,9 +13,9 @@ const epicCards = [
     { id: 3, src: '/cards/cat_full_1.webp', x: -500, y: 50, rot: -8 },
     { id: 4, src: '/cards/dino_full_1.webp', x: 500, y: 50, rot: 15 },
     { id: 5, src: '/cards/knight_full_1.webp', x: -380, y: 380, rot: -5 },
-    { id: 6, src: '/cards/eso_srdce.webp', x: 380, y: 380, rot: 8 },
-    { id: 7, src: '/cards/kral_kule_final.webp', x: -150, y: 480, rot: -10 },
-    { id: 8, src: '/cards/witch_fire.webp', x: 150, y: 480, rot: 5 },
+    { id: 6, src: '/cards/epicka-draci-edice/Cervene_Eso.webp', x: 380, y: 380, rot: 8 },
+    { id: 7, src: '/cards/epicka-draci-edice/Kule_Kral.webp', x: -150, y: 480, rot: -10 },
+    { id: 8, src: '/cards/carodejnice/Cervene_Eso.webp', x: 150, y: 480, rot: 5 },
 ];
 
 const HomePage: React.FC = () => {

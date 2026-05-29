@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { CartItem } from '../App';
+import './ProductShowcase.css'; // sdílené .ps-* třídy patičky (cena + košík) – stejně jako Pexeso; jinak se na hard-refresh /karty nenačtou
 import './ProductShowcaseKarty.css';
 import { X, Maximize, Minimize } from 'lucide-react';
 

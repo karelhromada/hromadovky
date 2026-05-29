@@ -42,18 +42,13 @@ const features = [
         id: 'feat-4',
         title: 'Vlastní',
         subtitle: 'fotografie',
-        desc: 'Vytvořte z karet dokonalý osobní dárek. V našem jednoduchém editoru si na karty snadno vložíte vlastní fotografie nebo firemní logo.',
+        desc: 'Vytvořte z karet dokonalý rodinný suvenýr. V našem jednoduchém editoru si na karty snadno vložíte vlastní rodinné fotografie nebo zábavné karikatury vašich blízkých.',
         images: [
-            '/cards/epicka-draci-edice/Kule_Kral.webp',
-            '/cards/carodejnice/Cervene_Eso.webp',
-            '/cards/epicka-draci-edice/Cervene_Eso.webp',
-            '/cards/carodejnice/Zelene_Kral.webp',
-            '/cards/epicka-draci-edice/Zaludy_10.webp',
-            '/cards/carodejnice/Cervene_9.webp',
-            '/cards/epicka-draci-edice/Zelene_Eso.webp',
-            '/cards/carodejnice/Zaludy_7.webp'
+            '/cards/rodina/vesela_rodina.webp',
+            '/cards/rodina/karikatura.webp',
+            '/cards/rodina/vintage.webp'
         ],
-        imageAlt: 'Možnost personalizace hracích karet'
+        imageAlt: 'Možnost personalizace hracích karet rodinnými fotografiemi'
     }
 ];
 

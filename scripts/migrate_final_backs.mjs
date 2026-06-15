@@ -65,6 +65,9 @@ async function loadRenameMap() {
       map.hraci_karty.push({ src: puvodni, id: novy.replace(/\.webp$/, ''), name: popis || novy });
     } else if (kategorie === 'pexeso') {
       map.pexeso.push({ src: puvodni, id: novy.replace(/\.webp$/, ''), name: popis || novy });
+    } else if (kategorie === 'kvarteta') {
+      // Jen kvarteta (zdroj pouze v 65x95 slozce, nepatri do hraci_karty)
+      map.kvarteta.push({ src: puvodni, id: novy.replace(/\.webp$/, ''), name: popis || novy });
     } else {
       console.warn(`Neznama kategorie: ${kategorie}`);
     }

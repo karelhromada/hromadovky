@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "generated_at": "2026-05-13T16:18:14.926Z",
+  "generated_at": "2026-06-15T19:56:48.512Z",
   "categories": {
     "kvarteta": {
       "size": "65x95mm",
@@ -433,6 +433,69 @@
           "id": "mytologie_runy_zlate_modre",
           "name": "zlato-modré runy s magií",
           "file": "kvarteta/webp/mytologie_runy_zlate_modre.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "auta_1a",
+          "name": "zvířecí auta 1A",
+          "file": "kvarteta/webp/auta_1a.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "auta_1b",
+          "name": "zvířecí auta 1B",
+          "file": "kvarteta/webp/auta_1b.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "auta_1c",
+          "name": "zvířecí auta 1C",
+          "file": "kvarteta/webp/auta_1c.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "auta_1d",
+          "name": "zvířecí auta 1D",
+          "file": "kvarteta/webp/auta_1d.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "auta_2b",
+          "name": "zvířecí auta 2B",
+          "file": "kvarteta/webp/auta_2b.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "auta_2c",
+          "name": "zvířecí auta 2C",
+          "file": "kvarteta/webp/auta_2c.webp",
+          "width": 988,
+          "height": 1444,
+          "source_width": 988,
+          "source_height": 1444
+        },
+        {
+          "id": "auta_2d",
+          "name": "zvířecí auta 2D",
+          "file": "kvarteta/webp/auta_2d.webp",
           "width": 988,
           "height": 1444,
           "source_width": 988,

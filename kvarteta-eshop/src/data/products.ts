@@ -222,5 +222,25 @@ export const kvartetaProducts = [
             '/cards/lesni_bytosti/q_1D.webp', '/cards/lesni_bytosti/q_2D.webp', '/cards/lesni_bytosti/q_3D.webp', '/cards/lesni_bytosti/q_4D.webp',
             '/cards/lesni_bytosti/q_5D.webp', '/cards/lesni_bytosti/q_6D.webp', '/cards/lesni_bytosti/q_7D.webp', '/cards/lesni_bytosti/q_8D.webp'
         ]
+    },
+    {
+        id: 'kvarteto-zvireci-auta',
+        name: 'Kvarteto: Zvířecí auta',
+        description: 'Roztomilá zvířátka za volantem divokých závodních aut! Sběratelská edice plná rychlosti a zábavy – 32 nádherně ilustrovaných karet s luxusním systémem vlastností.',
+        price: 349,
+        themeColor: '#2563eb',
+        badges: [
+            { id: 1, text: 'Horká novinka', icon: Sparkles, color: '#2563eb' }
+        ],
+        image: [
+            '/cards/zvireci_auta/q_1A.webp', '/cards/zvireci_auta/q_2A.webp', '/cards/zvireci_auta/q_3A.webp', '/cards/zvireci_auta/q_4A.webp',
+            '/cards/zvireci_auta/q_5A.webp', '/cards/zvireci_auta/q_6A.webp', '/cards/zvireci_auta/q_7A.webp', '/cards/zvireci_auta/q_8A.webp',
+            '/cards/zvireci_auta/q_1B.webp', '/cards/zvireci_auta/q_2B.webp', '/cards/zvireci_auta/q_3B.webp', '/cards/zvireci_auta/q_4B.webp',
+            '/cards/zvireci_auta/q_5B.webp', '/cards/zvireci_auta/q_6B.webp', '/cards/zvireci_auta/q_7B.webp', '/cards/zvireci_auta/q_8B.webp',
+            '/cards/zvireci_auta/q_1C.webp', '/cards/zvireci_auta/q_2C.webp', '/cards/zvireci_auta/q_3C.webp', '/cards/zvireci_auta/q_4C.webp',
+            '/cards/zvireci_auta/q_5C.webp', '/cards/zvireci_auta/q_6C.webp', '/cards/zvireci_auta/q_7C.webp', '/cards/zvireci_auta/q_8C.webp',
+            '/cards/zvireci_auta/q_1D.webp', '/cards/zvireci_auta/q_2D.webp', '/cards/zvireci_auta/q_3D.webp', '/cards/zvireci_auta/q_4D.webp',
+            '/cards/zvireci_auta/q_5D.webp', '/cards/zvireci_auta/q_6D.webp', '/cards/zvireci_auta/q_7D.webp', '/cards/zvireci_auta/q_8D.webp'
+        ]
     }
 ];

@@ -202,5 +202,25 @@ export const kvartetaProducts = [
             '/cards/cat_full_5.webp', '/cards/cat_full_6.webp', '/cards/cat_full_7.webp', '/cards/cat_full_8.webp',
             '/cards/cat_full_9.webp', '/cards/cat_full_10.webp'
         ]
+    },
+    {
+        id: 'kvarteto-lesni-bytosti',
+        name: 'Kvarteto: Lesní bytosti',
+        description: 'Tajemní strážci hlubokých hvozdů – elfové, skřítci a duchové lesa v prémiové sběratelské edici. 32 nádherně ilustrovaných karet s luxusním systémem vlastností.',
+        price: 349,
+        themeColor: '#22c55e',
+        badges: [
+            { id: 1, text: 'Horká novinka', icon: Sparkles, color: '#22c55e' }
+        ],
+        image: [
+            '/cards/lesni_bytosti/q_1A.webp', '/cards/lesni_bytosti/q_2A.webp', '/cards/lesni_bytosti/q_3A.webp', '/cards/lesni_bytosti/q_4A.webp',
+            '/cards/lesni_bytosti/q_5A.webp', '/cards/lesni_bytosti/q_6A.webp', '/cards/lesni_bytosti/q_7A.webp', '/cards/lesni_bytosti/q_8A.webp',
+            '/cards/lesni_bytosti/q_1B.webp', '/cards/lesni_bytosti/q_2B.webp', '/cards/lesni_bytosti/q_3B.webp', '/cards/lesni_bytosti/q_4B.webp',
+            '/cards/lesni_bytosti/q_5B.webp', '/cards/lesni_bytosti/q_6B.webp', '/cards/lesni_bytosti/q_7B.webp', '/cards/lesni_bytosti/q_8B.webp',
+            '/cards/lesni_bytosti/q_1C.webp', '/cards/lesni_bytosti/q_2C.webp', '/cards/lesni_bytosti/q_3C.webp', '/cards/lesni_bytosti/q_4C.webp',
+            '/cards/lesni_bytosti/q_5C.webp', '/cards/lesni_bytosti/q_6C.webp', '/cards/lesni_bytosti/q_7C.webp', '/cards/lesni_bytosti/q_8C.webp',
+            '/cards/lesni_bytosti/q_1D.webp', '/cards/lesni_bytosti/q_2D.webp', '/cards/lesni_bytosti/q_3D.webp', '/cards/lesni_bytosti/q_4D.webp',
+            '/cards/lesni_bytosti/q_5D.webp', '/cards/lesni_bytosti/q_6D.webp', '/cards/lesni_bytosti/q_7D.webp', '/cards/lesni_bytosti/q_8D.webp'
+        ]
     }
 ];

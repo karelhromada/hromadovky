@@ -94,6 +94,24 @@ export const kartyProducts = [
             '/cards/star-wars/Zaludy_Eso.webp', '/cards/star-wars/Zaludy_Kral.webp', '/cards/star-wars/Zaludy_Svrsek.webp', '/cards/star-wars/Zaludy_Spodek.webp', '/cards/star-wars/Zaludy_10.webp', '/cards/star-wars/Zaludy_9.webp', '/cards/star-wars/Zaludy_8.webp', '/cards/star-wars/Zaludy_7.webp',
             '/cards/star-wars/Kule_Eso.webp', '/cards/star-wars/Kule_Kral.webp', '/cards/star-wars/Kule_Svrsek.webp', '/cards/star-wars/Kule_Spodek.webp', '/cards/star-wars/Kule_10.webp', '/cards/star-wars/Kule_9.webp', '/cards/star-wars/Kule_8.webp', '/cards/star-wars/Kule_7.webp'
         ]
+    },
+    {
+        id: 'karty-tema-prsi-car-a-kouzel',
+        name: 'Hrací karty: Prší čár a kouzel',
+        description: 'Kouzelnická edice plná čar, kouzel a magických bytostí. 32 unikátních full-art ilustrací – učni, profesoři i temní čarodějové na klasických mariášových barvách. Ideální dárek pro malé i velké fanoušky světa kouzel.',
+        price: 349,
+        themeColor: '#6b21a8',
+        images: ['/cards/prsi-car-a-kouzel/Cervene_Eso.webp', '/cards/prsi-car-a-kouzel/Zelene_Kral.webp', '/cards/prsi-car-a-kouzel/Kule_Svrsek.webp'],
+        boxImage: '/cards/prsi-car-a-kouzel/Cervene_Eso.webp',
+        isThematic: true,
+        sampleValue: 'A',
+        sampleSuit: '♥',
+        allCards: [
+            '/cards/prsi-car-a-kouzel/Cervene_Eso.webp', '/cards/prsi-car-a-kouzel/Cervene_Kral.webp', '/cards/prsi-car-a-kouzel/Cervene_Svrsek.webp', '/cards/prsi-car-a-kouzel/Cervene_Spodek.webp', '/cards/prsi-car-a-kouzel/Cervene_10.webp', '/cards/prsi-car-a-kouzel/Cervene_9.webp', '/cards/prsi-car-a-kouzel/Cervene_8.webp', '/cards/prsi-car-a-kouzel/Cervene_7.webp',
+            '/cards/prsi-car-a-kouzel/Zelene_Eso.webp', '/cards/prsi-car-a-kouzel/Zelene_Kral.webp', '/cards/prsi-car-a-kouzel/Zelene_Svrsek.webp', '/cards/prsi-car-a-kouzel/Zelene_Spodek.webp', '/cards/prsi-car-a-kouzel/Zelene_10.webp', '/cards/prsi-car-a-kouzel/Zelene_9.webp', '/cards/prsi-car-a-kouzel/Zelene_8.webp', '/cards/prsi-car-a-kouzel/Zelene_7.webp',
+            '/cards/prsi-car-a-kouzel/Zaludy_Eso.webp', '/cards/prsi-car-a-kouzel/Zaludy_Kral.webp', '/cards/prsi-car-a-kouzel/Zaludy_Svrsek.webp', '/cards/prsi-car-a-kouzel/Zaludy_Spodek.webp', '/cards/prsi-car-a-kouzel/Zaludy_10.webp', '/cards/prsi-car-a-kouzel/Zaludy_9.webp', '/cards/prsi-car-a-kouzel/Zaludy_8.webp', '/cards/prsi-car-a-kouzel/Zaludy_7.webp',
+            '/cards/prsi-car-a-kouzel/Kule_Eso.webp', '/cards/prsi-car-a-kouzel/Kule_Kral.webp', '/cards/prsi-car-a-kouzel/Kule_Svrsek.webp', '/cards/prsi-car-a-kouzel/Kule_Spodek.webp', '/cards/prsi-car-a-kouzel/Kule_10.webp', '/cards/prsi-car-a-kouzel/Kule_9.webp', '/cards/prsi-car-a-kouzel/Kule_8.webp', '/cards/prsi-car-a-kouzel/Kule_7.webp'
+        ]
     }
 ];
 

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "generated_at": "2026-06-15T19:56:48.512Z",
+  "generated_at": "2026-06-16T20:57:24.052Z",
   "categories": {
     "kvarteta": {
       "size": "65x95mm",
@@ -997,6 +997,24 @@
           "id": "hraci_mece_blizko",
           "name": "meče zblízka",
           "file": "hraci_karty/webp/hraci_mece_blizko.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "kouzla_carodej",
+          "name": "čaroděj / kouzelník",
+          "file": "hraci_karty/webp/kouzla_carodej.webp",
+          "width": 956,
+          "height": 1596,
+          "source_width": 956,
+          "source_height": 1596
+        },
+        {
+          "id": "kouzla_hrad",
+          "name": "kouzelnický hrad",
+          "file": "hraci_karty/webp/kouzla_hrad.webp",
           "width": 956,
           "height": 1596,
           "source_width": 956,

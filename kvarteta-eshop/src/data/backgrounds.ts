@@ -17,6 +17,7 @@ export type BackCategory =
   | 'neutralni'
   | 'led'
   | 'auta'
+  | 'kouzla'
   | 'pexeso';
 
 export interface Background {
@@ -65,6 +66,7 @@ function deriveCategory(id: string): BackCategory {
     'neutralni',
     'led',
     'auta',
+    'kouzla',
     'pexeso',
   ];
   return (known.find((cat) => cat === prefix) ?? 'neutralni') as BackCategory;

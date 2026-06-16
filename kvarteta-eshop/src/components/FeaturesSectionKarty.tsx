@@ -34,7 +34,8 @@ const features = [
             '/zadni_strany/hraci_karty/webp/dinosaurus_priroda_voda.webp',
             '/zadni_strany/hraci_karty/webp/rytir_zamek_nocni_mesic.webp',
             '/zadni_strany/hraci_karty/webp/mytologie_alchymie_runy.webp',
-            '/zadni_strany/hraci_karty/webp/kocka_seda_srst.webp'
+            '/zadni_strany/hraci_karty/webp/kocka_seda_srst.webp',
+            '/zadni_strany/hraci_karty/webp/kouzla_carodej.webp'
         ],
         imageAlt: 'Ukázka zadní strany karet'
     },

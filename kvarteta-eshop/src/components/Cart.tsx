@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { CartItem } from '../App';
 import { backgrounds } from '../data/backgrounds';
+import { packagingSurcharge, type PackagingType } from '../data/packaging';
 import './Cart.css';
 
 const resolveBackImage = (value?: string): string | null => {
@@ -15,8 +16,8 @@ interface CartProps {
     isOpen: boolean;
     onClose: () => void;
     items: CartItem[];
-    onRemove: (id: string, selectedBack?: string, size?: string) => void;
-    onUpdateQuantity: (id: string, amount: number, selectedBack?: string, size?: string) => void;
+    onRemove: (id: string, selectedBack?: string, size?: string, packaging?: PackagingType) => void;
+    onUpdateQuantity: (id: string, amount: number, selectedBack?: string, size?: string, packaging?: PackagingType) => void;
 }
 
 const formatCurrency = (amount: number) => {
@@ -49,7 +50,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
                         </div>
                     ) : (
                         items.map(item => (
-                            <div key={`${item.id}-${item.selectedBack || 'default'}-${item.size || 'default'}`} className="cart-item glass-panel">
+                            <div key={`${item.id}-${item.selectedBack || 'default'}-${item.size || 'default'}-${item.packaging || 'standard'}`} className="cart-item glass-panel">
                                 {item.image && (
                                     <div className="item-image">
                                         <img src={Array.isArray(item.image) ? item.image[0] : item.image} alt={item.name} className="cart-item-img" />
@@ -106,16 +107,21 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
                                             <span style={{ fontWeight: 600 }}>Rozměr karet:</span> {item.size}
                                         </div>
                                     )}
+                                    {item.packaging === 'gift' && (
+                                        <div style={{ fontSize: '0.85rem', color: 'var(--accent-gold)' }}>
+                                            <span style={{ fontWeight: 600 }}>🎁 Dárkové balení</span> (+{packagingSurcharge('gift')} Kč)
+                                        </div>
+                                    )}
                                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto' }}>
                                         <div className="item-price" style={{ color: 'var(--accent-gold)', fontWeight: 800, fontSize: '1.1rem' }}>{formatCurrency(item.price)}</div>
                                         <div className="quantity-controls" style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'var(--glass-bg)', padding: '4px', borderRadius: '8px', border: '1px solid var(--glass-border)' }}>
-                                            <button onClick={() => onUpdateQuantity(item.id, -1, item.selectedBack, item.size)} style={{ width: '28px', height: '28px', borderRadius: '6px', border: 'none', background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: 'var(--text-primary)' }}>-</button>
+                                            <button onClick={() => onUpdateQuantity(item.id, -1, item.selectedBack, item.size, item.packaging)} style={{ width: '28px', height: '28px', borderRadius: '6px', border: 'none', background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: 'var(--text-primary)' }}>-</button>
                                             <span style={{ fontWeight: 600, minWidth: '20px', textAlign: 'center' }}>{item.quantity}</span>
-                                            <button onClick={() => onUpdateQuantity(item.id, 1, item.selectedBack, item.size)} style={{ width: '28px', height: '28px', borderRadius: '6px', border: 'none', background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: 'var(--text-primary)' }}>+</button>
+                                            <button onClick={() => onUpdateQuantity(item.id, 1, item.selectedBack, item.size, item.packaging)} style={{ width: '28px', height: '28px', borderRadius: '6px', border: 'none', background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: 'var(--text-primary)' }}>+</button>
                                         </div>
                                     </div>
                                 </div>
-                                <button className="remove-btn" onClick={() => onRemove(item.id, item.selectedBack, item.size)} aria-label="Smazat položku">
+                                <button className="remove-btn" onClick={() => onRemove(item.id, item.selectedBack, item.size, item.packaging)} aria-label="Smazat položku">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                         <polyline points="3 6 5 6 21 6"></polyline>
                                         <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>

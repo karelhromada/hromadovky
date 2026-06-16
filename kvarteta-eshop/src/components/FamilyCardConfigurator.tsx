@@ -4,6 +4,10 @@ import { backgrounds } from '../data/backgrounds';
 import './FamilyCardConfigurator.css';
 import { uploadOrderPhoto } from '../lib/storage';
 import { renderAndUploadBatch, type RenderTask } from '../lib/cardExporter';
+import PackagingSelector from './PackagingSelector';
+import { packagingSurcharge, type PackagingType } from '../data/packaging';
+
+const FAMILY_BASE_PRICE = 299;
 
 interface FamilyCardConfiguratorProps {
     onAddToCart?: (item: any) => void;
@@ -91,6 +95,7 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
     const [deck, setDeck] = useState<CardConfig[]>(initialDeck);
     const [selectedCardId, setSelectedCardId] = useState<string>(initialDeck[0].id);
     const [selectedBackUrl, setSelectedBackUrl] = useState<string>(backgrounds[0].url);
+    const [packaging, setPackaging] = useState<PackagingType>('standard');
     const [isDragging, setIsDragging] = useState(false);
     const [activeSuitId, setActiveSuitId] = useState<string>('H');
     const [includeJoker, setIncludeJoker] = useState(false);
@@ -249,11 +254,12 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
                 id: `rodinne-karty-${Date.now()}`,
                 name: 'Rodinné hrací karty na zakázku',
                 description: `Vlastní sada (${deck.length} karet${includeJoker ? ', včetně 4 žolíků' : ''}) s vašimi fotografiemi.`,
-                price: 299,
+                price: FAMILY_BASE_PRICE + packagingSurcharge(packaging),
                 image: selectedCard.imageUrl || backgrounds[0].url,
                 themeColor: '#d4af37',
                 selectedBack: backName,
                 selectedBackUrl: selectedBackUrl,
+                packaging,
                 isCustom: true,
                 includeJoker,
                 deckConfigs: cardsWithPhotos,
@@ -473,13 +479,21 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
                             </div>
                         </div>
 
+                        {/* Typ balení */}
+                        <div className="control-group mt-6">
+                            <label className="control-label">Typ balení</label>
+                            <PackagingSelector value={packaging} onChange={setPackaging} title="" />
+                        </div>
+
                         <div className="border-t border-gray-200 pt-8 mt-auto">
                             <div className="flex justify-between items-center mb-6">
                                 <div>
                                     <h4 className="font-bold text-xl text-slate-800">Celková cena</h4>
-                                    <p className="text-sm text-gray-500">Komplet rodinná sada poker</p>
+                                    <p className="text-sm text-gray-500">
+                                        Komplet rodinná sada poker{packaging === 'gift' ? ' · 🎁 dárkové balení' : ''}
+                                    </p>
                                 </div>
-                                <div className="price-tag">299 Kč</div>
+                                <div className="price-tag">{FAMILY_BASE_PRICE + packagingSurcharge(packaging)} Kč</div>
                             </div>
 
                             <button

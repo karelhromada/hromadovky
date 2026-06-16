@@ -3,6 +3,8 @@ import { CheckCircle, Plus, Upload, Sparkles, LayoutGrid, Layers, Diamond } from
 import './PexesoCreator.css';
 import { uploadOrderPhoto } from '../lib/storage';
 import { renderAndUploadBatch, type RenderTask } from '../lib/cardExporter';
+import PackagingSelector from './PackagingSelector';
+import { packagingSurcharge, type PackagingType } from '../data/packaging';
 
 interface PexesoCreatorProps {
     onAddToCart?: (item: any) => void;
@@ -42,6 +44,7 @@ const PexesoCreator: React.FC<PexesoCreatorProps> = ({ onAddToCart }) => {
     const [selectedSize, setSelectedSize] = useState<typeof dimensions[0]>(dimensions[0]);
     const [photos, setPhotos] = useState<UploadedPhoto[]>([]);
     const [selectedBack, setSelectedBack] = useState<string>(PEXESO_BACKS[0].url);
+    const [packaging, setPackaging] = useState<PackagingType>('standard');
     const [leaveDesignToUs, setLeaveDesignToUs] = useState(false);
     const [customThemeDesc, setCustomThemeDesc] = useState('');
     const [customThemeStyle, setCustomThemeStyle] = useState(cardStyles[0].value);
@@ -113,7 +116,7 @@ const PexesoCreator: React.FC<PexesoCreatorProps> = ({ onAddToCart }) => {
 
         if (onAddToCart) {
             const basePrice = deckSize === 16 ? 249 : deckSize === 32 ? 399 : 599;
-            const finalPrice = basePrice + selectedSize.priceAdd;
+            const finalPrice = basePrice + selectedSize.priceAdd + packagingSurcharge(packaging);
             let desc = leaveDesignToUs ? `Ilustrace na přání (${customThemeStyle}): ${customThemeDesc}` : 'Unikátní pexeso vytvořené z vašich vlastních fotografií.';
             const backName = backgrounds.find(b => b.url === selectedBack)?.name || 'Vlastní';
             onAddToCart({
@@ -125,6 +128,7 @@ const PexesoCreator: React.FC<PexesoCreatorProps> = ({ onAddToCart }) => {
                 themeColor: '#eab308',
                 size: `${selectedSize.label} (${selectedSize.desc})`,
                 selectedBack: backName,
+                packaging,
                 customPhotoPaths: leaveDesignToUs ? [] : photos.map(p => p.path),
                 renderedCardPaths,
                 cardBackRef: { name: backName, publicUrl: selectedBack },
@@ -330,6 +334,15 @@ const PexesoCreator: React.FC<PexesoCreatorProps> = ({ onAddToCart }) => {
                     </div>
                 </div>
 
+                {/* Step 4: Typ balení */}
+                <div className="config-step">
+                    <div className="step-header">
+                        <div className="step-number">4</div>
+                        <h3 className="step-title">Zvolte typ balení</h3>
+                    </div>
+                    <PackagingSelector value={packaging} onChange={setPackaging} title="" />
+                </div>
+
             </div>
 
             <div className="creator-actions" style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
@@ -339,7 +352,7 @@ const PexesoCreator: React.FC<PexesoCreatorProps> = ({ onAddToCart }) => {
                     onClick={handleAddToCart}
                     disabled={rendering !== null}
                 >
-                    <span style={{ position: 'relative', zIndex: 2 }}>{rendering ? `Generujeme karty… ${rendering.done}/${rendering.total}` : `Přidat do košíku (${(deckSize === 16 ? 249 : deckSize === 32 ? 399 : 599) + selectedSize.priceAdd} Kč)`}</span>
+                    <span style={{ position: 'relative', zIndex: 2 }}>{rendering ? `Generujeme karty… ${rendering.done}/${rendering.total}` : `Přidat do košíku (${(deckSize === 16 ? 249 : deckSize === 32 ? 399 : 599) + selectedSize.priceAdd + packagingSurcharge(packaging)} Kč)`}</span>
                     <div style={{ position: 'absolute', top: 0, left: '-100%', width: '50%', height: '100%', background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent)', transform: 'skewX(-20deg)', animation: 'btnShine 3s infinite', zIndex: 1 }}></div>
                 </button>
             </div>

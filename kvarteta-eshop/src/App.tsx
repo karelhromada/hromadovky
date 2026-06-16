@@ -7,6 +7,7 @@ import Footer from './components/Footer'
 import CookieBanner from './components/CookieBanner'
 import HomePage from './pages/HomePage'
 import { RequireAdmin } from './components/RequireAdmin'
+import type { PackagingType } from './data/packaging'
 import './App.css'
 
 // Lazy-loaded routes — reduce initial bundle for non-home pages
@@ -58,6 +59,7 @@ export interface CartItem {
   customStatLayouts?: Record<string, string>;
   hideStats?: boolean;
   size?: string;
+  packaging?: PackagingType;
 }
 
 import { AuthProvider } from './context/AuthContext'
@@ -88,10 +90,15 @@ function App() {
 
   const addToCart = (product: Omit<CartItem, 'quantity'>) => {
     setCartItems(prev => {
-      // Find matching item by id, selectedBack, AND size
-      const existing = prev.find(item => item.id === product.id && item.selectedBack === product.selectedBack && item.size === product.size);
+      // Find matching item by id, selectedBack, size AND packaging
+      const sameLine = (item: CartItem) =>
+        item.id === product.id &&
+        item.selectedBack === product.selectedBack &&
+        item.size === product.size &&
+        item.packaging === product.packaging;
+      const existing = prev.find(sameLine);
       if (existing) {
-        return prev.map(item => (item.id === product.id && item.selectedBack === product.selectedBack && item.size === product.size) ? { ...item, quantity: item.quantity + 1 } : item);
+        return prev.map(item => sameLine(item) ? { ...item, quantity: item.quantity + 1 } : item);
       }
       return [...prev, { ...product, quantity: 1 }];
     });
@@ -102,13 +109,13 @@ function App() {
     setCartItems([]);
   };
 
-  const removeFromCart = (id: string, selectedBack?: string, size?: string) => {
-    setCartItems(prev => prev.filter(item => !(item.id === id && item.selectedBack === selectedBack && item.size === size)));
+  const removeFromCart = (id: string, selectedBack?: string, size?: string, packaging?: PackagingType) => {
+    setCartItems(prev => prev.filter(item => !(item.id === id && item.selectedBack === selectedBack && item.size === size && item.packaging === packaging)));
   };
 
-  const updateQuantity = (id: string, amount: number, selectedBack?: string, size?: string) => {
+  const updateQuantity = (id: string, amount: number, selectedBack?: string, size?: string, packaging?: PackagingType) => {
     setCartItems(prev => prev.map(item => {
-      if (item.id === id && item.selectedBack === selectedBack && item.size === size) {
+      if (item.id === id && item.selectedBack === selectedBack && item.size === size && item.packaging === packaging) {
         const newQuantity = item.quantity + amount;
         return newQuantity > 0 ? { ...item, quantity: newQuantity } : item;
       }

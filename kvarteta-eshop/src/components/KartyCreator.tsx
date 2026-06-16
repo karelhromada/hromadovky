@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { CheckCircle, Sparkles, LayoutGrid } from 'lucide-react';
+import PackagingSelector from './PackagingSelector';
+import { packagingSurcharge, type PackagingType } from '../data/packaging';
 import './KartyCreator.css';
 
 interface KartyCreatorProps {
@@ -38,13 +40,14 @@ const KartyCreator: React.FC<KartyCreatorProps> = ({ onAddToCart }) => {
     const [leaveDesignToUs, setLeaveDesignToUs] = useState(false);
     const [customThemeDesc, setCustomThemeDesc] = useState('');
     const [customThemeStyle, setCustomThemeStyle] = useState(cardStyles[0].value);
+    const [packaging, setPackaging] = useState<PackagingType>('standard');
 
     const getPrice = () => {
         let basePrice = 349;
         if (playMode === 'thematic') {
             basePrice += 150; // Extra charge for fully thematic custom fronts
         }
-        return basePrice;
+        return basePrice + packagingSurcharge(packaging);
     };
 
     const handleAddToCart = () => {
@@ -80,7 +83,8 @@ const KartyCreator: React.FC<KartyCreatorProps> = ({ onAddToCart }) => {
                 price: getPrice(),
                 image: productImage || KARTY_BACKS[0].url,
                 selectedBack: backgrounds.find(b => b.url === selectedBack)?.name || 'Klasika',
-                themeColor: themeColor
+                themeColor: themeColor,
+                packaging
             });
         }
     };
@@ -280,6 +284,10 @@ const KartyCreator: React.FC<KartyCreatorProps> = ({ onAddToCart }) => {
                     )}
                 </div>
 
+            </div>
+
+            <div style={{ maxWidth: '520px', margin: '2.5rem auto 0' }}>
+                <PackagingSelector value={packaging} onChange={setPackaging} />
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '2rem' }}>

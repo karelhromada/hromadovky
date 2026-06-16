@@ -5,6 +5,8 @@ import './ProductShowcasePexeso.css';
 
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { Star, Sparkles, Trophy, Shield } from 'lucide-react';
+import PackagingSelector from './PackagingSelector';
+import { packagingSurcharge, type PackagingType } from '../data/packaging';
 
 interface ProductShowcaseProps {
     onAddToCart: (product: Omit<CartItem, 'quantity'>) => void;
@@ -315,6 +317,7 @@ const ProductShowcasePexeso: React.FC<ProductShowcaseProps> = ({ onAddToCart }) 
     const [selectedBack, setSelectedBack] = useState<string>(backgrounds[0]);
     const [selectedSize, setSelectedSize] = useState<typeof dimensions[0]>(dimensions[0]);
     const [selectedDeckSize, setSelectedDeckSize] = useState<typeof deckSizeOptions[1]>(deckSizeOptions[1]); // Default 32 cards
+    const [packaging, setPackaging] = useState<PackagingType>('standard');
 
     // Prevent body scroll when modal is open
     useEffect(() => {
@@ -333,17 +336,19 @@ const ProductShowcasePexeso: React.FC<ProductShowcaseProps> = ({ onAddToCart }) 
         setSelectedBack(backgrounds[0]); // Reset to default on open
         setSelectedSize(dimensions[0]); // Reset to classical
         setSelectedDeckSize(deckSize); // Use the size selected on the card
+        setPackaging('standard');
     };
 
     const confirmAddToCart = () => {
         if (selectedProduct && selectedBack && selectedSize && selectedDeckSize) {
             onAddToCart({
                 ...selectedProduct,
-                price: selectedDeckSize.price + selectedSize.priceAdd,
+                price: selectedDeckSize.price + selectedSize.priceAdd + packagingSurcharge(packaging),
                 image: Array.isArray(selectedProduct.image) ? selectedProduct.image[0] : selectedProduct.image,
                 selectedBack,
                 size: `${selectedSize.label} (${selectedSize.desc})`,
-                deckSize: selectedDeckSize.label
+                deckSize: selectedDeckSize.label,
+                packaging
             });
             setSelectedProduct(null);
         }
@@ -458,9 +463,11 @@ const ProductShowcasePexeso: React.FC<ProductShowcaseProps> = ({ onAddToCart }) 
                             </div>
                         </div>
 
+                        <PackagingSelector value={packaging} onChange={setPackaging} />
+
                         <div className="modal-footer" style={{ marginTop: '30px' }}>
                             <button className="btn-cancel" onClick={() => setSelectedProduct(null)}>Zrušit</button>
-                            <button className="btn-confirm" onClick={confirmAddToCart}>Položka za {selectedDeckSize.price + selectedSize.priceAdd} Kč do košíku</button>
+                            <button className="btn-confirm" onClick={confirmAddToCart}>Položka za {selectedDeckSize.price + selectedSize.priceAdd + packagingSurcharge(packaging)} Kč do košíku</button>
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import type { CartItem } from '../App';
+import PackagingSelector from './PackagingSelector';
+import { packagingSurcharge, type PackagingType } from '../data/packaging';
 import './ProductShowcase.css';
 
 
@@ -141,10 +143,12 @@ const ProductCardInteractive = ({ product, onAddToCartClick }: { product: any, o
 const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onAddToCart }) => {
     const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
     const [selectedBack, setSelectedBack] = useState<string>(backgrounds[0].url);
-    
+    const [packaging, setPackaging] = useState<PackagingType>('standard');
+
     const handleAddToCartClick = (product: any) => {
         setSelectedProduct(product);
         setSelectedBack(backgrounds[0].url);
+        setPackaging('standard');
     };
 
     const confirmAddToCart = () => {
@@ -152,7 +156,9 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onAddToCart }) => {
             onAddToCart({
                 ...selectedProduct,
                 image: Array.isArray(selectedProduct.image) ? selectedProduct.image[0] : selectedProduct.image,
-                selectedBack
+                price: selectedProduct.price + packagingSurcharge(packaging),
+                selectedBack,
+                packaging
             });
             setSelectedProduct(null);
         }
@@ -216,9 +222,13 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onAddToCart }) => {
                             ))}
                         </div>
 
+                        <PackagingSelector value={packaging} onChange={setPackaging} />
+
                         <div className="modal-footer">
                             <button className="btn-cancel" onClick={() => setSelectedProduct(null)}>Zrušit</button>
-                            <button className="btn-confirm" onClick={confirmAddToCart}>Potvrdit a přidat do košíku</button>
+                            <button className="btn-confirm" onClick={confirmAddToCart}>
+                                Potvrdit a přidat do košíku ({selectedProduct.price + packagingSurcharge(packaging)} Kč)
+                            </button>
                         </div>
                     </div>
                 </div>

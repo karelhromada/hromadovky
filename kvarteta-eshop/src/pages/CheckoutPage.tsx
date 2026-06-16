@@ -228,6 +228,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                 options: {
                     back: item.selectedBack,
                     size: item.size,
+                    packaging: item.packaging ?? 'standard',
                     note: item.note
                 },
                 customPhotos: item.customPhotos,
@@ -306,7 +307,8 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                                 price: item.price,
                                 quantity: item.quantity,
                                 selectedBack: item.selectedBack,
-                                size: item.size
+                                size: item.size,
+                                packaging: item.packaging ?? 'standard'
                             })),
                             total_price: totalToPay,
                             delivery_info: {
@@ -629,12 +631,15 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                     <h2>Shrnutí objednávky</h2>
                     <div className="summary-items">
                         {items.map(item => (
-                            <div key={`${item.id}-${item.selectedBack}-${item.size}`} className="summary-item">
+                            <div key={`${item.id}-${item.selectedBack}-${item.size}-${item.packaging || 'standard'}`} className="summary-item">
                                 <div className="summary-info">
                                     <span className="summary-name">
                                         {item.name} <span className="qty">x{item.quantity}</span>
                                         {item.selectedBack && (
                                             <div className="summary-option">Rub: {item.selectedBack}</div>
+                                        )}
+                                        {item.packaging === 'gift' && (
+                                            <div className="summary-option">🎁 Dárkové balení</div>
                                         )}
                                     </span>
                                     <span className="summary-price">{formatCurrency(item.price * item.quantity)}</span>

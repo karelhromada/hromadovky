@@ -4,6 +4,8 @@ import type { CartItem } from '../App';
 import './ProductShowcase.css'; // sdílené .ps-* třídy patičky (cena + košík) – stejně jako Pexeso; jinak se na hard-refresh /karty nenačtou
 import './ProductShowcaseKarty.css';
 import { X, Maximize, Minimize } from 'lucide-react';
+import PackagingSelector from './PackagingSelector';
+import { packagingSurcharge, type PackagingType } from '../data/packaging';
 
 interface ProductShowcaseKartyProps {
     onAddToCart?: (item: Omit<CartItem, 'quantity'>) => void;
@@ -22,6 +24,7 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
     const [zoomedCardImage, setZoomedCardImage] = useState<string | null>(null);
     const [selectedProductForCart, setSelectedProductForCart] = useState<any | null>(null);
     const [selectedBack, setSelectedBack] = useState<string>(KARTY_BACKS[0].url);
+    const [packaging, setPackaging] = useState<PackagingType>('standard');
 
     // Prevent background scrolling when modal or lightbox is open
     React.useEffect(() => {
@@ -36,6 +39,7 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
     const handleAddToCart = (product: any) => {
         setSelectedProductForCart(product);
         setSelectedBack(KARTY_BACKS[0].url);
+        setPackaging('standard');
     };
 
     const confirmAddToCart = () => {
@@ -44,10 +48,11 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
                 id: selectedProductForCart.id,
                 name: selectedProductForCart.name,
                 description: selectedProductForCart.description,
-                price: selectedProductForCart.price,
+                price: selectedProductForCart.price + packagingSurcharge(packaging),
                 image: selectedProductForCart.images[1],
                 themeColor: selectedProductForCart.themeColor,
-                selectedBack: selectedBack
+                selectedBack: selectedBack,
+                packaging
             });
             setSelectedProductForCart(null);
         }
@@ -338,14 +343,16 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
                             ))}
                         </div>
 
+                        <PackagingSelector value={packaging} onChange={setPackaging} />
+
                         <div className="modal-footer" style={{ marginTop: '24px', display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
                             <button className="btn-cancel" onClick={() => setSelectedProductForCart(null)}>Zrušit</button>
-                            <button 
-                                className="btn-confirm" 
+                            <button
+                                className="btn-confirm"
                                 onClick={confirmAddToCart}
                                 style={{ background: 'var(--accent-gold)', color: 'white', border: 'none', padding: '12px 24px', borderRadius: '12px', fontWeight: 600, cursor: 'pointer' }}
                             >
-                                Přidat do košíku
+                                Přidat do košíku ({selectedProductForCart.price + packagingSurcharge(packaging)} Kč)
                             </button>
                         </div>
                     </div>

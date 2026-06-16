@@ -4,6 +4,10 @@ import './CardCreator.css';
 import { uploadOrderPhoto } from '../lib/storage';
 import { getBackgroundsForGame } from '../data/backgrounds';
 import { renderAndUploadBatch, type RenderTask } from '../lib/cardExporter';
+import PackagingSelector from './PackagingSelector';
+import { packagingSurcharge, type PackagingType } from '../data/packaging';
+
+const QUARTET_BASE_PRICE = 599;
 
 const backgrounds = getBackgroundsForGame('kvarteta');
 
@@ -242,6 +246,7 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
     const [customStatLayouts, setCustomStatLayouts] = useState<Record<string, string>>({});
     const [previewSlot, setPreviewSlot] = useState<string>('1A');
     const [wantsCustomBack, setWantsCustomBack] = useState(false);
+    const [packaging, setPackaging] = useState<PackagingType>('standard');
     const exportRefs = useRef<Map<string, HTMLElement>>(new Map());
     const [rendering, setRendering] = useState<{ done: number; total: number } | null>(null);
 
@@ -381,9 +386,10 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
         onAddToCart({
             id: `custom-quartet-${Date.now()}`,
             name: `Unikátní kvarteto: ${cardData.groupName}`,
-            price: 599,
+            price: QUARTET_BASE_PRICE + packagingSurcharge(packaging),
             image: '',
             selectedBack: backName,
+            packaging,
             groupName: cardData.groupName,
             statShape: statShapes.find(s => s.value === cardData.statShape)?.label || cardData.statShape,
             statLayout: statLayouts.find(s => s.value === cardData.statLayout)?.label || cardData.statLayout,
@@ -1030,15 +1036,25 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
                                 </div>
                             )}
 
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <PackagingSelector value={packaging} onChange={setPackaging} />
+                            </div>
+
                             <div style={{ background: '#f8fafc', padding: '1.5rem', borderRadius: '12px', border: '1px solid #e2e8f0', marginBottom: '2.5rem' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
                                     <span style={{ color: '#334155', fontWeight: 500 }}>Vlastní sada 32 karet</span>
-                                    <span style={{ fontWeight: 700, color: '#334155', fontSize: '1.2rem' }}>599 Kč</span>
+                                    <span style={{ fontWeight: 700, color: '#334155', fontSize: '1.2rem' }}>{QUARTET_BASE_PRICE} Kč</span>
                                 </div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: packaging === 'gift' ? '0.5rem' : 0 }}>
                                     <span style={{ color: '#64748b', fontSize: '0.9rem' }}>+ Exkluzivní tisk a balení</span>
                                     <span style={{ color: '#10b981', fontWeight: 600, fontSize: '0.9rem' }}>Zdarma</span>
                                 </div>
+                                {packaging === 'gift' && (
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '0.5rem', borderTop: '1px solid #e2e8f0' }}>
+                                        <span style={{ color: '#334155', fontWeight: 600 }}>🎁 Dárkové balení</span>
+                                        <span style={{ fontWeight: 700, color: '#334155' }}>+{packagingSurcharge('gift')} Kč</span>
+                                    </div>
+                                )}
                             </div>
 
                             <button

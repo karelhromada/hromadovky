@@ -377,6 +377,7 @@ const ProductShowcasePexeso: React.FC<ProductShowcaseProps> = ({ onAddToCart }) 
             {selectedProduct && (
                 <div className="back-selection-modal-overlay" onClick={() => setSelectedProduct(null)}>
                     <div className="back-selection-modal glass-panel" onClick={e => e.stopPropagation()}>
+                        <div className="modal-body">
                         <div className="modal-header">
                             <h3>Zvolte zadní stranu sady</h3>
                             <button className="close-btn" onClick={() => setSelectedProduct(null)}>
@@ -464,6 +465,7 @@ const ProductShowcasePexeso: React.FC<ProductShowcaseProps> = ({ onAddToCart }) 
                         </div>
 
                         <PackagingSelector value={packaging} onChange={setPackaging} />
+                        </div>
 
                         <div className="modal-footer" style={{ marginTop: '30px' }}>
                             <button className="btn-cancel" onClick={() => setSelectedProduct(null)}>Zrušit</button>

@@ -6,6 +6,7 @@ import { PAYMENT_CONFIG, SHIPPING_CONFIG, AUTOMATION_CONFIG } from '../config/pa
 import { getQRPaymentImageUrl } from '../utils/qrUtils';
 import { PageHead } from '../components/seo/PageHead';
 import { SEO } from '../data/seo';
+import { resolveBackName } from '../data/backgrounds';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import { resetDraftRef } from '../lib/storage';
@@ -636,7 +637,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                                     <span className="summary-name">
                                         {item.name} <span className="qty">x{item.quantity}</span>
                                         {item.selectedBack && (
-                                            <div className="summary-option">Rub: {item.selectedBack}</div>
+                                            <div className="summary-option">Rub: {resolveBackName(item.selectedBack)}</div>
                                         )}
                                         {item.packaging === 'gift' && (
                                             <div className="summary-option">🎁 Dárkové balení</div>

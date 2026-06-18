@@ -257,16 +257,25 @@ button {
     width: 100%;
     max-width: 650px;
     max-height: 90vh;
-    overflow-y: auto;
-    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     position: relative;
     animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.back-selection-modal::-webkit-scrollbar { width: 6px; }
-.back-selection-modal::-webkit-scrollbar-track { background: transparent; margin: 20px; }
-.back-selection-modal::-webkit-scrollbar-thumb { background: rgba(197, 155, 39, 0.2); border-radius: 10px; }
-.back-selection-modal::-webkit-scrollbar-thumb:hover { background: var(--accent-gold); }
+/* Scrolluje JEN tělo modalu; footer (akce) zůstává vždy dole a viditelný i na mobilu. */
+.modal-body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 30px;
+}
+
+.modal-body::-webkit-scrollbar { width: 6px; }
+.modal-body::-webkit-scrollbar-track { background: transparent; margin: 20px; }
+.modal-body::-webkit-scrollbar-thumb { background: rgba(197, 155, 39, 0.2); border-radius: 10px; }
+.modal-body::-webkit-scrollbar-thumb:hover { background: var(--accent-gold); }
 
 .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
 .modal-header h3 { margin: 0; font-size: 1.5rem; color: var(--text-primary); }
@@ -295,7 +304,7 @@ button {
     align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(212, 175, 55, 0.4);
 }
 
-.modal-footer { display: flex; justify-content: flex-end; gap: 15px; }
+.modal-footer { display: flex; justify-content: flex-end; gap: 15px; flex-shrink: 0; padding: 20px 30px; border-top: 1px solid var(--glass-border); }
 
 .btn-cancel {
     padding: 10px 20px; border-radius: 12px; border: 1px solid rgba(0, 0, 0, 0.1);
@@ -317,10 +326,12 @@ button {
 
 @media (max-width: 768px) {
     .back-selection-modal {
-        max-width: 100vw; width: 100%; height: 100vh; max-height: 100vh;
-        border-radius: 0; padding: 24px; display: flex; flex-direction: column;
-        justify-content: flex-start; overflow-y: auto;
+        max-width: 100vw; width: 100%; height: 100dvh; max-height: 100dvh;
+        border-radius: 0;
     }
+    .modal-body { padding: 24px; }
+    /* Spodní lišta prohlížeče (Safari) + notch: footer drž v bezpečné oblasti. */
+    .modal-footer { padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
 }
 
 /* --- Card Size Selector Styling --- */

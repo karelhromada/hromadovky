@@ -98,6 +98,18 @@ export const backgrounds: Background[] = buildBackgrounds();
 export const getBackgroundByUrl = (url: string): Background | undefined =>
   backgrounds.find((bg) => bg.url === url);
 
+// Hezky nazev zadni strany pro zobrazeni (kosik / pokladna). Zvlada oboji:
+// kdyz je v kosiku ulozena URL (kvarteta ProductShowcase uklada bg.url) i kdyz je
+// ulozeny primo name (ostatni konfiguratory). Fallback = puvodni hodnota.
+export const resolveBackName = (value?: string | null): string => {
+  if (!value) return '';
+  const byUrl = backgrounds.find((bg) => bg.url === value);
+  if (byUrl) return byUrl.name;
+  const byName = backgrounds.find((bg) => bg.name === value);
+  if (byName) return byName.name;
+  return value;
+};
+
 export const getBackgroundById = (id: string, game?: BackGame): Background | undefined => {
   if (game) {
     return backgrounds.find((bg) => bg.id === id && bg.game === game);

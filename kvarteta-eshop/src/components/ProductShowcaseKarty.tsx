@@ -306,6 +306,7 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
             {selectedProductForCart && (
                 <div className="back-selection-modal-overlay" onClick={() => setSelectedProductForCart(null)}>
                     <div className="back-selection-modal glass-panel" onClick={e => e.stopPropagation()}>
+                        <div className="modal-body">
                         <div className="modal-header">
                             <h3>Zvolte zadní stranu sady</h3>
                             <button className="close-btn" onClick={() => setSelectedProductForCart(null)}>
@@ -344,6 +345,7 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
                         </div>
 
                         <PackagingSelector value={packaging} onChange={setPackaging} />
+                        </div>
 
                         <div className="modal-footer" style={{ marginTop: '24px', display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
                             <button className="btn-cancel" onClick={() => setSelectedProductForCart(null)}>Zrušit</button>

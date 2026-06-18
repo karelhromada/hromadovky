@@ -30,16 +30,26 @@ function paymentEnv(key: string, devFallback: string): string {
     return envOr(key, devFallback);
 }
 
+// Bankovní údaje (číslo účtu / IBAN) NEjsou tajné a jejich správné Fio hodnoty držíme
+// i jako fallback. Na rozdíl od platební brány zde v produkci NEházíme výjimku při
+// chybějícím env – jen použijeme fallback a varujeme v konzoli. (Dřív eager `requireEnv`
+// shazoval celou pokladnu do bílé stránky, když VITE_BANK_* na Vercelu chybělo.)
+function bankEnv(key: string, fallback: string): string {
+    const value = import.meta.env[key];
+    if (isValidEnvString(value)) return value;
+    if (import.meta.env.PROD) {
+        console.warn(`[payment] ${key} není nastavené v produkci – používám zabudovaný fallback. Doplň ho do Vercel env.`);
+    }
+    return fallback;
+}
+
 export const PAYMENT_CONFIG = {
-    // Fio Banka (kód 2010). paymentEnv = throw v PROD, fallback v DEV.
-    // Production MUSÍ mít VITE_BANK_* nastavené na Vercelu.
-    // LÍNÉ gettery (ne eager pole): hodnota se ověří – a v PROD případně vyhodí výjimku –
-    // až při SKUTEČNÉM použití (success screen / obchodní podmínky), NE při importu modulu.
-    // Eager varianta shazovala celý lazy chunk /checkout do bílé stránky, když env chybělo.
-    // Případnou výjimku při renderu teď zachytí globální ErrorBoundary.
-    get BANK_ACCOUNT(): string { return paymentEnv('VITE_BANK_ACCOUNT', '2202066277/2010'); },
-    get BANK_CODE(): string { return paymentEnv('VITE_BANK_CODE', '2010'); },
-    get IBAN(): string { return paymentEnv('VITE_BANK_IBAN', 'CZ4720100000002202066277'); },
+    // Fio Banka (kód 2010). LÍNÉ gettery (ne eager pole) – hodnota se čte až při použití,
+    // ne při importu modulu (eager varianta shazovala /checkout do bílé stránky).
+    // Bankovní údaje používají bankEnv = fallback + warn (nehází), platební brána paymentEnv = throw v PROD.
+    get BANK_ACCOUNT(): string { return bankEnv('VITE_BANK_ACCOUNT', '2202066277/2010'); },
+    get BANK_CODE(): string { return bankEnv('VITE_BANK_CODE', '2010'); },
+    get IBAN(): string { return bankEnv('VITE_BANK_IBAN', 'CZ4720100000002202066277'); },
 
     get MERCHANT_ID(): string { return paymentEnv('VITE_GP_WEBPAY_MERCHANT_ID', 'M1HTTEST'); },
     get GATEWAY_URL(): string { return paymentEnv('VITE_GP_WEBPAY_GATEWAY_URL', 'https://test.gpwebpay.com/pgw/pay.do'); },

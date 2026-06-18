@@ -32,11 +32,14 @@ function paymentEnv(key: string, devFallback: string): string {
 
 export const PAYMENT_CONFIG = {
     // Fio Banka (kód 2010). paymentEnv = throw v PROD, fallback v DEV.
-    // Production MUSÍ mít VITE_BANK_* nastavené na Vercelu, jinak build padne při importu.
-    // Tím se brání tichému návratu na starou mBank pokud env zmizí.
-    BANK_ACCOUNT: paymentEnv('VITE_BANK_ACCOUNT', '2202066277/2010'),
-    BANK_CODE: paymentEnv('VITE_BANK_CODE', '2010'),
-    IBAN: paymentEnv('VITE_BANK_IBAN', 'CZ4720100000002202066277'),
+    // Production MUSÍ mít VITE_BANK_* nastavené na Vercelu.
+    // LÍNÉ gettery (ne eager pole): hodnota se ověří – a v PROD případně vyhodí výjimku –
+    // až při SKUTEČNÉM použití (success screen / obchodní podmínky), NE při importu modulu.
+    // Eager varianta shazovala celý lazy chunk /checkout do bílé stránky, když env chybělo.
+    // Případnou výjimku při renderu teď zachytí globální ErrorBoundary.
+    get BANK_ACCOUNT(): string { return paymentEnv('VITE_BANK_ACCOUNT', '2202066277/2010'); },
+    get BANK_CODE(): string { return paymentEnv('VITE_BANK_CODE', '2010'); },
+    get IBAN(): string { return paymentEnv('VITE_BANK_IBAN', 'CZ4720100000002202066277'); },
 
     get MERCHANT_ID(): string { return paymentEnv('VITE_GP_WEBPAY_MERCHANT_ID', 'M1HTTEST'); },
     get GATEWAY_URL(): string { return paymentEnv('VITE_GP_WEBPAY_GATEWAY_URL', 'https://test.gpwebpay.com/pgw/pay.do'); },

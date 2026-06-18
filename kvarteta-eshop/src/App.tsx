@@ -1,10 +1,11 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import Navbar from './components/Navbar'
 import Cart from './components/Cart'
 import Footer from './components/Footer'
 import CookieBanner from './components/CookieBanner'
+import { ErrorBoundary } from './components/ErrorBoundary'
 import HomePage from './pages/HomePage'
 import { RequireAdmin } from './components/RequireAdmin'
 import type { PackagingType } from './data/packaging'
@@ -136,6 +137,7 @@ function App() {
           <Navbar toggleCart={toggleCart} cartCount={cartItems.reduce((acc, item) => acc + item.quantity, 0)} />
 
           <main>
+            <ErrorBoundary>
             <Suspense fallback={<RouteFallback />}>
               <Routes>
                 <Route path="/" element={<HomePage />} />
@@ -158,8 +160,11 @@ function App() {
                     </RequireAdmin>
                   }
                 />
+                {/* Neznámá URL → domů (místo prázdného <main>). */}
+                <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </Suspense>
+            </ErrorBoundary>
           </main>
 
           <Footer />

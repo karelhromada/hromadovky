@@ -66,7 +66,7 @@ const AuthPage: React.FC = () => {
           password: formData.password,
         });
         if (error) throw error;
-        navigate('/pokladna');
+        navigate('/checkout');
         return;
       }
 
@@ -453,7 +453,7 @@ const AuthPage: React.FC = () => {
               </div>
 
               <div className="auth-actions" style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', marginTop: '30px' }}>
-                <button className="btn-secondary" style={{ flex: 1 }} onClick={() => navigate('/pokladna')}>
+                <button className="btn-secondary" style={{ flex: 1 }} onClick={() => navigate('/checkout')}>
                   Košík a pokladna
                 </button>
                 <button className="btn-secondary logout-btn" style={{ flex: 1 }} onClick={handleSignOut} disabled={loading}>

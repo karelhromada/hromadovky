@@ -55,13 +55,13 @@ export const PAYMENT_CONFIG = {
     get GATEWAY_URL(): string { return paymentEnv('VITE_GP_WEBPAY_GATEWAY_URL', 'https://test.gpwebpay.com/pgw/pay.do'); },
 };
 
-// Lazy getter — throws only when CheckoutPage actually opens Packeta widget,
-// not at module import. Lets React ErrorBoundary catch missing key gracefully.
+// Veřejný klíč widgetu Zásilkovny (běží v prohlížeči zákazníka → NENÍ tajný, stejně skončí
+// v JS bundlu). envOr = použij VITE_ZASILKOVNA_API_KEY z env, jinak zabudovaný reálný klíč.
+// Funguje v produkci i bez nastavení na Vercelu a nikdy nehází (dřív requireEnv shazoval
+// výběr výdejního místa v onClick handleru, kde to ErrorBoundary nezachytí).
 export const SHIPPING_CONFIG = {
     get ZASILKOVNA_API_KEY(): string {
-        return import.meta.env.PROD
-            ? requireEnv('VITE_ZASILKOVNA_API_KEY')
-            : envOr('VITE_ZASILKOVNA_API_KEY', 'abc123test');
+        return envOr('VITE_ZASILKOVNA_API_KEY', '406593160937e8ff');
     },
 };
 

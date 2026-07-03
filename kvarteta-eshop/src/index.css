@@ -263,6 +263,22 @@ button {
   font-weight: 300;
 }
 
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* Loader2 spinnery (AuthPage, ResetPasswordPage) — třída ani keyframes
+   dřív neexistovaly nikde, ikona načítání stála na místě. */
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .animate-fade-in-up {
   opacity: 0;
   animation: fadeIn 0.8s ease-out forwards;

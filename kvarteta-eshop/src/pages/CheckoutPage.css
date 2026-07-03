@@ -568,14 +568,9 @@
     100% { height: 50px; width: 25px; opacity: 1; }
 }
 
-.animate-fade-in {
-    animation: fadeIn 0.8s ease-out forwards;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+/* .animate-fade-in je globální v src/index.css (používá ho i AuthPage,
+   ResetPasswordPage a FamilyCardConfigurator — Past #3);
+   @keyframes fadeIn je také v index.css. */
 
 /* --- Checkout consent (Obchodní podmínky + GDPR info) --- */
 .checkout-consent {

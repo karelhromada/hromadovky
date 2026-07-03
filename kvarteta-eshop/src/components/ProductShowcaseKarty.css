@@ -396,3 +396,65 @@
         height: 180px;
     }
 }
+
+/* Vstupní animace galerie modalu (.karty-modal-container) — keyframes
+   dřív nebyly definované nikde, modal se objevoval bez animace. */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Lightbox (zvětšený detail karty z galerie) ---
+   Třídy dřív neměly ŽÁDNÉ CSS — overlay se vykresloval jako nestylovaný
+   blok na konci stránky místo fullscreen náhledu. */
+.karty-lightbox-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    /* nad galerií (.karty-modal-overlay má 9999) */
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    cursor: zoom-out;
+    animation: fadeIn 0.25s ease;
+}
+
+.karty-lightbox-image {
+    max-width: min(90vw, 560px);
+    max-height: 90vh;
+    border-radius: 16px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+    cursor: default;
+}
+
+.karty-lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.karty-lightbox-close:hover {
+    background: rgba(255, 255, 255, 0.22);
+}

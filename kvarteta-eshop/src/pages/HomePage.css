@@ -240,6 +240,16 @@
     z-index: 5;
 }
 
+/* Scoped — samotná .particle žije jen v HeroSection.css (chunk /kvarteta),
+   na čistém načtení homepage by částice byly neviditelné (Past #3). */
+.particle-container .particle {
+    width: 4px;
+    height: 4px;
+    background: var(--accent-gold);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--accent-gold);
+}
+
 /* --- CTA --- */
 .cta-v9 {
     padding: 120px 0;

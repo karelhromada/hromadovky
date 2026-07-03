@@ -107,3 +107,22 @@ main {
 .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.1);
 }
+
+/* Textove tlacitko (odkazovy styl) — pouziva CheckoutPage („Prihlasit se",
+   „Zrusit", „Zmenit") i admin CreditNoteModal; driv jen v AuthPage.css
+   (chunk /login) = na primem nacteni /checkout bez stylu. (Past #3) */
+.btn-text {
+  background: none;
+  border: none;
+  color: var(--accent-gold);
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  padding: 4px 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-text:hover {
+  filter: brightness(1.2);
+}

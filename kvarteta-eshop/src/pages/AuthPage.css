@@ -147,21 +147,7 @@
     border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.btn-text {
-    background: none;
-    border: none;
-    color: var(--accent-gold);
-    font-weight: 700;
-    cursor: pointer;
-    text-decoration: underline;
-    text-underline-offset: 4px;
-    padding: 4px 8px;
-    transition: all 0.2s ease;
-}
-
-.btn-text:hover {
-    filter: brightness(1.2);
-}
+/* .btn-text je globální v src/App.css (sdílí ho i CheckoutPage a admin modal — Past #3) */
 
 .profile-details {
     background: rgba(212, 175, 55, 0.05);

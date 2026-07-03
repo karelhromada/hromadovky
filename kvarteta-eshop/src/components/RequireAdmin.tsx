@@ -1,6 +1,7 @@
 import { type ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAdminAuth } from '../lib/adminAuth';
+import './RequireAdmin.css';
 
 interface RequireAdminProps {
   children: ReactNode;

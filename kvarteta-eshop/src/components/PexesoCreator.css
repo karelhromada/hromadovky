@@ -537,3 +537,13 @@
         padding: 20px 16px;
     }
 }
+
+/* Lokální (scoped) definice — .form-group je jinak definovaná jen v CSS
+   cizích chunků (CardCreator/Checkout/Auth), na přímém načtení /pexeso
+   by chyběla (Past #3). Záměrně scoped, ne globální: každý kontext má
+   vlastní variantu .form-group. */
+.pexeso-creator-section .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0;
+}

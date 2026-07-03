@@ -35,10 +35,6 @@ const HeroSectionKarty: React.FC = () => {
                 <p className="hero-description animate-fade-in-up delay-200">
                     S těmito exkluzivními sadami pro <strong>prší nebo mariáš</strong> okouzlíte každou rodinnou partii. Zvolte si jeden z našich <strong>luxusních tematických balíčků</strong> (např. epická dračí edice nebo magické čarodějnice) s dechberoucím vizuálním zpracováním.
                 </p>
-                <div className="hero-actions animate-fade-in-up delay-300">
-                    {/* <a href="#creator" className="btn-primary">Sestavit balíček</a> */}
-                    <a href="#products" className="btn-secondary">Ukázkové sady</a>
-                </div>
             </div>
 
             <div className="karty-hero-visual">

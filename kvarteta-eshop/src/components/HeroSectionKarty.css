@@ -122,12 +122,6 @@
         padding-bottom: 40px;
     }
 
-    .karty-hero-actions {
-        justify-content: center;
-        display: flex;
-        gap: 15px;
-    }
-
     .karty-hero-visual {
         height: 400px;
         width: 100%;
@@ -139,10 +133,6 @@
 }
 
 @media (max-width: 768px) {
-    .karty-hero-actions {
-        flex-direction: column;
-    }
-
     .poker-hand-stage {
         transform: scale(0.8) rotateX(10deg) !important;
     }

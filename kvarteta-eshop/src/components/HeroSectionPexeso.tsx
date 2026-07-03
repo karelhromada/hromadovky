@@ -118,10 +118,6 @@ const HeroSectionPexeso: React.FC = () => {
                 <p className="hero-description animate-fade-in-up delay-200">
                     S naším luxusním zpracováním karet do pexesa získá tahle klasika neuvěřitelný nádech prémiovosti. Posilujte mozek a kochte se uměním nebo vlastními fotografiemi, u kterých nerozeznáte žádný rozdíl v rubové stěně.
                 </p>
-                <div className="hero-actions animate-fade-in-up delay-300">
-                    <a href="#creator" className="btn-primary">Vyzkoušet nahrávání</a>
-                    <a href="#products" className="btn-secondary">Ukázková pexesa</a>
-                </div>
             </div>
 
             <div className="pexeso-hero-visual">

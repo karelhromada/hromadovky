@@ -140,10 +140,6 @@
         padding-bottom: 40px;
     }
 
-    .pexeso-hero-actions {
-        justify-content: center;
-    }
-
     .pexeso-hero-visual {
         width: 100%;
         height: 400px;
@@ -163,12 +159,6 @@
 }
 
 @media (max-width: 768px) {
-    .pexeso-hero-actions {
-        flex-direction: column;
-        display: flex;
-        gap: 12px;
-    }
-
     .pexeso-grid-stage {
         max-width: 280px;
         gap: 10px;

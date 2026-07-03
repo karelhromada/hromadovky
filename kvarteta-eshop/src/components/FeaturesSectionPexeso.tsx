@@ -71,7 +71,8 @@ const FeaturesSectionPexeso: React.FC = () => {
                 <span className="badge mb-4">Detaily tvoří mistrovské dílo</span>
                 <h2 className="section-title">Dokonalé pexeso <span className="text-gradient-gold">na dosah ruky</span></h2>
                 <p className="text-center text-secondary max-w-2xl mx-auto mt-4" style={{ margin: '0 auto' }}>
-                    Odhalte všechny naše výhody a získejte tajnou odměnu! Najetím myši otočíte kartu.
+                    <span className="pexeso-hint-desktop">Odhalte všechny naše výhody a získejte tajnou odměnu! Najetím myši otočíte kartu.</span>
+                    <span className="pexeso-hint-mobile">Prohlédněte si všechny výhody našeho prémiového pexesa.</span>
                 </p>
             </div>
 

@@ -322,3 +322,56 @@
     color: #111827;
     box-shadow: 8px 8px 0 rgba(212, 175, 55, 1);
 }
+
+/* Pexeso na mobilu: bez flip hry, karty staticky otočené lícem */
+.pexeso-hint-mobile {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .pexeso-hint-desktop {
+        display: none;
+    }
+
+    .pexeso-hint-mobile {
+        display: inline;
+    }
+
+    .gamification-progress,
+    .gamification-prize-reveal {
+        display: none;
+    }
+
+    .pexeso-flip-card {
+        aspect-ratio: auto;
+        cursor: default;
+    }
+
+    .pexeso-flip-inner,
+    .pexeso-flip-inner.is-flipped {
+        transform: none;
+        transition: none;
+    }
+
+    .pexeso-flip-back {
+        display: none;
+    }
+
+    .pexeso-flip-front {
+        position: static;
+        transform: none;
+    }
+
+    .pexeso-3x3-grid {
+        gap: 12px;
+    }
+
+    .pexeso-flip-front .satellite-card {
+        padding: 20px 16px;
+    }
+
+    .pexeso-flip-front .sat-icon {
+        width: 44px;
+        height: 44px;
+    }
+}

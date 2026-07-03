@@ -33,8 +33,8 @@ const KvartetaPage: React.FC<KvartetaPageProps> = ({ onAddToCart }) => {
         <>
             <PageHead {...SEO.kvarteta} />
             <HeroSection />
-            <FeaturesSection />
             <ProductShowcase onAddToCart={onAddToCart} />
+            <FeaturesSection />
             <CardCreator onAddToCart={onAddToCart} />
             <Testimonials />
             <div id="pravidla">

@@ -31,8 +31,8 @@ const HraciKartyPage: React.FC<HraciKartyPageProps> = ({ onAddToCart }) => {
         <>
             <PageHead {...SEO.karty} />
             <HeroSectionKarty />
-            <FeaturesSectionKarty />
             <ProductShowcaseKarty onAddToCart={onAddToCart} />
+            <FeaturesSectionKarty />
             <FamilyCardConfigurator onAddToCart={onAddToCart} />
         </>
     );

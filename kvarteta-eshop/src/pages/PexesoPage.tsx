@@ -31,8 +31,8 @@ const PexesoPage: React.FC<PexesoPageProps> = ({ onAddToCart }) => {
         <>
             <PageHead {...SEO.pexeso} />
             <HeroSectionPexeso />
-            <FeaturesSectionPexeso />
             <ProductShowcasePexeso onAddToCart={onAddToCart} />
+            <FeaturesSectionPexeso />
             <PexesoCreator onAddToCart={onAddToCart} />
         </>
     );

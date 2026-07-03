@@ -12,34 +12,8 @@
     max-width: 600px;
 }
 
-.badge {
-    display: inline-block;
-    padding: 6px 16px;
-    background: rgba(197, 155, 39, 0.15);
-    /* light gold tint */
-    border: 1px solid rgba(197, 155, 39, 0.4);
-    color: var(--accent-gold-dark);
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 1px;
-    margin-bottom: 24px;
-}
-
-.hero-title {
-    font-size: 4.5rem;
-    line-height: 1.1;
-    font-weight: 800;
-    margin-bottom: 24px;
-}
-
-.hero-description {
-    font-size: 1.2rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
-    margin-bottom: 40px;
-    font-weight: 300;
-}
+/* .badge, .hero-title, .hero-description jsou globální v src/index.css
+   (sdílí je hero sekce /kvarteta, /pexeso i /karty — Past #3). */
 
 .hero-actions {
     display: flex;
@@ -195,23 +169,7 @@
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
 }
 
-/* Animations */
-.animate-fade-in-up {
-    opacity: 0;
-    animation: fadeIn 0.8s ease-out forwards;
-}
-
-.delay-100 {
-    animation-delay: 0.1s;
-}
-
-.delay-200 {
-    animation-delay: 0.2s;
-}
-
-.delay-300 {
-    animation-delay: 0.3s;
-}
+/* .animate-fade-in-up a .delay-* jsou globální v src/index.css */
 
 /* Particles */
 .floating-particles {
@@ -268,16 +226,6 @@
 }
 
 @media (max-width: 768px) {
-    .hero-title {
-        font-size: 3rem;
-        margin-bottom: 16px;
-    }
-
-    .hero-description {
-        font-size: 1.1rem;
-        margin-bottom: 30px;
-    }
-
     .btn-primary,
     .btn-secondary {
         padding: 12px 24px;
@@ -295,10 +243,6 @@
 }
 
 @media (max-width: 480px) {
-    .hero-title {
-        font-size: 2.5rem;
-    }
-
     .cards-stage {
         transform: scale(0.7);
     }

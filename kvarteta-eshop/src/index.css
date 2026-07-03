@@ -227,6 +227,77 @@ button {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+/* ══════════════════════════════════════════════════════════════════
+   SHARED HERO STYLES
+   Používají je hero sekce lazy-loaded stránek (/kvarteta, /pexeso,
+   /karty) i KartyCreator — musí být globální, jinak při hard refreshi
+   přímo na URL chybí (CSS chunk jiné stránky se nenačte). Past #3.
+   ══════════════════════════════════════════════════════════════════ */
+.badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background: rgba(197, 155, 39, 0.15);
+  /* light gold tint */
+  border: 1px solid rgba(197, 155, 39, 0.4);
+  color: var(--accent-gold-dark);
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 24px;
+}
+
+.hero-title {
+  font-size: 4.5rem;
+  line-height: 1.1;
+  font-weight: 800;
+  margin-bottom: 24px;
+}
+
+.hero-description {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 40px;
+  font-weight: 300;
+}
+
+.animate-fade-in-up {
+  opacity: 0;
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+.delay-100 {
+  animation-delay: 0.1s;
+}
+
+.delay-200 {
+  animation-delay: 0.2s;
+}
+
+.delay-300 {
+  animation-delay: 0.3s;
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 3rem;
+    margin-bottom: 16px;
+  }
+
+  .hero-description {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+}
+
 /* ══════════════════════════════════════════════════════════════════
    GLOBAL PRODUCT SHOWCASE MODALS
    ══════════════════════════════════════════════════════════════════ */

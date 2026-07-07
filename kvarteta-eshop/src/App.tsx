@@ -16,6 +16,7 @@ import './App.css'
 const KvartetaPage = lazy(() => import('./pages/KvartetaPage'))
 const PexesoPage = lazy(() => import('./pages/PexesoPage'))
 const HraciKartyPage = lazy(() => import('./pages/HraciKartyPage'))
+const ProductDetailPage = lazy(() => import('./pages/ProductDetailPage'))
 const FAQPage = lazy(() => import('./pages/FAQPage'))
 const AboutPage = lazy(() => import('./pages/AboutPage'))
 const TermsPage = lazy(() => import('./pages/TermsPage'))
@@ -143,8 +144,11 @@ function App() {
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/kvarteta" element={<KvartetaPage onAddToCart={addToCart} />} />
+                <Route path="/kvarteta/:slug" element={<ProductDetailPage category="kvarteta" />} />
                 <Route path="/pexeso" element={<PexesoPage onAddToCart={addToCart} />} />
+                <Route path="/pexeso/:slug" element={<ProductDetailPage category="pexeso" />} />
                 <Route path="/karty" element={<HraciKartyPage onAddToCart={addToCart} />} />
+                <Route path="/karty/:slug" element={<ProductDetailPage category="karty" />} />
                 <Route path="/faq" element={<FAQPage />} />
                 <Route path="/o-nas" element={<AboutPage />} />
                 <Route path="/obchodni-podminky" element={<TermsPage />} />

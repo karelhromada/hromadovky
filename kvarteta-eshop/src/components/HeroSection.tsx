@@ -25,11 +25,11 @@ const HeroSection: React.FC = () => {
     }, []);
 
     const cards = [
-        { id: 1, image: '/cards/mytologie_v4/zeus_v4_1773232441103.webp' },     // Mytologie
-        { id: 2, image: '/cards/knight_full_1.webp' },                          // Rytíři
-        { id: 3, image: '/cards/drag_full_1.webp' },                            // Draci
-        { id: 4, image: '/cards/cat_full_1.webp' },                             // Kočky
-        { id: 5, image: '/cards/baby_full_1.webp' },                           // Baby dráčci
+        { id: 1, image: '/cards/mytologie_v4/zeus_v4_1773232441103.webp', name: 'Kvarteto Mytologie a mýty — karta Zeus' },
+        { id: 2, image: '/cards/knight_full_1.webp', name: 'Kvarteto Roztomilí rytíři — ukázková karta' },
+        { id: 3, image: '/cards/drag_full_1.webp', name: 'Kvarteto Draci — ukázková karta' },
+        { id: 4, image: '/cards/cat_full_1.webp', name: 'Kvarteto Kočky bojovnice — ukázková karta' },
+        { id: 5, image: '/cards/baby_full_1.webp', name: 'Kvarteto Baby dráčci — ukázková karta' },
     ];
 
     return (
@@ -67,7 +67,7 @@ const HeroSection: React.FC = () => {
                             >
                                 <img
                                     src={card.image}
-                                    alt="Kvarteta card"
+                                    alt={card.name}
                                     className="hero-card-img"
                                     width={300}
                                     height={420}

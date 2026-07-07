@@ -21,9 +21,12 @@ function safeJsonLd(schema: JsonLdSchema): string {
     .replace(/&/g, '\\u0026');
 }
 
-export function PageHead({ title, description, path, noindex, ogImage, jsonLd }: PageHeadProps) {
+export function PageHead({ title, description, path, noindex, ogImage, ogImageWidth, ogImageHeight, jsonLd }: PageHeadProps) {
   const url = `${SITE.url}${path}`;
   const image = `${SITE.url}${ogImage ?? SITE.defaultOgImage}`;
+  // Default OG obrázek (og-image.jpg) má 1200×630; vlastní ogImage nese skutečné rozměry.
+  const imageWidth = ogImage ? ogImageWidth : 1200;
+  const imageHeight = ogImage ? ogImageHeight : 630;
   const jsonLdArray = toArray(jsonLd);
 
   return (
@@ -40,8 +43,8 @@ export function PageHead({ title, description, path, noindex, ogImage, jsonLd }:
       <meta property="og:description" content={description} />
       <meta property="og:url" content={url} />
       <meta property="og:image" content={image} />
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="630" />
+      {imageWidth && <meta property="og:image:width" content={String(imageWidth)} />}
+      {imageHeight && <meta property="og:image:height" content={String(imageHeight)} />}
 
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />

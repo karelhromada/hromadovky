@@ -281,7 +281,7 @@ const PexesoCreator: React.FC<PexesoCreatorProps> = ({ onAddToCart }) => {
                                 {/* Render uploaded photos */}
                                 {photos.map(photo => (
                                     <div key={photo.id} className="upload-slot filled" onClick={() => removePhoto(photo.id)}>
-                                        <img src={photo.url} alt="Uploaded" className="slot-image" />
+                                        <img src={photo.url} alt="Nahraná fotografie" className="slot-image" />
                                         <div className="slot-delete-overlay">Odstranit</div>
                                     </div>
                                 ))}

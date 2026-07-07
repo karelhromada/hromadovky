@@ -178,7 +178,7 @@ const LiveCardPreview = memo(({
         return (
             <div className={`live-card-wrapper back-card-preview`} style={{ '--theme-color': mainTextColor, fontFamily: safeFontFamily, willChange: 'transform', transform: 'translateZ(0)', ...extraWrapperStyles } as any}>
                 <div className="live-card" style={isMini ? { width: '100%', height: '100%' } : {}}>
-                    <img src={bgImage} className="card-image-main" style={{ filter: 'none', ...(isMini ? { width: '100%', height: '100%', objectFit: 'cover', borderRadius: '16px' } : {}) }} alt="back design" />
+                    <img src={bgImage} className="card-image-main" style={{ filter: 'none', ...(isMini ? { width: '100%', height: '100%', objectFit: 'cover', borderRadius: '16px' } : {}) }} alt="Zvolený rub karty" />
                 </div>
             </div>
         );
@@ -195,9 +195,10 @@ const LiveCardPreview = memo(({
 
                 {!hideStats && layout !== 'corners' && (
                     <div className="card-header-info" style={{ zIndex: isMini ? 10 : undefined }}>
-                        <h1 className="card-hero-name" style={{ color: mainTextColor, fontFamily: safeFontFamily }}>
+                        {/* div, ne h1 — nadpis uvnitř náhledu karty nesmí konkurovat H1 stránky (SEO) */}
+                        <div className="card-hero-name" style={{ color: mainTextColor, fontFamily: safeFontFamily }}>
                             {titleText}
-                        </h1>
+                        </div>
                     </div>
                 )}
 
@@ -218,9 +219,9 @@ const LiveCardPreview = memo(({
 
                 <div className="card-footer-info" style={{ zIndex: isMini ? 10 : undefined }}>
                     {(!hideStats && layout === 'corners') && (
-                        <h1 className="card-hero-name" style={{ color: mainTextColor, fontFamily: safeFontFamily }}>
+                        <div className="card-hero-name" style={{ color: mainTextColor, fontFamily: safeFontFamily }}>
                             {titleText}
-                        </h1>
+                        </div>
                     )}
                     {useCustomPhotos && customDescriptions[previewSlot] && (
                         <p className="card-hero-desc" style={{ fontFamily: safeFontFamily }}><i>{customDescriptions[previewSlot]}</i></p>

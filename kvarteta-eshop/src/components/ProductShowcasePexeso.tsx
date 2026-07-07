@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import type { CartItem } from '../App';
 import './ProductShowcase.css';
 import './ProductShowcasePexeso.css';
 
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { Star, Sparkles, Trophy, Shield } from 'lucide-react';
+import { pexesoProducts } from '../data/products';
 import PackagingSelector from './PackagingSelector';
 import { packagingSurcharge, type PackagingType } from '../data/packaging';
 
@@ -29,113 +30,7 @@ const backgrounds = [
     '/cards/pexeso_back_stars.webp'
 ];
 
-const products = [
-    {
-        id: 'pexeso-dinosauri',
-        name: 'Pexeso: Dinosauři',
-        description: 'Poznejte prehistorické obry v luxusní sběratelské edici s nádherně ilustrovanými kartami.',
-        price: 249,
-        themeColor: '#ff8a00',
-        back: '/cards/backs/epic_lava_flow.webp',
-        badges: [
-            { id: 1, text: 'Bestseller', icon: Trophy, color: '#ffb703' }
-        ],
-        image: [
-            '/cards/dinosauri/Alosaurus.webp', '/cards/dinosauri/Amargasaurus.webp', '/cards/dinosauri/Ankylosaurus.webp', '/cards/dinosauri/Argentinosaurus.webp',
-            '/cards/dinosauri/Baryonix.webp', '/cards/dinosauri/Brachiosaurus.webp', '/cards/dinosauri/Diplodocus.webp', '/cards/dinosauri/Giganotosaurus.webp',
-            '/cards/dinosauri/Mosasaurus.webp', '/cards/dinosauri/Pteranodon.webp', '/cards/dinosauri/Quetzalcoatlus.webp', '/cards/dinosauri/Spinosaurus.webp',
-            '/cards/dinosauri/Stegosaurus.webp', '/cards/dinosauri/Styrocaurus.webp', '/cards/dinosauri/T-rex.webp', '/cards/dinosauri/Triceratops.webp',
-            '/cards/dinosauri/Utahoraptor.webp', '/cards/dinosauri/Velociraptor.webp'
-        ]
-    },
-    {
-        id: 'pexeso-dracci',
-        name: 'Pexeso: Baby dráčci',
-        description: 'Roztomilí dráčci v pexesu pro nejmenší i velké. Skvělý trénink paměti pro každého.',
-        price: 249,
-        themeColor: '#a100ff',
-        back: '/cards/pexeso_back_stars.webp',
-        badges: [
-            { id: 1, text: 'Roztomilé', icon: Star, color: '#d946ef' }
-        ],
-        image: [
-            '/cards/baby_2.webp', '/cards/baby_1.webp', '/cards/baby_3.webp', '/cards/baby_4.webp',
-            '/cards/baby_5.webp', '/cards/baby_6.webp', '/cards/baby_7.webp', '/cards/baby_8.webp',
-            '/cards/baby_full_1.webp'
-        ]
-    },
-    {
-        id: 'pexeso-draci',
-        name: 'Pexeso: Draci',
-        description: 'Mocní a legendární Draci přinášejí do hry epické souboje. Nejmocnější bytosti v prémiovém provedení.',
-        price: 249,
-        themeColor: '#ff0033',
-        back: '/cards/dragon_scales_realistic_1.webp',
-        badges: [
-            { id: 1, text: 'Premium', icon: Shield, color: '#ef4444' }
-        ],
-        image: [
-            '/pexeso/draci/Aeris.png', '/pexeso/draci/Astrál.png', '/pexeso/draci/Bazilišek.png', '/pexeso/draci/Blesk.png',
-            '/pexeso/draci/Bouře.png', '/pexeso/draci/Golem.png', '/pexeso/draci/Hlídač světů.png', '/pexeso/draci/Hydrus.png',
-            '/pexeso/draci/Ignis Rex.png', '/pexeso/draci/Jedový trn.png', '/pexeso/draci/Knihovník.png', '/pexeso/draci/Kronos.png',
-            '/pexeso/draci/Kříšťál.png', '/pexeso/draci/Lávový král.png', '/pexeso/draci/Magmaton.png', '/pexeso/draci/Moudré oko.png',
-            '/pexeso/draci/Mrakošlap.png', '/pexeso/draci/Nebeský poutník.png', '/pexeso/draci/Nekromancer.png', '/pexeso/draci/Ohnivý pásovec.png',
-            '/pexeso/draci/Ostrý hvizd.png', '/pexeso/draci/Otec podzimu.png', '/pexeso/draci/Popelavý dech.png', '/pexeso/draci/Sonic.png',
-            '/pexeso/draci/Stařec z hor.png', '/pexeso/draci/Stínový běžec.png', '/pexeso/draci/Terrogor.png', '/pexeso/draci/Tornádo.png',
-            '/pexeso/draci/Vesmírňák.png', '/pexeso/draci/Vichřice.png', '/pexeso/draci/Vulcanus.png', '/pexeso/draci/Větrný živel.png'
-        ]
-    },
-    {
-        id: 'pexeso-kocky',
-        name: 'Pexeso: Kočky bojovnice',
-        description: 'Odvážné, mrštné a nebezpečně roztomilé kočičí válečnice. Získejte celou kočičí armádu.',
-        price: 249,
-        themeColor: '#00d2ff',
-        back: '/cards/cat_fur_silver.webp',
-        badges: [
-            { id: 1, text: 'Novinka', icon: Sparkles, color: '#0ea5e9' }
-        ],
-        image: [
-            '/cards/cat_1.webp', '/cards/cat_2.webp', '/cards/cat_3.webp', '/cards/cat_4.webp',
-            '/cards/cat_5.webp', '/cards/cat_6.webp', '/cards/cat_7.webp', '/cards/cat_8.webp',
-            '/cards/cat_full_1.webp'
-        ]
-    },
-    {
-        id: 'pexeso-frozen',
-        name: 'Pexeso: Království sněhu',
-        description: 'Mrazivě krásná pexesová sada inspirovaná světem Frozen. 16 párů karet s pohádkovými hrdiny pro skvělý trénink paměti.',
-        price: 249,
-        themeColor: '#4dc9ff',
-        back: '/cards/backs/epic_ice_crystal.webp',
-        badges: [
-            { id: 1, text: 'Novinka', icon: Sparkles, color: '#4dc9ff' }
-        ],
-        image: [
-            '/pexeso/ledove-kralovstvi/pex_1.webp', '/pexeso/ledove-kralovstvi/pex_2.webp', '/pexeso/ledove-kralovstvi/pex_3.webp', '/pexeso/ledove-kralovstvi/pex_4.webp',
-            '/pexeso/ledove-kralovstvi/pex_5.webp', '/pexeso/ledove-kralovstvi/pex_6.webp', '/pexeso/ledove-kralovstvi/pex_7.webp', '/pexeso/ledove-kralovstvi/pex_8.webp',
-            '/pexeso/ledove-kralovstvi/pex_9.webp', '/pexeso/ledove-kralovstvi/pex_10.webp', '/pexeso/ledove-kralovstvi/pex_11.webp', '/pexeso/ledove-kralovstvi/pex_12.webp',
-            '/pexeso/ledove-kralovstvi/pex_13.webp', '/pexeso/ledove-kralovstvi/pex_14.webp', '/pexeso/ledove-kralovstvi/pex_15.webp', '/pexeso/ledove-kralovstvi/pex_16.webp'
-        ]
-    },
-    {
-        id: 'pexeso-dravci',
-        name: 'Pexeso: Velcí lovci',
-        description: 'Odhalte sílu nejobávanějších dravců naší planety ve strhujícím pexesu pro odvážné.',
-        price: 249,
-        themeColor: '#8b5a2b',
-        back: '/cards/backs/epic_arcane_parchment.webp',
-        badges: [
-            { id: 1, text: 'Divoká příroda', icon: Star, color: '#d97706' }
-        ],
-        image: [
-            '/pexeso/dravci/Bengálský tygr.png', '/pexeso/dravci/Hyeny.png', '/pexeso/dravci/Jaguár.png', '/pexeso/dravci/Lev.png',
-            '/pexeso/dravci/Medvěd grizzly.png', '/pexeso/dravci/Nilský krokodýl.png', '/pexeso/dravci/Polární medvěd.png', '/pexeso/dravci/Puma.png',
-            '/pexeso/dravci/Sněžný levhart.png', '/pexeso/dravci/Tygr usuryjský.png', '/pexeso/dravci/Varan komodský.png', '/pexeso/dravci/Vlci.png',
-            '/pexeso/dravci/gepard.png', '/pexeso/dravci/krokodýl.png', '/pexeso/dravci/Černý panter.png', '/pexeso/dravci/žralok bílý.png'
-        ]
-    }
-];
+const products = pexesoProducts;
 
 const dimensions = [
     { id: 'klasicke', label: 'Klasické', desc: '50 × 50 mm', priceAdd: 0 },
@@ -275,9 +170,12 @@ const ProductCardInteractive = ({ product, onAddToCartClick }: { product: any, o
             </div>
 
             <div className="product-info" style={{ transform: "translateZ(30px)" }}>
-                <h3 className="product-name">{product.name}</h3>
+                <h3 className="product-name">
+                    <Link to={`/pexeso/${product.slug}`} className="ps-name-link">{product.name}</Link>
+                </h3>
                 <p className="product-desc">{product.description}</p>
-                
+                <Link to={`/pexeso/${product.slug}`} className="ps-detail-link">Zobrazit detail pexesa →</Link>
+
                 {/* Deck Size Selection on Card */}
                 <div className="card-size-label">Počet karet</div>
                 <div className="card-size-selector">
@@ -338,6 +236,19 @@ const ProductShowcasePexeso: React.FC<ProductShowcaseProps> = ({ onAddToCart }) 
         setSelectedDeckSize(deckSize); // Use the size selected on the card
         setPackaging('standard');
     };
+
+    // Deep-link z produktové stránky: /pexeso?pridat=<id> rovnou otevře konfiguraci sady.
+    const [searchParams, setSearchParams] = useSearchParams();
+    useEffect(() => {
+        const id = searchParams.get('pridat');
+        if (!id) return;
+        const product = products.find((p) => p.id === id);
+        if (product) handleAddToCartClick(product, deckSizeOptions[1]);
+        const next = new URLSearchParams(searchParams);
+        next.delete('pridat');
+        setSearchParams(next, { replace: true });
+        // eslint-disable-next-line react-hooks/exhaustive-deps -- jen při mountu
+    }, []);
 
     const confirmAddToCart = () => {
         if (selectedProduct && selectedBack && selectedSize && selectedDeckSize) {

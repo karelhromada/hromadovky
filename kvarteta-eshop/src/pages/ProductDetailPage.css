@@ -1,0 +1,242 @@
+/* Detail produktu (/kvarteta|/karty|/pexeso/<slug>).
+   Vlastní pdp-* třídy + globální utility (.container, .badge, .btn-primary/.btn-secondary,
+   .text-gradient-gold) — viz CLAUDE.md Past #3: nic z CSS cizích lazy chunků. */
+
+.pdp {
+    padding: 120px 0 80px;
+}
+
+.pdp-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--text-secondary, #6b7280);
+    margin-bottom: 32px;
+}
+
+.pdp-breadcrumb a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.pdp-breadcrumb a:hover {
+    color: var(--accent-gold, #c59b27);
+}
+
+.pdp-breadcrumb-current {
+    color: var(--text-primary, #121826);
+    font-weight: 600;
+}
+
+.pdp-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 4fr);
+    gap: 48px;
+    align-items: start;
+}
+
+/* --- Galerie --- */
+.pdp-main-image {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding: 24px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 20px 60px -30px var(--pdp-glow, rgba(0, 0, 0, 0.3));
+}
+
+.pdp-main-image img {
+    max-width: 100%;
+    max-height: 520px;
+    width: auto;
+    height: auto;
+    border-radius: 14px;
+    box-shadow: 0 12px 32px rgba(18, 24, 38, 0.18);
+}
+
+.pdp-thumbs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.pdp-thumb {
+    padding: 4px;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.55);
+    cursor: pointer;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.pdp-thumb:hover {
+    transform: translateY(-2px);
+}
+
+.pdp-thumb.active {
+    border-color: var(--accent-gold, #c59b27);
+}
+
+.pdp-thumb img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+}
+
+/* --- Info panel --- */
+.pdp-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.pdp-title {
+    font-size: 2.4rem;
+    line-height: 1.15;
+    margin: 0;
+}
+
+.pdp-price {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--accent-gold, #c59b27);
+    margin: 0;
+}
+
+.pdp-price-note {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-secondary, #6b7280);
+}
+
+.pdp-short {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--text-secondary, #4b5563);
+    margin: 0;
+}
+
+.pdp-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 8px 0;
+}
+
+.pdp-cta .btn-primary,
+.pdp-cta .btn-secondary {
+    text-decoration: none;
+}
+
+.pdp-specs {
+    list-style: none;
+    width: 100%;
+    margin: 8px 0 0;
+    padding: 20px 24px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.55);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pdp-specs li {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    font-size: 0.95rem;
+}
+
+.pdp-spec-label {
+    color: var(--text-secondary, #6b7280);
+}
+
+.pdp-spec-value {
+    font-weight: 600;
+    text-align: right;
+}
+
+/* --- Dlouhý popis --- */
+.pdp-desc {
+    max-width: 760px;
+    margin: 64px auto 0;
+}
+
+.pdp-desc h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.pdp-desc p {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: var(--text-secondary, #4b5563);
+    margin-bottom: 16px;
+}
+
+/* --- Související produkty --- */
+.pdp-related {
+    margin-top: 64px;
+}
+
+.pdp-related h2 {
+    font-size: 1.6rem;
+    margin-bottom: 24px;
+}
+
+.pdp-related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 20px;
+}
+
+.pdp-related-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.55);
+    text-decoration: none;
+    color: var(--text-primary, #121826);
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pdp-related-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 32px rgba(18, 24, 38, 0.12);
+}
+
+.pdp-related-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+/* --- Mobil --- */
+@media (max-width: 900px) {
+    .pdp {
+        padding: 96px 0 56px;
+    }
+
+    .pdp-layout {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .pdp-title {
+        font-size: 1.9rem;
+    }
+
+    .pdp-main-image img {
+        max-height: 400px;
+    }
+}

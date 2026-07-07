@@ -1,11 +1,11 @@
 {
-    "buildCommand": "PUPPETEER_SKIP_DOWNLOAD=true npm install && npm run build",
+    "buildCommand": "PUPPETEER_SKIP_DOWNLOAD=true npm install && npm run build:full",
     "outputDirectory": "dist",
     "framework": "vite",
     "rewrites": [
         {
             "source": "/(.*)",
-            "destination": "/"
+            "destination": "/spa-fallback.html"
         }
     ],
     "headers": [

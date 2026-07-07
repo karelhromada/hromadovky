@@ -1,3 +1,13 @@
+import {
+  CATEGORY_INFO,
+  PEXESO_PRICE_RANGE,
+  listProducts,
+  productPath,
+  type CatalogProduct,
+  type ProductCategory,
+} from './catalog';
+import { faqs } from './faq';
+
 export const SITE = {
   url: 'https://www.hromadovky.cz',
   name: 'Hromadovky',
@@ -12,6 +22,9 @@ export interface PageSeo {
   path: string;
   noindex?: boolean;
   ogImage?: string;
+  /** Intrinsic rozměry ogImage; bez nich PageHead použije 1200×630 defaultního OG obrázku. */
+  ogImageWidth?: number;
+  ogImageHeight?: number;
   jsonLd?: JsonLdSchema | JsonLdSchema[];
 }
 
@@ -25,32 +38,84 @@ const organizationLd = {
   address: { '@type': 'PostalAddress', addressCountry: 'CZ' },
 };
 
-interface ProductLdInput {
-  name: string;
-  description: string;
-  path: string;
-  image: string;
-  lowPrice: number;
-  highPrice: number;
-}
+const SELLER = { '@type': 'Organization', name: 'Hromadovky' } as const;
 
-const productJsonLd = ({ name, description, path, image, lowPrice, highPrice }: ProductLdInput) => ({
+// Kategorie = ItemList odkazující na produktové stránky; Product schéma žije na detailech.
+const categoryItemListLd = (category: ProductCategory) => ({
   '@context': 'https://schema.org',
-  '@type': 'Product',
-  name,
-  description,
-  image: `${SITE.url}${image}`,
-  url: `${SITE.url}${path}`,
-  brand: { '@type': 'Brand', name: 'Hromadovky' },
-  offers: {
-    '@type': 'AggregateOffer',
-    priceCurrency: 'CZK',
-    lowPrice,
-    highPrice,
-    availability: 'https://schema.org/InStock',
-    seller: { '@type': 'Organization', name: 'Hromadovky' },
-  },
+  '@type': 'ItemList',
+  itemListElement: listProducts(category).map((product, idx) => ({
+    '@type': 'ListItem',
+    position: idx + 1,
+    name: product.name,
+    url: `${SITE.url}${productPath(category, product)}`,
+  })),
 });
+
+const faqPageLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+};
+
+const truncateDescription = (text: string, max = 155): string => {
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max);
+  return `${cut.slice(0, cut.lastIndexOf(' '))}…`;
+};
+
+/** SEO data pro detail produktu (/kvarteta/<slug> apod.) vč. Product + Breadcrumb schémat. */
+export const productPageSeo = (category: ProductCategory, product: CatalogProduct): PageSeo => {
+  const path = productPath(category, product);
+  const info = CATEGORY_INFO[category];
+  const offers =
+    category === 'pexeso'
+      ? {
+          '@type': 'AggregateOffer',
+          priceCurrency: 'CZK',
+          lowPrice: PEXESO_PRICE_RANGE.low,
+          highPrice: PEXESO_PRICE_RANGE.high,
+          availability: 'https://schema.org/InStock',
+          seller: SELLER,
+        }
+      : {
+          '@type': 'Offer',
+          priceCurrency: 'CZK',
+          price: product.price,
+          availability: 'https://schema.org/InStock',
+          seller: SELLER,
+        };
+  return {
+    title: `${product.name} | Hromadovky`,
+    description: truncateDescription(product.description),
+    path,
+    // encodeURI kvůli mezerám a diakritice v názvech souborů (např. /pexeso/draci/Ignis Rex.png)
+    ogImage: encodeURI(product.gallery[0] ?? SITE.defaultOgImage),
+    ogImageWidth: product.imgWidth,
+    ogImageHeight: product.imgHeight,
+    jsonLd: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Product',
+        name: product.name,
+        description: product.description,
+        image: product.gallery.slice(0, 4).map((img) => `${SITE.url}${encodeURI(img)}`),
+        url: `${SITE.url}${path}`,
+        brand: { '@type': 'Brand', name: 'Hromadovky' },
+        offers,
+      },
+      breadcrumbLd([
+        { name: 'Domů', path: '/' },
+        { name: info.label, path: info.path },
+        { name: product.name, path },
+      ]),
+    ],
+  };
+};
 
 const breadcrumbLd = (items: ReadonlyArray<{ name: string; path: string }>) => ({
   '@context': 'https://schema.org',
@@ -78,14 +143,7 @@ export const SEO = {
       'Vyberte si z kolekce ručně malovaných kvartet pro děti i dospělé. Princezny, rytíři, draci, vesmír a další. Kvalitní tisk a rychlé dodání po ČR.',
     path: '/kvarteta',
     jsonLd: [
-      productJsonLd({
-        name: 'Kvarteta Hromadovky',
-        description: 'Originální česká kvarteta s ručně malovanou grafikou. Více motivů na výběr.',
-        path: '/kvarteta',
-        image: '/og-image.jpg',
-        lowPrice: 349,
-        highPrice: 349,
-      }),
+      categoryItemListLd('kvarteta'),
       breadcrumbLd([
         { name: 'Domů', path: '/' },
         { name: 'Kvarteta', path: '/kvarteta' },
@@ -98,14 +156,7 @@ export const SEO = {
       'Krásně ilustrovaná pexesa pro děti i dospělé. Trénujte paměť s motivy zvířat, princezen, rytířů a dalších. Český produkt, kvalitní tisk.',
     path: '/pexeso',
     jsonLd: [
-      productJsonLd({
-        name: 'Pexesa Hromadovky',
-        description: 'Ručně malovaná česká pexesa pro celou rodinu, varianty 16 / 32 / 64 karet.',
-        path: '/pexeso',
-        image: '/og-image.jpg',
-        lowPrice: 199,
-        highPrice: 399,
-      }),
+      categoryItemListLd('pexeso'),
       breadcrumbLd([
         { name: 'Domů', path: '/' },
         { name: 'Pexesa', path: '/pexeso' },
@@ -118,14 +169,7 @@ export const SEO = {
       'Originální hrací karty s ručně malovanou grafikou. Krásný design, kvalitní papír. Vyberte si motiv pro každou hru i jako dárek.',
     path: '/karty',
     jsonLd: [
-      productJsonLd({
-        name: 'Hrací karty Hromadovky',
-        description: 'Designové české hrací karty s ručně malovanou grafikou.',
-        path: '/karty',
-        image: '/og-image.jpg',
-        lowPrice: 249,
-        highPrice: 349,
-      }),
+      categoryItemListLd('karty'),
       breadcrumbLd([
         { name: 'Domů', path: '/' },
         { name: 'Hrací karty', path: '/karty' },
@@ -137,6 +181,7 @@ export const SEO = {
     description:
       'Odpovědi na nejčastější otázky o objednávce, dodání, vlastních kartách s fotkami a vrácení zboží. Vše, co potřebujete vědět o Hromadovkách.',
     path: '/faq',
+    jsonLd: faqPageLd,
   },
   about: {
     title: 'O nás — příběh rodinných Hromadovek',
@@ -194,9 +239,14 @@ export const SEO = {
   },
 } as const satisfies Record<string, PageSeo>;
 
-// Paths exposed to crawlers. NOTE: scripts/routes.mjs duplicates this list (with lastmod
-// metadata) because Node ESM cannot import the TS source. Keep both lists in sync when
-// adding/removing routes.
-export const INDEXABLE_PATHS: readonly string[] = Object.values<PageSeo>(SEO)
-  .filter((p) => !p.noindex)
-  .map((p) => p.path);
+// Paths exposed to crawlers. NOTE: scripts/routes.mjs duplicates the STATIC list (with
+// lastmod metadata) because Node ESM cannot import the TS source — keep those in sync when
+// adding/removing static routes. Product paths are derived from products.ts on both sides.
+export const INDEXABLE_PATHS: readonly string[] = [
+  ...Object.values<PageSeo>(SEO)
+    .filter((p) => !p.noindex)
+    .map((p) => p.path),
+  ...(['kvarteta', 'karty', 'pexeso'] as const).flatMap((category) =>
+    listProducts(category).map((product) => productPath(category, product)),
+  ),
+];

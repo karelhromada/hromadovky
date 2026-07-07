@@ -7,15 +7,15 @@ import { SEO } from '../data/seo';
 import './HomePage.css';
 
 const epicCards = [
-    { id: 9, src: '/cards/mytologie_v4/thor_v4_1773232978954.webp', x: 0, y: -380, rot: 0 },
-    { id: 1, src: '/cards/baby_full_1.webp', x: -350, y: -280, rot: -15 },
-    { id: 2, src: '/cards/drag_full_1.webp', x: 350, y: -280, rot: 12 },
-    { id: 3, src: '/cards/cat_full_1.webp', x: -500, y: 50, rot: -8 },
-    { id: 4, src: '/cards/dino_full_1.webp', x: 500, y: 50, rot: 15 },
-    { id: 5, src: '/cards/knight_full_1.webp', x: -380, y: 380, rot: -5 },
-    { id: 6, src: '/cards/epicka-draci-edice/Cervene_Eso.webp', x: 380, y: 380, rot: 8 },
-    { id: 7, src: '/cards/epicka-draci-edice/Kule_Kral.webp', x: -150, y: 480, rot: -10 },
-    { id: 8, src: '/cards/carodejnice/Cervene_Eso.webp', x: 150, y: 480, rot: 5 },
+    { id: 9, src: '/cards/mytologie_v4/thor_v4_1773232978954.webp', x: 0, y: -380, rot: 0, name: 'Kvarteto Mytologie a mýty — karta Thór' },
+    { id: 1, src: '/cards/baby_full_1.webp', x: -350, y: -280, rot: -15, name: 'Kvarteto Baby dráčci — ukázková karta' },
+    { id: 2, src: '/cards/drag_full_1.webp', x: 350, y: -280, rot: 12, name: 'Kvarteto Draci — ukázková karta' },
+    { id: 3, src: '/cards/cat_full_1.webp', x: -500, y: 50, rot: -8, name: 'Kvarteto Kočky bojovnice — ukázková karta' },
+    { id: 4, src: '/cards/dino_full_1.webp', x: 500, y: 50, rot: 15, name: 'Kvarteto Dinosauři — ukázková karta' },
+    { id: 5, src: '/cards/knight_full_1.webp', x: -380, y: 380, rot: -5, name: 'Kvarteto Roztomilí rytíři — ukázková karta' },
+    { id: 6, src: '/cards/epicka-draci-edice/Cervene_Eso.webp', x: 380, y: 380, rot: 8, name: 'Hrací karty Epická dračí edice — červené eso' },
+    { id: 7, src: '/cards/epicka-draci-edice/Kule_Kral.webp', x: -150, y: 480, rot: -10, name: 'Hrací karty Epická dračí edice — kulový král' },
+    { id: 8, src: '/cards/carodejnice/Cervene_Eso.webp', x: 150, y: 480, rot: 5, name: 'Hrací karty Magické čarodějnice — červené eso' },
 ];
 
 const HomePage: React.FC = () => {
@@ -99,7 +99,7 @@ const HomePage: React.FC = () => {
                                 delay: isOpen ? (index * 0.05) : 0
                             }}
                         >
-                            <img src={card.src} alt={`Karta ${card.id}`} />
+                            <img src={card.src} alt={card.name} loading="lazy" decoding="async" />
                         </motion.div>
                     ))}
 

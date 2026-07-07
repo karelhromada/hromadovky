@@ -134,10 +134,11 @@ const ResetPasswordPage: React.FC = () => {
         ) : (
           <form onSubmit={handleSubmit} className="auth-form" noValidate>
             <div className="form-group">
-              <label>Nové heslo</label>
+              <label htmlFor="reset-password">Nové heslo</label>
               <div className="input-with-icon">
                 <Lock size={18} className="input-icon" />
                 <input
+                  id="reset-password"
                   type="password"
                   value={password}
                   onChange={e => setPassword(e.target.value)}
@@ -154,10 +155,11 @@ const ResetPasswordPage: React.FC = () => {
             </div>
 
             <div className="form-group">
-              <label>Potvrzení hesla</label>
+              <label htmlFor="reset-confirm">Potvrzení hesla</label>
               <div className="input-with-icon">
                 <Lock size={18} className="input-icon" />
                 <input
+                  id="reset-confirm"
                   type="password"
                   value={confirm}
                   onChange={e => setConfirm(e.target.value)}

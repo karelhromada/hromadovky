@@ -1,5 +1,5 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import Navbar from './components/Navbar'
 import Cart from './components/Cart'
@@ -7,6 +7,7 @@ import Footer from './components/Footer'
 import CookieBanner from './components/CookieBanner'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import HomePage from './pages/HomePage'
+import NotFoundPage from './pages/NotFoundPage'
 import { RequireAdmin } from './components/RequireAdmin'
 import type { PackagingType } from './data/packaging'
 import './App.css'
@@ -160,8 +161,8 @@ function App() {
                     </RequireAdmin>
                   }
                 />
-                {/* Neznámá URL → domů (místo prázdného <main>). */}
-                <Route path="*" element={<Navigate to="/" replace />} />
+                {/* Neznámá URL → reálná 404 stránka (noindex), ne tichý redirect. */}
+                <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </Suspense>
             </ErrorBoundary>

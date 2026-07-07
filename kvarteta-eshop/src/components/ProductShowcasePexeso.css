@@ -2,27 +2,11 @@
     padding: 100px 5%;
 }
 
-.section-header {
-    margin-bottom: 60px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+/* .section-header / .section-title / .section-subtitle jsou globální v App.css (Past #3),
+   tady se neduplikují. Responzivní override .section-title zůstává v media query níže. */
 
 .text-center {
     text-align: center;
-}
-
-.section-title {
-    font-size: 3rem;
-    font-weight: 800;
-    margin-bottom: 16px;
-}
-
-.section-subtitle {
-    color: var(--text-secondary);
-    max-width: 600px;
-    font-size: 1.1rem;
 }
 
 .product-grid {

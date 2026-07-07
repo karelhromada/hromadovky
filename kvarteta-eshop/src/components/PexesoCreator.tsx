@@ -43,7 +43,7 @@ const PexesoCreator: React.FC<PexesoCreatorProps> = ({ onAddToCart }) => {
     const [deckSize, setDeckSize] = useState<DeckSize>(32);
     const [selectedSize, setSelectedSize] = useState<typeof dimensions[0]>(dimensions[0]);
     const [photos, setPhotos] = useState<UploadedPhoto[]>([]);
-    const [selectedBack, setSelectedBack] = useState<string>(PEXESO_BACKS[0].url);
+    const [selectedBack, setSelectedBack] = useState<string>(PEXESO_BACKS[0]?.url ?? '');
     const [packaging, setPackaging] = useState<PackagingType>('standard');
     const [leaveDesignToUs, setLeaveDesignToUs] = useState(false);
     const [customThemeDesc, setCustomThemeDesc] = useState('');
@@ -124,7 +124,7 @@ const PexesoCreator: React.FC<PexesoCreatorProps> = ({ onAddToCart }) => {
                 name: `Vlastní pexeso (${deckSize} karet) ${leaveDesignToUs ? '- Ilustrovaný design' : ''}`,
                 description: desc,
                 price: finalPrice,
-                image: leaveDesignToUs ? '/cards/magic_runes_1.webp' : (photos[0]?.url || '/cards/placeholder.webp'),
+                image: leaveDesignToUs ? '/cards/pexeso_drag_1.webp' : (photos[0]?.url || '/cards/card_back_pattern.webp'),
                 themeColor: '#eab308',
                 size: `${selectedSize.label} (${selectedSize.desc})`,
                 selectedBack: backName,

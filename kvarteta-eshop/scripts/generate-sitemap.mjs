@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { INDEXABLE_ROUTES } from './routes.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const SITE = 'https://hromadovky.cz';
+const SITE = 'https://www.hromadovky.cz';
 const PUBLIC_DIR = resolve(__dirname, '..', 'public');
 
 const xml = `<?xml version="1.0" encoding="UTF-8"?>

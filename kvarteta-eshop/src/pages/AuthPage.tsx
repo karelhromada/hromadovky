@@ -548,10 +548,11 @@ const AuthPage: React.FC = () => {
             )}
 
             <div className="form-group">
-              <label>E-mail</label>
+              <label htmlFor="auth-email">E-mail</label>
               <div className="input-with-icon">
                 <Mail size={18} className="input-icon" />
                 <input
+                  id="auth-email"
                   type="email"
                   name="email"
                   value={formData.email}
@@ -565,10 +566,11 @@ const AuthPage: React.FC = () => {
 
             {!isForgot && (
               <div className="form-group">
-                <label>Heslo</label>
+                <label htmlFor="auth-password">Heslo</label>
                 <div className="input-with-icon">
                   <Lock size={18} className="input-icon" />
                   <input
+                    id="auth-password"
                     type="password"
                     name="password"
                     value={formData.password}

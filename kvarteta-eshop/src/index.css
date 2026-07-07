@@ -231,7 +231,7 @@ button {
 /* ══════════════════════════════════════════════════════════════════
    SHARED HERO STYLES
    Používají je hero sekce lazy-loaded stránek (/kvarteta, /pexeso,
-   /karty) i KartyCreator — musí být globální, jinak při hard refreshi
+   /karty) — musí být globální, jinak při hard refreshi
    přímo na URL chybí (CSS chunk jiné stránky se nenačte). Past #3.
    ══════════════════════════════════════════════════════════════════ */
 .badge {

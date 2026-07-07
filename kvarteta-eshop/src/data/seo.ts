@@ -1,5 +1,5 @@
 export const SITE = {
-  url: 'https://hromadovky.cz',
+  url: 'https://www.hromadovky.cz',
   name: 'Hromadovky',
   defaultOgImage: '/og-image.jpg',
 } as const;
@@ -184,6 +184,12 @@ export const SEO = {
     title: 'Administrace faktur | Hromadovky',
     description: 'Administrace faktur.',
     path: '/admin/invoices',
+    noindex: true,
+  },
+  notFound: {
+    title: 'Stránka nenalezena (404) | Hromadovky',
+    description: 'Požadovaná stránka neexistuje nebo byla přesunuta.',
+    path: '/404',
     noindex: true,
   },
 } as const satisfies Record<string, PageSeo>;

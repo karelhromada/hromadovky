@@ -1,6 +1,5 @@
 /**
- * Utility for generating CZ/SK Standard Payment Descriptor (SPAYD) strings
- * and QR payment image URLs.
+ * Utility for generating QR payment image URLs (Paylibo API).
  */
 
 export interface QRPaymentOptions {
@@ -43,19 +42,4 @@ export const getQRPaymentImageUrl = (options: QRPaymentOptions): string => {
     });
 
     return `${baseUrl}?${params.toString()}`;
-};
-
-/**
- * Generates the raw SPAYD string (e.g. for custom QR generators)
- */
-export const generateSPAYDString = (options: QRPaymentOptions): string => {
-    const { account, amount, currency, variableSymbol, message } = options;
-    
-    // Basic SPAYD format: SPD*1.0*ACC:account*AM:amount*CC:currency*VS:vs*MSG:msg
-    let spayd = `SPD*1.0*ACC:${account}*AM:${amount.toFixed(2)}*CC:${currency}`;
-    
-    if (variableSymbol) spayd += `*VS:${variableSymbol}`;
-    if (message) spayd += `*MSG:${message.substring(0, 60)}`;
-    
-    return spayd;
 };

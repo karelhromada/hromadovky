@@ -13,4 +13,4 @@ Disallow: /login
 Disallow: /reset-password
 Disallow: /checkout
 
-Sitemap: https://hromadovky.cz/sitemap.xml
+Sitemap: https://www.hromadovky.cz/sitemap.xml

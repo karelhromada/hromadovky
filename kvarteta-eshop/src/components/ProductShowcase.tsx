@@ -142,12 +142,12 @@ const ProductCardInteractive = ({ product, onAddToCartClick }: { product: any, o
 
 const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onAddToCart }) => {
     const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
-    const [selectedBack, setSelectedBack] = useState<string>(backgrounds[0].url);
+    const [selectedBack, setSelectedBack] = useState<string>(backgrounds[0]?.url ?? '');
     const [packaging, setPackaging] = useState<PackagingType>('standard');
 
     const handleAddToCartClick = (product: any) => {
         setSelectedProduct(product);
-        setSelectedBack(backgrounds[0].url);
+        setSelectedBack(backgrounds[0]?.url ?? '');
         setPackaging('standard');
     };
 

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Upload, ZoomIn, Trash2, Check, CreditCard, ChevronRight } from 'lucide-react';
-import { backgrounds } from '../data/backgrounds';
+import { backgrounds, getBackgroundsForGame } from '../data/backgrounds';
 import './FamilyCardConfigurator.css';
 import { uploadOrderPhoto } from '../lib/storage';
 import { renderAndUploadBatch, type RenderTask } from '../lib/cardExporter';
@@ -94,7 +94,8 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
 
     const [deck, setDeck] = useState<CardConfig[]>(initialDeck);
     const [selectedCardId, setSelectedCardId] = useState<string>(initialDeck[0].id);
-    const [selectedBackUrl, setSelectedBackUrl] = useState<string>(backgrounds[0].url);
+    // Rub pro hrací karty (63×105), NE globální backgrounds[0] (což je kvarteta 65×95).
+    const [selectedBackUrl, setSelectedBackUrl] = useState<string>(() => getBackgroundsForGame('hraci_karty')[0]?.url ?? '');
     const [packaging, setPackaging] = useState<PackagingType>('standard');
     const [isDragging, setIsDragging] = useState(false);
     const [activeSuitId, setActiveSuitId] = useState<string>('H');
@@ -255,7 +256,7 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
                 name: 'Rodinné hrací karty na zakázku',
                 description: `Vlastní sada (${deck.length} karet${includeJoker ? ', včetně 4 žolíků' : ''}) s vašimi fotografiemi.`,
                 price: FAMILY_BASE_PRICE + packagingSurcharge(packaging),
-                image: selectedCard.imageUrl || backgrounds[0].url,
+                image: selectedCard.imageUrl || getBackgroundsForGame('hraci_karty')[0]?.url || '',
                 themeColor: '#d4af37',
                 selectedBack: backName,
                 selectedBackUrl: selectedBackUrl,

@@ -12,7 +12,25 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
 
-  <!-- Title and meta are managed by react-helmet-async per route (see PageHead). -->
+  <!-- Static SEO fallback (homepage values). Per-route tags come from react-helmet-async
+       (see PageHead); the prerender step dedupes so Helmet values win on prerendered routes. -->
+  <title>Hromadovky — české hrací karty, kvarteta, pexesa</title>
+  <meta name="description"
+    content="Originální české hrací karty, kvarteta a pexesa s ručně malovanou grafikou. Kvalitní tisk, rychlé dodání. Vytvořte si i karty s vlastními fotkami." />
+  <link rel="canonical" href="https://www.hromadovky.cz/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Hromadovky" />
+  <meta property="og:locale" content="cs_CZ" />
+  <meta property="og:title" content="Hromadovky — české hrací karty, kvarteta, pexesa" />
+  <meta property="og:description"
+    content="Originální české hrací karty, kvarteta a pexesa s ručně malovanou grafikou. Kvalitní tisk, rychlé dodání." />
+  <meta property="og:url" content="https://www.hromadovky.cz/" />
+  <meta property="og:image" content="https://www.hromadovky.cz/og-image.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Hromadovky — české hrací karty, kvarteta, pexesa" />
+  <meta name="twitter:description"
+    content="Originální české hrací karty, kvarteta a pexesa s ručně malovanou grafikou. Kvalitní tisk, rychlé dodání." />
+  <meta name="twitter:image" content="https://www.hromadovky.cz/og-image.jpg" />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />

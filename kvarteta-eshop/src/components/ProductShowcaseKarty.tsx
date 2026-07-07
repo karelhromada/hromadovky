@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import type { CartItem } from '../App';
 import './ProductShowcase.css'; // sdílené .ps-* třídy patičky (cena + košík) – stejně jako Pexeso; jinak se na hard-refresh /karty nenačtou
 import './ProductShowcaseKarty.css';
@@ -41,6 +42,19 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
         setSelectedBack(KARTY_BACKS[0].url);
         setPackaging('standard');
     };
+
+    // Deep-link z produktové stránky: /karty?pridat=<id> rovnou otevře výběr rubu.
+    const [searchParams, setSearchParams] = useSearchParams();
+    React.useEffect(() => {
+        const id = searchParams.get('pridat');
+        if (!id) return;
+        const product = products.find((p) => p.id === id);
+        if (product) handleAddToCart(product);
+        const next = new URLSearchParams(searchParams);
+        next.delete('pridat');
+        setSearchParams(next, { replace: true });
+        // eslint-disable-next-line react-hooks/exhaustive-deps -- jen při mountu
+    }, []);
 
     const confirmAddToCart = () => {
         if (onAddToCart && selectedProductForCart) {
@@ -96,7 +110,10 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
                         </div>
 
                         <div className="karty-deck-info">
-                            <h3>{product.name}</h3>
+                            <h3>
+                                <Link to={`/karty/${product.slug}`} className="ps-name-link">{product.name}</Link>
+                            </h3>
+                            <Link to={`/karty/${product.slug}`} className="ps-detail-link">Zobrazit detail sady →</Link>
                             {/* Removed product description to make room for viewing cards */}
                             <div style={{ marginBottom: '24px', marginTop: '16px' }}>
                                 <button

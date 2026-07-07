@@ -121,10 +121,19 @@ try {
   await new Promise((r) => setTimeout(r, 500)); // grace period for static asset binding
   console.log('[prerender] preview ready, launching browser…');
 
-  const browser = await puppeteer.launch({
+  // Bundled Chromium first (local dev cache); fall back to the system-installed
+  // Chrome (GitHub Actions runners ship one, PUPPETEER_SKIP_DOWNLOAD=true skips the bundle).
+  const launchOpts = {
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
-  });
+  };
+  let browser;
+  try {
+    browser = await puppeteer.launch(launchOpts);
+  } catch (launchErr) {
+    console.log(`[prerender] bundled Chromium unavailable (${launchErr.message.split('\n')[0]}), trying system Chrome…`);
+    browser = await puppeteer.launch({ ...launchOpts, channel: 'chrome' });
+  }
 
   for (const route of ROUTES) {
     const url = `http://localhost:${PORT}${route}`;

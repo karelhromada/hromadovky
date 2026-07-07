@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import type { CartItem } from '../App';
 import PackagingSelector from './PackagingSelector';
 import { packagingSurcharge, type PackagingType } from '../data/packaging';
@@ -80,7 +81,9 @@ const ProductCardInteractive = ({ product, onAddToCartClick }: { product: any, o
                     <img
                         key={`${product.id}-${idx}`}
                         src={imgUrl}
-                        alt={`${product.name} card ${idx}`}
+                        alt={`${product.name} — ukázková karta ${idx + 1}`}
+                        loading={idx === 0 ? undefined : 'lazy'}
+                        decoding="async"
                         className="ps-real-image ps-main-image"
                         style={{ 
                             opacity: idx === activeIndex ? 1 : 0,
@@ -95,6 +98,8 @@ const ProductCardInteractive = ({ product, onAddToCartClick }: { product: any, o
                     <>
                         <img
                             src={shuffledImages[(activeIndex + 1) % shuffledImages.length]}
+                            loading="lazy"
+                            decoding="async"
                             className="ps-real-image ps-fanned ps-fanned-left"
                             style={{ 
                                 opacity: isHovered ? 0.9 : 0,
@@ -105,6 +110,8 @@ const ProductCardInteractive = ({ product, onAddToCartClick }: { product: any, o
                         />
                         <img
                             src={shuffledImages[(activeIndex + 2) % shuffledImages.length]}
+                            loading="lazy"
+                            decoding="async"
                             className="ps-real-image ps-fanned ps-fanned-right"
                             style={{ 
                                 opacity: isHovered ? 0.9 : 0,
@@ -118,8 +125,11 @@ const ProductCardInteractive = ({ product, onAddToCartClick }: { product: any, o
             </div>
 
             <div className="ps-info">
-                <h3 className="ps-name">{product.name}</h3>
+                <h3 className="ps-name">
+                    <Link to={`/kvarteta/${product.slug}`} className="ps-name-link">{product.name}</Link>
+                </h3>
                 <p className="ps-desc">{product.description}</p>
+                <Link to={`/kvarteta/${product.slug}`} className="ps-detail-link">Zobrazit detail sady →</Link>
                 <div className="ps-footer">
                     <span className="ps-price">{product.price} Kč</span>
                     <button
@@ -144,12 +154,25 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onAddToCart }) => {
     const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
     const [selectedBack, setSelectedBack] = useState<string>(backgrounds[0]?.url ?? '');
     const [packaging, setPackaging] = useState<PackagingType>('standard');
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const handleAddToCartClick = (product: any) => {
         setSelectedProduct(product);
         setSelectedBack(backgrounds[0]?.url ?? '');
         setPackaging('standard');
     };
+
+    // Deep-link z produktové stránky: /kvarteta?pridat=<id> rovnou otevře výběr rubu.
+    useEffect(() => {
+        const id = searchParams.get('pridat');
+        if (!id) return;
+        const product = products.find((p) => p.id === id);
+        if (product) handleAddToCartClick(product);
+        const next = new URLSearchParams(searchParams);
+        next.delete('pridat');
+        setSearchParams(next, { replace: true });
+        // eslint-disable-next-line react-hooks/exhaustive-deps -- jen při mountu
+    }, []);
 
     const confirmAddToCart = () => {
         if (selectedProduct && selectedBack) {

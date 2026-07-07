@@ -12,7 +12,12 @@
   Každý **push na `main`** spustí `vercel pull/build/deploy --prebuilt --prod`
   (token v GH secretu `VERCEL_TOKEN`). **Není** žádná Vercel native git integrace — když
   workflow nepoběží, NIC se nenasadí.
-- **Build:** `cd kvarteta-eshop && npm run build` (prebuild krok automaticky spustí `sync-backs`).
+- **Build:** produkce staví `npm run build:full` = `build` (tsc + vite, prebuild spustí
+  `sync-backs` + `generate-sitemap`) **+ `prerender`** (Puppeteer vyrenderuje každou
+  indexovatelnou routu do `dist/<route>/index.html` — crawleři tak dostanou plné HTML).
+  Prerender na CI používá systémový Chrome GH runneru (fallback `channel: 'chrome'`
+  v `scripts/prerender.mjs`); lokálně cached Chromium. Nouzové vypnutí: `DISABLE_PRERENDER=1`.
+  Selhání prerenderu = selhání buildu = deploy se nenasadí (viditelné v Actions).
 
 ---
 
@@ -58,6 +63,27 @@ Pipeline (zdroj pravdy → webp → web):
    Orientačně: ~2,5 MB PNG → ~150 KB webp při zachování 956×1596 px.
 3. V kódu odkazuj **absolutní cestou** z public rootu, např. `/cards/rodina/vesela_rodina.webp`.
 4. Smaž původní PNG, commitni webp, **push na `main`** (spustí deploy).
+
+---
+
+## ★ Produktové stránky & SEO (od 2026-07)
+
+Každý produkt má vlastní indexovatelnou URL `/kvarteta|/karty|/pexeso/<slug>`
+(`ProductDetailPage.tsx`, data `src/data/catalog.ts` + `src/data/seo.ts::productPageSeo`).
+
+**Při přidání nového produktu do `src/data/products.ts` POVINNĚ:**
+1. Přidej pole `slug` (kebab-case, unikátní v rámci kategorie) a `longDescription`
+   (~150 slov unikátního textu, `\n\n` odděluje odstavce). Bez slugu **spadne build**
+   (guard v `scripts/routes.mjs` porovnává počet `id:` vs `slug:` per export).
+2. Doplň rozměry prvního obrázku do `IMG_DIMS` v `src/data/catalog.ts`
+   (změř: `node -e "require('sharp')('public/<cesta>').metadata().then(m=>console.log(m.width,m.height))"`).
+3. Sitemapa + prerender + ItemList schéma se vygenerují automaticky (routes.mjs čte slugy
+   z products.ts). Pexeso produkty žijí taky v products.ts (`pexesoProducts`) — NE inline v komponentě.
+4. SEO ověření po deployi: `curl -sL https://www.hromadovky.cz/<kategorie>/<slug> | grep '<title>'`
+   → musí vrátit title produktu (ne prázdnou SPA slupku).
+
+Deep-link do košíku: `/<kategorie>?pridat=<product-id>#products` otevře back-selection modal
+(useEffect v `ProductShowcase*.tsx`). CTA na detailech na tom stojí — neodstraňovat.
 
 ---
 

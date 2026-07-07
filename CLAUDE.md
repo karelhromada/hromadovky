@@ -85,6 +85,10 @@ Každý produkt má vlastní indexovatelnou URL `/kvarteta|/karty|/pexeso/<slug>
 Deep-link do košíku: `/<kategorie>?pridat=<product-id>#products` otevře back-selection modal
 (useEffect v `ProductShowcase*.tsx`). CTA na detailech na tom stojí — neodstraňovat.
 
+**SPA fallback:** Vercel rewrite míří na `/spa-fallback.html` (NE na `/` — index.html je po
+prerenderu snapshot homepage). Fallback generuje `postbuild` skript `write-spa-fallback.mjs`
+(noindex, bez canonical) a slouží JEN pro neprerenderované routy (/checkout, /login, 404…).
+
 ---
 
 ## ★ Deploy pravidla & pasti (must-know)

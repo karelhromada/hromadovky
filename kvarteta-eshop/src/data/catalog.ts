@@ -73,7 +73,9 @@ export const CATEGORY_INFO: Record<ProductCategory, CategoryInfo> = {
 /** Cenové rozpětí pexesa podle počtu karet (viz deckSizeOptions v ProductShowcasePexeso). */
 export const PEXESO_PRICE_RANGE = { low: 199, high: 399 } as const;
 
-// Rozměry prvních obrázků galerie (změřeno sharp-em; při výměně obrázku aktualizovat).
+// Rozměry PRVNÍHO obrázku galerie (změřeno sharp-em; při výměně obrázku aktualizovat).
+// Aplikují se jako width/height na všechny náhledy produktu — pokud by budoucí galerie
+// míchala poměry stran, sekundární náhledy dostanou lehce nepřesný box (object-fit to kryje).
 const IMG_DIMS: Record<string, [number, number]> = {
     'kvarteto-mytologie': [442, 600],
     'kvarteto-dinosauri': [908, 1284],

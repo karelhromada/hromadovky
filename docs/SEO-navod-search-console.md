@@ -14,7 +14,10 @@ nevědí o sitemapě a ty nevidíš, jak se web indexuje.
    - typ záznamu: **TXT**, název/host: `@` (nebo prázdné), hodnota: zkopírovaný řetězec.
 4. Vrať se do Search Console a klikni **Ověřit** (DNS se může propagovat až pár hodin —
    když to hned neprojde, zkus později).
-5. Po ověření: v levém menu **Sitemaps** (Soubory Sitemap) → zadej `sitemap.xml` → **Odeslat**.
+5. Po ověření: v levém menu **Soubory Sitemap** → zadej **celou URL**
+   `https://www.hromadovky.cz/sitemap.xml` → **Odeslat**.
+   (Pozor: u doménové property nestačí relativní `sitemap.xml` — hlásí „neplatná cesta",
+   protože doména pokrývá www i apex a Google potřebuje vědět, na kterém hostu sitemapa je.)
 6. Volitelně urychlení: **Kontrola URL** (lišta nahoře) → vlož `https://www.hromadovky.cz/`
    → **Požádat o indexování**. Totéž můžeš udělat pro /kvarteta, /karty, /pexeso.
 

@@ -80,8 +80,11 @@ Každý produkt má vlastní indexovatelnou URL `/kvarteta|/karty|/pexeso/<slug>
    (guard v `scripts/routes.mjs` porovnává počet `id:` vs `slug:` per export).
 2. Doplň rozměry prvního obrázku do `IMG_DIMS` v `src/data/catalog.ts`
    (změř: `node -e "require('sharp')('public/<cesta>').metadata().then(m=>console.log(m.width,m.height))"`).
-3. Sitemapa + prerender + ItemList schéma se vygenerují automaticky (routes.mjs čte slugy
-   z products.ts). Pexeso produkty žijí taky v products.ts (`pexesoProducts`) — NE inline v komponentě.
+3. Sitemapa + prerender + ItemList schéma + **feedy pro Heureku/Zboží.cz**
+   (`/heureka.xml`, `/zbozi.xml`, generátor `scripts/generate-feeds.mjs` v prebuildu)
+   se vygenerují automaticky (čtou slugy/data z products.ts). Pexeso produkty žijí
+   taky v products.ts (`pexesoProducts`) — NE inline v komponentě.
+   Při změně cen dopravy v checkoutu aktualizovat i DELIVERIES v generate-feeds.mjs.
 4. SEO ověření po deployi: `curl -sL https://www.hromadovky.cz/<kategorie>/<slug> | grep '<title>'`
    → musí vrátit title produktu (ne prázdnou SPA slupku).
 

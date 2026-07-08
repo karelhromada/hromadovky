@@ -10,8 +10,11 @@
 - **Repo:** `karelhromada/hromadovky`, hlavní větev `main`.
 - **Deploy = JEN GitHub Actions** workflow `.github/workflows/deploy-vercel.yml`.
   Každý **push na `main`** spustí `vercel pull/build/deploy --prebuilt --prod`
-  (token v GH secretu `VERCEL_TOKEN`). **Není** žádná Vercel native git integrace — když
-  workflow nepoběží, NIC se nenasadí.
+  (token v GH secretu `VERCEL_TOKEN`). Když workflow nepoběží, NIC se nenasadí.
+- ⚠️ Vercel **git integrace v projektu EXISTUJE** (zjištěno 2026-07-08 — push spouštěl
+  duplicitní build ve Vercel sandboxu, kde prerender padá na chybějícím Chromiu).
+  Git buildy jsou vypnuté přes `vercel.json` → `"git": { "deploymentEnabled": false }`.
+  NEZAPÍNAT — deploy musí jít jen přes GH Actions (runner má Chrome pro prerender).
 - **Build:** produkce staví `npm run build:full` = `build` (tsc + vite, prebuild spustí
   `sync-backs` + `generate-sitemap`) **+ `prerender`** (Puppeteer vyrenderuje každou
   indexovatelnou routu do `dist/<route>/index.html` — crawleři tak dostanou plné HTML).

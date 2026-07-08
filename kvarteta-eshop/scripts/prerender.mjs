@@ -79,22 +79,27 @@ const server = spawn('npx', ['vite', 'preview', '--port', String(PORT), '--stric
   env: { ...process.env, NODE_ENV: 'production' },
 });
 
-let serverReady = false;
-const waitForServer = new Promise((res, rej) => {
-  const timer = setTimeout(() => rej(new Error('preview server timeout')), SERVER_READY_TIMEOUT_MS);
-  server.stdout.on('data', (chunk) => {
-    const text = chunk.toString();
-    if (text.includes('Local:') || text.includes(`localhost:${PORT}`)) {
-      serverReady = true;
-      clearTimeout(timer);
-      res();
+server.stdout.on('data', () => { /* konzumovat, ať se pipe nezaplní */ });
+server.stderr.on('data', (chunk) => process.stderr.write(`[preview] ${chunk}`));
+
+// Připravenost serveru zjišťujeme pollingem portu, ne parsováním stdout —
+// to na CI selhávalo (barvy/bufferování/npx indirekce ⇒ „preview server timeout").
+async function waitForServer() {
+  const deadline = Date.now() + SERVER_READY_TIMEOUT_MS;
+  while (Date.now() < deadline) {
+    if (server.exitCode !== null) {
+      throw new Error(`preview exited prematurely (code ${server.exitCode})`);
     }
-  });
-  server.stderr.on('data', (chunk) => process.stderr.write(`[preview] ${chunk}`));
-  server.on('exit', (code) => {
-    if (!serverReady) rej(new Error(`preview exited prematurely (code ${code})`));
-  });
-});
+    try {
+      const res = await fetch(`http://localhost:${PORT}/`, { signal: AbortSignal.timeout(2000) });
+      if (res.ok) return;
+    } catch {
+      /* server ještě neběží */
+    }
+    await new Promise((r) => setTimeout(r, 300));
+  }
+  throw new Error('preview server timeout');
+}
 
 function cleanup() {
   return new Promise((res) => {
@@ -116,8 +121,9 @@ function cleanup() {
 process.on('SIGINT', () => cleanup().then(() => process.exit(130)));
 process.on('SIGTERM', () => cleanup().then(() => process.exit(143)));
 
+let browser = null;
 try {
-  await waitForServer;
+  await waitForServer();
   await new Promise((r) => setTimeout(r, 500)); // grace period for static asset binding
   console.log('[prerender] preview ready, launching browser…');
 
@@ -127,7 +133,6 @@ try {
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
   };
-  let browser;
   try {
     browser = await puppeteer.launch(launchOpts);
   } catch (launchErr) {
@@ -153,11 +158,23 @@ try {
     await page.close();
   }
 
-  await browser.close();
   console.log(`[prerender] ✓ ${ROUTES.length} routes prerendered.`);
 } catch (err) {
   console.error('[prerender] FAILED:', err);
+  if (process.env.VERCEL && !process.env.GITHUB_ACTIONS) {
+    console.error(
+      '[prerender] HINT: běžíš ve Vercel build sandboxu (bez Chromia) — deploy má jít přes ' +
+        'GitHub Actions. Zkontroluj `git.deploymentEnabled: false` ve vercel.json.',
+    );
+  }
   process.exitCode = 1;
 } finally {
+  // browser.close() musí proběhnout VŽDY — otevřené Chrome/WS spojení by jinak drželo
+  // Node proces naživu donekonečna (CI krok pak visí až do timeoutu jobu).
+  if (browser) {
+    try { await browser.close(); } catch { /* noop */ }
+  }
   await cleanup();
+  // Explicitní exit: ani případné zbylé handly nesmí proces nechat viset.
+  process.exit(process.exitCode ?? 0);
 }

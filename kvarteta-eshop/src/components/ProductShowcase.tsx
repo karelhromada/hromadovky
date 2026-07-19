@@ -10,7 +10,7 @@ interface ProductShowcaseProps {
     onAddToCart: (product: Omit<CartItem, 'quantity'>) => void;
 }
 
-import { getBackgroundsForGame } from '../data/backgrounds';
+import { getBackgroundsForGame, buildCardBackRef } from '../data/backgrounds';
 
 const backgrounds = getBackgroundsForGame('kvarteta');
 
@@ -181,6 +181,7 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onAddToCart }) => {
                 image: Array.isArray(selectedProduct.image) ? selectedProduct.image[0] : selectedProduct.image,
                 price: selectedProduct.price + packagingSurcharge(packaging),
                 selectedBack,
+                cardBackRef: buildCardBackRef(selectedBack),
                 packaging
             });
             setSelectedProduct(null);

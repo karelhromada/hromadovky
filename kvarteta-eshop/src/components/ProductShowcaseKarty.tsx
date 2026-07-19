@@ -14,7 +14,7 @@ interface ProductShowcaseKartyProps {
 
 import { kartyProducts as products } from '../data/products';
 
-import { getBackgroundsForGame } from '../data/backgrounds';
+import { getBackgroundsForGame, buildCardBackRef } from '../data/backgrounds';
 
 const KARTY_BACKS = getBackgroundsForGame('hraci_karty');
 
@@ -66,6 +66,7 @@ const ProductShowcaseKarty: React.FC<ProductShowcaseKartyProps> = ({ onAddToCart
                 image: selectedProductForCart.images[1],
                 themeColor: selectedProductForCart.themeColor,
                 selectedBack: selectedBack,
+                cardBackRef: buildCardBackRef(selectedBack),
                 packaging
             });
             setSelectedProductForCart(null);

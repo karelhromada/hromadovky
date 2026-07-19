@@ -110,6 +110,23 @@ export const resolveBackName = (value?: string | null): string => {
   return value;
 };
 
+// CardBackRef pro checkout payload — n8n z nej sklada potvrzeni objednavky (name + publicUrl).
+// Zvlada URL z manifestu, primo name (Creator/Configurator flow) i legacy URL mimo manifest
+// (fallback: nazev odvozeny z nazvu souboru).
+export const buildCardBackRef = (
+  selectedBack?: string | null
+): { name: string; publicUrl: string } | undefined => {
+  if (!selectedBack) return undefined;
+  const bg = getBackgroundByUrl(selectedBack) ?? backgrounds.find((b) => b.name === selectedBack);
+  if (bg) return { name: bg.name, publicUrl: bg.url };
+  if (selectedBack.startsWith('/') || selectedBack.startsWith('http')) {
+    const file = selectedBack.split('/').pop() ?? selectedBack;
+    const name = file.replace(/\.(png|webp|jpe?g)$/i, '').replace(/_/g, ' ');
+    return { name, publicUrl: selectedBack };
+  }
+  return undefined;
+};
+
 export const getBackgroundById = (id: string, game?: BackGame): Background | undefined => {
   if (game) {
     return backgrounds.find((bg) => bg.id === id && bg.game === game);

@@ -8,6 +8,7 @@ import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { pexesoProducts } from '../data/products';
 import PackagingSelector from './PackagingSelector';
 import { packagingSurcharge, type PackagingType } from '../data/packaging';
+import { buildCardBackRef } from '../data/backgrounds';
 
 interface ProductShowcaseProps {
     onAddToCart: (product: Omit<CartItem, 'quantity'>) => void;
@@ -257,6 +258,7 @@ const ProductShowcasePexeso: React.FC<ProductShowcaseProps> = ({ onAddToCart }) 
                 price: selectedDeckSize.price + selectedSize.priceAdd + packagingSurcharge(packaging),
                 image: Array.isArray(selectedProduct.image) ? selectedProduct.image[0] : selectedProduct.image,
                 selectedBack,
+                cardBackRef: buildCardBackRef(selectedBack),
                 size: `${selectedSize.label} (${selectedSize.desc})`,
                 deckSize: selectedDeckSize.label,
                 packaging

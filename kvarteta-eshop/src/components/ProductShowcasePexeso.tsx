@@ -135,10 +135,11 @@ const ProductCardInteractive = ({ product, onAddToCartClick }: { product: any, o
                 )}
 
                 {/* Main cover that hides on hover */}
-                <div
+                <img
                     className="pexeso-main-cover"
-                    style={{ backgroundImage: `url('${images[0]}')` }}
-                ></div>
+                    src={images[0]}
+                    alt={product.name}
+                />
 
                 {/* 3x3 Grid that appears on hover - optimized to only render when needed */}
                 {isHovered && (

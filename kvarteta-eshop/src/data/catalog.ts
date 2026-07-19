@@ -36,7 +36,7 @@ export const CATEGORY_INFO: Record<ProductCategory, CategoryInfo> = {
         specs: [
             { label: 'Počet karet', value: '32 karet (8 rodin po 4)' },
             { label: 'Rozměr karty', value: '65 × 95 mm' },
-            { label: 'Papír', value: 'křídový 350 g/m²' },
+            { label: 'Papír', value: 'lesklý fotopapír 220 µm' },
             { label: 'Povrch', value: 'oboustranná laminace 200 µm' },
             { label: 'Zadní strana', value: 'na výběr z desítek motivů' },
             { label: 'Výroba a doručení', value: 'do 5 pracovních dnů' },
@@ -49,7 +49,7 @@ export const CATEGORY_INFO: Record<ProductCategory, CategoryInfo> = {
         specs: [
             { label: 'Počet karet', value: '32 listů (mariášové barvy, 7–eso)' },
             { label: 'Rozměr karty', value: '63 × 105 mm' },
-            { label: 'Papír', value: 'křídový 350 g/m²' },
+            { label: 'Papír', value: 'lesklý fotopapír 220 µm' },
             { label: 'Povrch', value: 'oboustranná laminace 200 µm' },
             { label: 'Zadní strana', value: 'na výběr z desítek motivů' },
             { label: 'Výroba a doručení', value: 'do 5 pracovních dnů' },
@@ -62,7 +62,7 @@ export const CATEGORY_INFO: Record<ProductCategory, CategoryInfo> = {
         specs: [
             { label: 'Počet karet', value: '16 / 32 / 64 karet (8–32 párů)' },
             { label: 'Rozměr kartičky', value: '50 × 50, 60 × 60 nebo 80 × 80 mm' },
-            { label: 'Papír', value: 'křídový 350 g/m²' },
+            { label: 'Papír', value: 'lesklý fotopapír 220 µm' },
             { label: 'Povrch', value: 'oboustranná laminace 200 µm' },
             { label: 'Zadní strana', value: 'na výběr z desítek motivů' },
             { label: 'Výroba a doručení', value: 'do 5 pracovních dnů' },

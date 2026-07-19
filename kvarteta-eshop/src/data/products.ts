@@ -4,7 +4,7 @@ export const kartyProducts = [
     {
         id: 'karty-tema-draku',
         slug: 'epicka-draci-edice',
-        longDescription: 'Luxusní balíček hracích karet, ve kterém každou mariášovou barvu střeží draci jednoho živlu — oheň, voda, země a vzduch. Všech 32 listů nese plnou originální malbu, přitom hodnoty od sedmičky po eso zůstávají přehledné a čitelné, takže se s balíčkem skvěle hraje prší, mariáš i další klasické hry.\n\nKarty tiskneme na prémiový křídový papír 350 g/m² a oboustranně laminujeme fólií 200 mikronů — snesou stovky partií, míchání i hraní venku. Formát 63 × 105 mm nabízí velkorysou plochu pro ilustrace a pohodlné držení. Zadní stranu si vyberete z desítek motivů včetně dračích šupin. Ruční česká výroba, odeslání do 5 pracovních dnů.',
+        longDescription: 'Luxusní balíček hracích karet, ve kterém každou mariášovou barvu střeží draci jednoho živlu — oheň, voda, země a vzduch. Všech 32 listů nese plnou originální malbu, přitom hodnoty od sedmičky po eso zůstávají přehledné a čitelné, takže se s balíčkem skvěle hraje prší, mariáš i další klasické hry.\n\nKarty tiskneme na prémiový lesklý fotopapír 220 mikronů a oboustranně laminujeme fólií 200 mikronů — snesou stovky partií, míchání i hraní venku. Formát 63 × 105 mm nabízí velkorysou plochu pro ilustrace a pohodlné držení. Zadní stranu si vyberete z desítek motivů včetně dračích šupin. Ruční česká výroba, odeslání do 5 pracovních dnů.',
         name: 'Hrací karty: Epická dračí edice',
         description: 'Luxusní dračí edice. Mariášové barvy reprezentující živly. Hodnoty 10, J, Q, K, A v klasickém čistém herním designu s plnou originální malbou draků.',
         price: 349,
@@ -24,7 +24,7 @@ export const kartyProducts = [
     {
         id: 'karty-tema-carodejnice',
         slug: 'magicke-carodejnice',
-        longDescription: 'Mysteriózní balíček, ve kterém každá hodnota vypráví vlastní příběh: spodci jsou učednice ohně, svršci lesní vědmy a králové s esy mocné královny magie. 32 hracích karet s detailními ilustracemi čarodějnic potěší hráče prší a mariáše stejně jako sběratele karetního umění.\n\nAby kouzlo vydrželo, tiskneme na křídový papír s gramáží 350 g/m² a karty oboustranně laminujeme fólií o tloušťce 200 mikronů. Velkorysý formát 63 × 105 mm nechává ilustrace vyniknout a přitom se karty pohodlně drží v ruce. Rub balíčku si zvolíte z naší galerie — od tajemných po elegantní vzory. Vyrábíme ručně v Česku a expedujeme do 5 pracovních dnů.',
+        longDescription: 'Mysteriózní balíček, ve kterém každá hodnota vypráví vlastní příběh: spodci jsou učednice ohně, svršci lesní vědmy a králové s esy mocné královny magie. 32 hracích karet s detailními ilustracemi čarodějnic potěší hráče prší a mariáše stejně jako sběratele karetního umění.\n\nAby kouzlo vydrželo, tiskneme na lesklý fotopapír o tloušťce 220 mikronů a karty oboustranně laminujeme fólií o tloušťce 200 mikronů. Velkorysý formát 63 × 105 mm nechává ilustrace vyniknout a přitom se karty pohodlně drží v ruce. Rub balíčku si zvolíte z naší galerie — od tajemných po elegantní vzory. Vyrábíme ručně v Česku a expedujeme do 5 pracovních dnů.',
         name: 'Hrací karty: Magické čarodějnice',
         description: 'Mysteriózní sady čarodějnic. Každá hodnota (spodek, svršek, král, eso) nabízí jedinečnou detailní ilustraci od učednic ohně až po královny lesa.',
         price: 349,
@@ -44,7 +44,7 @@ export const kartyProducts = [
     {
         id: 'karty-tema-zamek',
         slug: 'zivot-na-zamku',
-        longDescription: 'Pohádkově jemný balíček hracích karet pro malé princezny a prince. Edice Život na zámku kombinuje pastelové barvy, minimalistický design na čistě bílém pozadí a roztomilá zvířátka — hodnoty i barvy zůstávají perfektně čitelné, takže je balíček ideální na první dětské prší i na rodinné hraní u stolu.\n\n32 listů ve formátu 63 × 105 mm tiskneme na pevný křídový papír 350 g/m² a chráníme oboustrannou laminací 200 mikronů, která odolá dětskému nadšení i rozlitému čaji z porcelánových šálků. Zadní stranu karet si vyberete z desítek motivů v galerii rubů. Každý balíček vzniká ruční prací v Česku a odesíláme ho do 5 pracovních dnů.',
+        longDescription: 'Pohádkově jemný balíček hracích karet pro malé princezny a prince. Edice Život na zámku kombinuje pastelové barvy, minimalistický design na čistě bílém pozadí a roztomilá zvířátka — hodnoty i barvy zůstávají perfektně čitelné, takže je balíček ideální na první dětské prší i na rodinné hraní u stolu.\n\n32 listů ve formátu 63 × 105 mm tiskneme na pevný lesklý fotopapír 220 mikronů a chráníme oboustrannou laminací 200 mikronů, která odolá dětskému nadšení i rozlitému čaji z porcelánových šálků. Zadní stranu karet si vyberete z desítek motivů v galerii rubů. Každý balíček vzniká ruční prací v Česku a odesíláme ho do 5 pracovních dnů.',
         name: 'Hrací karty: Život na zámku',
         description: 'Pohádková edice s princeznami, princi a roztomilými zvířátky. Jemné pastelové barvy a minimalistický design na čistě bílém pozadí.',
         price: 249,
@@ -64,7 +64,7 @@ export const kartyProducts = [
     {
         id: 'karty-tema-minecraft',
         slug: 'pixelovy-svet',
-        longDescription: 'Balíček hracích karet pro fanoušky kostičkovaných světů. Edice Pixelový svět přináší 32 unikátních full-art ilustrací ve voxelovém stylu — hrdiny, příšery i kultovní předměty, jak je znáte z oblíbené hry. Mariášové barvy a hodnoty zůstávají jasně čitelné, takže balíček poslouží na prší, mariáš i jako ozdoba sběratelské poličky.\n\nTiskneme na křídový papír 350 g/m² a oboustranná laminace 200 mikronů dodává kartám odolnost i příjemný lesk. Formát 63 × 105 mm dává pixelovým ilustracím prostor vyniknout. K balíčku si můžete zvolit vlastní rub z desítek motivů. Karty vyrábíme ručně v Česku a odesíláme do 5 pracovních dnů — trefa pro každého malého i velkého hráče.',
+        longDescription: 'Balíček hracích karet pro fanoušky kostičkovaných světů. Edice Pixelový svět přináší 32 unikátních full-art ilustrací ve voxelovém stylu — hrdiny, příšery i kultovní předměty, jak je znáte z oblíbené hry. Mariášové barvy a hodnoty zůstávají jasně čitelné, takže balíček poslouží na prší, mariáš i jako ozdoba sběratelské poličky.\n\nTiskneme na lesklý fotopapír 220 mikronů a oboustranná laminace 200 mikronů dodává kartám odolnost i příjemný lesk. Formát 63 × 105 mm dává pixelovým ilustracím prostor vyniknout. K balíčku si můžete zvolit vlastní rub z desítek motivů. Karty vyrábíme ručně v Česku a odesíláme do 5 pracovních dnů — trefa pro každého malého i velkého hráče.',
         name: 'Hrací karty: Pixelový svět',
         description: 'Epická Minecraft edice pro fanoušky kultovní hry. 32 unikátních full-art ilustrací v voxelovém stylu – postavy, příšery a předměty ze světa Minecraftu. Ideální pro děti i dospělé nadšence!',
         price: 349,
@@ -88,7 +88,7 @@ export const kartyProducts = [
     {
         id: 'karty-tema-star-wars',
         slug: 'galakticke-prsi',
-        longDescription: 'Hrdinové i padouchové z daleké galaxie na 32 hracích kartách. Galaktické prší obléká klasické mariášové barvy do epických sci-fi ilustrací — rytíři světla, temní vládci a legendární piloti nesou hodnoty od sedmičky po eso. Balíček je plně hratelný na prší i mariáš a zároveň je to dárek, který nadchne každého fanouška vesmírné ságy.\n\nKvalita odpovídá sběratelské edici: křídový papír 350 g/m², oboustranná laminace 200 mikronů a velkorysý formát 63 × 105 mm. Karty snesou intenzivní hraní a zůstanou krásné roky. Zadní stranu balíčku si vyberete z galerie rubů. Ruční výroba v Česku, odeslání do 5 pracovních dnů.',
+        longDescription: 'Hrdinové i padouchové z daleké galaxie na 32 hracích kartách. Galaktické prší obléká klasické mariášové barvy do epických sci-fi ilustrací — rytíři světla, temní vládci a legendární piloti nesou hodnoty od sedmičky po eso. Balíček je plně hratelný na prší i mariáš a zároveň je to dárek, který nadchne každého fanouška vesmírné ságy.\n\nKvalita odpovídá sběratelské edici: lesklý fotopapír 220 mikronů, oboustranná laminace 200 mikronů a velkorysý formát 63 × 105 mm. Karty snesou intenzivní hraní a zůstanou krásné roky. Zadní stranu balíčku si vyberete z galerie rubů. Ruční výroba v Česku, odeslání do 5 pracovních dnů.',
         name: 'Hrací karty: Galaktické prší',
         description: 'Galaktická edice s hrdiny i padouchy ze ságy Star Wars. Mariášové barvy se 32 unikátními ilustracemi z dalekých galaxií – ideální dárek pro každého fanouška.',
         price: 349,
@@ -108,7 +108,7 @@ export const kartyProducts = [
     {
         id: 'karty-tema-prsi-car-a-kouzel',
         slug: 'prsi-car-a-kouzel',
-        longDescription: 'Kouzelnická škola v balíčku hracích karet. Prší čár a kouzel přináší 32 full-art ilustrací — od nadějných učňů přes profesory tajemných věd až po temné čaroděje. Každá mariášová barva reprezentuje jednu kouzelnickou disciplínu, hodnoty zůstávají přehledné, a tak balíček zvládne prší, mariáš i improvizované souboje kouzel.\n\nKarty ve formátu 63 × 105 mm tiskneme na prémiový křídový papír 350 g/m² a oboustranně laminujeme fólií 200 mikronů — jsou lesklé, tuhé a odolné vůči každodennímu hraní. V galerii rubů najdete i magické vzory, které edici krásně doplní. Vyrábíme ručně v Česku a odesíláme do 5 pracovních dnů.',
+        longDescription: 'Kouzelnická škola v balíčku hracích karet. Prší čár a kouzel přináší 32 full-art ilustrací — od nadějných učňů přes profesory tajemných věd až po temné čaroděje. Každá mariášová barva reprezentuje jednu kouzelnickou disciplínu, hodnoty zůstávají přehledné, a tak balíček zvládne prší, mariáš i improvizované souboje kouzel.\n\nKarty ve formátu 63 × 105 mm tiskneme na prémiový lesklý fotopapír 220 mikronů a oboustranně laminujeme fólií 200 mikronů — jsou lesklé, tuhé a odolné vůči každodennímu hraní. V galerii rubů najdete i magické vzory, které edici krásně doplní. Vyrábíme ručně v Česku a odesíláme do 5 pracovních dnů.',
         name: 'Hrací karty: Prší čár a kouzel',
         description: 'Kouzelnická edice plná čar, kouzel a magických bytostí. 32 unikátních full-art ilustrací – učni, profesoři i temní čarodějové na klasických mariášových barvách. Ideální dárek pro malé i velké fanoušky světa kouzel.',
         price: 349,
@@ -131,7 +131,7 @@ export const kvartetaProducts = [
     {
         id: 'kvarteto-mytologie',
         slug: 'mytologie-a-myty',
-        longDescription: 'Vydejte se na výpravu napříč bájemi starých civilizací. Kvarteto Mytologie a mýty přináší 32 karet v osmi rodinách — od olympských bohů přes severské hrdiny Ódina a Thóra až po egyptská božstva a legendární nestvůry jako Kraken, Minotaurus či Medúza. Každá karta nese původní ručně malovanou ilustraci a luxusní průhledný systém vlastností, takže se hra dá hrát klasicky na sbírání rodin i jako souboj hodnot.\n\nTiskneme na prémiový křídový papír 350 g/m² a každou kartu oboustranně laminujeme fólií 200 mikronů — balíček vydrží stovky partií, polití i cestování v batohu. Rozměr 65 × 95 mm skvěle padne do dětské ruky. Rub si vyberete z desítek motivů přímo při objednávce. Vyrábíme ručně v Česku a odesíláme do 5 pracovních dnů.',
+        longDescription: 'Vydejte se na výpravu napříč bájemi starých civilizací. Kvarteto Mytologie a mýty přináší 32 karet v osmi rodinách — od olympských bohů přes severské hrdiny Ódina a Thóra až po egyptská božstva a legendární nestvůry jako Kraken, Minotaurus či Medúza. Každá karta nese původní ručně malovanou ilustraci a luxusní průhledný systém vlastností, takže se hra dá hrát klasicky na sbírání rodin i jako souboj hodnot.\n\nTiskneme na prémiový lesklý fotopapír 220 mikronů a každou kartu oboustranně laminujeme fólií 200 mikronů — balíček vydrží stovky partií, polití i cestování v batohu. Rozměr 65 × 95 mm skvěle padne do dětské ruky. Rub si vyberete z desítek motivů přímo při objednávce. Vyrábíme ručně v Česku a odesíláme do 5 pracovních dnů.',
         name: 'Kvarteto: Mytologie a mýty',
         description: 'Epická sada bohů, hrdinů a temných bytostí. Sbírej rodiny božstev od starověkého Řecka po mrazivý sever. Obsahuje 32 karet s luxusním průhledným systémem vlastností.',
         price: 349,
@@ -153,7 +153,7 @@ export const kvartetaProducts = [
     {
         id: 'kvarteto-dinosauri',
         slug: 'dinosauri',
-        longDescription: 'Tyranosaurus, Triceratops, Brachiosaurus a další prehistoričtí obři ožívají v luxusní sběratelské edici kvarteta. 32 nádherně ilustrovaných karet je rozděleno do osmi rodin podle skupin dinosaurů — děti si při hře přirozeně zapamatují jména i podobu pravěkých ještěrů, takže kvarteto funguje i jako nenásilná encyklopedie pravěku.\n\nKaždá karta má rozměr 65 × 95 mm, je vytištěná na tuhém křídovém papíře s gramáží 350 g/m² a chráněná oboustrannou laminací 200 mikronů proti ohybu i ušpinění. K balíčku si můžete zvolit vlastní zadní stranu z naší galerie rubů. Karty vyrábíme ručně v Česku a expedujeme do 5 pracovních dnů — ideální dárek pro malé paleontology.',
+        longDescription: 'Tyranosaurus, Triceratops, Brachiosaurus a další prehistoričtí obři ožívají v luxusní sběratelské edici kvarteta. 32 nádherně ilustrovaných karet je rozděleno do osmi rodin podle skupin dinosaurů — děti si při hře přirozeně zapamatují jména i podobu pravěkých ještěrů, takže kvarteto funguje i jako nenásilná encyklopedie pravěku.\n\nKaždá karta má rozměr 65 × 95 mm, je vytištěná na tuhém lesklém fotopapíře o tloušťce 220 mikronů a chráněná oboustrannou laminací 200 mikronů proti ohybu i ušpinění. K balíčku si můžete zvolit vlastní zadní stranu z naší galerie rubů. Karty vyrábíme ručně v Česku a expedujeme do 5 pracovních dnů — ideální dárek pro malé paleontology.',
         name: 'Kvarteto: Dinosauři',
         description: 'Poznejte prehistorické obry v luxusní sběratelské edici. 32 nádherně ilustrovaných karet.',
         price: 349,
@@ -170,7 +170,7 @@ export const kvartetaProducts = [
     {
         id: 'kvarteto-dracci',
         slug: 'baby-dracci',
-        longDescription: 'Roztomilí Baby dráčci jsou kvarteto stvořené pro nejmenší hráče. 32 karet s láskyplně malovanými dráčaty v osmi barevných rodinách rozzáří každé rodinné odpoledne — pravidla kvarteta zvládnou i předškoláci a starším sourozencům zase učaruje sběratelské zpracování s přehledným systémem vlastností.\n\nProtože dětské ruce umí být divoké, tiskneme karty na křídový papír 350 g/m² a oboustranně je laminujeme fólií o tloušťce 200 mikronů. Výsledek odolá ohýbání, upatlaným prstům i rozlitému pití. Formát 65 × 95 mm se dětem dobře drží a rub balíčku si vyberete z desítek motivů. Ruční česká výroba, odeslání do 5 pracovních dnů.',
+        longDescription: 'Roztomilí Baby dráčci jsou kvarteto stvořené pro nejmenší hráče. 32 karet s láskyplně malovanými dráčaty v osmi barevných rodinách rozzáří každé rodinné odpoledne — pravidla kvarteta zvládnou i předškoláci a starším sourozencům zase učaruje sběratelské zpracování s přehledným systémem vlastností.\n\nProtože dětské ruce umí být divoké, tiskneme karty na lesklý fotopapír 220 mikronů a oboustranně je laminujeme fólií o tloušťce 200 mikronů. Výsledek odolá ohýbání, upatlaným prstům i rozlitému pití. Formát 65 × 95 mm se dětem dobře drží a rub balíčku si vyberete z desítek motivů. Ruční česká výroba, odeslání do 5 pracovních dnů.',
         name: 'Kvarteto: Baby dráčci',
         description: 'Roztomilí a silní Baby dráčci v prémiové úpravě. Perfektní pro dětské hráče i sběratele.',
         price: 349,
@@ -187,7 +187,7 @@ export const kvartetaProducts = [
     {
         id: 'kvarteto-draci',
         slug: 'draci',
-        longDescription: 'Mocní draci v plné síle: Ignis Rex, Kronos, Nekromancer, Vulkanus a další legendy. Kvarteto Draci obsahuje 32 unikátních dračích karet v osmi rodinách podle živlů a schopností — každý drak má vlastní jméno, portrét a vlastnosti, takže kromě klasického kvarteta můžete hrát i epické dračí souboje o nejsilnější kartu.\n\nPrémiové zpracování odpovídá námětu: sytý tisk na křídovém papíře 350 g/m², oboustranná laminace 200 mikronů pro maximální odolnost a rozměr 65 × 95 mm. Skvěle ladí s dračími ruby z naší galerie — zadní stranu si vyberete při vkládání do košíku. Vyrábíme ručně v Česku, odesíláme do 5 pracovních dnů.',
+        longDescription: 'Mocní draci v plné síle: Ignis Rex, Kronos, Nekromancer, Vulkanus a další legendy. Kvarteto Draci obsahuje 32 unikátních dračích karet v osmi rodinách podle živlů a schopností — každý drak má vlastní jméno, portrét a vlastnosti, takže kromě klasického kvarteta můžete hrát i epické dračí souboje o nejsilnější kartu.\n\nPrémiové zpracování odpovídá námětu: sytý tisk na lesklém fotopapíře 220 mikronů, oboustranná laminace 200 mikronů pro maximální odolnost a rozměr 65 × 95 mm. Skvěle ladí s dračími ruby z naší galerie — zadní stranu si vyberete při vkládání do košíku. Vyrábíme ručně v Česku, odesíláme do 5 pracovních dnů.',
         name: 'Kvarteto: Draci',
         description: 'Mocní a legendární Draci přinášejí do hry epické souboje. Nejmocnější bytosti v prémiovém provedení.',
         price: 349,
@@ -209,7 +209,7 @@ export const kvartetaProducts = [
     {
         id: 'kvarteto-rytiri',
         slug: 'roztomili-rytiri',
-        longDescription: 'Sir Pufík, Lord Karamel nebo Princ Pralinka — šlechetní rytíři v brnění z marshmallow, karamelu a hvězdného prachu čekají, až je shromáždíte do rodin. Kvarteto Roztomilí rytíři nabízí 32 karet s originálními ilustracemi, které pobaví děti i rodiče, a jemný humor, díky kterému se u hry celá rodina nasměje.\n\nKarty o rozměru 65 × 95 mm tiskneme na pevný křídový papír 350 g/m² a chráníme oboustrannou laminací 200 mikronů — jsou lesklé, odolné a příjemné do ruky. Zadní stranu balíčku si zvolíte z desítek motivů v galerii rubů. Každou sadu vyrábíme ručně v Česku a odesíláme do 5 pracovních dnů.',
+        longDescription: 'Sir Pufík, Lord Karamel nebo Princ Pralinka — šlechetní rytíři v brnění z marshmallow, karamelu a hvězdného prachu čekají, až je shromáždíte do rodin. Kvarteto Roztomilí rytíři nabízí 32 karet s originálními ilustracemi, které pobaví děti i rodiče, a jemný humor, díky kterému se u hry celá rodina nasměje.\n\nKarty o rozměru 65 × 95 mm tiskneme na pevný lesklý fotopapír 220 mikronů a chráníme oboustrannou laminací 200 mikronů — jsou lesklé, odolné a příjemné do ruky. Zadní stranu balíčku si zvolíte z desítek motivů v galerii rubů. Každou sadu vyrábíme ručně v Česku a odesíláme do 5 pracovních dnů.',
         name: 'Kvarteto: Roztomilí rytíři',
         description: 'Šlechetní a neuvěřitelně sladcí rytíři v brnění z marshmallow, karamelu i hvězdného prachu. Unikátní herní zážitek.',
         price: 349,
@@ -231,7 +231,7 @@ export const kvartetaProducts = [
     {
         id: 'kvarteto-kocky',
         slug: 'kocky-bojovnice',
-        longDescription: 'Odvážné kočičí válečnice v plné zbroji! Kvarteto Kočky bojovnice přináší 32 karet s mrštnými hrdinkami, které okouzlí každého milovníka koček — od dětí po sběratele. Osm rodin, přehledný systém vlastností a ilustrace, u kterých budete dlouho rozhodovat, která bojovnice je vaše nejoblíbenější.\n\nSázíme na poctivé řemeslo: křídový papír s gramáží 350 g/m², oboustranná laminace 200 mikronů a rozměr karet 65 × 95 mm. Balíček přežije každodenní hraní i výpravy mimo domov. V galerii rubů najdete i motivy kočičí srsti — zadní stranu si vyberete při objednávce. Ruční výroba v Česku, expedice do 5 pracovních dnů.',
+        longDescription: 'Odvážné kočičí válečnice v plné zbroji! Kvarteto Kočky bojovnice přináší 32 karet s mrštnými hrdinkami, které okouzlí každého milovníka koček — od dětí po sběratele. Osm rodin, přehledný systém vlastností a ilustrace, u kterých budete dlouho rozhodovat, která bojovnice je vaše nejoblíbenější.\n\nSázíme na poctivé řemeslo: lesklý fotopapír o tloušťce 220 mikronů, oboustranná laminace 200 mikronů a rozměr karet 65 × 95 mm. Balíček přežije každodenní hraní i výpravy mimo domov. V galerii rubů najdete i motivy kočičí srsti — zadní stranu si vyberete při objednávce. Ruční výroba v Česku, expedice do 5 pracovních dnů.',
         name: 'Kvarteto: Kočky bojovnice',
         description: 'Odvážné, mrštné a nebezpečně roztomilé kočičí válečnice. Získejte celou kočičí armádu.',
         price: 349,
@@ -248,7 +248,7 @@ export const kvartetaProducts = [
     {
         id: 'kvarteto-lesni-bytosti',
         slug: 'lesni-bytosti',
-        longDescription: 'Elfové, skřítci, víly a duchové stromů — tajemní strážci hlubokých hvozdů se sešli v prémiové sběratelské edici kvarteta. 32 nádherně ilustrovaných karet v osmi lesních rodinách s luxusním systémem vlastností vtáhne děti do světa fantazie a dospělým připomene, proč mají pohádkové lesy odjakživa kouzlo.\n\nKarty tiskneme na křídový papír 350 g/m², oboustranně laminujeme fólií 200 mikronů a řežeme na formát 65 × 95 mm s hladkými hranami. Sada vydrží intenzivní hraní venku i uvnitř. Rub balíčku si vyberete z desítek motivů — krásně ladí s přírodními vzory. Vyrábíme ručně v Česku a odesíláme do 5 pracovních dnů.',
+        longDescription: 'Elfové, skřítci, víly a duchové stromů — tajemní strážci hlubokých hvozdů se sešli v prémiové sběratelské edici kvarteta. 32 nádherně ilustrovaných karet v osmi lesních rodinách s luxusním systémem vlastností vtáhne děti do světa fantazie a dospělým připomene, proč mají pohádkové lesy odjakživa kouzlo.\n\nKarty tiskneme na lesklý fotopapír 220 mikronů, oboustranně laminujeme fólií 200 mikronů a řežeme na formát 65 × 95 mm s hladkými hranami. Sada vydrží intenzivní hraní venku i uvnitř. Rub balíčku si vyberete z desítek motivů — krásně ladí s přírodními vzory. Vyrábíme ručně v Česku a odesíláme do 5 pracovních dnů.',
         name: 'Kvarteto: Lesní bytosti',
         description: 'Tajemní strážci hlubokých hvozdů – elfové, skřítci a duchové lesa v prémiové sběratelské edici. 32 nádherně ilustrovaných karet s luxusním systémem vlastností.',
         price: 349,
@@ -270,7 +270,7 @@ export const kvartetaProducts = [
     {
         id: 'kvarteto-zvireci-auta',
         slug: 'zvireci-auta',
-        longDescription: 'Co se stane, když posadíte zvířátka za volant závodních speciálů? Kvarteto Zvířecí auta! 32 karet plných rychlosti a humoru — roztomilé posádky v divokých závodních strojích rozdělené do osmi závodních rodin. Přehledný systém vlastností umožňuje hrát kvarteto klasicky i jako závodní souboje o nejrychlejší vůz.\n\nKarty o rozměru 65 × 95 mm tiskneme na tuhý křídový papír 350 g/m² s oboustrannou laminací 200 mikronů, takže vydrží i tu nejdivočejší zastávku v depu pod kuchyňským stolem. V galerii rubů najdete speciální závodní motivy aut. Každý balíček kompletujeme ručně v Česku a odesíláme do 5 pracovních dnů.',
+        longDescription: 'Co se stane, když posadíte zvířátka za volant závodních speciálů? Kvarteto Zvířecí auta! 32 karet plných rychlosti a humoru — roztomilé posádky v divokých závodních strojích rozdělené do osmi závodních rodin. Přehledný systém vlastností umožňuje hrát kvarteto klasicky i jako závodní souboje o nejrychlejší vůz.\n\nKarty o rozměru 65 × 95 mm tiskneme na tuhý lesklý fotopapír 220 mikronů s oboustrannou laminací 200 mikronů, takže vydrží i tu nejdivočejší zastávku v depu pod kuchyňským stolem. V galerii rubů najdete speciální závodní motivy aut. Každý balíček kompletujeme ručně v Česku a odesíláme do 5 pracovních dnů.',
         name: 'Kvarteto: Zvířecí auta',
         description: 'Roztomilá zvířátka za volantem divokých závodních aut! Sběratelská edice plná rychlosti a zábavy – 32 nádherně ilustrovaných karet s luxusním systémem vlastností.',
         price: 349,
@@ -299,7 +299,7 @@ export const pexesoProducts = [
         slug: 'dinosauri',
         name: 'Pexeso: Dinosauři',
         description: 'Poznejte prehistorické obry v luxusní sběratelské edici s nádherně ilustrovanými kartami.',
-        longDescription: 'Trénink paměti s prehistorickými obry! Pexeso Dinosauři obsahuje páry nádherně ilustrovaných karet s T-rexem, Triceratopsem, Mosasaurem a dalšími pravěkými ještěry. Děti si při hledání dvojic přirozeně zapamatují jména i podobu dinosaurů — zábava a učení v jednom balíčku.\n\nVelikost hry si přizpůsobíte: 16, 32 nebo 64 karet (8 až 32 párů) a tři rozměry kartiček — klasické 50 × 50 mm, velké 60 × 60 mm nebo maxi 80 × 80 mm pro nejmenší hráče. Tiskneme na křídový papír 350 g/m² s oboustrannou laminací 200 mikronů, takže karty vydrží stovky partií. Ruční česká výroba, odeslání do 5 pracovních dnů.',
+        longDescription: 'Trénink paměti s prehistorickými obry! Pexeso Dinosauři obsahuje páry nádherně ilustrovaných karet s T-rexem, Triceratopsem, Mosasaurem a dalšími pravěkými ještěry. Děti si při hledání dvojic přirozeně zapamatují jména i podobu dinosaurů — zábava a učení v jednom balíčku.\n\nVelikost hry si přizpůsobíte: 16, 32 nebo 64 karet (8 až 32 párů) a tři rozměry kartiček — klasické 50 × 50 mm, velké 60 × 60 mm nebo maxi 80 × 80 mm pro nejmenší hráče. Tiskneme na lesklý fotopapír 220 mikronů s oboustrannou laminací 200 mikronů, takže karty vydrží stovky partií. Ruční česká výroba, odeslání do 5 pracovních dnů.',
         price: 249,
         themeColor: '#ff8a00',
         back: '/cards/backs/epic_lava_flow.webp',
@@ -319,7 +319,7 @@ export const pexesoProducts = [
         slug: 'baby-dracci',
         name: 'Pexeso: Baby dráčci',
         description: 'Roztomilí dráčci v pexesu pro nejmenší i velké. Skvělý trénink paměti pro každého.',
-        longDescription: 'První pexeso pro malé dračí fanoušky. Roztomilá dráčata s velkýma očima a jemnými barvami motivují k hraní i ty nejmenší děti — a právě pro ně doporučujeme variantu s 16 kartami nebo maxi rozměr 80 × 80 mm, který dobře uchopí i malé ruce. Postupně můžete přejít na 32 či 64 karet a trénovat paměť celé rodiny.\n\nKartičky tiskneme na tuhý křídový papír 350 g/m² a oboustranně laminujeme fólií 200 mikronů — přežijí ohýbání, upatlané prsty i pád ze stolu. Na výběr máte tři rozměry (50, 60 a 80 mm) a vlastní zadní stranu z galerie rubů. Vyrábíme ručně v Česku, odesíláme do 5 pracovních dnů.',
+        longDescription: 'První pexeso pro malé dračí fanoušky. Roztomilá dráčata s velkýma očima a jemnými barvami motivují k hraní i ty nejmenší děti — a právě pro ně doporučujeme variantu s 16 kartami nebo maxi rozměr 80 × 80 mm, který dobře uchopí i malé ruce. Postupně můžete přejít na 32 či 64 karet a trénovat paměť celé rodiny.\n\nKartičky tiskneme na tuhý lesklý fotopapír 220 mikronů a oboustranně laminujeme fólií 200 mikronů — přežijí ohýbání, upatlané prsty i pád ze stolu. Na výběr máte tři rozměry (50, 60 a 80 mm) a vlastní zadní stranu z galerie rubů. Vyrábíme ručně v Česku, odesíláme do 5 pracovních dnů.',
         price: 249,
         themeColor: '#a100ff',
         back: '/cards/pexeso_back_stars.webp',
@@ -327,9 +327,9 @@ export const pexesoProducts = [
             { id: 1, text: 'Roztomilé', icon: Star, color: '#d946ef' }
         ],
         image: [
-            '/cards/baby_2.webp', '/cards/baby_1.webp', '/cards/baby_3.webp', '/cards/baby_4.webp',
-            '/cards/baby_5.webp', '/cards/baby_6.webp', '/cards/baby_7.webp', '/cards/baby_8.webp',
-            '/cards/baby_full_1.webp'
+            '/cards/pexeso_baby_1.webp', '/cards/pexeso_baby_2.webp', '/cards/pexeso_baby_3.webp', '/cards/pexeso_baby_4.webp',
+            '/cards/pexeso_baby_5.webp', '/cards/pexeso_baby_6.webp', '/cards/pexeso_baby_7.webp', '/cards/pexeso_baby_8.webp',
+            '/cards/pexeso_baby_9.webp', '/cards/pexeso_baby_10.webp', '/cards/pexeso_baby_11.webp', '/cards/pexeso_baby_12.webp'
         ]
     },
     {
@@ -337,7 +337,7 @@ export const pexesoProducts = [
         slug: 'draci',
         name: 'Pexeso: Draci',
         description: 'Mocní a legendární Draci přinášejí do hry epické souboje. Nejmocnější bytosti v prémiovém provedení.',
-        longDescription: 'Epické dračí pexeso pro odvážné hráče. Ve hře se potkávají legendy jako Ignis Rex, Kronos či Stínový běžec — každý pár nese detailní portrét jednoho draka, takže hledání dvojic je zároveň objevováním dračí říše. Skvělá volba pro fanoušky fantasy od školkového věku po dospělé stratégy.\n\nSestavte si hru na míru: 16, 32 nebo 64 karet a rozměry 50 × 50, 60 × 60 nebo 80 × 80 mm. Sytý tisk na křídovém papíře 350 g/m² chráníme oboustrannou laminací 200 mikronů — karty zůstanou lesklé a rovné i po stovkách odehraných partií. Dračí ruby z naší galerie hru krásně dotvoří. Ruční výroba v Česku, expedice do 5 pracovních dnů.',
+        longDescription: 'Epické dračí pexeso pro odvážné hráče. Ve hře se potkávají legendy jako Ignis Rex, Kronos či Stínový běžec — každý pár nese detailní portrét jednoho draka, takže hledání dvojic je zároveň objevováním dračí říše. Skvělá volba pro fanoušky fantasy od školkového věku po dospělé stratégy.\n\nSestavte si hru na míru: 16, 32 nebo 64 karet a rozměry 50 × 50, 60 × 60 nebo 80 × 80 mm. Sytý tisk na lesklém fotopapíře 220 mikronů chráníme oboustrannou laminací 200 mikronů — karty zůstanou lesklé a rovné i po stovkách odehraných partií. Dračí ruby z naší galerie hru krásně dotvoří. Ruční výroba v Česku, expedice do 5 pracovních dnů.',
         price: 249,
         themeColor: '#ff0033',
         back: '/cards/dragon_scales_realistic_1.webp',
@@ -360,7 +360,7 @@ export const pexesoProducts = [
         slug: 'kocky-bojovnice',
         name: 'Pexeso: Kočky bojovnice',
         description: 'Odvážné, mrštné a nebezpečně roztomilé kočičí válečnice. Získejte celou kočičí armádu.',
-        longDescription: 'Kočičí válečnice tentokrát prověří vaši paměť. Pexeso Kočky bojovnice přináší páry karet s odvážnými hrdinkami v plné zbroji — děti hledají dvojice, sběratelé obdivují ilustrace a všichni společně fandí své oblíbené bojovnici. Hra roste s hráčem: začněte na 16 kartách a propracujte se k mistrovské variantě se 64 kartami.\n\nNa výběr jsou tři rozměry kartiček (50 × 50, 60 × 60 a 80 × 80 mm). Tiskneme na křídový papír s gramáží 350 g/m² a karty oboustranně laminujeme fólií 200 mikronů pro maximální odolnost. Jako rub doporučujeme motivy kočičí srsti z galerie rubů. Vyrábíme ručně v Česku a odesíláme do 5 pracovních dnů.',
+        longDescription: 'Kočičí válečnice tentokrát prověří vaši paměť. Pexeso Kočky bojovnice přináší páry karet s odvážnými hrdinkami v plné zbroji — děti hledají dvojice, sběratelé obdivují ilustrace a všichni společně fandí své oblíbené bojovnici. Hra roste s hráčem: začněte na 16 kartách a propracujte se k mistrovské variantě se 64 kartami.\n\nNa výběr jsou tři rozměry kartiček (50 × 50, 60 × 60 a 80 × 80 mm). Tiskneme na lesklý fotopapír o tloušťce 220 mikronů a karty oboustranně laminujeme fólií 200 mikronů pro maximální odolnost. Jako rub doporučujeme motivy kočičí srsti z galerie rubů. Vyrábíme ručně v Česku a odesíláme do 5 pracovních dnů.',
         price: 249,
         themeColor: '#00d2ff',
         back: '/cards/cat_fur_silver.webp',
@@ -378,7 +378,7 @@ export const pexesoProducts = [
         slug: 'kralovstvi-snehu',
         name: 'Pexeso: Království sněhu',
         description: 'Mrazivě krásná pexesová sada inspirovaná světem Frozen. 16 párů karet s pohádkovými hrdiny pro skvělý trénink paměti.',
-        longDescription: 'Mrazivě krásné pexeso inspirované světem ledového království. Pohádkoví hrdinové, třpytivé ledové scenérie a jemné zimní barvy okouzlí malé princezny i prince — 16 karet ve výchozí variantě je akorát pro dětskou pozornost, pro zdatnější paměti nabízíme i 32 a 64 karet.\n\nKartičky si objednáte v rozměru 50 × 50, 60 × 60 nebo 80 × 80 mm. Každou tiskneme na prémiový křídový papír 350 g/m² a oboustranně laminujeme fólií o tloušťce 200 mikronů — lesk připomínající led a odolnost proti každodennímu hraní. V galerii rubů najdete i ledový krystal, který sadu stylově uzavře. Ruční česká výroba, odeslání do 5 pracovních dnů.',
+        longDescription: 'Mrazivě krásné pexeso inspirované světem ledového království. Pohádkoví hrdinové, třpytivé ledové scenérie a jemné zimní barvy okouzlí malé princezny i prince — 16 karet ve výchozí variantě je akorát pro dětskou pozornost, pro zdatnější paměti nabízíme i 32 a 64 karet.\n\nKartičky si objednáte v rozměru 50 × 50, 60 × 60 nebo 80 × 80 mm. Každou tiskneme na prémiový lesklý fotopapír 220 mikronů a oboustranně laminujeme fólií o tloušťce 200 mikronů — lesk připomínající led a odolnost proti každodennímu hraní. V galerii rubů najdete i ledový krystal, který sadu stylově uzavře. Ruční česká výroba, odeslání do 5 pracovních dnů.',
         price: 249,
         themeColor: '#4dc9ff',
         back: '/cards/backs/epic_ice_crystal.webp',
@@ -397,7 +397,7 @@ export const pexesoProducts = [
         slug: 'velci-lovci',
         name: 'Pexeso: Velcí lovci',
         description: 'Odhalte sílu nejobávanějších dravců naší planety ve strhujícím pexesu pro odvážné.',
-        longDescription: 'Nejobávanější dravci planety v jednom balíčku. Pexeso Velcí lovci představuje tygry, vlky, krokodýly, žraloka bílého i vzácného sněžného levharta — realistické ilustrace přibližují divokou přírodu a hledání párů se mění v safari expedici. Skvělé pro malé zoology i rodinné turnaje.\n\nHru si sestavíte podle sebe: 16, 32 nebo 64 karet a tři velikosti kartiček od klasických 50 × 50 mm po maxi 80 × 80 mm. Tisk na křídovém papíře 350 g/m² s oboustrannou laminací 200 mikronů zaručí, že karty přežijí i souboj s nejdivočejšími hráči. Zadní stranu si vyberete z desítek motivů. Vyrábíme ručně v Česku, odesíláme do 5 pracovních dnů.',
+        longDescription: 'Nejobávanější dravci planety v jednom balíčku. Pexeso Velcí lovci představuje tygry, vlky, krokodýly, žraloka bílého i vzácného sněžného levharta — realistické ilustrace přibližují divokou přírodu a hledání párů se mění v safari expedici. Skvělé pro malé zoology i rodinné turnaje.\n\nHru si sestavíte podle sebe: 16, 32 nebo 64 karet a tři velikosti kartiček od klasických 50 × 50 mm po maxi 80 × 80 mm. Tisk na lesklém fotopapíře 220 mikronů s oboustrannou laminací 200 mikronů zaručí, že karty přežijí i souboj s nejdivočejšími hráči. Zadní stranu si vyberete z desítek motivů. Vyrábíme ručně v Česku, odesíláme do 5 pracovních dnů.',
         price: 249,
         themeColor: '#8b5a2b',
         back: '/cards/backs/epic_arcane_parchment.webp',

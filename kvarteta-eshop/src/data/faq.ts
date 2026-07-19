@@ -19,7 +19,7 @@ export const faqs: FAQItem[] = [
     },
     {
         question: 'Na jaký papír se tiskne?',
-        answer: 'Tiskneme na prémiový křídový papír s vysokou gramáží (350g/m²). Díky tomu jsou barvy brilantně syté a karta má perfektní tuhost ještě před samotnou laminací.'
+        answer: 'Tiskneme na prémiový lesklý fotopapír o tloušťce 220 mikronů. Díky tomu jsou barvy brilantně syté a karta má perfektní tuhost ještě před samotnou laminací.'
     },
     {
         question: 'Mohu si karty navrhnout kompletně sám?',

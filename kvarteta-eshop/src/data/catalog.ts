@@ -92,9 +92,9 @@ const IMG_DIMS: Record<string, [number, number]> = {
     'karty-tema-star-wars': [717, 1197],
     'karty-tema-prsi-car-a-kouzel': [717, 1197],
     'pexeso-dinosauri': [1024, 1024],
-    'pexeso-dracci': [896, 1344],
+    'pexeso-dracci': [896, 896],
     'pexeso-draci': [1024, 1024],
-    'pexeso-kocky': [896, 1344],
+    'pexeso-kocky': [896, 896],
     'pexeso-frozen': [684, 684],
     'pexeso-dravci': [1024, 1024],
 };

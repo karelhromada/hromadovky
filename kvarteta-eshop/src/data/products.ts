@@ -327,9 +327,9 @@ export const pexesoProducts = [
             { id: 1, text: 'Roztomilé', icon: Star, color: '#d946ef' }
         ],
         image: [
-            '/cards/pexeso_baby_1.webp', '/cards/pexeso_baby_2.webp', '/cards/pexeso_baby_3.webp', '/cards/pexeso_baby_4.webp',
-            '/cards/pexeso_baby_5.webp', '/cards/pexeso_baby_6.webp', '/cards/pexeso_baby_7.webp', '/cards/pexeso_baby_8.webp',
-            '/cards/pexeso_baby_9.webp', '/cards/pexeso_baby_10.webp', '/cards/pexeso_baby_11.webp', '/cards/pexeso_baby_12.webp'
+            '/pexeso/baby-dracci/pexeso_baby_1.webp', '/pexeso/baby-dracci/pexeso_baby_2.webp', '/pexeso/baby-dracci/pexeso_baby_3.webp', '/pexeso/baby-dracci/pexeso_baby_4.webp',
+            '/pexeso/baby-dracci/pexeso_baby_5.webp', '/pexeso/baby-dracci/pexeso_baby_6.webp', '/pexeso/baby-dracci/pexeso_baby_7.webp', '/pexeso/baby-dracci/pexeso_baby_8.webp',
+            '/pexeso/baby-dracci/pexeso_baby_9.webp', '/pexeso/baby-dracci/pexeso_baby_10.webp', '/pexeso/baby-dracci/pexeso_baby_11.webp', '/pexeso/baby-dracci/pexeso_baby_12.webp'
         ]
     },
     {
@@ -368,9 +368,9 @@ export const pexesoProducts = [
             { id: 1, text: 'Novinka', icon: Sparkles, color: '#0ea5e9' }
         ],
         image: [
-            '/cards/cat_1.webp', '/cards/cat_2.webp', '/cards/cat_3.webp', '/cards/cat_4.webp',
-            '/cards/cat_5.webp', '/cards/cat_6.webp', '/cards/cat_7.webp', '/cards/cat_8.webp',
-            '/cards/cat_full_1.webp'
+            '/pexeso/kocky/pexeso_cat_1.webp', '/pexeso/kocky/pexeso_cat_2.webp', '/pexeso/kocky/pexeso_cat_3.webp', '/pexeso/kocky/pexeso_cat_4.webp',
+            '/pexeso/kocky/pexeso_cat_5.webp', '/pexeso/kocky/pexeso_cat_6.webp', '/pexeso/kocky/pexeso_cat_7.webp', '/pexeso/kocky/pexeso_cat_8.webp',
+            '/pexeso/kocky/pexeso_cat_9.webp', '/pexeso/kocky/pexeso_cat_10.webp', '/pexeso/kocky/pexeso_cat_11.webp', '/pexeso/kocky/pexeso_cat_12.webp'
         ]
     },
     {

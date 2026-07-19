@@ -1,21 +1,23 @@
 #!/usr/bin/env node
 // Orizne portretove obrazky karet na ctverec (pro pexeso — karticky jsou ctvercove).
-// Orez pouziva sharp "attention" strategii — ctverec se umisti na nejvyraznejsi
-// oblast obrazku (motiv), ne na geometricky stred.
-// Pouziti: node scripts/square-crop.mjs <cilova-slozka> <soubor.webp> [dalsi...]
+// Vychozi orez je STREDEM — shodne s tiskovym archem (pexeso/<sada>/tiskovy_arch_*.html
+// pouziva background-size: cover + background-position: center), takze web ukazuje
+// presne to, co zakaznik dostane vytistene. Volitelne --position=attention orizne
+// na nejvyraznejsi oblast obrazku.
+// Pouziti: node scripts/square-crop.mjs [--position=center|attention] <cilova-slozka> <soubor.webp> [dalsi...]
 // Priklad: node scripts/square-crop.mjs public/pexeso/baby-dracci public/cards/pexeso_baby_*.webp
 
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
 
-async function squareCrop(file, destDir) {
+async function squareCrop(file, destDir, position) {
   const input = await fs.readFile(file);
   const meta = await sharp(input).metadata();
   const size = Math.min(meta.width, meta.height);
 
   const output = await sharp(input)
-    .resize(size, size, { fit: 'cover', position: sharp.strategy.attention })
+    .resize(size, size, { fit: 'cover', position })
     .webp({ quality: 95 })
     .toBuffer();
 
@@ -25,14 +27,24 @@ async function squareCrop(file, destDir) {
 }
 
 async function main() {
-  const [destDir, ...files] = process.argv.slice(2);
+  const args = process.argv.slice(2);
+  let position = 'centre';
+  if (args[0]?.startsWith('--position=')) {
+    const value = args.shift().split('=')[1];
+    if (value === 'attention') position = sharp.strategy.attention;
+    else if (value !== 'center' && value !== 'centre') {
+      console.error(`Neplatna pozice: ${value} (ocekavam center nebo attention)`);
+      process.exit(1);
+    }
+  }
+  const [destDir, ...files] = args;
   if (!destDir || files.length === 0) {
-    console.error('Pouziti: node scripts/square-crop.mjs <cilova-slozka> <soubor.webp> [dalsi...]');
+    console.error('Pouziti: node scripts/square-crop.mjs [--position=center|attention] <cilova-slozka> <soubor.webp> [dalsi...]');
     process.exit(1);
   }
   await fs.mkdir(destDir, { recursive: true });
   for (const file of files) {
-    await squareCrop(file, destDir);
+    await squareCrop(file, destDir, position);
   }
   console.log(`[square-crop] hotovo: ${files.length} souboru → ${destDir}`);
 }

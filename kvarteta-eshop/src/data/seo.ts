@@ -36,6 +36,7 @@ const organizationLd = {
   logo: `${SITE.url}/logo.webp`,
   email: 'info@hromadovky.cz',
   address: { '@type': 'PostalAddress', addressCountry: 'CZ' },
+  sameAs: ['https://www.instagram.com/hromadovky/'],
 };
 
 const SELLER = { '@type': 'Organization', name: 'Hromadovky' } as const;

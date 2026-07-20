@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// One-shot importer pro hraci karty "Prsi car a kouzel" (Harry Potter tematicka sada):
-//   hraci_karty/Harry Potter/Finální karty/*.png -> kvarteta-eshop/public/cards/prsi-car-a-kouzel/*.webp
+// One-shot importer pro hraci karty "Prsi car a kouzel" (realisticka kouzelnicka sada):
+//   hraci_karty/Prší čar a kouzel realistický/Karty finále/*.png -> kvarteta-eshop/public/cards/prsi-car-a-kouzel/*.webp
 //
 // Prevadi PNG -> WebP (q90, max 1400px) a normalizuje diakriticke nazvy na ASCII
 // (Červené_Eso.png -> Cervene_Eso.webp), aby filtr barev v ProductShowcaseKarty fungoval.
@@ -91,7 +91,7 @@ async function main() {
 
     await importCardSet(
         'Prší čár a kouzel',
-        path.join(ROOT, 'hraci_karty/Harry Potter/Finální karty'),
+        path.join(ROOT, 'hraci_karty/Prší čar a kouzel realistický/Karty finále'),
         path.join(ROOT, 'kvarteta-eshop/public/cards/prsi-car-a-kouzel'),
     );
 

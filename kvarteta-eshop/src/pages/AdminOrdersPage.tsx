@@ -9,7 +9,15 @@ import {
 } from '../lib/orders';
 import { PageHead } from '../components/seo/PageHead';
 import { SEO } from '../data/seo';
+import { buildCardBackRef, resolveBackName } from '../data/backgrounds';
+import { listProducts } from '../data/catalog';
 import './AdminOrdersPage.css';
+
+// Líc hotových sad se dohledává z katalogu podle id položky (custom položky v katalogu nejsou —
+// jejich líc jsou rendery/originály níže).
+const PRODUCT_BY_ID = new Map(
+  (['kvarteta', 'karty', 'pexeso'] as const).flatMap(c => listProducts(c)).map(p => [p.id, p]),
+);
 
 const STATUS_LABEL: Record<string, string> = {
   received: 'Přijatá',
@@ -247,6 +255,9 @@ export default function AdminOrdersPage() {
             path: p,
             filename: `VS${vs}-original-${String(i + 1).padStart(2, '0')}.${pathExt(p)}`,
           }));
+          const product = PRODUCT_BY_ID.get(item.id);
+          // Starší objednávky mají cardBackRef null, ale options.back nese URL/název rubu
+          const backRef = item.cardBackRef ?? buildCardBackRef(item.options?.back) ?? null;
           return (
             <section key={`${item.id}-${idx}`} className="glass-panel item-panel">
               <h3>
@@ -257,7 +268,7 @@ export default function AdminOrdersPage() {
                 <p className="item-options">
                   {item.options.size && <>Rozměr: {item.options.size} · </>}
                   {item.options.packaging && <>Balení: {item.options.packaging} · </>}
-                  {item.options.back && <>Rub: {item.options.back}</>}
+                  {item.options.back && <>Rub: {resolveBackName(item.options.back)}</>}
                   {item.options.note && (
                     <>
                       <br />
@@ -265,6 +276,27 @@ export default function AdminOrdersPage() {
                     </>
                   )}
                 </p>
+              )}
+              {product && (
+                <div className="admin-orders-gallery-section">
+                  <div className="gallery-section-header">
+                    <h4>
+                      🃏 Líc — {product.name} <span className="gallery-count">(náhled z katalogu)</span>
+                    </h4>
+                  </div>
+                  <div className="admin-orders-gallery">
+                    {product.gallery.slice(0, 4).map(img => {
+                      const url = encodeURI(img);
+                      return (
+                        <figure key={img} className="gallery-item">
+                          <a href={url} target="_blank" rel="noopener noreferrer" title="Otevřít v plné kvalitě">
+                            <img src={url} alt={product.name} loading="lazy" />
+                          </a>
+                        </figure>
+                      );
+                    })}
+                  </div>
+                </div>
               )}
               <ImageGallery
                 title="🎴 Karty k tisku"
@@ -282,18 +314,18 @@ export default function AdminOrdersPage() {
                 downloadingKey={downloadingKey}
                 onDownloadAll={handleDownloadAll}
               />
-              {item.cardBackRef?.publicUrl && (
+              {backRef?.publicUrl && (
                 <div className="admin-orders-gallery-section">
                   <div className="gallery-section-header">
-                    <h4>🎨 Rub karet — {item.cardBackRef.name}</h4>
+                    <h4>🎨 Rub karet — {backRef.name}</h4>
                   </div>
                   <div className="admin-orders-gallery">
                     <figure className="gallery-item">
-                      <a href={item.cardBackRef.publicUrl} target="_blank" rel="noopener noreferrer">
-                        <img src={item.cardBackRef.publicUrl} alt={item.cardBackRef.name} loading="lazy" />
+                      <a href={backRef.publicUrl} target="_blank" rel="noopener noreferrer">
+                        <img src={backRef.publicUrl} alt={backRef.name} loading="lazy" />
                       </a>
                       <figcaption>
-                        <span className="gallery-filename">{item.cardBackRef.name}</span>
+                        <span className="gallery-filename">{backRef.name}</span>
                       </figcaption>
                     </figure>
                   </div>

@@ -105,7 +105,7 @@ const PexesoCreator: React.FC<PexesoCreatorProps> = ({ onAddToCart }) => {
                 setRendering({ done: 0, total: tasks.length });
                 const { paths, failed } = await renderAndUploadBatch(tasks, p => {
                     setRendering({ done: p.done, total: p.total });
-                }, 3);
+                }, { pixelRatio: 3 }); // 600px uzel × 3 = 1800×1800 px (≥300 DPI i pro Maxi 80×80 mm)
                 setRendering(null);
                 renderedCardPaths = paths;
                 if (failed.length) {
@@ -293,7 +293,7 @@ const PexesoCreator: React.FC<PexesoCreatorProps> = ({ onAddToCart }) => {
                                         <span className="slot-placeholder">{uploading && index === 0 ? 'Nahrávám…' : 'Přidat fotku'}</span>
                                         <input
                                             type="file"
-                                            accept="image/*"
+                                            accept="image/*,.heic,.heif"
                                             style={{ display: 'none' }}
                                             onChange={handlePhotoUpload}
                                             disabled={uploading}

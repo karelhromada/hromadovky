@@ -26,6 +26,7 @@ const CheckoutPage = lazy(() => import('./pages/CheckoutPage'))
 const AuthPage = lazy(() => import('./pages/AuthPage'))
 const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage'))
 const AdminInvoicesPage = lazy(() => import('./pages/AdminInvoicesPage'))
+const AdminOrdersPage = lazy(() => import('./pages/AdminOrdersPage'))
 
 const RouteFallback = () => (
   <div
@@ -162,6 +163,14 @@ function App() {
                   element={
                     <RequireAdmin>
                       <AdminInvoicesPage />
+                    </RequireAdmin>
+                  }
+                />
+                <Route
+                  path="/admin/objednavky"
+                  element={
+                    <RequireAdmin>
+                      <AdminOrdersPage />
                     </RequireAdmin>
                   }
                 />

@@ -13,7 +13,8 @@ export interface RenderOptions {
 }
 
 export async function renderAndUploadCard(node: HTMLElement, opts: RenderOptions): Promise<string> {
-  const pixelRatio = opts.pixelRatio ?? (isMobile() ? 2 : 3)
+  // Kvalita renderu nesmí záviset na zařízení — mobil dostává stejné rozlišení jako desktop.
+  const pixelRatio = opts.pixelRatio ?? 3
   const blob = await toBlob(node, {
     pixelRatio,
     cacheBust: true,
@@ -45,11 +46,19 @@ export interface RenderProgress {
   failed: Array<{ cardKey: string; error: string }>
 }
 
+export interface BatchOptions {
+  concurrency?: number
+  pixelRatio?: number
+  backgroundColor?: string
+}
+
 export async function renderAndUploadBatch(
   tasks: RenderTask[],
   onProgress?: (p: RenderProgress) => void,
-  concurrency = 3,
+  options: BatchOptions = {},
 ): Promise<{ paths: string[]; failed: Array<{ cardKey: string; error: string }> }> {
+  // Na mobilu nižší souběžnost kvůli paměti (dekódované fotky + canvasy), kvalita zůstává plná.
+  const concurrency = options.concurrency ?? (isMobile() ? 2 : 3)
   const paths: string[] = []
   const failed: Array<{ cardKey: string; error: string }> = []
   let index = 0
@@ -62,7 +71,11 @@ export async function renderAndUploadBatch(
       const task = tasks[my]
       onProgress?.({ done, total, currentKey: task.cardKey, failed: [...failed] })
       try {
-        const path = await renderAndUploadCard(task.node, { cardKey: task.cardKey })
+        const path = await renderAndUploadCard(task.node, {
+          cardKey: task.cardKey,
+          pixelRatio: options.pixelRatio,
+          backgroundColor: options.backgroundColor,
+        })
         paths.push(path)
       } catch (err) {
         const message = err instanceof Error ? err.message : String(err)

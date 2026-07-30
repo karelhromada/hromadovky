@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { Upload, ZoomIn, Trash2, Check, CreditCard, ChevronRight } from 'lucide-react';
 import { backgrounds, getBackgroundsForGame } from '../data/backgrounds';
 import './FamilyCardConfigurator.css';
@@ -8,6 +8,10 @@ import PackagingSelector from './PackagingSelector';
 import { packagingSurcharge, type PackagingType } from '../data/packaging';
 
 const FAMILY_BASE_PRICE = 299;
+
+// Export uzel má fixních 350×490 px (viz .poker-card-export v CSS). Posun fotky se ukládá
+// v px viditelného náhledu, jehož šířka je responzivní — při exportu se škáluje poměrem šířek.
+const POKER_EXPORT_WIDTH = 350;
 
 interface FamilyCardConfiguratorProps {
     onAddToCart?: (item: any) => void;
@@ -126,6 +130,21 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
     const exportRefs = useRef<Map<string, HTMLElement>>(new Map());
     const [rendering, setRendering] = useState<{ done: number; total: number } | null>(null);
 
+    // Šířka viditelného náhledu — pro přepočet posunu fotky do fixního export uzlu
+    const previewFrameRef = useRef<HTMLDivElement>(null);
+    const [previewWidth, setPreviewWidth] = useState(POKER_EXPORT_WIDTH);
+
+    useLayoutEffect(() => {
+        const node = previewFrameRef.current;
+        if (!node) return;
+        const observer = new ResizeObserver(entries => {
+            const width = entries[0]?.contentRect.width;
+            if (width) setPreviewWidth(width);
+        });
+        observer.observe(node);
+        return () => observer.disconnect();
+    }, []);
+
     const handleSelectCard = React.useCallback((id: string) => {
         setSelectedCardId(id);
     }, []);
@@ -145,6 +164,8 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
         };
     }, []); // Only on unmount
 
+    const [uploading, setUploading] = useState(false);
+
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
@@ -154,16 +175,26 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
             URL.revokeObjectURL(selectedCard.imageUrl);
         }
         const targetId = selectedCardId;
-        const previewUrl = URL.createObjectURL(file);
-        updateCard(targetId, { imageUrl: previewUrl, imagePath: null, zoom: 1, position: { x: 0, y: 0 } });
+        const optimisticUrl = URL.createObjectURL(file);
+        updateCard(targetId, { imageUrl: optimisticUrl, imagePath: null, zoom: 1, position: { x: 0, y: 0 } });
+        setUploading(true);
 
         try {
-            const { path } = await uploadOrderPhoto(file);
-            updateCard(targetId, { imagePath: path });
+            const { path, previewUrl, converted } = await uploadOrderPhoto(file);
+            if (converted) {
+                // HEIC → JPEG: optimistický náhled z HEIC prohlížeč nezobrazí, vyměnit za konvertovaný
+                URL.revokeObjectURL(optimisticUrl);
+                updateCard(targetId, { imageUrl: previewUrl, imagePath: path });
+            } else {
+                URL.revokeObjectURL(previewUrl);
+                updateCard(targetId, { imagePath: path });
+            }
         } catch (err: any) {
             alert(err?.message || 'Nahrání fotky se nezdařilo.');
-            URL.revokeObjectURL(previewUrl);
+            URL.revokeObjectURL(optimisticUrl);
             updateCard(targetId, { imageUrl: null, imagePath: null });
+        } finally {
+            setUploading(false);
         }
     };
 
@@ -239,7 +270,7 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
         setRendering({ done: 0, total: tasks.length });
         const { paths, failed } = await renderAndUploadBatch(tasks, p => {
             setRendering({ done: p.done, total: p.total });
-        }, 3);
+        }, { pixelRatio: 3 }); // 350×490 uzel × 3 = 1050×1470 px (≥300 DPI pro tisk 62×88 mm)
         setRendering(null);
 
         if (failed.length && failed.length === tasks.length) {
@@ -274,6 +305,9 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
     // Card counts for UI
     const totalWithPhotos = deck.filter(c => c.imageUrl).length;
 
+    // Poměr fixního export uzlu vůči aktuální šířce náhledu — škáluje se jen translate, scale je relativní
+    const exportScale = previewWidth > 0 ? POKER_EXPORT_WIDTH / previewWidth : 1;
+
     return (
         <section id="family-configurator" className={`family-configurator-section container ${isDragging ? 'is-dragging' : ''}`}>
             <div className="section-header">
@@ -288,7 +322,8 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
                 <div className="config-layout">
                     {/* LEVÁ STRANA: Náhled a interaktivní editor */}
                     <div className="card-preview-container">
-                        <div 
+                        <div
+                            ref={previewFrameRef}
                             className={`poker-card-frame frame-${selectedCard.suitColor}`}
                             onMouseDown={handleMouseDown}
                             onMouseMove={handleMouseMove}
@@ -404,12 +439,16 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
                             </div>
                         )}
 
+                        {uploading && (
+                            <p className="text-sm font-bold" style={{ color: '#d4af37' }}>Zpracovávám fotku…</p>
+                        )}
+
                         {!selectedCard.imageUrl && (
-                            <label className="upload-dropzone w-full">
-                                <input type="file" hidden accept="image/*" onChange={handleImageUpload} />
+                            <label className="upload-dropzone w-full" style={uploading ? { opacity: 0.5, pointerEvents: 'none' } : undefined}>
+                                <input type="file" hidden accept="image/*,.heic,.heif" onChange={handleImageUpload} disabled={uploading} />
                                 <Upload className="mx-auto mb-3 text-gold" size={32} />
                                 <p className="font-bold text-sm">Vybrat fotografii</p>
-                                <p className="text-xs text-gray-500 mt-1">PNG, JPG až do 10MB</p>
+                                <p className="text-xs text-gray-500 mt-1">JPG, PNG nebo HEIC až do 20 MB</p>
                             </label>
                         )}
                     </div>
@@ -539,7 +578,7 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
                             if (el) exportRefs.current.set(card.id, el);
                             else exportRefs.current.delete(card.id);
                         }}
-                        className={`poker-card-frame frame-${card.suitColor}`}
+                        className={`poker-card-frame poker-card-export frame-${card.suitColor}`}
                         style={{ margin: 0 }}
                     >
                         <div className="card-inner-border"></div>
@@ -557,7 +596,7 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
                                     src={card.imageUrl}
                                     alt=""
                                     style={{
-                                        transform: `translate(${card.position.x}px, ${card.position.y}px) scale(${card.zoom})`,
+                                        transform: `translate(${card.position.x * exportScale}px, ${card.position.y * exportScale}px) scale(${card.zoom})`,
                                         maxWidth: '100%',
                                     }}
                                 />

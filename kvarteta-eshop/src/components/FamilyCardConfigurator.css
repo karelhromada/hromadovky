@@ -95,9 +95,11 @@
 }
 
 .card-photo-area img {
+    /* Box fotky = celý rám (contain uvnitř) — základ posunu/zoomu se tak škáluje s rámem
+       a export do fixního uzlu je exaktní přepočet. */
     position: relative;
-    max-width: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
     pointer-events: none;
     will-change: transform;
@@ -530,4 +532,41 @@
         padding: 1rem;
         font-size: 1rem;
     }
+}
+
+/* --- Export uzel (off-screen render pro tiskové PNG) --- */
+/* Deterministický rozměr 350×490 px nezávislý na viewportu a zařízení — vyšší specificita
+   přebíjí i mobilní media query výše. Kvalitu dodává pixelRatio v cardExporter.ts. */
+.poker-card-export.poker-card-frame {
+    width: 350px;
+    height: 490px;
+    max-width: none;
+    border-radius: 1.5rem;
+    box-shadow: none;
+}
+
+.poker-card-export.poker-card-frame.frame-red {
+    box-shadow: inset 0 0 0 4px #d0021b;
+}
+
+.poker-card-export.poker-card-frame.frame-black {
+    box-shadow: inset 0 0 0 4px #000000;
+}
+
+.poker-card-export .idx-value {
+    font-size: 2.5rem;
+}
+
+.poker-card-export .idx-suit {
+    font-size: 1.8rem;
+}
+
+.poker-card-export .index-top-left {
+    top: 25px;
+    left: 25px;
+}
+
+.poker-card-export .index-bottom-right {
+    bottom: 25px;
+    right: 25px;
 }

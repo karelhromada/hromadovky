@@ -1,0 +1,258 @@
+/* Admin objednávky — vizuálně navazuje na AdminInvoicesPage.css.
+   Sdílené třídy (.admin-stats-grid, .admin-stat-card, .stat-label, .stat-value,
+   .admin-filters, .filter-row, .status-pill, .btn-action, .admin-empty…) jsou
+   zde zduplikované záměrně — stránka je lazy-loaded a nesmí spoléhat na CSS
+   jiné lazy stránky (Past #3 v CLAUDE.md). */
+
+.admin-orders-container {
+    max-width: 1280px;
+    margin: 24px auto 64px;
+    padding: 0 24px;
+    color: var(--text-primary);
+}
+
+.admin-orders-header h1 {
+    font-size: 1.8rem;
+    margin: 0 0 16px;
+}
+
+.admin-orders-container .admin-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.admin-orders-container .admin-stat-card {
+    padding: 14px 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(197, 155, 39, 0.2);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.admin-orders-container .stat-label {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.admin-orders-container .stat-value {
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.admin-orders-container .stat-value.small { font-size: 1rem; }
+.admin-orders-container .stat-value.success { color: #4caf50; }
+
+.admin-orders-container .admin-filters {
+    padding: 16px 20px;
+    margin-bottom: 16px;
+}
+
+.admin-orders-container .filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: flex-end;
+}
+
+.admin-orders-container .filter-row label {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    gap: 4px;
+}
+
+.admin-orders-container .filter-row select,
+.admin-orders-container .filter-row input {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(197, 155, 39, 0.25);
+    background: rgba(0, 0, 0, 0.2);
+    color: var(--text-primary);
+    min-width: 140px;
+}
+
+.admin-orders-container .filter-search { flex: 1 1 240px; }
+.admin-orders-container .filter-search input { width: 100%; }
+
+.admin-orders-table-wrap { overflow-x: auto; }
+
+.admin-orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+}
+
+.admin-orders-table th,
+.admin-orders-table td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    vertical-align: middle;
+}
+
+.admin-orders-table th {
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+}
+
+.admin-orders-table tbody tr:hover { background: rgba(255, 255, 255, 0.03); }
+
+.admin-orders-container .cell-number { font-family: 'Menlo', monospace; font-size: 0.88rem; }
+
+.admin-orders-table .cell-items {
+    max-width: 320px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.admin-orders-container .customer-cell { display: flex; flex-direction: column; gap: 2px; }
+.admin-orders-container .customer-email { font-size: 0.78rem; color: var(--text-secondary); }
+
+.admin-orders-container .status-pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    width: fit-content;
+}
+.admin-orders-container .status-pill.status-received { background: rgba(76, 175, 80, 0.15); color: #4caf50; }
+
+.admin-orders-container .cell-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.admin-orders-container .btn-action {
+    padding: 5px 10px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+.admin-orders-container .btn-action:hover:not(:disabled) { transform: translateY(-1px); }
+.admin-orders-container .btn-action:disabled { opacity: 0.5; cursor: not-allowed; }
+.admin-orders-container .btn-action.btn-secondary { background: rgba(197, 155, 39, 0.12); color: var(--accent-gold-dark); }
+
+.admin-orders-container .admin-empty { padding: 24px; text-align: center; color: var(--text-secondary); }
+.admin-orders-container .admin-error { color: #e57373; }
+
+/* --- Detail objednávky --- */
+
+.admin-orders-container .back-btn { margin-bottom: 16px; }
+
+.customer-panel,
+.item-panel {
+    padding: 20px 24px;
+    margin-bottom: 16px;
+}
+
+.customer-panel h3,
+.item-panel h3 {
+    margin: 0 0 10px;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.customer-panel p {
+    margin: 0;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+.item-qty { color: var(--text-secondary); font-weight: 400; }
+.item-price { margin-left: auto; color: var(--accent-gold-dark, #c59b27); }
+
+.item-options {
+    margin: 0 0 12px;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+}
+
+.admin-orders-gallery-section { margin-top: 16px; }
+
+.gallery-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.gallery-section-header h4 {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.gallery-count { color: var(--text-secondary); font-weight: 400; }
+
+.admin-orders-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+}
+
+.gallery-item {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.gallery-item a {
+    display: block;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    overflow: hidden;
+    aspect-ratio: 1;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.gallery-missing {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(229, 115, 115, 0.08);
+    border: 1px dashed rgba(229, 115, 115, 0.4);
+    border-radius: 8px;
+    color: #e57373;
+    font-size: 0.8rem;
+}
+
+.gallery-item figcaption {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    min-width: 0;
+}
+
+.gallery-filename {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

@@ -1042,3 +1042,41 @@
         left: 200%;
     }
 }
+/* --- Export uzel (off-screen render pro tiskové PNG) --- */
+/* Deterministický rozměr a typografie nezávislé na viewportu — hodnoty = desktopová maxima
+   clamp() konstant výše. !important přebíjí mobilní max-width: 200px !important a clampy.
+   Kvalitu dodává pixelRatio: 4 v CardCreator.tsx (výstup 1040×1473 px). */
+.kvarteto-export-node .live-card-wrapper {
+    width: 260px !important;
+    max-width: 260px !important;
+    box-shadow: none !important;
+}
+
+.kvarteto-export-node .card-id-badge {
+    font-size: 16px !important;
+}
+
+.kvarteto-export-node .card-stat-val {
+    font-size: 20px !important;
+}
+
+.kvarteto-export-node .card-stat-lbl {
+    font-size: 9px !important;
+}
+
+.kvarteto-export-node .card-hex.shape-hexagon .card-stat-lbl,
+.kvarteto-export-node .card-hex.shape-octagon .card-stat-lbl {
+    font-size: 9.5px !important;
+}
+
+.kvarteto-export-node .card-group-name {
+    font-size: 12px !important;
+}
+
+.kvarteto-export-node .card-hero-name {
+    font-size: 26px !important;
+}
+
+.kvarteto-export-node .card-hero-desc {
+    font-size: 13px !important;
+}

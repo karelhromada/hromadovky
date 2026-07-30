@@ -232,6 +232,12 @@ export const SEO = {
     path: '/admin/invoices',
     noindex: true,
   },
+  adminOrders: {
+    title: 'Administrace objednávek | Hromadovky',
+    description: 'Administrace objednávek.',
+    path: '/admin/objednavky',
+    noindex: true,
+  },
   notFound: {
     title: 'Stránka nenalezena (404) | Hromadovky',
     description: 'Požadovaná stránka neexistuje nebo byla přesunuta.',

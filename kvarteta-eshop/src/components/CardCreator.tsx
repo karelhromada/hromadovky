@@ -70,11 +70,12 @@ interface PhotoSlotProps {
     slot: string;
     photoUrl: string | undefined;
     isActive: boolean;
+    isUploading: boolean;
     onClick: (slot: string) => void;
     onPhotoUpload: (slot: string, file: File) => void;
 }
 
-const PhotoSlot = memo(({ slot, photoUrl, isActive, onClick, onPhotoUpload }: PhotoSlotProps) => {
+const PhotoSlot = memo(({ slot, photoUrl, isActive, isUploading, onClick, onPhotoUpload }: PhotoSlotProps) => {
     return (
         <div
             style={{
@@ -106,13 +107,18 @@ const PhotoSlot = memo(({ slot, photoUrl, isActive, onClick, onPhotoUpload }: Ph
             >
                 <label style={{ cursor: 'pointer', background: 'white', color: '#111', fontSize: '10px', padding: '2px 8px', borderRadius: '10px', fontWeight: 'bold' }} onClick={e => e.stopPropagation()}>
                     {photoUrl ? 'Změnit' : 'Nahrát'}
-                    <input type="file" accept="image/*" style={{ display: 'none' }} onChange={e => {
+                    <input type="file" accept="image/*,.heic,.heif" style={{ display: 'none' }} disabled={isUploading} onChange={e => {
                         if (e.target.files && e.target.files[0]) {
                             onPhotoUpload(slot, e.target.files[0]);
                         }
                     }} />
                 </label>
             </div>
+            {isUploading && (
+                <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.75)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 3, fontSize: '0.7rem', fontWeight: 800, color: '#111' }}>
+                    Nahrávám…
+                </div>
+            )}
         </div>
     );
 });
@@ -240,7 +246,7 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
     const [hideStats, setHideStats] = useState(false);
     const [customPhotos, setCustomPhotos] = useState<Record<string, string>>({});        // slot -> storage path
     const [customPhotoPreviews, setCustomPhotoPreviews] = useState<Record<string, string>>({}); // slot -> blob: URL pro UI
-    const [, setUploadingSlots] = useState<Set<string>>(new Set());
+    const [uploadingSlots, setUploadingSlots] = useState<Set<string>>(new Set());
     const [customStats, setCustomStats] = useState<Record<string, string[]>>({});
     const [customCardNames, setCustomCardNames] = useState<Record<string, string>>({});
     const [customDescriptions, setCustomDescriptions] = useState<Record<string, string>>({});
@@ -288,13 +294,20 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
     }, []);
 
     const handlePhotoUpload = useCallback(async (slot: string, file: File) => {
-        const previewUrl = URL.createObjectURL(file);
-        setCustomPhotoPreviews(prev => ({ ...prev, [slot]: previewUrl }));
+        const optimisticUrl = URL.createObjectURL(file);
+        setCustomPhotoPreviews(prev => ({ ...prev, [slot]: optimisticUrl }));
         setPreviewSlot(slot);
         setUploadingSlots(prev => { const next = new Set(prev); next.add(slot); return next; });
         try {
-            const { path } = await uploadOrderPhoto(file);
+            const { path, previewUrl, converted } = await uploadOrderPhoto(file);
             setCustomPhotos(prev => ({ ...prev, [slot]: path }));
+            if (converted) {
+                // HEIC → JPEG: optimistický náhled z HEIC prohlížeč nezobrazí, vyměnit za konvertovaný
+                URL.revokeObjectURL(optimisticUrl);
+                setCustomPhotoPreviews(prev => ({ ...prev, [slot]: previewUrl }));
+            } else {
+                URL.revokeObjectURL(previewUrl);
+            }
         } catch (err: any) {
             alert(err?.message || 'Nahrání fotky se nezdařilo.');
             setCustomPhotoPreviews(prev => { const next = { ...prev }; delete next[slot]; return next; });
@@ -370,7 +383,7 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
                 setRendering({ done: 0, total: tasks.length });
                 const { paths, failed } = await renderAndUploadBatch(tasks, p => {
                     setRendering({ done: p.done, total: p.total });
-                }, 3);
+                }, { pixelRatio: 4 }); // 260×368 uzel × 4 = 1040×1473 px (≥300 DPI i pro 65×95 mm)
                 setRendering(null);
                 renderedCardPaths = paths;
                 if (failed.length && failed.length === tasks.length) {
@@ -740,7 +753,7 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
                                     </p>
                                     <div style={{ marginBottom: '1.5rem', textAlign: 'center' }}>
                                         <label className="btn-secondary" style={{ display: 'inline-block', cursor: 'pointer', fontSize: '0.95rem', padding: '0.8rem 1.5rem', margin: 0 }}>
-                                            <input type="file" multiple accept="image/*" onChange={async (e) => {
+                                            <input type="file" multiple accept="image/*,.heic,.heif" onChange={async (e) => {
                                                 if (!e.target.files) return;
                                                 const files = Array.from(e.target.files);
                                                 e.target.value = '';
@@ -762,10 +775,11 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
                                                     }
                                                 }
 
-                                                // Náhledy nastavit okamžitě
+                                                // Náhledy nastavit okamžitě (URL vytvořit mimo updater, ať jde po konverzi HEIC vyměnit)
+                                                const optimisticUrls = new Map(assignments.map(a => [a.slot, URL.createObjectURL(a.file)]));
                                                 setCustomPhotoPreviews(prev => {
                                                     const next = { ...prev };
-                                                    for (const a of assignments) next[a.slot] = URL.createObjectURL(a.file);
+                                                    for (const a of assignments) next[a.slot] = optimisticUrls.get(a.slot)!;
                                                     return next;
                                                 });
                                                 setUploadingSlots(prev => {
@@ -782,8 +796,16 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
                                                         const idx = i++;
                                                         const { slot, file } = assignments[idx];
                                                         try {
-                                                            const { path } = await uploadOrderPhoto(file);
+                                                            const { path, previewUrl, converted } = await uploadOrderPhoto(file);
                                                             setCustomPhotos(prev => ({ ...prev, [slot]: path }));
+                                                            if (converted) {
+                                                                // HEIC → JPEG: vyměnit nezobrazitelný optimistický náhled
+                                                                const old = optimisticUrls.get(slot);
+                                                                if (old) URL.revokeObjectURL(old);
+                                                                setCustomPhotoPreviews(prev => ({ ...prev, [slot]: previewUrl }));
+                                                            } else {
+                                                                URL.revokeObjectURL(previewUrl);
+                                                            }
                                                         } catch (err: any) {
                                                             alert(`${slot}: ${err?.message || 'Nahrání se nezdařilo.'}`);
                                                             setCustomPhotoPreviews(prev => { const next = { ...prev }; delete next[slot]; return next; });
@@ -804,6 +826,7 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
                                                 slot={slot}
                                                 photoUrl={customPhotoPreviews[slot]}
                                                 isActive={previewSlot === slot}
+                                                isUploading={uploadingSlots.has(slot)}
                                                 onClick={handleSlotClick}
                                                 onPhotoUpload={handlePhotoUpload}
                                             />
@@ -1098,9 +1121,11 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
                 </div>
             )}
 
-            {/* Off-screen render container — pro export PNG každé karty do Supabase */}
+            {/* Off-screen render container — pro export PNG každé karty do Supabase.
+                Třída kvarteto-export-node fixuje rozměr i typografii nezávisle na viewportu. */}
             <div
                 aria-hidden="true"
+                className="kvarteto-export-node"
                 style={{ position: 'fixed', left: '-10000px', top: 0, pointerEvents: 'none', opacity: 0 }}
             >
                 {useCustomPhotos && Object.keys(customPhotoPreviews).filter(s => customPhotoPreviews[s]).map(slot => (

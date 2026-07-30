@@ -46,7 +46,9 @@ const HEIC_ERROR_MESSAGE =
 async function convertHeicToJpeg(file: File): Promise<File | null> {
   let blob: Blob
   try {
-    const { heicTo, isHeic } = await import('heic-to')
+    // CSP build — běžný build volá v Emscripten glue new Function(), které produkce
+    // (script-src bez 'unsafe-eval') blokuje; csp varianta se bez evalu obejde.
+    const { heicTo, isHeic } = await import('heic-to/csp')
     // Přejmenovaný JPEG s příponou .heic — magic bytes rozhodují, konverze se přeskočí
     if (!(await isHeic(file))) return null
 

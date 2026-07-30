@@ -199,7 +199,11 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
         } catch (err: any) {
             alert(err?.message || 'Nahrání fotky se nezdařilo.');
             URL.revokeObjectURL(optimisticUrl);
-            updateCard(targetId, { imageUrl: null, imagePath: null });
+            // Jen když karta pořád drží tenhle náhled — jinak bychom smazali fotku,
+            // kterou zákazník mezitím nahrál znovu.
+            if (isUploadCurrent(targetId, optimisticUrl)) {
+                updateCard(targetId, { imageUrl: null, imagePath: null });
+            }
         } finally {
             setUploading(false);
         }
@@ -345,7 +349,9 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
                             onPointerMove={handlePointerMove}
                             onPointerUp={handleMouseUp}
                             onPointerCancel={handleMouseUp}
-                            style={{ touchAction: 'none' }}
+                            // touch-action vypínáme jen když je co táhnout, jinak by prst
+                            // nad prázdným rámem nemohl scrollovat stránkou
+                            style={{ touchAction: selectedCard.imageUrl ? 'none' : 'auto' }}
                         >
                             <div className="card-inner-border"></div>
                             

@@ -74,7 +74,11 @@ async function main() {
   // slozka chybela/prejmenovala se, build by proseal zeleny a nasadil web, kde jsou
   // vsechny ruby 404 (manifest je z gitu, takze UI je dal nabizi).
   const manifest = JSON.parse(await fs.readFile(SRC_MANIFEST, 'utf8'));
-  const expected = Array.isArray(manifest) ? manifest.length : Object.values(manifest).flat().length;
+  // Tvar manifestu: { version, generated_at, categories: { <hra>: { size, aspect_ratio, items[] } } }
+  const expected = Object.values(manifest.categories ?? {}).reduce(
+    (n, c) => n + (Array.isArray(c) ? c.length : (c?.items?.length ?? 0)),
+    0,
+  );
   let copied = 0;
   for (const game of await fs.readdir(DST_PUBLIC)) {
     const webpDir = path.join(DST_PUBLIC, game, 'webp');

@@ -36,15 +36,8 @@ begin
     end if;
   end if;
 
-  select count(*) into v_recent_total
-  from public.order_submissions
-  where created_at > now() - interval '1 hour';
-  if v_recent_total >= 30 then
-    raise exception 'Objednávku se teď nepodařilo přijmout, zkuste to prosím za chvíli.'
-      using errcode = 'P0001';
-  end if;
-
-  -- Per-IP strop (jen když PostgREST hlavičky předá; přes přímé SQL je NULL a přeskočí se).
+  -- Per-IP strop nese hlavní tíhu; globální hranice je jen pojistka (viz níže),
+  -- protože nízký globální strop by šel zneužít jako DoS na celý e-shop.
   begin
     v_ip := coalesce(
       current_setting('request.headers', true)::json ->> 'cf-connecting-ip',
@@ -58,10 +51,19 @@ begin
     from public.order_submissions
     where created_at > now() - interval '1 hour'
       and customer ->> '_ip' = v_ip;
-    if v_recent_ip >= 10 then
+    if v_recent_ip >= 15 then
       raise exception 'Objednávku se teď nepodařilo přijmout, zkuste to prosím za chvíli.'
         using errcode = 'P0001';
     end if;
+  end if;
+
+  -- Globální pojistka vysoko nad reálným provozem (jednotky objednávek měsíčně).
+  select count(*) into v_recent_total
+  from public.order_submissions
+  where created_at > now() - interval '1 hour';
+  if v_recent_total >= 300 then
+    raise exception 'Objednávku se teď nepodařilo přijmout, zkuste to prosím za chvíli.'
+      using errcode = 'P0001';
   end if;
 
   insert into public.order_submissions(
@@ -109,5 +111,7 @@ using (
   -- primárně vlastnictví přes user_id
   (select auth.uid()) = user_id
   -- fallback pro objednávky bez účtu (host), kde user_id nikdy nevznikne
-  or (user_id is null and (auth.jwt() ->> 'email') = (customer ->> 'email'))
+  -- lower(): JWT má e-mail vždy lowercase, zákazník ho v checkoutu psát velkými může
+  or (user_id is null
+      and lower(auth.jwt() ->> 'email') = lower(customer ->> 'email'))
 );

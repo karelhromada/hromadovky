@@ -17,7 +17,9 @@ export async function renderAndUploadCard(node: HTMLElement, opts: RenderOptions
   const pixelRatio = opts.pixelRatio ?? 3
   const blob = await toBlob(node, {
     pixelRatio,
-    cacheBust: true,
+    // cacheBust NE: připojuje ?timestamp ke zdrojům, a blob: URL s query stringem
+    // nelze fetchnout → render fotky selže. Zdroje jsou blob:/same-origin, cache neřešíme.
+    cacheBust: false,
     backgroundColor: opts.backgroundColor ?? '#ffffff',
     skipFonts: false,
   })

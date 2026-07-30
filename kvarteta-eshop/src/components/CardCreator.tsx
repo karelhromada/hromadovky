@@ -102,7 +102,8 @@ const PhotoSlot = memo(({ slot, photoUrl, isActive, isUploading, onClick, onPhot
             <div style={{ position: 'absolute', top: 0, left: 0, background: 'rgba(255,255,255,0.95)', padding: '2px 6px', fontSize: '0.75rem', fontWeight: 800, borderBottomRightRadius: '6px', color: '#111', zIndex: 1 }}>
                 {slot}
             </div>
-            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', paddingBottom: '4px', opacity: 0, transition: 'opacity 0.2s', background: photoUrl ? 'rgba(0,0,0,0.4)' : 'transparent', zIndex: 2 }}
+            {/* .slot-action-overlay: na dotykových zařízeních je vidět vždy (hover neexistuje) */}
+            <div className="slot-action-overlay" style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', paddingBottom: '4px', transition: 'opacity 0.2s', background: photoUrl ? 'rgba(0,0,0,0.4)' : 'transparent', zIndex: 2 }}
                 onMouseEnter={e => e.currentTarget.style.opacity = '1'}
                 onMouseLeave={e => e.currentTarget.style.opacity = '0'}
             >

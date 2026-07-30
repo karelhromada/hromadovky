@@ -68,11 +68,14 @@ export interface CartItem {
 
 import { AuthProvider } from './context/AuthContext'
 import { migrateLegacyBackUrl } from './data/backgrounds'
+import { safeStorageGet, safeStorageSet } from './lib/browserCompat'
 
 function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>(() => {
-    const saved = localStorage.getItem('hromadovky_cart');
+    // safeStorage: Safari s blokovaným úložištěm hází SecurityError už při čtení,
+    // a tenhle kód běží NAD ErrorBoundary → výjimka by shodila celou aplikaci
+    const saved = safeStorageGet('local', 'hromadovky_cart');
     if (!saved) return [];
     try {
       const parsed = JSON.parse(saved) as CartItem[];
@@ -87,7 +90,7 @@ function App() {
 
   // Save to localStorage whenever cartItems changes
   useEffect(() => {
-    localStorage.setItem('hromadovky_cart', JSON.stringify(cartItems));
+    safeStorageSet('local', 'hromadovky_cart', JSON.stringify(cartItems));
   }, [cartItems]);
 
   const toggleCart = () => setIsCartOpen(!isCartOpen);

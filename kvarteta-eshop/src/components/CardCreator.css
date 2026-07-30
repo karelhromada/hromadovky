@@ -1080,3 +1080,17 @@
 .kvarteto-export-node .card-hero-desc {
     font-size: 13px !important;
 }
+
+/* Overlay „Nahrát/Změnit" ve slotu mřížky: na myši se odkrývá hoverem (inline handlery),
+   na dotyku hover neexistuje — tam musí být vidět trvale, jinak není poznat, kam ťuknout. */
+@media (hover: hover) {
+    .slot-action-overlay {
+        opacity: 0;
+    }
+}
+
+@media (hover: none) {
+    .slot-action-overlay {
+        opacity: 1;
+    }
+}

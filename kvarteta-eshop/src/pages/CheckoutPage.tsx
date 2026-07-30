@@ -10,6 +10,7 @@ import { resolveBackName } from '../data/backgrounds';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import { resetDraftRef } from '../lib/storage';
+import { randomUUID } from '../lib/browserCompat';
 import { isValidIco, lookupAres } from '../lib/ares';
 import { User, LogIn } from 'lucide-react';
 
@@ -54,6 +55,8 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
     const [finalTotal, setFinalTotal] = useState(0);
     const [orderVS, setOrderVS] = useState<string>('');
     const [isSuccess, setIsSuccess] = useState(false);
+    // n8n neodbavilo objednávku (e-mail + faktura) → nesmíme tvrdit, že potvrzení odešlo
+    const [notificationDelayed, setNotificationDelayed] = useState(false);
     const { profile, user } = useAuth();
     const [pickupPoint, setPickupPoint] = useState<string | null>(null);
     const [pickupPointId, setPickupPointId] = useState<string | null>(null);
@@ -267,7 +270,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
             // 1) Durable záznam do Supabase PŘED n8n. Objednávka se tak nikdy neztratí (i host)
             //    a variabilní symbol přiděluje server (unikátní, ne kolizní klientský timestamp).
             if (!idempotencyKeyRef.current) {
-                idempotencyKeyRef.current = crypto.randomUUID();
+                idempotencyKeyRef.current = randomUUID();
             }
             const { data: submissionRows, error: submissionError } = await supabase.rpc('create_order_submission', {
                 p_idempotency_key: idempotencyKeyRef.current,
@@ -328,8 +331,14 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                 if (!response.ok) {
                     throw new Error(`N8N response error: ${response.status}`);
                 }
+                const result = await response.json().catch(() => null);
+                // Workflow odmítne zpracování (neznámý/opakovaný VS) odpovědí { ok: false }
+                if (result && result.ok === false) {
+                    setNotificationDelayed(true);
+                }
             } catch (fetchError) {
                 console.error('Chyba automatizace (n8n):', fetchError);
+                setNotificationDelayed(true);
             }
 
             // 3) Profil + historie objednávek pro přihlášené (nezávisle na hostech).
@@ -405,7 +414,14 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                         </div>
                     </div>
                     <h1>Objednávka odeslána!</h1>
-                    <p>Děkujeme za váš nákup. Potvrzení jsme odeslali na <strong>{formData.email}</strong>.</p>
+                    {notificationDelayed ? (
+                        <p>
+                            Děkujeme za váš nákup. Objednávku máme uloženou pod číslem níže — potvrzení
+                            na <strong>{formData.email}</strong> dorazí během několika minut.
+                        </p>
+                    ) : (
+                        <p>Děkujeme za váš nákup. Potvrzení jsme odeslali na <strong>{formData.email}</strong>.</p>
+                    )}
                     <div className="success-details">
                         <span>Číslo objednávky: <strong>#{orderVS}</strong></span>
                         <span>Celkem k úhradě: <strong>{formatCurrency(finalTotal)}</strong></span>

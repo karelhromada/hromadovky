@@ -124,8 +124,11 @@ export default function AdminOrdersPage() {
     }
   }, [filters]);
 
+  // Debounce: bez něj běží dotaz na každý stisk klávesy a pomalejší starší
+  // odpověď může přepsat novější výsledek.
   useEffect(() => {
-    void reload();
+    const timer = setTimeout(() => void reload(), 300);
+    return () => clearTimeout(timer);
   }, [reload]);
 
   // Při otevření detailu podepsat všechny cesty jedním batch requestem

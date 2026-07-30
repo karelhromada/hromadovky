@@ -42,6 +42,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       } else {
         setLoading(false);
       }
+    }).catch((err) => {
+      // Bez tohoto by výpadek Auth (nebo Safari s blokovaným úložištěm) nechal
+      // loading navždy true → admin routy zamrznou na „Ověřuji oprávnění…".
+      console.error('Načtení session selhalo:', err);
+      setLoading(false);
     });
 
     // Listen for auth changes

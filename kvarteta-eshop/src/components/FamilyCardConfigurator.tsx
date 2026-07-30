@@ -231,24 +231,27 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
         updateCard(selectedCardId, { position: { x: 0, y: 0 } });
     };
 
-    const handleMouseDown = (e: React.MouseEvent) => {
+    // Pointer events místo mouse — pokrývají prst i myš jedním kódem. S mouse-only
+    // handlery nešlo fotku na mobilu posunout tažením, přestože to text slibuje.
+    const handlePointerDown = (e: React.PointerEvent) => {
         if (!selectedCard.imageUrl) return;
+        e.currentTarget.setPointerCapture(e.pointerId);
         setIsDragging(true);
-        dragStartRef.current = { 
-            x: e.clientX - selectedCard.position.x, 
-            y: e.clientY - selectedCard.position.y 
+        dragStartRef.current = {
+            x: e.clientX - selectedCard.position.x,
+            y: e.clientY - selectedCard.position.y
         };
         posRef.current = { x: selectedCard.position.x, y: selectedCard.position.y };
     };
 
-    const handleMouseMove = (e: React.MouseEvent) => {
+    const handlePointerMove = (e: React.PointerEvent) => {
         if (!isDragging || !imageRef.current) return;
-        
+
         const newX = e.clientX - dragStartRef.current.x;
         const newY = e.clientY - dragStartRef.current.y;
-        
+
         posRef.current = { x: newX, y: newY };
-        
+
         // Direct DOM manipulation for bypass React render cycles
         imageRef.current.style.transform = `translate(${newX}px, ${newY}px) scale(${selectedCard.zoom})`;
     };
@@ -338,10 +341,11 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
                         <div
                             ref={previewFrameRef}
                             className={`poker-card-frame frame-${selectedCard.suitColor}`}
-                            onMouseDown={handleMouseDown}
-                            onMouseMove={handleMouseMove}
-                            onMouseUp={handleMouseUp}
-                            onMouseLeave={handleMouseUp}
+                            onPointerDown={handlePointerDown}
+                            onPointerMove={handlePointerMove}
+                            onPointerUp={handleMouseUp}
+                            onPointerCancel={handleMouseUp}
+                            style={{ touchAction: 'none' }}
                         >
                             <div className="card-inner-border"></div>
                             

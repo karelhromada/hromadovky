@@ -70,7 +70,24 @@ async function main() {
     console.warn(`[sync-backs] manifest.json se nepodarilo zkopirovat do src/data/: ${err.message}`);
   }
 
-  console.log(`[sync-backs] OK -> public/${path.relative(path.join(ESHOP_ROOT, 'public'), DST_PUBLIC)}`);
+  // Guard: public/zadni_strany je gitignorovany a vznika jen tady. Kdyby zdrojova
+  // slozka chybela/prejmenovala se, build by proseal zeleny a nasadil web, kde jsou
+  // vsechny ruby 404 (manifest je z gitu, takze UI je dal nabizi).
+  const manifest = JSON.parse(await fs.readFile(SRC_MANIFEST, 'utf8'));
+  const expected = Array.isArray(manifest) ? manifest.length : Object.values(manifest).flat().length;
+  let copied = 0;
+  for (const game of await fs.readdir(DST_PUBLIC)) {
+    const webpDir = path.join(DST_PUBLIC, game, 'webp');
+    try {
+      copied += (await fs.readdir(webpDir)).filter((f) => f.endsWith('.webp')).length;
+    } catch { /* kategorie bez webp slozky */ }
+  }
+  if (copied < expected) {
+    console.error(`[sync-backs] CHYBA: zkopirovano ${copied} webp, manifest ocekava ${expected}.`);
+    process.exit(1);
+  }
+
+  console.log(`[sync-backs] OK -> public/${path.relative(path.join(ESHOP_ROOT, 'public'), DST_PUBLIC)} (${copied} webp)`);
   console.log(`[sync-backs] manifest -> src/data/backs-manifest.json`);
 }
 

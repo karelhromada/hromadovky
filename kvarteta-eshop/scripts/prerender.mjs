@@ -150,6 +150,18 @@ try {
     await page.goto(url, { waitUntil: 'domcontentloaded', timeout: PAGE_NAV_TIMEOUT_MS });
     await new Promise((r) => setTimeout(r, HELMET_FLUSH_MS));
 
+    // Guard: bez kontroly by se do dist/ zapsal i HTML s hláškou ErrorBoundary
+    // (a build by prošel zeleně) — Googlebot by pak indexoval „něco se pokazilo".
+    const rendered = await page.evaluate(() => ({
+      childCount: document.getElementById('root')?.childElementCount ?? 0,
+      crashed: /něco se pokazilo|Something went wrong/i.test(document.body.innerText || ''),
+    }));
+    if (rendered.childCount === 0 || rendered.crashed) {
+      throw new Error(
+        `route ${route} se nevyrenderovala (children=${rendered.childCount}, crashed=${rendered.crashed})`,
+      );
+    }
+
     const rawHtml = await page.content();
     const html = dedupeSeoTags(rawHtml);
     const outDir = route === '/' ? distDir : join(distDir, route);

@@ -24,7 +24,9 @@ export async function listOrderSubmissions(filters: OrderFilters): Promise<Order
     query = query.lte('created_at', `${filters.toDate}T23:59:59`);
   }
   if (filters.search) {
-    const term = filters.search.trim();
+    // Čárky a závorky jsou oddělovače PostgREST filtru — bez odstranění by hledání
+    // jména s čárkou rozbilo strukturu dotazu (400), ne jen nenašlo výsledek.
+    const term = filters.search.trim().replace(/[,()"\\]/g, ' ').trim();
     if (term.length > 0) {
       query = query.or(
         `variable_symbol.ilike.%${term}%,customer->>email.ilike.%${term}%,customer->>lastName.ilike.%${term}%`,

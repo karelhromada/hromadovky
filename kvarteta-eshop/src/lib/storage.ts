@@ -1,4 +1,5 @@
 import { supabase } from './supabase'
+import { randomUUID, safeStorageGet, safeStorageRemove, safeStorageSet } from './browserCompat'
 
 const BUCKET = 'order-uploads'
 const MAX_SIZE_BYTES = 20 * 1024 * 1024 // 20 MB
@@ -16,17 +17,23 @@ export interface UploadedPhoto {
   converted: boolean
 }
 
+// Draft ref drží in-memory záloha pro případ, že sessionStorage není k dispozici
+// (Safari s blokovaným úložištěm) — bez ní by upload fotek spadl na SecurityError.
+let draftRefFallback: string | null = null
+
 export function getDraftRef(): string {
-  let ref = sessionStorage.getItem(DRAFT_KEY)
+  let ref = safeStorageGet('session', DRAFT_KEY) ?? draftRefFallback
   if (!ref) {
-    ref = `draft-${crypto.randomUUID()}`
-    sessionStorage.setItem(DRAFT_KEY, ref)
+    ref = `draft-${randomUUID()}`
+    safeStorageSet('session', DRAFT_KEY, ref)
   }
+  draftRefFallback = ref
   return ref
 }
 
 export function resetDraftRef(): void {
-  sessionStorage.removeItem(DRAFT_KEY)
+  safeStorageRemove('session', DRAFT_KEY)
+  draftRefFallback = null
 }
 
 function extFromFile(file: File): string {
@@ -90,7 +97,7 @@ export async function uploadOrderPhoto(file: File): Promise<UploadedPhoto> {
   }
 
   const draftRef = getDraftRef()
-  const path = `${draftRef}/${crypto.randomUUID()}.${extFromFile(uploadFile)}`
+  const path = `${draftRef}/${randomUUID()}.${extFromFile(uploadFile)}`
 
   // Sem se dostane jen soubor s image/* MIME nebo konvertovaný JPEG; fallback je pojistka
   // pro prázdný MIME (bucket má whitelist a bez contentType by upload odmítl).

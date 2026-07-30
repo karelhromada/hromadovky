@@ -181,6 +181,13 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
 
         try {
             const { path, previewUrl, converted } = await uploadOrderPhoto(file);
+            // Zákazník mohl fotku mezitím odebrat (konverze HEIC trvá sekundy) — pak výsledek zahodit,
+            // jinak by se odebraná fotka sama vrátila.
+            if (!isUploadCurrent(targetId, optimisticUrl)) {
+                URL.revokeObjectURL(optimisticUrl);
+                URL.revokeObjectURL(previewUrl);
+                return;
+            }
             if (converted) {
                 // HEIC → JPEG: optimistický náhled z HEIC prohlížeč nezobrazí, vyměnit za konvertovaný
                 URL.revokeObjectURL(optimisticUrl);
@@ -201,6 +208,12 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
     const updateCard = (id: string, updates: Partial<CardConfig>) => {
         setDeck(prev => prev.map(card => card.id === id ? { ...card, ...updates } : card));
     };
+
+    /** Drží karta pořád ten náhled, pro který upload začal? (jinak ho zákazník mezitím odebral/přepsal) */
+    const deckRef = useRef(deck);
+    deckRef.current = deck;
+    const isUploadCurrent = (cardId: string, optimisticUrl: string) =>
+        deckRef.current.find(c => c.id === cardId)?.imageUrl === optimisticUrl;
 
     const handleZoomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         updateCard(selectedCardId, { zoom: parseFloat(e.target.value) });

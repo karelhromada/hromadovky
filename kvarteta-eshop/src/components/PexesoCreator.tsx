@@ -108,7 +108,9 @@ const PexesoCreator: React.FC<PexesoCreatorProps> = ({ onAddToCart }) => {
                 }, { pixelRatio: 3 }); // 600px uzel × 3 = 1800×1800 px (≥300 DPI i pro Maxi 80×80 mm)
                 setRendering(null);
                 renderedCardPaths = paths;
-                if (failed.length) {
+                if (failed.length && failed.length === tasks.length) {
+                    alert(`Generování karet selhalo (${failed.length}/${tasks.length}). Objednávka bude pokračovat jen se surovými fotkami.`);
+                } else if (failed.length) {
                     console.warn('Některé pexeso karty se nepodařilo vyrenderovat:', failed);
                 }
             }

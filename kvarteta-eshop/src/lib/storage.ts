@@ -82,13 +82,18 @@ export async function uploadOrderPhoto(file: File): Promise<UploadedPhoto> {
     if (jpeg) {
       uploadFile = jpeg
       converted = true
+    } else if (!file.type.startsWith('image/')) {
+      // Přípona .heic, ale magic bytes HEIC nejsou → validace typu se musí dohnat teď,
+      // jinak by přípona obešla kontrolu „musí to být obrázek".
+      throw new Error('Soubor musí být obrázek (JPG, PNG, WebP, HEIC).')
     }
   }
 
   const draftRef = getDraftRef()
   const path = `${draftRef}/${crypto.randomUUID()}.${extFromFile(uploadFile)}`
 
-  // Fallback pro soubory s prázdným MIME (aplikace Soubory) — bucket má MIME whitelist
+  // Sem se dostane jen soubor s image/* MIME nebo konvertovaný JPEG; fallback je pojistka
+  // pro prázdný MIME (bucket má whitelist a bez contentType by upload odmítl).
   const { error } = await supabase.storage.from(BUCKET).upload(path, uploadFile, {
     upsert: false,
     contentType: uploadFile.type || 'image/jpeg',

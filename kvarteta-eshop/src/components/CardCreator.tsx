@@ -311,6 +311,7 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
             }
         } catch (err: any) {
             alert(err?.message || 'Nahrání fotky se nezdařilo.');
+            URL.revokeObjectURL(optimisticUrl);
             setCustomPhotoPreviews(prev => { const next = { ...prev }; delete next[slot]; return next; });
         } finally {
             setUploadingSlots(prev => { const next = new Set(prev); next.delete(slot); return next; });
@@ -809,6 +810,8 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
                                                             }
                                                         } catch (err: any) {
                                                             alert(`${slot}: ${err?.message || 'Nahrání se nezdařilo.'}`);
+                                                            const old = optimisticUrls.get(slot);
+                                                            if (old) URL.revokeObjectURL(old);
                                                             setCustomPhotoPreviews(prev => { const next = { ...prev }; delete next[slot]; return next; });
                                                         } finally {
                                                             setUploadingSlots(prev => { const next = new Set(prev); next.delete(slot); return next; });

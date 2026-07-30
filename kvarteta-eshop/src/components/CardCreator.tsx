@@ -90,7 +90,8 @@ const PhotoSlot = memo(({ slot, photoUrl, isActive, isUploading, onClick, onPhot
                 justifyContent: 'center',
                 backgroundColor: photoUrl ? '#111' : 'rgba(0,0,0,0.02)',
                 backgroundImage: photoUrl ? `url(${photoUrl})` : 'none',
-                backgroundSize: 'contain',
+                // cover shodně s velkým náhledem i finálním renderem — slot nesmí slibovat celou fotku
+                backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
                 transition: 'border-color 0.2s',

@@ -30,7 +30,12 @@ export async function renderAndUploadCard(node: HTMLElement, opts: RenderOptions
     upsert: true,
     contentType: 'image/png',
   })
-  if (error) throw new Error(`Upload renderu selhal: ${error.message}`)
+  if (error) {
+    if (error.message?.toLowerCase().includes('row-level security')) {
+      throw new Error('Render karty nelze nahrát (bezpečnostní limit objednávky).')
+    }
+    throw new Error(`Upload renderu selhal: ${error.message}`)
+  }
   return path
 }
 

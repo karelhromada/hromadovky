@@ -95,6 +95,12 @@ export async function uploadOrderPhoto(file: File): Promise<UploadedPhoto> {
   })
 
   if (error) {
+    // RLS cap (počet souborů na objednávku / denní limit) — srozumitelně, bez technikálií
+    if (error.message?.toLowerCase().includes('row-level security')) {
+      throw new Error(
+        'Do této objednávky už nelze nahrát další soubory (bezpečnostní limit). Odeberte prosím některé fotky, nebo dokončete objednávku.',
+      )
+    }
     throw new Error(`Nahrání fotky se nezdařilo: ${error.message}`)
   }
 

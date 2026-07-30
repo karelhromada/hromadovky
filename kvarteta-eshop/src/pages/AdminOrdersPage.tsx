@@ -21,6 +21,7 @@ const PRODUCT_BY_ID = new Map(
 
 const STATUS_LABEL: Record<string, string> = {
   received: 'Přijatá',
+  notified: 'Odbavená', // n8n odeslal potvrzení + fakturu (claim proti replay webhooku)
 };
 
 const formatCurrency = (amount: number) =>

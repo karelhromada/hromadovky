@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "generated_at": "2026-06-16T20:57:24.052Z",
+  "generated_at": "2026-07-30T16:19:04.311Z",
   "categories": {
     "kvarteta": {
       "size": "65x95mm",
@@ -1453,6 +1453,15 @@
           "id": "pexeso_material_zlaty",
           "name": "zlatý materiál",
           "file": "pexeso/webp/pexeso_material_zlaty.webp",
+          "width": 760,
+          "height": 760,
+          "source_width": 760,
+          "source_height": 760
+        },
+        {
+          "id": "pexeso_kouzla_hrad",
+          "name": "kouzelnický hrad se sovami",
+          "file": "pexeso/webp/pexeso_kouzla_hrad.webp",
           "width": 760,
           "height": 760,
           "source_width": 760,

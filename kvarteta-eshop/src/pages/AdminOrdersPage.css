@@ -127,7 +127,8 @@
     font-weight: 500;
     width: fit-content;
 }
-.admin-orders-container .status-pill.status-received { background: rgba(76, 175, 80, 0.15); color: #4caf50; }
+.admin-orders-container .status-pill.status-received { background: rgba(244, 165, 52, 0.15); color: #f4a534; }
+.admin-orders-container .status-pill.status-notified { background: rgba(76, 175, 80, 0.15); color: #4caf50; }
 
 .admin-orders-container .cell-actions { display: flex; gap: 6px; flex-wrap: wrap; }
 

@@ -86,8 +86,8 @@ begin
 end;
 $function$;
 
-create index if not exists idx_order_submissions_created_at
-  on public.order_submissions (created_at desc);
+-- Pozn.: index na created_at DESC už existuje jako idx_order_submissions_created,
+-- proto se nový nevytváří (duplicitní index jen zdržuje zápisy).
 
 -- === 2) Faktury vázat na user_id, ne na řetězec e-mailu ===
 alter table public.invoices add column if not exists user_id uuid references auth.users(id);

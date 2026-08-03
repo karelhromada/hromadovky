@@ -100,6 +100,9 @@ select pinged_at, now() - pinged_at as jak_stare from keep_alive;
 `jak_stare` musí být pod 6 hodin. Pokud roste, keep-alive zase nepíše — podívej se do
 n8n na běhy workflow „Hromadovky – Supabase Keep-Alive".
 
+*Ověřeno 2026-08-03 ve 22:17: automatický běh zapsal, keep-alive po přepsání do Code
+nodu funguje. Credential už tedy nikde není potřeba.*
+
 ---
 
 ## Co se stane, když to neuděláš

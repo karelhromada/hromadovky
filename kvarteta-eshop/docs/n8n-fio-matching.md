@@ -228,14 +228,28 @@ Parametry: `$1..$8` z `{{ $json.fioId }}` atd. `$8` je `{{ $json.invoice.id ?? n
 | 2 | unpaid | +0.50 Kč (v toleranci) | `mark_paid` | — |
 | 3 | unpaid | +5 Kč (přeplatek) | `mark_paid_with_overpayment` | `overpayment` |
 | 4 | unpaid | -5 Kč (nedoplatek) | `unmatched` | `underpayment` |
-| 5a | paid, paid_amount ≈ amount, paid_at < 24h | tatáž částka | **`noop`** (same_payment_seen) — žádný email, žádný DB zápis | — |
-| 5b | paid, paid_amount JINÁ NEBO paid_at > 24h | jakákoli | `unmatched` | `duplicate_payment` |
+| 5a-1 | paid **touto samou transakcí** (shoda `invoices.fio_transaction_id`) | jakákoli | **`noop`** (same_payment_seen) — časově neomezeně | — |
+| 5a-2 | paid, tatáž částka, `tx.date` ≤ den zaplacení, ID z druhého kanálu | tatáž částka | **`noop`** (same_payment_seen) | — |
+| 5a-3 | paid, paid_amount ≈ amount, paid_at < 24h | tatáž částka | **`noop`** (same_payment_seen) — fallback bez `tx` | — |
+| 5b | paid, žádné z 5a neplatí | jakákoli | `unmatched` | `duplicate_payment` |
 | 6 | cancelled | jakákoli | `unmatched` | `payment_to_cancelled` |
 | 7 | refunded | jakákoli | `unmatched` | `payment_to_cancelled` |
 | 8 | (neexistuje) | jakákoli | `unmatched` | `no_invoice_match` |
 | 9 | stejný `fio_transaction_id` 2× | — | DB UNIQUE constraint blokuje druhý INSERT/UPDATE |
 
-**Pravidlo 5a (přidáno 2026-05-15):** Polling Fio API vrací `/periods/last 7 days/`, takže každý běh vidí staré paid platby znovu. Email kanál (Gmail Trigger) může zachytit stejnou platbu paralelně s polling. Pravidlo 5a tento case detekuje a **silently skipuje** — žádný admin email, žádný řádek v `payment_unmatched`. Klíčové parametry: `TOLERANCE_KC=1.00`, `SAME_PAYMENT_WINDOW_MS=24*60*60*1000` (24h). Past tense check: `now - paid_at` musí být >= 0 a < 24h. Po 24h se opětovné zachycení považuje za real duplicate (klient si vzpomněl po dnech).
+**Pravidlo 5a (přidáno 2026-05-15, rozšířeno 2026-08-03):** Polling Fio API vrací `/periods/last 7 days/`, takže každý běh vidí staré paid platby znovu. Email kanál (Gmail Trigger) může zachytit stejnou platbu paralelně s polling.
+
+Původní verze měla jen okno 24 h (dnes 5a-3), jenže cron čte **7 dní** zpět — každá platba se proto 24–30 h po zaplacení nahlásila jako `duplicate_payment`. Ze šesti řádků v `payment_unmatched` byly tři falešné. UNIQUE na `fio_transaction_id` to nezachytilo, protože se to ID vkládalo poprvé; navíc **každý kanál používá jiné ID** (Fio API číselné, Gmail hex message ID), takže tatáž platba dostane dvě různá.
+
+Doplněná pravidla:
+- **5a-1** — `invoices.fio_transaction_id` má UNIQUE partial index, takže shoda s ID příchozí transakce je *definitoricky* tatáž platba. Platí bez ohledu na čas.
+- **5a-2** — cross-channel: stejná částka a datum transakce nejpozději v den zaplacení znamená tutéž platbu z druhého kanálu. Skutečná druhá platba přijde až *potom*. Podmínka „ID je z druhého kanálu" (číselné vs. hex) zajišťuje, že dvě různé platby stejné částky ze stejného kanálu se dál nahlásí správně.
+
+Klíčové parametry: `TOLERANCE_KC=1.00`, `SAME_PAYMENT_WINDOW_MS=24*60*60*1000`.
+
+**Dedup u `no_invoice_match`:** pravidla 5a se neuplatní, když faktura vůbec neexistuje — tatáž neznámá platba by se nahlásila dvakrát (jednou z každého kanálu). Před zápisem do `payment_unmatched` se proto hledá otevřený řádek se stejným VS, částkou a datem.
+
+**Kontrola skutečného zápisu:** PATCH faktury používá `Prefer: return=representation` a ověřuje, že se opravdu změnil řádek. Guard `&status=eq.unpaid` totiž nemusí chytit nic, když fakturu mezitím označil druhý kanál — bez kontroly by zákazník dostal dva e-maily „Platba přijata".
 
 Všechny scénáře jsou pokryté v `scripts/payment-matching.test.mjs`. Spusť před každou změnou:
 ```bash

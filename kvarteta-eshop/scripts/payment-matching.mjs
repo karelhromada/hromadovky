@@ -48,8 +48,11 @@ export const SAME_PAYMENT_WINDOW_MS = 24 * 60 * 60 * 1000;  // 24 h pro detekci 
  *
  * Pravidla (viz docs/n8n-fio-matching.md, sekce "Edge case matrix"):
  *   1. Faktura neexistuje                                            → unmatched (no_invoice_match)
- *   2a. Faktura paid + paid_amount≈amount + paid_at < 24h            → noop (same_payment_seen) ⚠ NEnastat email
- *   2b. Faktura paid + paid_amount nepasuje NEBO paid_at > 24h       → unmatched (duplicate_payment)
+ *   2a-1. Faktura paid TOUTO transakcí (shoda fio_transaction_id)    → noop (same_payment_seen)
+ *   2a-2. Faktura paid stejnou částkou, tx.date ≤ den zaplacení,
+ *         a ID je z druhého kanálu                                   → noop (same_payment_seen)
+ *   2a-3. Faktura paid + paid_amount≈amount + paid_at < 24h          → noop (same_payment_seen) ⚠ NEnastat email
+ *   2b. Faktura paid, žádné z 2a neplatí                             → unmatched (duplicate_payment)
  *   3. Faktura cancelled/refunded                                    → unmatched (payment_to_cancelled)
  *   4. amount < total - TOLERANCE (nedoplatek)                       → unmatched (underpayment), nechat unpaid
  *   5. amount > total + TOLERANCE (přeplatek)                        → mark_paid_with_overpayment + log
@@ -64,11 +67,13 @@ export const SAME_PAYMENT_WINDOW_MS = 24 * 60 * 60 * 1000;  // 24 h pro detekci 
  *
  * @param {number} amount - paid amount z Fio transakce (CZK)
  * @param {InvoiceLookup|null} invoice - výsledek SELECT FROM invoices, musí obsahovat
- *   `paid_amount` a `paid_at` pro kontrolu cross-channel idempotence
+ *   `paid_amount`, `paid_at` a `fio_transaction_id` pro kontrolu cross-channel idempotence
  * @param {Date} [now] - "teď" pro porovnání s paid_at (default new Date(), parametr kvůli testovatelnosti)
+ * @param {{fioId?: string, date?: string}} [tx] - příchozí transakce; `fioId` je ID kanálu
+ *   (číselné = Fio API, hex = Gmail message ID), `date` je datum transakce (YYYY-MM-DD)
  * @returns {MatchAction}
  */
-export function decideMatchAction(amount, invoice, now = new Date()) {
+export function decideMatchAction(amount, invoice, now = new Date(), tx = null) {
   // 1) Faktura podle VS neexistuje
   if (!invoice) {
     return {
@@ -85,7 +90,34 @@ export function decideMatchAction(amount, invoice, now = new Date()) {
     const samePaymentDiff = Number.isFinite(paidAmount) ? Math.abs(paidAmount - amount) : Infinity;
     const ageMs = paidAt ? now.getTime() - paidAt.getTime() : Infinity;
 
-    // 2a) Stejná částka + nedávno zaplaceno → tatáž platba zachycená znovu (cross-run / cross-channel)
+    // 2a-1) Fakturu označila paid TATÁŽ transakce. `invoices.fio_transaction_id` má UNIQUE
+    //       partial index, takže shoda ID je definitoricky stejná platba — časově nezávisle.
+    //       Bez tohoto pravidla cron (vidí 7 dní zpět) hlásil duplicitu po vypršení 24h okna.
+    if (tx?.fioId && invoice.fio_transaction_id
+        && String(invoice.fio_transaction_id) === String(tx.fioId)) {
+      return {
+        action: 'noop',
+        reason: 'same_payment_seen',
+        humanReason: `Faktura ${invoice.number} už paid touto samou transakcí (${tx.fioId}). Skipping.`,
+      };
+    }
+
+    // 2a-2) Cross-channel: Gmail posílá hex message ID, Fio API číselné, takže shoda ID
+    //       nikdy nenastane. Stejná částka + datum transakce nejpozději v den zaplacení
+    //       = tatáž platba z druhého kanálu (skutečná druhá platba přijde až POTOM).
+    const paidDay = paidAt ? paidAt.toISOString().slice(0, 10) : null;
+    const idShape = (v) => (/^\d+$/.test(String(v ?? '')) ? 'fio' : 'gmail');
+    const otherChannel = !invoice.fio_transaction_id
+      || idShape(invoice.fio_transaction_id) !== idShape(tx?.fioId);
+    if (samePaymentDiff <= TOLERANCE_KC && tx?.date && paidDay && tx.date <= paidDay && otherChannel) {
+      return {
+        action: 'noop',
+        reason: 'same_payment_seen',
+        humanReason: `Faktura ${invoice.number} už paid stejnou částkou (${paidAmount} Kč, ${paidDay}); transakce ${tx.fioId} z ${tx.date} je tatáž platba z druhého kanálu. Skipping.`,
+      };
+    }
+
+    // 2a-3) Původní 24h okno — fallback, když transakce nenese datum ani ID
     if (samePaymentDiff <= TOLERANCE_KC && ageMs >= 0 && ageMs < SAME_PAYMENT_WINDOW_MS) {
       return {
         action: 'noop',

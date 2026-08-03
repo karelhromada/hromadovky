@@ -140,6 +140,75 @@ const tests = [
     name: 'TOLERANCE_KC je 1.00 Kč (sanity check konstanty)',
     run: () => assert.equal(TOLERANCE_KC, 1.0),
   },
+
+  // --- Dedup napříč běhy a kanály (2026-08) -------------------------------
+  // Cron čte Fio API 7 dní zpět, ale okno „tatáž platba" bylo 24 h → každá platba
+  // se po dni nahlásila jako duplicitní. Tyhle testy hlídají obě nová pravidla
+  // i to, že skutečné duplicity dál projdou.
+  {
+    name: 'tatáž transakce po 30 dnech (shoda fio_transaction_id) → noop',
+    run: () => {
+      const paidAt = new Date('2026-07-01T10:00:00Z');
+      const out = decideMatchAction(
+        349,
+        fakeInvoice({ status: 'paid', paid_amount: 349, paid_at: paidAt.toISOString(), fio_transaction_id: '27634272611' }),
+        new Date('2026-07-31T10:00:00Z'),
+        { fioId: '27634272611', date: '2026-07-01' },
+      );
+      assert.equal(out.action, 'noop');
+      assert.equal(out.reason, 'same_payment_seen');
+    },
+  },
+  {
+    name: 'cross-channel: fakturu zaplatil Gmail, cron ji vidí druhý den → noop',
+    run: () => {
+      const out = decideMatchAction(
+        428,
+        fakeInvoice({ status: 'paid', paid_amount: 428, paid_at: '2026-07-17T13:09:46Z', fio_transaction_id: '19f7031aba3b3f50' }),
+        new Date('2026-07-18T16:00:00Z'),
+        { fioId: '27743986325', date: '2026-07-17' },
+      );
+      assert.equal(out.action, 'noop');
+      assert.equal(out.reason, 'same_payment_seen');
+    },
+  },
+  {
+    name: 'REGRESE: druhá platba stejné částky ze stejného kanálu → duplicate_payment',
+    run: () => {
+      const out = decideMatchAction(
+        428,
+        fakeInvoice({ status: 'paid', paid_amount: 428, paid_at: '2026-07-17T13:09:46Z', fio_transaction_id: '27743986325' }),
+        new Date('2026-07-19T16:00:00Z'),
+        { fioId: '27799999999', date: '2026-07-19' }, // jiné číselné ID, pozdější den
+      );
+      assert.equal(out.action, 'unmatched');
+      assert.equal(out.reason, 'duplicate_payment');
+    },
+  },
+  {
+    name: 'REGRESE: přeplatek na už zaplacenou fakturu → duplicate_payment',
+    run: () => {
+      const out = decideMatchAction(
+        10,
+        fakeInvoice({ status: 'paid', paid_amount: 349, paid_at: '2026-05-14T20:49:25Z', fio_transaction_id: '27634272611' }),
+        new Date('2026-05-15T16:00:00Z'),
+        { fioId: '27635752686', date: '2026-05-15' },
+      );
+      assert.equal(out.action, 'unmatched');
+      assert.equal(out.reason, 'duplicate_payment');
+    },
+  },
+  {
+    name: 'bez tx (starý call site) → chová se jako dřív, 24h okno',
+    run: () => {
+      const out = decideMatchAction(
+        349,
+        fakeInvoice({ status: 'paid', paid_amount: 349, paid_at: new Date(Date.now() - 3600_000).toISOString() }),
+      );
+      assert.equal(out.action, 'noop');
+      assert.equal(out.reason, 'same_payment_seen');
+    },
+  },
 ];
 
 let passed = 0;

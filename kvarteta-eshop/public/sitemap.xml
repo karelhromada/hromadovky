@@ -91,6 +91,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.hromadovky.cz/karty/roztomili-jednorozci</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.hromadovky.cz/kvarteta/mytologie-a-myty</loc>
     <lastmod>2026-07-07</lastmod>
     <changefreq>monthly</changefreq>

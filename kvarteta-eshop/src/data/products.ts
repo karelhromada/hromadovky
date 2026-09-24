@@ -124,6 +124,26 @@ export const kartyProducts = [
             '/cards/prsi-car-a-kouzel/Zaludy_Eso.webp', '/cards/prsi-car-a-kouzel/Zaludy_Kral.webp', '/cards/prsi-car-a-kouzel/Zaludy_Svrsek.webp', '/cards/prsi-car-a-kouzel/Zaludy_Spodek.webp', '/cards/prsi-car-a-kouzel/Zaludy_10.webp', '/cards/prsi-car-a-kouzel/Zaludy_9.webp', '/cards/prsi-car-a-kouzel/Zaludy_8.webp', '/cards/prsi-car-a-kouzel/Zaludy_7.webp',
             '/cards/prsi-car-a-kouzel/Kule_Eso.webp', '/cards/prsi-car-a-kouzel/Kule_Kral.webp', '/cards/prsi-car-a-kouzel/Kule_Svrsek.webp', '/cards/prsi-car-a-kouzel/Kule_Spodek.webp', '/cards/prsi-car-a-kouzel/Kule_10.webp', '/cards/prsi-car-a-kouzel/Kule_9.webp', '/cards/prsi-car-a-kouzel/Kule_8.webp', '/cards/prsi-car-a-kouzel/Kule_7.webp'
         ]
+    },
+    {
+        id: 'karty-tema-jednorozci',
+        slug: 'roztomili-jednorozci',
+        longDescription: 'Nadýchaná pohádka v balíčku hracích karet. Roztomilí jednorožci přinášejí 32 full-art ilustrací plyšově hebkých jednorožců — cválají po obláčcích, dovádějí pod polární září, odpočívají na měsíčním srpku nebo objevují třpytivé krystalové jeskyně. Každá mariášová barva má vlastní náladu: pastelová srdce, zlaté žaludy, fialové listy a kouzelné kule. Hodnoty zůstávají přehledné, takže balíček zvládne prší, mariáš i první karetní hry nejmenších.\n\nKarty ve formátu 63 × 105 mm tiskneme na prémiový lesklý fotopapír 220 mikronů a oboustranně laminujeme fólií 200 mikronů — jsou lesklé, tuhé a odolné vůči každodennímu hraní. V galerii rubů najdete i jednorožčí vzory, které edici krásně doplní. Vyrábíme ručně v Česku a odesíláme do 5 pracovních dnů.',
+        name: 'Hrací karty: Roztomilí jednorožci',
+        description: 'Pohádková edice plná nadýchaných jednorožců. 32 unikátních full-art ilustrací – obláčky, duhy, polární záře i krystalové jeskyně na klasických mariášových barvách. Ideální dárek pro malé i velké milovníky jednorožců.',
+        price: 349,
+        themeColor: '#db2777',
+        images: ['/cards/roztomili-jednorozci/Cervene_Kral.webp', '/cards/roztomili-jednorozci/Zelene_Spodek.webp', '/cards/roztomili-jednorozci/Kule_Eso.webp'],
+        boxImage: '/cards/roztomili-jednorozci/Cervene_Kral.webp',
+        isThematic: true,
+        sampleValue: 'K',
+        sampleSuit: '♥',
+        allCards: [
+            '/cards/roztomili-jednorozci/Cervene_Eso.webp', '/cards/roztomili-jednorozci/Cervene_Kral.webp', '/cards/roztomili-jednorozci/Cervene_Svrsek.webp', '/cards/roztomili-jednorozci/Cervene_Spodek.webp', '/cards/roztomili-jednorozci/Cervene_10.webp', '/cards/roztomili-jednorozci/Cervene_9.webp', '/cards/roztomili-jednorozci/Cervene_8.webp', '/cards/roztomili-jednorozci/Cervene_7.webp',
+            '/cards/roztomili-jednorozci/Zelene_Eso.webp', '/cards/roztomili-jednorozci/Zelene_Kral.webp', '/cards/roztomili-jednorozci/Zelene_Svrsek.webp', '/cards/roztomili-jednorozci/Zelene_Spodek.webp', '/cards/roztomili-jednorozci/Zelene_10.webp', '/cards/roztomili-jednorozci/Zelene_9.webp', '/cards/roztomili-jednorozci/Zelene_8.webp', '/cards/roztomili-jednorozci/Zelene_7.webp',
+            '/cards/roztomili-jednorozci/Zaludy_Eso.webp', '/cards/roztomili-jednorozci/Zaludy_Kral.webp', '/cards/roztomili-jednorozci/Zaludy_Svrsek.webp', '/cards/roztomili-jednorozci/Zaludy_Spodek.webp', '/cards/roztomili-jednorozci/Zaludy_10.webp', '/cards/roztomili-jednorozci/Zaludy_9.webp', '/cards/roztomili-jednorozci/Zaludy_8.webp', '/cards/roztomili-jednorozci/Zaludy_7.webp',
+            '/cards/roztomili-jednorozci/Kule_Eso.webp', '/cards/roztomili-jednorozci/Kule_Kral.webp', '/cards/roztomili-jednorozci/Kule_Svrsek.webp', '/cards/roztomili-jednorozci/Kule_Spodek.webp', '/cards/roztomili-jednorozci/Kule_10.webp', '/cards/roztomili-jednorozci/Kule_9.webp', '/cards/roztomili-jednorozci/Kule_8.webp', '/cards/roztomili-jednorozci/Kule_7.webp'
+        ]
     }
 ];
 

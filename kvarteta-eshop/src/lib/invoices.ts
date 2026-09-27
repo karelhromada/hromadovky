@@ -32,7 +32,7 @@ export async function listInvoices(filters: InvoiceFilters): Promise<Invoice[]> 
     const term = filters.search.trim();
     if (term.length > 0) {
       query = query.or(
-        `number.ilike.%${term}%,customer->>email.ilike.%${term}%,customer->>lastName.ilike.%${term}%,variable_symbol.ilike.%${term}%`,
+        `number.ilike.%${term}%,order_number.ilike.%${term}%,customer->>email.ilike.%${term}%,customer->>lastName.ilike.%${term}%,variable_symbol.ilike.%${term}%`,
       );
     }
   }

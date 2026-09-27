@@ -104,6 +104,7 @@
 .admin-invoices-table .row-credit-note { background: rgba(229, 115, 115, 0.05); }
 
 .cell-number { font-family: 'Menlo', monospace; font-size: 0.88rem; }
+.cell-order { font-family: 'Menlo', monospace; font-size: 0.82rem; color: var(--text-secondary, #64748b); white-space: nowrap; }
 .amount-negative { color: #e57373; }
 
 .customer-cell { display: flex; flex-direction: column; gap: 2px; }

@@ -180,7 +180,7 @@ export default function AdminInvoicesPage() {
             Hledat
             <input
               type="search"
-              placeholder="Číslo, email, příjmení, VS"
+              placeholder="Číslo, ORD…, email, příjmení, VS"
               value={filters.search ?? ''}
               onChange={(e) => setFilters((p) => ({ ...p, search: e.target.value }))}
             />
@@ -197,6 +197,7 @@ export default function AdminInvoicesPage() {
             <thead>
               <tr>
                 <th>Číslo</th>
+                <th>Objednávka</th>
                 <th>Typ</th>
                 <th>Datum vystavení</th>
                 <th>Splatnost</th>
@@ -209,7 +210,7 @@ export default function AdminInvoicesPage() {
             <tbody>
               {invoices.length === 0 && (
                 <tr>
-                  <td colSpan={8} className="admin-empty">
+                  <td colSpan={9} className="admin-empty">
                     Žádné záznamy odpovídající filtrům.
                   </td>
                 </tr>
@@ -222,6 +223,7 @@ export default function AdminInvoicesPage() {
                 return (
                   <tr key={invoice.id} className={isCreditNote ? 'row-credit-note' : ''}>
                     <td className="cell-number">{invoice.number}</td>
+                    <td className="cell-order">{invoice.order_number ?? '—'}</td>
                     <td>{TYPE_LABEL[invoice.type]}</td>
                     <td>{formatDate(invoice.issued_at)}</td>
                     <td>{formatDate(invoice.due_at)}</td>

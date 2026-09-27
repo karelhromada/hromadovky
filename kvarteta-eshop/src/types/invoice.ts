@@ -36,6 +36,8 @@ export interface Invoice {
   type: InvoiceType;
   original_invoice_id: string | null;
   order_id: string | null;
+  /** Číslo objednávky z n8n (ORD-<timestamp>); u starších faktur null. */
+  order_number: string | null;
   variable_symbol: string;
   issued_at: string;
   taxable_supply_at: string;

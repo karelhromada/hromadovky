@@ -149,7 +149,8 @@ const AuthPage: React.FC = () => {
           street: profile.street || '',
           city: profile.city || '',
           zip: profile.zip || '',
-          last_delivery: profile.last_delivery || 'gls'
+          // Osobní odběr ('osobne') se už nenabízí – staré preference přemapovat na GLS
+          last_delivery: ['gls', 'zasilkovna', 'ppl'].includes(profile.last_delivery ?? '') ? profile.last_delivery : 'gls'
         });
       }
     }
@@ -286,7 +287,6 @@ const AuthPage: React.FC = () => {
                   <option value="gls">GLS - na adresu</option>
                   <option value="zasilkovna">Zásilkovna - výdejní místo</option>
                   <option value="ppl">PPL ParcelShop - výdejní místo</option>
-                  <option value="osobne">Osobní odběr (Liberec/Praha)</option>
                 </select>
               </div>
 
@@ -350,7 +350,7 @@ const AuthPage: React.FC = () => {
                     <p>
                       {profile.last_delivery === 'ppl' ? 'PPL ParcelShop' :
                        profile.last_delivery === 'zasilkovna' ? 'Zásilkovna' :
-                       profile.last_delivery === 'osobne' ? 'Osobní odběr' : 'GLS na adresu'}
+                       profile.last_delivery === 'osobne' ? 'Osobní odběr (už nenabízíme)' : 'GLS na adresu'}
                     </p>
                   </div>
                 )}

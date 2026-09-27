@@ -1,13 +1,4 @@
-// CI pipelines občas substituují env špatně a vrátí literál místo hodnoty (např. "undefined",
-// "null", "false") nebo whitespace-only string. Tyto případy odmítáme jako neplatné, aby selhání
-// bylo viditelné při startu, ne při tichém poslání garbage do platební brány.
-const ENV_GARBAGE_LITERALS = new Set(['undefined', 'null', 'false', '0', 'NULL', 'None']);
-
-function isValidEnvString(value: unknown): value is string {
-    if (typeof value !== 'string') return false;
-    const trimmed = value.trim();
-    return trimmed.length > 0 && !ENV_GARBAGE_LITERALS.has(trimmed);
-}
+import { isCzBankAccount, isCzBankCode, isCzIban, isValidEnvString } from './envValidation';
 
 function envOr(key: string, fallback: string): string {
     const value = import.meta.env[key];
@@ -18,11 +9,17 @@ function envOr(key: string, fallback: string): string {
 // i jako fallback. Na rozdíl od platební brány zde v produkci NEházíme výjimku při
 // chybějícím env – jen použijeme fallback a varujeme v konzoli. (Dřív eager `requireEnv`
 // shazoval celou pokladnu do bílé stránky, když VITE_BANK_* na Vercelu chybělo.)
-function bankEnv(key: string, fallback: string): string {
+//
+// `isValid` kontroluje TVAR hodnoty: 2026-09-27 se do bundlu zapekl Vercel placeholder
+// "[SENSITIVE]" (proměnné označené jako Sensitive nejdou přes `vercel pull` přečíst) →
+// pokladna ukazovala „Číslo účtu: [SENSITIVE]" a QR platba selhala. Na Vercelu proto
+// VITE_BANK_* NEoznačovat jako Sensitive (nejsou tajné), nebo je tam vůbec nemít.
+function bankEnv(key: string, fallback: string, isValid: (v: string) => boolean): string {
     const value = import.meta.env[key];
-    if (isValidEnvString(value)) return value;
+    if (isValidEnvString(value) && isValid(value)) return value.trim();
     if (import.meta.env.PROD) {
-        console.warn(`[payment] ${key} není nastavené v produkci – používám zabudovaný fallback. Doplň ho do Vercel env.`);
+        const reason = isValidEnvString(value) ? `má neplatný tvar ("${value}")` : 'není nastavené';
+        console.warn(`[payment] ${key} ${reason} v produkci – používám zabudovaný fallback. Oprav ho ve Vercel env.`);
     }
     return fallback;
 }
@@ -31,9 +28,9 @@ export const PAYMENT_CONFIG = {
     // Fio Banka (kód 2010). LÍNÉ gettery (ne eager pole) – hodnota se čte až při použití,
     // ne při importu modulu (eager varianta shazovala /checkout do bílé stránky).
     // Bankovní údaje používají bankEnv = fallback + warn (nehází).
-    get BANK_ACCOUNT(): string { return bankEnv('VITE_BANK_ACCOUNT', '2202066277/2010'); },
-    get BANK_CODE(): string { return bankEnv('VITE_BANK_CODE', '2010'); },
-    get IBAN(): string { return bankEnv('VITE_BANK_IBAN', 'CZ4720100000002202066277'); },
+    get BANK_ACCOUNT(): string { return bankEnv('VITE_BANK_ACCOUNT', '2202066277/2010', isCzBankAccount); },
+    get BANK_CODE(): string { return bankEnv('VITE_BANK_CODE', '2010', isCzBankCode); },
+    get IBAN(): string { return bankEnv('VITE_BANK_IBAN', 'CZ4720100000002202066277', isCzIban); },
 };
 
 // Veřejný klíč widgetu Zásilkovny (běží v prohlížeči zákazníka → NENÍ tajný, stejně skončí

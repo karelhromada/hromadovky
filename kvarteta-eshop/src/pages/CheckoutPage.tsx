@@ -4,6 +4,13 @@ import type { CartItem } from '../App';
 import './CheckoutPage.css';
 import { PAYMENT_CONFIG, SHIPPING_CONFIG, AUTOMATION_CONFIG } from '../config/payment';
 import { getQRPaymentImageUrl } from '../utils/qrUtils';
+
+// Nabízené způsoby dopravy a jejich ceny (Kč). Osobní odběr zrušen 2026-09-27.
+// Při změně cen aktualizovat i DELIVERIES v scripts/generate-feeds.mjs (Heureka/Zboží feedy).
+const DELIVERY_PRICES = { gls: 99, zasilkovna: 79, ppl: 99 } as const;
+type DeliveryMethod = keyof typeof DELIVERY_PRICES;
+const isDeliveryMethod = (v: unknown): v is DeliveryMethod =>
+    typeof v === 'string' && Object.prototype.hasOwnProperty.call(DELIVERY_PRICES, v);
 import { PageHead } from '../components/seo/PageHead';
 import { SEO } from '../data/seo';
 import { resolveBackName } from '../data/backgrounds';
@@ -76,7 +83,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                 street: profile.street || prev.street,
                 city: profile.city || prev.city,
                 zip: profile.zip || prev.zip,
-                delivery: profile.last_delivery || prev.delivery,
+                delivery: isDeliveryMethod(profile.last_delivery) ? profile.last_delivery : prev.delivery,
                 payment: (profile.last_payment === 'card' ? 'transfer' : profile.last_payment) || prev.payment
             }));
             if (profile.last_delivery === 'ppl' || profile.last_delivery === 'zasilkovna') {
@@ -152,7 +159,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
     };
 
     const total = items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-    const deliveryCost = formData.delivery === 'osobni' ? 0 : (formData.delivery === 'zasilkovna' ? 79 : 99);
+    const deliveryCost = isDeliveryMethod(formData.delivery) ? DELIVERY_PRICES[formData.delivery] : DELIVERY_PRICES.gls;
     const paymentCost = formData.payment === 'cod' ? 39 : 0;
     const totalToPay = total + deliveryCost + paymentCost;
 
@@ -632,7 +639,6 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                                     <option value="gls">GLS - na adresu (99 Kč)</option>
                                     <option value="zasilkovna">Zásilkovna (79 Kč)</option>
                                     <option value="ppl">PPL ParcelShop (99 Kč)</option>
-                                    <option value="osobni">Osobní odběr (Zdarma)</option>
                                 </select>
                             </div>
                             <div className="form-group">
@@ -708,7 +714,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                         </div>
                         <div className="total-row">
                             <span>Doprava:</span>
-                            <span>{formData.delivery === 'osobni' ? 'Zdarma' : (formData.delivery === 'zasilkovna' ? '79 Kč' : '99 Kč')}</span>
+                            <span>{formatCurrency(deliveryCost)}</span>
                         </div>
                         {formData.payment === 'cod' && (
                             <div className="total-row">

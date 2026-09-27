@@ -29,7 +29,7 @@ export async function listInvoices(filters: InvoiceFilters): Promise<Invoice[]> 
     query = query.lte('issued_at', filters.toDate);
   }
   if (filters.search) {
-    const term = filters.search.trim();
+    const term = filters.search.trim().replace(/[,()"\\]/g, ' ').trim();
     if (term.length > 0) {
       query = query.or(
         `number.ilike.%${term}%,order_number.ilike.%${term}%,customer->>email.ilike.%${term}%,customer->>lastName.ilike.%${term}%,variable_symbol.ilike.%${term}%`,

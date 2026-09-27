@@ -118,6 +118,9 @@
 
 .admin-orders-container .customer-cell { display: flex; flex-direction: column; gap: 2px; }
 .admin-orders-container .customer-email { font-size: 0.78rem; color: var(--text-secondary); }
+.admin-orders-container .order-number-cell { display: flex; flex-direction: column; gap: 2px; white-space: nowrap; }
+.admin-orders-container .order-vs { font-size: 0.75rem; color: var(--text-secondary); }
+.admin-orders-container .order-vs-subtitle { margin: -0.25rem 0 0.75rem; font-family: 'Menlo', monospace; color: var(--text-secondary); }
 
 .admin-orders-container .status-pill {
     display: inline-block;

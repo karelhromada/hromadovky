@@ -195,7 +195,8 @@ export default function AdminOrdersPage() {
         </button>
 
         <header className="admin-orders-header">
-          <h1>Objednávka VS {vs}</h1>
+          <h1>Objednávka {selected.order_number ?? `VS ${vs}`}</h1>
+          {selected.order_number && <p className="order-vs-subtitle">VS {vs}</p>}
           <div className="admin-stats-grid">
             <div className="admin-stat-card">
               <span className="stat-label">Datum</span>
@@ -403,7 +404,7 @@ export default function AdminOrdersPage() {
             Hledat
             <input
               type="search"
-              placeholder="VS, email, příjmení"
+              placeholder="ORD…, VS, email, příjmení"
               value={filters.search ?? ''}
               onChange={e => setFilters(p => ({ ...p, search: e.target.value }))}
             />
@@ -419,7 +420,7 @@ export default function AdminOrdersPage() {
           <table className="admin-orders-table">
             <thead>
               <tr>
-                <th>VS</th>
+                <th>Objednávka</th>
                 <th>Datum</th>
                 <th>Zákazník</th>
                 <th>Položky</th>
@@ -446,7 +447,12 @@ export default function AdminOrdersPage() {
                 const renderCount = (order.rendered_paths ?? []).length;
                 return (
                   <tr key={order.id}>
-                    <td className="cell-number">{order.variable_symbol}</td>
+                    <td className="cell-number">
+                      <div className="order-number-cell">
+                        <span>{order.order_number ?? '—'}</span>
+                        <span className="order-vs">VS {order.variable_symbol}</span>
+                      </div>
+                    </td>
                     <td>{formatDate(order.created_at)}</td>
                     <td>
                       <div className="customer-cell">

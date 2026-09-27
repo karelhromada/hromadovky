@@ -45,6 +45,8 @@ export interface OrderSubmission {
   created_at: string;
   user_id: string | null;
   variable_symbol: string;
+  /** Číslo objednávky z n8n (ORD-<timestamp>); u objednávek před 2026-09-27 null. */
+  order_number: string | null;
   status: string;
   customer: OrderCustomer;
   items: OrderItem[];

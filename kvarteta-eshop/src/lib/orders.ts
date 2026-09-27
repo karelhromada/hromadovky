@@ -29,7 +29,7 @@ export async function listOrderSubmissions(filters: OrderFilters): Promise<Order
     const term = filters.search.trim().replace(/[,()"\\]/g, ' ').trim();
     if (term.length > 0) {
       query = query.or(
-        `variable_symbol.ilike.%${term}%,customer->>email.ilike.%${term}%,customer->>lastName.ilike.%${term}%`,
+        `order_number.ilike.%${term}%,variable_symbol.ilike.%${term}%,customer->>email.ilike.%${term}%,customer->>lastName.ilike.%${term}%`,
       );
     }
   }

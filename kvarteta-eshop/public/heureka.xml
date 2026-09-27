@@ -139,6 +139,29 @@
     </DELIVERY>
   </SHOPITEM>
   <SHOPITEM>
+    <ITEM_ID>karty-tema-jednorozci</ITEM_ID>
+    <PRODUCTNAME>Hrací karty: Roztomilí jednorožci</PRODUCTNAME>
+    <DESCRIPTION>Nadýchaná pohádka v balíčku hracích karet. Roztomilí jednorožci přinášejí 32 full-art ilustrací plyšově hebkých jednorožců — cválají po obláčcích, dovádějí pod polární září, odpočívají na měsíčním srpku nebo objevují třpytivé krystalové jeskyně. Každá mariášová barva má vlastní náladu: pastelová srdce, zlaté žaludy, fialové listy a kouzelné kule. Hodnoty zůstávají přehledné, takže balíček zvládne prší, mariáš i první karetní hry nejmenších. Karty ve formátu 63 × 105 mm tiskneme na prémiový lesklý fotopapír 220 mikronů a oboustranně laminujeme fólií 200 mikronů — jsou lesklé, tuhé a odolné vůči každodennímu hraní. V galerii rubů najdete i jednorožčí vzory, které edici krásně doplní. Vyrábíme ručně v Česku a odesíláme do 5 pracovních dnů.</DESCRIPTION>
+    <URL>https://www.hromadovky.cz/karty/roztomili-jednorozci</URL>
+    <IMGURL>https://www.hromadovky.cz/cards/roztomili-jednorozci/Cervene_Kral.webp</IMGURL>
+    <IMGURL_ALTERNATIVE>https://www.hromadovky.cz/cards/roztomili-jednorozci/Zelene_Spodek.webp</IMGURL_ALTERNATIVE>
+    <IMGURL_ALTERNATIVE>https://www.hromadovky.cz/cards/roztomili-jednorozci/Kule_Eso.webp</IMGURL_ALTERNATIVE>
+    <PRICE_VAT>349</PRICE_VAT>
+    <MANUFACTURER>Hromadovky</MANUFACTURER>
+    <CATEGORYTEXT>Heureka.cz | Dětské zboží | Hračky | Společenské hry | Karetní hry</CATEGORYTEXT>
+    <DELIVERY_DATE>5</DELIVERY_DATE>
+    <DELIVERY>
+      <DELIVERY_ID>ZASILKOVNA</DELIVERY_ID>
+      <DELIVERY_PRICE>79</DELIVERY_PRICE>
+      <DELIVERY_PRICE_COD>118</DELIVERY_PRICE_COD>
+    </DELIVERY>
+    <DELIVERY>
+      <DELIVERY_ID>PPL</DELIVERY_ID>
+      <DELIVERY_PRICE>99</DELIVERY_PRICE>
+      <DELIVERY_PRICE_COD>138</DELIVERY_PRICE_COD>
+    </DELIVERY>
+  </SHOPITEM>
+  <SHOPITEM>
     <ITEM_ID>kvarteto-mytologie</ITEM_ID>
     <PRODUCTNAME>Kvarteto: Mytologie a mýty</PRODUCTNAME>
     <DESCRIPTION>Vydejte se na výpravu napříč bájemi starých civilizací. Kvarteto Mytologie a mýty přináší 32 karet v osmi rodinách — od olympských bohů přes severské hrdiny Ódina a Thóra až po egyptská božstva a legendární nestvůry jako Kraken, Minotaurus či Medúza. Každá karta nese původní ručně malovanou ilustraci a luxusní průhledný systém vlastností, takže se hra dá hrát klasicky na sbírání rodin i jako souboj hodnot. Tiskneme na prémiový lesklý fotopapír 220 mikronů a každou kartu oboustranně laminujeme fólií 200 mikronů — balíček vydrží stovky partií, polití i cestování v batohu. Rozměr 65 × 95 mm skvěle padne do dětské ruky. Rub si vyberete z desítek motivů přímo při objednávce. Vyrábíme ručně v Česku a odesíláme do 5 pracovních dnů.</DESCRIPTION>
@@ -327,9 +350,9 @@
     <PRODUCTNAME>Pexeso: Dinosauři</PRODUCTNAME>
     <DESCRIPTION>Trénink paměti s prehistorickými obry! Pexeso Dinosauři obsahuje páry nádherně ilustrovaných karet s T-rexem, Triceratopsem, Mosasaurem a dalšími pravěkými ještěry. Děti si při hledání dvojic přirozeně zapamatují jména i podobu dinosaurů — zábava a učení v jednom balíčku. Velikost hry si přizpůsobíte: 16, 32 nebo 64 karet (8 až 32 párů) a tři rozměry kartiček — klasické 50 × 50 mm, velké 60 × 60 mm nebo maxi 80 × 80 mm pro nejmenší hráče. Tiskneme na lesklý fotopapír 220 mikronů s oboustrannou laminací 200 mikronů, takže karty vydrží stovky partií. Ruční česká výroba, odeslání do 5 pracovních dnů.</DESCRIPTION>
     <URL>https://www.hromadovky.cz/pexeso/dinosauri</URL>
-    <IMGURL>https://www.hromadovky.cz/cards/dinosauri/Alosaurus.webp</IMGURL>
-    <IMGURL_ALTERNATIVE>https://www.hromadovky.cz/cards/dinosauri/Amargasaurus.webp</IMGURL_ALTERNATIVE>
-    <IMGURL_ALTERNATIVE>https://www.hromadovky.cz/cards/dinosauri/Ankylosaurus.webp</IMGURL_ALTERNATIVE>
+    <IMGURL>https://www.hromadovky.cz/pexeso/dinosauri/Allosaurus.webp</IMGURL>
+    <IMGURL_ALTERNATIVE>https://www.hromadovky.cz/pexeso/dinosauri/Amargasaurus.webp</IMGURL_ALTERNATIVE>
+    <IMGURL_ALTERNATIVE>https://www.hromadovky.cz/pexeso/dinosauri/Ankylosaurus.webp</IMGURL_ALTERNATIVE>
     <PRICE_VAT>199</PRICE_VAT>
     <MANUFACTURER>Hromadovky</MANUFACTURER>
     <CATEGORYTEXT>Heureka.cz | Dětské zboží | Hračky | Společenské hry</CATEGORYTEXT>

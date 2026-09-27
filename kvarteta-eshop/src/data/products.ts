@@ -327,11 +327,12 @@ export const pexesoProducts = [
             { id: 1, text: 'Bestseller', icon: Trophy, color: '#ffb703' }
         ],
         image: [
-            '/cards/dinosauri/Alosaurus.webp', '/cards/dinosauri/Amargasaurus.webp', '/cards/dinosauri/Ankylosaurus.webp', '/cards/dinosauri/Argentinosaurus.webp',
-            '/cards/dinosauri/Baryonix.webp', '/cards/dinosauri/Brachiosaurus.webp', '/cards/dinosauri/Diplodocus.webp', '/cards/dinosauri/Giganotosaurus.webp',
-            '/cards/dinosauri/Mosasaurus.webp', '/cards/dinosauri/Pteranodon.webp', '/cards/dinosauri/Quetzalcoatlus.webp', '/cards/dinosauri/Spinosaurus.webp',
-            '/cards/dinosauri/Stegosaurus.webp', '/cards/dinosauri/Styrocaurus.webp', '/cards/dinosauri/T-rex.webp', '/cards/dinosauri/Triceratops.webp',
-            '/cards/dinosauri/Utahoraptor.webp', '/cards/dinosauri/Velociraptor.webp'
+            '/pexeso/dinosauri/Allosaurus.webp', '/pexeso/dinosauri/Amargasaurus.webp', '/pexeso/dinosauri/Ankylosaurus.webp', '/pexeso/dinosauri/Baryonyx.webp',
+            '/pexeso/dinosauri/Brachiosaurus.webp', '/pexeso/dinosauri/Diplodocus.webp', '/pexeso/dinosauri/Giganotosaurus.webp', '/pexeso/dinosauri/Mosasaurus.webp',
+            '/pexeso/dinosauri/Pteranodon.webp', '/pexeso/dinosauri/Quetzalcoatlus.webp', '/pexeso/dinosauri/Spinosaurus.webp', '/pexeso/dinosauri/Styracosaurus.webp',
+            '/pexeso/dinosauri/Tyrannosaurus.webp', '/pexeso/dinosauri/Triceratops.webp', '/pexeso/dinosauri/Utahraptor.webp', '/pexeso/dinosauri/Velociraptor.webp',
+            '/pexeso/dinosauri/Carnotaurus.webp', '/pexeso/dinosauri/Deinocheirus.webp', '/pexeso/dinosauri/Stegosaurus.webp', '/pexeso/dinosauri/Archaeopteryx.webp',
+            '/pexeso/dinosauri/Dimorphodon.webp'
         ]
     },
     {

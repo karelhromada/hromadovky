@@ -226,6 +226,12 @@ export const SEO = {
     path: '/reset-password',
     noindex: true,
   },
+  dotaznik: {
+    title: 'Dotazník spokojenosti | Hromadovky',
+    description: 'Krátký dotazník spokojenosti s objednávkou z e-shopu Hromadovky.',
+    path: '/dotaznik',
+    noindex: true,
+  },
   adminInvoices: {
     title: 'Administrace faktur | Hromadovky',
     description: 'Administrace faktur.',

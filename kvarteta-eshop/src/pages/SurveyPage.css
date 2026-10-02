@@ -1,0 +1,186 @@
+/* Dotazník spokojenosti (/dotaznik). Stránka je lazy-loaded — vše, co potřebuje,
+   je tady nebo v globálním App.css/index.css (Past #3 v CLAUDE.md). */
+
+.survey-page {
+    min-height: 70vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 48px 16px 80px;
+}
+
+.survey-card {
+    width: 100%;
+    max-width: 560px;
+    background: #fff;
+    border-top: 6px solid var(--accent-gold);
+    border-radius: 16px;
+    box-shadow: 0 12px 40px rgba(18, 24, 38, 0.08);
+    padding: 32px 32px 40px;
+    color: var(--text-primary);
+}
+
+.survey-suits {
+    margin: 0 0 12px;
+    text-align: center;
+    letter-spacing: 0.5em;
+    color: var(--accent-gold);
+    font-size: 1.1rem;
+}
+
+.survey-card h1 {
+    font-family: var(--font-display);
+    font-size: 1.7rem;
+    line-height: 1.2;
+    margin: 0 0 8px;
+    text-align: center;
+}
+
+.survey-card p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    text-align: center;
+}
+
+.survey-card a:not(.btn-primary) { color: var(--accent-gold-dark); }
+
+.survey-muted { margin: 0 0 24px; }
+
+.survey-field {
+    border: 0;
+    padding: 0;
+    margin: 0 0 28px;
+    min-width: 0;
+}
+
+.survey-field legend,
+.survey-legend {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 12px;
+    padding: 0;
+}
+
+.survey-stars {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Hvězdička jako malá karta — stejný motiv jako v e-mailu. */
+.survey-star input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+    pointer-events: none;
+}
+
+.survey-star {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    flex: 1 1 0;
+    max-width: 72px;
+    aspect-ratio: 5 / 7;
+    min-height: 56px;
+    border: 2px solid #e8dcb8;
+    border-radius: 10px;
+    background: #fffdf7;
+    color: #dcd3b6;
+    font-size: 1.9rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.survey-star:hover,
+.survey-star:focus-within {
+    transform: translateY(-3px);
+    border-color: var(--accent-gold);
+    outline: none;
+    box-shadow: 0 6px 16px rgba(197, 155, 39, 0.25);
+}
+
+.survey-star.is-on {
+    color: var(--accent-gold);
+    border-color: var(--accent-gold);
+    background: #fff8e1;
+}
+
+.survey-card .survey-rating-label {
+    min-height: 1.6em;
+    margin: 10px 0 0;
+    font-weight: 600;
+    color: var(--accent-gold-dark);
+}
+
+.survey-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.survey-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    min-height: 48px;
+    border: 1px solid #e5e2d6;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.survey-option:hover { border-color: var(--accent-gold); }
+.survey-option.is-selected { border-color: var(--accent-gold); background: #fff8e1; }
+.survey-option input { accent-color: var(--accent-gold-dark); flex: none; }
+
+.survey-comment { display: block; }
+
+.survey-input {
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 10px;
+    padding: 12px 14px;
+    border: 1px solid #e5e2d6;
+    border-radius: 10px;
+    font: inherit;
+    color: var(--text-primary);
+    background: #fff;
+    resize: vertical;
+}
+
+.survey-comment .survey-input { margin-top: 0; }
+
+.survey-input:focus {
+    outline: 2px solid var(--accent-gold-light);
+    border-color: var(--accent-gold);
+}
+
+.survey-card .survey-error {
+    color: #b3261e;
+    text-align: left;
+    margin: 0 0 16px;
+}
+
+.survey-cta {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 8px;
+    text-align: center;
+    text-decoration: none;
+}
+
+@media (max-width: 480px) {
+    .survey-page { padding: 24px 12px 56px; }
+    .survey-card { padding: 24px 18px 28px; }
+    .survey-card h1 { font-size: 1.4rem; }
+    .survey-stars { gap: 6px; }
+    .survey-star { font-size: 1.6rem; }
+    .survey-options { grid-template-columns: 1fr; }
+}

@@ -11,6 +11,7 @@ import { PageHead } from '../components/seo/PageHead';
 import { SEO } from '../data/seo';
 import { buildCardBackRef, resolveBackName } from '../data/backgrounds';
 import { listProducts } from '../data/catalog';
+import { DeliveryPanel } from '../components/admin/DeliveryPanel';
 import './AdminOrdersPage.css';
 
 // Líc hotových sad se dohledává z katalogu podle id položky (custom položky v katalogu nejsou —
@@ -160,6 +161,12 @@ export default function AdminOrdersPage() {
     [],
   );
 
+  // Po označení doručení promítnout změnu do detailu i do seznamu (bez nového dotazu).
+  const handleOrderChange = useCallback((updated: OrderSubmission) => {
+    setSelected(updated);
+    setOrders(prev => prev.map(o => (o.id === updated.id ? updated : o)));
+  }, []);
+
   const stats = useMemo(
     () => ({
       count: orders.length,
@@ -248,7 +255,9 @@ export default function AdminOrdersPage() {
           </p>
         </section>
 
-        {signedLoading && <p className="admin-empty">Načítám obrázky…</p>}
+        <DeliveryPanel key={selected.id} order={selected} onChange={handleOrderChange} />
+
+        {signedLoading &&<p className="admin-empty">Načítám obrázky…</p>}
         {signedError && <p className="admin-empty admin-error">{signedError}</p>}
 
         {selected.items.map((item, idx) => {
@@ -427,13 +436,14 @@ export default function AdminOrdersPage() {
                 <th>Fotek</th>
                 <th>Celkem</th>
                 <th>Status</th>
+                <th>Doručeno</th>
                 <th>Akce</th>
               </tr>
             </thead>
             <tbody>
               {orders.length === 0 && (
                 <tr>
-                  <td colSpan={8} className="admin-empty">
+                  <td colSpan={9} className="admin-empty">
                     Žádné objednávky odpovídající filtrům.
                   </td>
                 </tr>
@@ -471,6 +481,15 @@ export default function AdminOrdersPage() {
                       <span className={`status-pill status-${order.status}`}>
                         {STATUS_LABEL[order.status] ?? order.status}
                       </span>
+                    </td>
+                    <td>
+                      {order.delivered_at ? formatDate(order.delivered_at) : '—'}
+                      {order.order_surveys?.rating != null && (
+                        <span className="order-rating" title="Hodnocení z dotazníku">
+                          {' '}
+                          {order.order_surveys.rating}★
+                        </span>
+                      )}
                     </td>
                     <td className="cell-actions">
                       <button

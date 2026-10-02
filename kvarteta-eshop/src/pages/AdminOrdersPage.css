@@ -260,3 +260,5 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+.admin-orders-container .order-rating { color: var(--accent-gold-dark); font-weight: 600; white-space: nowrap; }

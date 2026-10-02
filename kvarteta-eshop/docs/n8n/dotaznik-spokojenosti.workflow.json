@@ -1,0 +1,227 @@
+{
+  "name": "Hromadovky – Dotazník spokojenosti",
+  "nodes": [
+    {
+      "id": "survey-trigger",
+      "name": "Denně 9:30",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "30 9 * * *"
+            }
+          ]
+        }
+      },
+      "notes": "Denně 9:30 Europe/Prague. 1. e-mail 2 dny po doručení, připomínka 7. den (pravidla jsou v SQL funkci claim_due_survey_emails)."
+    },
+    {
+      "id": "survey-claim",
+      "name": "Vyber příjemce",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ],
+      "parameters": {
+        "jsCode": "// Atomicky vybere a OZNAČÍ e-maily k odeslání (RPC claim_due_survey_emails).\n// Claim před odesláním = opakovaný běh nikdy nepošle e-mail dvakrát.\n// Chyba = throw (jde do „Alert adminovi\"), nikdy tiché return [].\nconst SUPABASE_URL = 'https://fwknpaigohaesqyimgvt.supabase.co';\nconst SB_SECRET = $env.SUPABASE_SERVICE_KEY;\nif (!SB_SECRET) throw new Error('Chybí $env.SUPABASE_SERVICE_KEY');\n\nlet rows;\ntry {\n  rows = await this.helpers.httpRequest({\n    method: 'POST',\n    url: `${SUPABASE_URL}/rest/v1/rpc/claim_due_survey_emails`,\n    headers: {\n      apikey: SB_SECRET,\n      Authorization: `Bearer ${SB_SECRET}`,\n      'Content-Type': 'application/json',\n    },\n    body: {},\n    json: true,\n  });\n} catch (e) {\n  throw new Error(`claim_due_survey_emails selhal: ${e.message}`);\n}\nif (!Array.isArray(rows)) {\n  throw new Error(`claim_due_survey_emails vrátil nečekanou odpověď: ${JSON.stringify(rows).slice(0, 300)}`);\n}\nif (rows.length === 0) {\n  console.log('Dotazník: dnes nic k odeslání.');\n  return [];  // běžný stav — většinu dní není komu psát\n}\nreturn rows.map((row) => ({ json: row }));"
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "survey-build",
+      "name": "Build",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        -100
+      ],
+      "parameters": {
+        "jsCode": "// Sestaví e-mail pro každého příjemce. Šablona = scripts/survey-email.mjs v repu\n// (generuje scripts/build-survey-workflow.mjs — needitovat ručně tady).\n// Chyba jedné položky nesmí shodit ostatní: položka bez html jde přes IF do alertu.\nfunction buildSurveyEmail(input) {\n  const SITE = 'https://www.hromadovky.cz';\n  const GOLD = '#c59b27';\n  const GOLD_DARK = '#8e6b10';\n  const RATING_LABELS = ['Nic moc', 'Šlo to', 'Dobré', 'Moc fajn', 'Nadšení'];\n  const MAX_ITEMS = 3;\n\n  const esc = (s) => String(s ?? '')\n    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')\n    .replace(/\"/g, '&quot;').replace(/'/g, '&#39;');\n\n  if (input.kind !== 'first' && input.kind !== 'reminder') {\n    throw new Error(`survey-email: neznámý kind \"${input.kind}\"`);\n  }\n  // id + token jdou do URL — pustit jen přesný tvar, jinak e-mail vůbec nesestavit.\n  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(input.orderId))) {\n    throw new Error('survey-email: neplatné orderId');\n  }\n  if (!/^[0-9a-f]{64}$/.test(String(input.token))) {\n    throw new Error('survey-email: neplatný token');\n  }\n\n  const isReminder = input.kind === 'reminder';\n  const baseUrl = `${SITE}/dotaznik?o=${input.orderId}&t=${input.token}`;\n  const rateUrl = (n) => `${baseUrl}&h=${n}`;\n  const optOutUrl = `${baseUrl}&odhlasit=1`;\n\n  const firstName = String(input.firstName ?? '').trim().slice(0, 60);\n  const greeting = firstName ? `Ahoj ${firstName},` : 'Dobrý den,';\n  const names = (input.itemNames ?? []).map((n) => String(n ?? '').trim()).filter(Boolean);\n  const shown = names.slice(0, MAX_ITEMS);\n  const itemsText = shown.join(', ') + (names.length > MAX_ITEMS ? ` a další (${names.length - MAX_ITEMS})` : '');\n  const orderRef = input.orderNumber ? `objednávka ${input.orderNumber}` : 'vaše objednávka';\n\n  const subject = isReminder\n    ? 'Ještě malá prosba: jak se vám hraje s kartami?'\n    : 'Jak se vám hraje s novými kartami?';\n  const preheader = isReminder\n    ? 'Stačí jeden klik na hvězdičku. Víckrát už připomínat nebudeme.'\n    : 'Stačí jeden klik na hvězdičku — zabere to půl minuty.';\n  const headline = isReminder ? 'Ještě jedna malá prosba' : 'Jak se vám s kartami hraje?';\n  const intro = isReminder\n    ? 'před pár dny jsme se ptali, jak jste spokojeni s kartami od nás. Kdybyste našli půl minuty, moc nám to pomůže — jsme malá rodinná dílna a každá odpověď se počítá.'\n    : 'karty už by měly být pár dní u vás a nás moc zajímá, jak dopadly. Jsme malá rodinná dílna a každá odpověď nám pomáhá dělat je lepší.';\n\n  const P = 'margin:0 0 16px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:25px;color:#475569;';\n\n  const starCells = RATING_LABELS.map((label, i) => {\n    const n = i + 1;\n    return `\n              <td width=\"20%\" align=\"center\" bgcolor=\"#fffdf7\" style=\"background-color:#fffdf7;border:2px solid #e8dcb8;border-radius:10px;\">\n                <a href=\"${rateUrl(n)}\" title=\"${n} z 5 – ${esc(label)}\" style=\"display:block;padding:14px 0 10px;text-decoration:none;font-family:Arial,Helvetica,sans-serif;\">\n                  <span class=\"hk-star\" style=\"display:block;font-size:30px;line-height:34px;color:${GOLD};\">&#9733;</span>\n                  <span style=\"display:block;font-size:13px;line-height:18px;font-weight:bold;color:${GOLD_DARK};\">${n}</span>\n                </a>\n              </td>`;\n  }).join('');\n\n  const itemsRow = itemsText\n    ? `<p style=\"${P}font-size:14px;line-height:22px;color:#64748b;\">Týká se: <strong style=\"color:#1e293b;\">${esc(itemsText)}</strong></p>`\n    : '';\n\n  const optOutRow = isReminder\n    ? ''\n    : `<p style=\"margin:5px 0;\">Nechcete dostat připomínku? <a href=\"${optOutUrl}\" style=\"color:#94a3b8;text-decoration:underline;\">Stačí kliknout sem</a>.</p>`;\n\n  const html = `<!DOCTYPE html>\n<html lang=\"cs\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<meta name=\"color-scheme\" content=\"light only\">\n<title>${esc(subject)}</title>\n<style>\n  @media only screen and (max-width: 480px) {\n    .hk-pad { padding-left: 20px !important; padding-right: 20px !important; }\n    .hk-outer { padding: 0 !important; }\n    .hk-h1 { font-size: 23px !important; line-height: 29px !important; }\n    .hk-stars { border-spacing: 4px 0 !important; }\n    .hk-star { font-size: 26px !important; }\n    .hk-logo { width: 200px !important; }\n  }\n</style>\n</head>\n<body style=\"margin:0;padding:0;background-color:#fcfbfa;color:#1e293b;\">\n<div style=\"display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;mso-hide:all;\">${esc(preheader)}</div>\n<table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background-color:#fcfbfa;\">\n  <tr><td class=\"hk-outer\" align=\"center\" style=\"padding:32px 12px;\">\n    <table role=\"presentation\" width=\"600\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" bgcolor=\"#ffffff\" style=\"width:100%;max-width:600px;background-color:#ffffff;border-top:6px solid ${GOLD};border-collapse:separate;\">\n      <tr><td class=\"hk-pad\" align=\"center\" style=\"padding:32px 40px 8px;\">\n        <a href=\"${SITE}/\" style=\"text-decoration:none;\">\n          <img class=\"hk-logo\" src=\"${SITE}/email/logo.png\" width=\"260\" alt=\"Hromadovky.cz – karty plné příběhů\" style=\"display:block;width:260px;max-width:100%;height:auto;border:0;font-family:Georgia,serif;font-size:22px;font-weight:bold;color:${GOLD};\">\n        </a>\n      </td></tr>\n      <tr><td align=\"center\" style=\"padding:8px 40px 0;font-family:Georgia,'Times New Roman',serif;font-size:16px;letter-spacing:10px;color:${GOLD};\">&#9824;&#xFE0E; <span style=\"color:#b3261e;\">&#9829;&#xFE0E;</span> <span style=\"color:#b3261e;\">&#9830;&#xFE0E;</span> &#9827;&#xFE0E;</td></tr>\n      <tr><td class=\"hk-pad\" style=\"padding:20px 40px 8px;\">\n        <h1 class=\"hk-h1\" style=\"margin:0 0 18px;font-family:Georgia,'Times New Roman',serif;font-size:27px;line-height:34px;font-weight:bold;color:#1e293b;text-align:center;\">${esc(headline)}</h1>\n        <p style=\"${P}\">${esc(greeting)}</p>\n        <p style=\"${P}\">${esc(intro)}</p>\n        ${itemsRow}\n      </td></tr>\n      <tr><td class=\"hk-pad\" style=\"padding:0 40px;\">\n        <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background-color:#fffbf2;border:1px solid #f5f0e6;border-radius:12px;\">\n          <tr><td align=\"center\" style=\"padding:22px 12px 6px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:bold;color:#1e293b;\">Kolik hvězdiček byste nám dali?</td></tr>\n          <tr><td align=\"center\" style=\"padding:0 12px 14px;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:20px;color:#64748b;\">Klikněte na kartu — hodnocení se rovnou uloží.</td></tr>\n          <tr><td style=\"padding:0 6px;\">\n            <table class=\"hk-stars\" role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"6\" border=\"0\" style=\"border-collapse:separate;border-spacing:8px 0;\">\n              <tr>${starCells}\n              </tr>\n            </table>\n          </td></tr>\n          <tr><td style=\"padding:8px 16px 20px;\">\n            <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n              <tr>\n                <td align=\"left\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#94a3b8;\">${esc(RATING_LABELS[0])}</td>\n                <td align=\"right\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#94a3b8;\">${esc(RATING_LABELS[4])}</td>\n              </tr>\n            </table>\n          </td></tr>\n        </table>\n      </td></tr>\n      <tr><td class=\"hk-pad\" style=\"padding:24px 40px 36px;\">\n        <p style=\"${P}\">Na další stránce se ještě zeptáme, <strong style=\"color:#1e293b;\">jak jste se o nás dozvěděli</strong>, a můžete nám nechat vzkaz. Obojí je dobrovolné.</p>\n        <p style=\"${P}margin-bottom:0;\">Děkujeme a ať vám karty dělají radost!<br><strong style=\"color:#1e293b;\">Karel Hromada</strong>, Hromadovky.cz</p>\n      </td></tr>\n      <tr><td class=\"hk-pad\" align=\"center\" style=\"padding:24px 40px 32px;border-top:1px solid #f1f5f9;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:19px;color:#94a3b8;\">\n        <p style=\"margin:5px 0;\">Tento e-mail jste dostali, protože jste u nás nakoupili (${esc(orderRef)}).</p>\n        ${optOutRow}\n        <p style=\"margin:5px 0;\">Něco není v pořádku? Odpovězte na tento e-mail nebo napište na <a href=\"mailto:obchod@hromadovky.cz\" style=\"color:#94a3b8;\">obchod@hromadovky.cz</a>.</p>\n        <p style=\"margin:12px 0 0;\">Hromadovky.cz — Karel Hromada, Zeyerova alej 20, 160 00 Praha 6, IČO 76137767</p>\n      </td></tr>\n    </table>\n  </td></tr>\n</table>\n</body>\n</html>`;\n\n  const text = [\n    greeting,\n    '',\n    intro,\n    itemsText ? `Týká se: ${itemsText}` : null,\n    '',\n    'Kolik hvězdiček byste nám dali? Klikněte na odkaz podle hodnocení:',\n    ...RATING_LABELS.map((label, i) => `${i + 1} – ${label}: ${rateUrl(i + 1)}`),\n    '',\n    'Na další stránce se ještě zeptáme, jak jste se o nás dozvěděli. Je to dobrovolné.',\n    '',\n    'Děkujeme!',\n    'Karel Hromada, Hromadovky.cz',\n    '',\n    isReminder ? null : `Nechcete dostat připomínku? ${optOutUrl}`,\n    'Hromadovky.cz — Karel Hromada, Zeyerova alej 20, 160 00 Praha 6, IČO 76137767',\n  ].filter((line) => line !== null).join('\\n');\n\n  return { subject, html, text };\n}\n\nreturn $input.all().map((item) => {\n  const row = item.json;\n  const meta = { kind: row.kind, order_number: row.order_number, variable_symbol: row.variable_symbol, to: row.email };\n  try {\n    const mail = buildSurveyEmail({\n      kind: row.kind,\n      orderId: row.order_submission_id,\n      token: row.token,\n      firstName: row.first_name,\n      orderNumber: row.order_number,\n      itemNames: Array.isArray(row.item_names) ? row.item_names : [],\n    });\n    return { json: { ...meta, subject: mail.subject, html: mail.html, text: mail.text } };\n  } catch (e) {\n    return { json: { ...meta, html: '', build_error: e.message } };\n  }\n});"
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "survey-built-ok",
+      "name": "Sestaveno?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        660,
+        -100
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "survey-has-html",
+              "leftValue": "={{ $json.html }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "survey-send",
+      "name": "Email zákazníkovi",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        880,
+        -200
+      ],
+      "parameters": {
+        "fromEmail": "info@hromadovky.cz",
+        "toEmail": "={{ $json.to }}",
+        "subject": "={{ $json.subject }}",
+        "emailFormat": "both",
+        "text": "={{ $json.text }}",
+        "html": "={{ $json.html }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "credentials": {
+        "smtp": {
+          "id": "2ZX1mt7TBeAJBY0M",
+          "name": "info@hromadovky"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "survey-alert",
+      "name": "Alert adminovi",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1100,
+        100
+      ],
+      "parameters": {
+        "fromEmail": "info@hromadovky.cz",
+        "toEmail": "karel.hromada30@gmail.com, nikola.hromadova@seznam.cz",
+        "subject": "=⚠️ Dotazník spokojenosti se neodeslal — {{ $json.order_number || 'viz n8n' }}",
+        "emailFormat": "text",
+        "text": "=Dotazník spokojenosti se nepodařilo odeslat.\n\nObjednávka: {{ $json.order_number || ($json.variable_symbol ? 'VS ' + $json.variable_symbol : 'neznámá') }}\nTyp: {{ $json.kind || '—' }}\nPříjemce: {{ $json.to || '—' }}\nChyba: {{ $json.build_error || ($json.error && $json.error.message) || $json.message || JSON.stringify($json.error || 'neznámá') }}\n\nE-mail je v databázi už označený jako odeslaný (ochrana proti duplicitám), takže se sám nezopakuje.\nKdyž chybí i číslo objednávky, selhal výběr příjemců — zkontroluj běh workflow v n8n.",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "credentials": {
+        "smtp": {
+          "id": "2ZX1mt7TBeAJBY0M",
+          "name": "info@hromadovky"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Denně 9:30": {
+      "main": [
+        [
+          {
+            "node": "Vyber příjemce",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vyber příjemce": {
+      "main": [
+        [
+          {
+            "node": "Build",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Alert adminovi",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build": {
+      "main": [
+        [
+          {
+            "node": "Sestaveno?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Alert adminovi",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sestaveno?": {
+      "main": [
+        [
+          {
+            "node": "Email zákazníkovi",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Alert adminovi",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email zákazníkovi": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Alert adminovi",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Prague",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "none"
+  }
+}

@@ -13,7 +13,7 @@ export interface OrderFilters {
 export async function listOrderSubmissions(filters: OrderFilters): Promise<OrderSubmission[]> {
   let query = supabase
     .from('order_submissions')
-    .select('*')
+    .select('*, order_surveys(*)')
     .order('created_at', { ascending: false });
 
   if (filters.fromDate) {
@@ -37,6 +37,26 @@ export async function listOrderSubmissions(filters: OrderFilters): Promise<Order
   const { data, error } = await query;
   if (error) throw error;
   return (data ?? []) as OrderSubmission[];
+}
+
+/**
+ * Označí objednávku jako doručenou (RPC kontroluje admin roli). Tím se spustí sekvence
+ * dotazníku spokojenosti: e-mail za 2 dny, připomínka 7. den. `deliveredOn` = YYYY-MM-DD.
+ * Vrací nové `delivered_at`.
+ */
+export async function markOrderDelivered(id: string, deliveredOn: string): Promise<string | null> {
+  const { data, error } = await supabase.rpc('mark_order_delivered', {
+    p_id: id,
+    p_delivered_on: deliveredOn,
+  });
+  if (error) throw error;
+  return (data as Pick<OrderSubmission, 'delivered_at'> | null)?.delivered_at ?? null;
+}
+
+/** Zruší označení doručení — jde jen do odeslání prvního dotazníkového e-mailu. */
+export async function unmarkOrderDelivered(id: string): Promise<void> {
+  const { error } = await supabase.rpc('unmark_order_delivered', { p_id: id });
+  if (error) throw error;
 }
 
 /**

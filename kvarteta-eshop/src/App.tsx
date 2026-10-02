@@ -27,6 +27,7 @@ const AuthPage = lazy(() => import('./pages/AuthPage'))
 const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage'))
 const AdminInvoicesPage = lazy(() => import('./pages/AdminInvoicesPage'))
 const AdminOrdersPage = lazy(() => import('./pages/AdminOrdersPage'))
+const SurveyPage = lazy(() => import('./pages/SurveyPage'))
 
 const RouteFallback = () => (
   <div
@@ -161,6 +162,7 @@ function App() {
                 <Route path="/checkout" element={<CheckoutPage items={cartItems} onClearCart={clearCart} />} />
                 <Route path="/login" element={<AuthPage />} />
                 <Route path="/reset-password" element={<ResetPasswordPage />} />
+                <Route path="/dotaznik" element={<SurveyPage />} />
                 <Route
                   path="/admin/invoices"
                   element={

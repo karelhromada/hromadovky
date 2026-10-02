@@ -58,7 +58,9 @@ const PrivacyPage: React.FC = () => {
                 </li>
                 <li>
                     <strong>Oprávněný zájem</strong> (čl. 6 odst. 1 písm. f) GDPR) — ochrana proti zneužití
-                    e-shopu, vymáhání pohledávek, přímý marketing vlastních produktů u stávajících zákazníků.
+                    e-shopu, vymáhání pohledávek, přímý marketing vlastních produktů u stávajících zákazníků
+                    a zjišťování spokojenosti s vyřízenou objednávkou (krátký e-mailový dotazník po doručení
+                    zboží, nejvýše s jednou připomínkou, kterou lze odkazem v e-mailu odmítnout).
                 </li>
                 <li>
                     <strong>Souhlas</strong> (čl. 6 odst. 1 písm. a) GDPR) — zasílání newsletteru a marketingových

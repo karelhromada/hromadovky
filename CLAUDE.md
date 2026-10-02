@@ -97,6 +97,32 @@ prerenderu snapshot homepage). Fallback generuje `postbuild` skript `write-spa-f
 
 ---
 
+## ★ Doručení & dotazník spokojenosti (od 2026-10)
+
+Tok: admin v `/admin/objednavky` klikne **„Označit jako doručeno"** (`DeliveryPanel.tsx` → RPC
+`mark_order_delivered`) → n8n workflow „Hromadovky – Dotazník spokojenosti" (denně 9:30) zavolá
+RPC `claim_due_survey_emails()` → e-mail s 5 hvězdičkami → stránka `/dotaznik` (noindex) uloží
+odpověď do `order_surveys` → výsledek je vidět v detailu objednávky.
+
+- **Pravidla sekvence jsou v SQL** (`claim_due_survey_emails`, migrace `20261002120000`):
+  1. e-mail 2 dny po doručení, připomínka 7. den, jen když zákazník neodpověděl ani se neodhlásil.
+  Při změně dnů upravit i konstanty v `src/components/admin/DeliveryPanel.tsx`.
+- **Claim před odesláním:** RPC e-mail označí jako odeslaný dřív, než odejde (žádné duplicity).
+  Když SMTP selže, e-mail se sám nezopakuje — workflow pošle alert adminovi.
+- **Šablona e-mailu:** zdroj pravdy `scripts/survey-email.mjs`. Po změně:
+  `node scripts/survey-email.test.mjs` → `node scripts/build-survey-workflow.mjs` → v n8n nahradit
+  kód nodu „Build" obsahem z `docs/n8n/dotaznik-spokojenosti.workflow.json`.
+  Náhled: `node scripts/survey-email-preview.mjs <složka>`.
+- **Kanály „Jak jste se o nás dozvěděli"** jsou jen v `src/data/survey.ts` (DB hlídá pouze formát
+  klíče). Použité klíče nepřejmenovávat.
+- **Odkaz v e-mailu** = `?o=<id objednávky>&t=<HMAC>`; secret `survey_link_secret` v `app_secrets`.
+  Hodnocení ukládá až JS na stránce (ne samotný GET), aby za zákazníka nehlasovaly skenery odkazů.
+- **Logo v e-mailu:** `public/email/logo.png` (PNG — Outlook neumí WebP). Musí být nasazené dřív,
+  než odejde první e-mail.
+- **SQL testy:** `supabase/tests/security/survey.sql` (celé v transakci s ROLLBACK).
+
+---
+
 ## ★ Deploy pravidla & pasti (must-know)
 
 - **Past #1 — ruby musí být v gitu.** `zadni_strany/` NESMÍ být v root `.gitignore`.

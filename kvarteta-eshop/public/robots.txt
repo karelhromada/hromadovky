@@ -4,6 +4,7 @@ Disallow: /admin/
 Disallow: /login
 Disallow: /reset-password
 Disallow: /checkout
+Disallow: /dotaznik
 Crawl-delay: 1
 
 User-agent: SeznamBot
@@ -12,5 +13,6 @@ Disallow: /admin/
 Disallow: /login
 Disallow: /reset-password
 Disallow: /checkout
+Disallow: /dotaznik
 
 Sitemap: https://www.hromadovky.cz/sitemap.xml

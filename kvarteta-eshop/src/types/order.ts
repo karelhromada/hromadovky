@@ -60,4 +60,21 @@ export interface OrderSubmission {
   payment_method: string | null;
   pickup_point: string | null;
   note: string | null;
+  /** Datum doručení zadané adminem; spouští sekvenci dotazníku spokojenosti. */
+  delivered_at: string | null;
+  /** Embed 1:1 z order_surveys; null, dokud neodešel e-mail ani nepřišla odpověď. */
+  order_surveys: OrderSurvey | null;
+}
+
+/** Řádek tabulky order_surveys — dotazník spokojenosti k objednávce. */
+export interface OrderSurvey {
+  first_sent_at: string | null;
+  reminder_sent_at: string | null;
+  rating: number | null;
+  rated_at: string | null;
+  source: string | null;
+  source_other: string | null;
+  comment: string | null;
+  answered_at: string | null;
+  opted_out_at: string | null;
 }

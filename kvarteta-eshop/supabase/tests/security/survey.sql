@@ -240,6 +240,66 @@ begin
 end $$;
 reset role;
 
+-- 8) notifikace adminům (migrace 20261002140000): claim_survey_notifications
+do $$
+declare
+  v_fresh uuid := (select id from t_ids where label = 'too_old');   -- zatím bez řádku v order_surveys
+  v_empty uuid := (select id from t_ids where label = 'due_first'); -- jen first_sent_at, bez odpovědi
+  v_n int;
+  v_answered boolean;
+begin
+  -- předchozí testy nechaly odpovědi neoznámené; ať nepletou zametání
+  update public.order_surveys set notified_at = now() + interval '1 hour';
+
+  select count(*) into v_n from public.claim_survey_notifications(v_empty);
+  if v_n <> 0 then raise exception 'TEST FAILED: oznámen dotazník bez odpovědi'; end if;
+
+  insert into public.order_surveys (order_submission_id, rating, rated_at) values (v_fresh, 4, now());
+
+  -- zametání (p_id null) nebere odpověď mladší 30 minut
+  if exists (select 1 from public.claim_survey_notifications(null) c where c.order_submission_id = v_fresh) then
+    raise exception 'TEST FAILED: zametání vzalo čerstvou odpověď';
+  end if;
+
+  select count(*), bool_or(answered) into v_n, v_answered from public.claim_survey_notifications(v_fresh);
+  if v_n <> 1 or v_answered then raise exception 'TEST FAILED: notifikace hvězdičky n=% answered=%', v_n, v_answered; end if;
+
+  select count(*) into v_n from public.claim_survey_notifications(v_fresh);
+  if v_n <> 0 then raise exception 'TEST FAILED: duplicitní notifikace'; end if;
+
+  -- formulář odeslaný až po oznámení hvězdičky → druhá notifikace s plnou odpovědí
+  -- (+1 s: uvnitř jedné transakce je now() konstantní)
+  update public.order_surveys set answered_at = now() + interval '1 second' where order_submission_id = v_fresh;
+  select count(*), bool_or(answered) into v_n, v_answered from public.claim_survey_notifications(v_fresh);
+  if v_n <> 1 or not v_answered then raise exception 'TEST FAILED: plná odpověď po hvězdičce se neoznámila'; end if;
+
+  -- zametání vezme starou neoznámenou odpověď
+  update public.order_surveys
+  set notified_at = null, rated_at = now() - interval '2 hours', answered_at = now() - interval '2 hours'
+  where order_submission_id = v_fresh;
+  if not exists (select 1 from public.claim_survey_notifications(null) c where c.order_submission_id = v_fresh) then
+    raise exception 'TEST FAILED: zametání nevzalo starou neoznámenou odpověď';
+  end if;
+end $$;
+
+set local role anon;
+do $$
+declare v_raised boolean := false;
+begin
+  begin perform public.claim_survey_notifications(null); exception when insufficient_privilege then v_raised := true; end;
+  if not v_raised then raise exception 'TEST FAILED: anon smí volat claim_survey_notifications'; end if;
+end $$;
+reset role;
+
+set local role authenticated;
+do $$
+declare v_raised boolean := false;
+begin
+  begin perform public.claim_survey_notifications(null); exception when insufficient_privilege then v_raised := true; end;
+  if not v_raised then raise exception 'TEST FAILED: přihlášený smí volat claim_survey_notifications'; end if;
+end $$;
+reset role;
+
 select 'VŠECHNY TESTY PROŠLY' as vysledek;
 
 rollback;

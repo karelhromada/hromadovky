@@ -1,0 +1,261 @@
+{
+  "name": "Hromadovky – Dotazník: notifikace odpovědi",
+  "nodes": [
+    {
+      "id": "notify-webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "survey-answered",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "webhookId": "survey-answered",
+      "notes": "Volá DB trigger \"survey-answered-webhook\" na order_surveys. Odpoví hned; obsahu se nevěří (viz Vyzvedni odpovědi)."
+    },
+    {
+      "id": "notify-sweep",
+      "name": "Denně 9:40 (zametání)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        220
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "40 9 * * *"
+            }
+          ]
+        }
+      },
+      "notes": "Pojistka: oznámí odpovědi starší 30 minut, jejichž webhook nedorazil (výpadek n8n)."
+    },
+    {
+      "id": "notify-rating-only",
+      "name": "Jen hvězdička?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        220,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "notify-no-answer",
+              "leftValue": "={{ $json.body?.record?.answered_at ?? '' }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "notify-wait",
+      "name": "Počkej 10 minut",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        440,
+        -120
+      ],
+      "parameters": {
+        "amount": 10,
+        "unit": "minutes"
+      },
+      "webhookId": "survey-answered-wait",
+      "notes": "Zákazník klikl jen na hvězdičku — dát mu čas dokončit formulář, ať nepřijdou dvě notifikace."
+    },
+    {
+      "id": "notify-claim",
+      "name": "Vyzvedni odpovědi",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        100
+      ],
+      "parameters": {
+        "jsCode": "// Vyzvedne odpovědi k oznámení (RPC claim_survey_notifications) — atomicky je označí,\n// takže žádná odpověď nepřijde dvakrát. Webhooku se nevěří: bere se z něj jen id objednávky.\n// Bez těla (denní zametání) se vyzvednou odpovědi, jejichž webhook nedorazil.\nconst SUPABASE_URL = 'https://fwknpaigohaesqyimgvt.supabase.co';\nconst SB_SECRET = $env.SUPABASE_SERVICE_KEY;\nif (!SB_SECRET) throw new Error('Chybí $env.SUPABASE_SERVICE_KEY');\n\nconst body = $input.first().json.body;\nlet orderId = null;\nif (body !== undefined) {\n  orderId = String((body && body.record && body.record.order_submission_id) || '');\n  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(orderId)) {\n    console.log('Notifikace dotazníku: webhook bez platného id, ignoruji.');\n    return [];\n  }\n}\n\nlet rows;\ntry {\n  rows = await this.helpers.httpRequest({\n    method: 'POST',\n    url: `${SUPABASE_URL}/rest/v1/rpc/claim_survey_notifications`,\n    headers: {\n      apikey: SB_SECRET,\n      Authorization: `Bearer ${SB_SECRET}`,\n      'Content-Type': 'application/json',\n    },\n    body: { p_id: orderId },\n    json: true,\n  });\n} catch (e) {\n  throw new Error(`claim_survey_notifications selhal: ${e.message}`);\n}\nif (!Array.isArray(rows)) {\n  throw new Error(`claim_survey_notifications vrátil nečekanou odpověď: ${JSON.stringify(rows).slice(0, 300)}`);\n}\nreturn rows.map((row) => ({ json: row }));"
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "notify-build",
+      "name": "Build",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        0
+      ],
+      "parameters": {
+        "jsCode": "// Sestaví notifikaci adminům. Záměrně PROSTÝ TEXT — vzkaz zákazníka je nedůvěryhodný vstup.\n// Popisky kanálů zrcadlí src/data/survey.ts (neznámý klíč se vypíše tak, jak je).\nconst SOURCE_LABELS = {\n  doporuceni: 'Doporučení od známých',\n  instagram: 'Instagram',\n  facebook: 'Facebook',\n  google: 'Vyhledávač (Google, Seznam)',\n  heureka_zbozi: 'Heureka nebo Zboží.cz',\n  darek: 'Dostal/a jsem karty jako dárek',\n  jine: 'Jinde',\n};\n\nreturn $input.all().map((item) => {\n  const r = item.json;\n  const rating = Number.isInteger(r.rating) && r.rating >= 1 && r.rating <= 5 ? r.rating : null;\n  const stars = rating ? '★'.repeat(rating) + '☆'.repeat(5 - rating) : 'bez hodnocení';\n  const order = r.order_number || (r.variable_symbol ? 'VS ' + r.variable_symbol : 'neznámá objednávka');\n  const items = Array.isArray(r.item_names) ? r.item_names.filter(Boolean).join(', ') : '';\n  const source = r.source\n    ? (SOURCE_LABELS[r.source] || r.source) + (r.source_other ? ' — ' + r.source_other : '')\n    : 'neuvedeno';\n\n  const lines = [\n    'Přišla odpověď z dotazníku spokojenosti.',\n    '',\n    'Hodnocení: ' + stars + (rating ? ' (' + rating + '/5)' : ''),\n    'Objednávka: ' + order,\n    'Zákazník: ' + (r.customer_name || 'neuvedeno'),\n    items ? 'Položky: ' + items : null,\n    '',\n    r.answered\n      ? 'Jak se o nás dozvěděl/a: ' + source\n      : 'Zákazník zatím jen klikl na hvězdičku v e-mailu, formulář neodeslal.',\n    r.answered ? 'Vzkaz: ' + (r.comment || '(bez vzkazu)') : null,\n    '',\n    'Detail: https://www.hromadovky.cz/admin/objednavky',\n  ].filter((line) => line !== null);\n\n  return {\n    json: {\n      subject: 'Dotazník: ' + (rating ? rating + '/5 ' + '★'.repeat(rating) : 'odpověď') + ' — ' + order,\n      text: lines.join('\\n'),\n    },\n  };\n});"
+      }
+    },
+    {
+      "id": "notify-send",
+      "name": "Email adminům",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1100,
+        0
+      ],
+      "parameters": {
+        "fromEmail": "info@hromadovky.cz",
+        "toEmail": "karel.hromada30@gmail.com, nikola.hromadova@seznam.cz",
+        "subject": "={{ $json.subject }}",
+        "emailFormat": "text",
+        "text": "={{ $json.text }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "credentials": {
+        "smtp": {
+          "id": "2ZX1mt7TBeAJBY0M",
+          "name": "info@hromadovky"
+        }
+      }
+    },
+    {
+      "id": "notify-alert",
+      "name": "Alert adminovi",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        880,
+        240
+      ],
+      "parameters": {
+        "fromEmail": "info@hromadovky.cz",
+        "toEmail": "karel.hromada30@gmail.com, nikola.hromadova@seznam.cz",
+        "subject": "⚠️ Notifikace dotazníku selhala",
+        "emailFormat": "text",
+        "text": "=Nepodařilo se vyzvednout odpověď z dotazníku spokojenosti.\n\nChyba: {{ ($json.error && $json.error.message) || $json.message || JSON.stringify($json.error || 'neznámá') }}\n\nOdpověď je uložená a je vidět v detailu objednávky v /admin/objednavky. Denní zametání (9:40) ji zkusí oznámit znovu.",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "credentials": {
+        "smtp": {
+          "id": "2ZX1mt7TBeAJBY0M",
+          "name": "info@hromadovky"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Jen hvězdička?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Denně 9:40 (zametání)": {
+      "main": [
+        [
+          {
+            "node": "Vyzvedni odpovědi",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Jen hvězdička?": {
+      "main": [
+        [
+          {
+            "node": "Počkej 10 minut",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Vyzvedni odpovědi",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Počkej 10 minut": {
+      "main": [
+        [
+          {
+            "node": "Vyzvedni odpovědi",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vyzvedni odpovědi": {
+      "main": [
+        [
+          {
+            "node": "Build",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Alert adminovi",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build": {
+      "main": [
+        [
+          {
+            "node": "Email adminům",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Prague",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "none"
+  }
+}

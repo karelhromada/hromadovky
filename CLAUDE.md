@@ -120,6 +120,14 @@ odpověď do `order_surveys` → výsledek je vidět v detailu objednávky.
 - **Logo v e-mailu:** `public/email/logo.png` (PNG — Outlook neumí WebP). Musí být nasazené dřív,
   než odejde první e-mail.
 - **SQL testy:** `supabase/tests/security/survey.sql` (celé v transakci s ROLLBACK).
+- **Notifikace o odpovědi** (Karel + Nikola): DB trigger `survey-answered-webhook` na `order_surveys`
+  → n8n „Hromadovky – Dotazník: notifikace odpovědi" (`UhAgEBSL7tRZXmFR`) → RPC
+  `claim_survey_notifications` → e-mail prostým textem. Odeslaný formulář = hned; jen klik na
+  hvězdičku = po 10 minutách; denní zametání v 9:40 chytí odpovědi, jejichž webhook nedorazil.
+  Kód nodů: `scripts/build-survey-notify-workflow.mjs` (testy `scripts/survey-notify.test.mjs`).
+  Popisky kanálů jsou v nodu „Build" zkopírované ze `src/data/survey.ts` — při změně kanálů
+  upravit obojí (neznámý klíč se v notifikaci vypíše surový, nic se nerozbije).
+- **n8n workflowy:** rozesílka `zpI1ggUgJtibiGry` (denně 9:30), notifikace `UhAgEBSL7tRZXmFR`.
 
 ---
 

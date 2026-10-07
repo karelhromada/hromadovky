@@ -167,3 +167,7 @@ Vyřešené netriviální problémy se zapisují do **Claude memory** tohoto pro
 **Pokyn pro Claude:** po vyřešení netriviálního problému připiš stručný záznam
 (Problém → Příčina → Oprava → commit/soubor) do `project_resene_problemy.md` a doplň řádek do
 `MEMORY.md`. Tak se stejná věc neřeší dvakrát.
+
+## Cloud sessions (Claude Code on the web / mobile)
+
+If `CLAUDE_CODE_REMOTE=true` and the `brain` repository is attached to this session, read `brain/claude/cloud.md` before doing anything else — it carries the owner's global rules and lessons, which live in `~/.claude` on the Mac and are not available in the cloud.

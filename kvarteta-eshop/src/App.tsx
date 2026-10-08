@@ -4,7 +4,8 @@ import { HelmetProvider } from 'react-helmet-async'
 import Navbar from './components/Navbar'
 import Cart from './components/Cart'
 import Footer from './components/Footer'
-import CookieBanner from './components/CookieBanner'
+import CookieBanner, { getCookieConsent } from './components/CookieBanner'
+import { initAnalytics } from './lib/analytics'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import HomePage from './pages/HomePage'
 import NotFoundPage from './pages/NotFoundPage'
@@ -28,6 +29,7 @@ const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage'))
 const AdminInvoicesPage = lazy(() => import('./pages/AdminInvoicesPage'))
 const AdminOrdersPage = lazy(() => import('./pages/AdminOrdersPage'))
 const SurveyPage = lazy(() => import('./pages/SurveyPage'))
+const CustomCardsPage = lazy(() => import('./pages/CustomCardsPage'))
 
 const RouteFallback = () => (
   <div
@@ -94,6 +96,11 @@ function App() {
     safeStorageSet('local', 'hromadovky_cart', JSON.stringify(cartItems));
   }, [cartItems]);
 
+  // Google tag (Ads + GA4) s uloženým souhlasem z cookie lišty — bez ID v config/tracking.ts nic nedělá
+  useEffect(() => {
+    initAnalytics(getCookieConsent());
+  }, []);
+
   const toggleCart = () => setIsCartOpen(!isCartOpen);
 
   const addToCart = (product: Omit<CartItem, 'quantity'>) => {
@@ -154,6 +161,7 @@ function App() {
                 <Route path="/pexeso/:slug" element={<ProductDetailPage category="pexeso" />} />
                 <Route path="/karty" element={<HraciKartyPage onAddToCart={addToCart} />} />
                 <Route path="/karty/:slug" element={<ProductDetailPage category="karty" />} />
+                <Route path="/vlastni-karty" element={<CustomCardsPage />} />
                 <Route path="/faq" element={<FAQPage />} />
                 <Route path="/o-nas" element={<AboutPage />} />
                 <Route path="/obchodni-podminky" element={<TermsPage />} />

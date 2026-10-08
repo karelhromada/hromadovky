@@ -51,7 +51,7 @@ const FAQ: React.FC = () => {
             <div className="container">
                 <div className="section-header text-center">
                     <span className="badge mb-4">Často kladené otázky</span>
-                    <h2 className="section-title">Vše, co potřebujete <span className="text-gradient-gold">vědět</span></h2>
+                    <h1 className="section-title">Vše, co potřebujete <span className="text-gradient-gold">vědět</span></h1>
                     <p className="section-subtitle">Odpovědi na nejčastější dotazy ohledně výroby, kvality a doručení našich prémiových karet.</p>
                 </div>
 

@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { updateConsent, type ConsentValue } from '../lib/analytics';
+import { safeStorageGet } from '../lib/browserCompat';
 import './CookieBanner.css';
 
 const STORAGE_KEY = 'hromadovky_cookie_consent';
 
-type ConsentValue = 'all' | 'necessary';
-
 export const getCookieConsent = (): ConsentValue | null => {
     if (typeof window === 'undefined') return null;
-    const value = localStorage.getItem(STORAGE_KEY);
+    // safeStorage: volá se i z App při startu (nad ErrorBoundary) — Safari s blokovaným úložištěm hází
+    const value = safeStorageGet('local', STORAGE_KEY);
     if (value === 'all' || value === 'necessary') return value;
     return null;
 };
@@ -27,6 +28,7 @@ const CookieBanner: React.FC = () => {
         } catch {
             // Pokud localStorage není dostupný (private mode), prostě zavři banner.
         }
+        updateConsent(value);
         setVisible(false);
     };
 

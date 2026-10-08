@@ -41,18 +41,29 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Bricolage+Grotesque:wght@700&display=swap" />
 
-  <!-- Organization JSON-LD (global; Helmet adds page-specific schemas) -->
+  <!-- Organization JSON-LD (global; Helmet adds page-specific schemas). Kopie je v src/data/seo.ts — měnit obojí. -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "Hromadovky",
+      "legalName": "Karel Hromada",
+      "description": "Rodinný český e-shop s ručně malovanými kvartety, pexesy a hracími kartami. Vyrábí i kvarteta, pexesa a hrací karty z vlastních fotografií zákazníka.",
       "url": "https://www.hromadovky.cz/",
       "logo": "https://www.hromadovky.cz/logo.webp",
       "email": "info@hromadovky.cz",
+      "identifier": { "@type": "PropertyValue", "propertyID": "IČO", "value": "76137767" },
       "address": {
         "@type": "PostalAddress",
+        "addressLocality": "Praha",
         "addressCountry": "CZ"
+      },
+      "areaServed": "CZ",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "email": "info@hromadovky.cz",
+        "availableLanguage": "cs"
       },
       "sameAs": ["https://www.instagram.com/hromadovky/"]
     }

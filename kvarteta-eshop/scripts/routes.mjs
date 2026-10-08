@@ -15,6 +15,7 @@ const STATIC_ROUTES = [
   { path: '/kvarteta',           lastmod: '2026-05-13', changefreq: 'weekly',  priority: 0.9 },
   { path: '/pexeso',             lastmod: '2026-05-13', changefreq: 'weekly',  priority: 0.9 },
   { path: '/karty',              lastmod: '2026-05-13', changefreq: 'weekly',  priority: 0.9 },
+  { path: '/vlastni-karty',      lastmod: '2026-10-08', changefreq: 'monthly', priority: 0.9 },
   { path: '/faq',                lastmod: '2026-05-13', changefreq: 'monthly', priority: 0.6 },
   { path: '/o-nas',              lastmod: '2026-05-13', changefreq: 'monthly', priority: 0.5 },
   { path: '/obchodni-podminky',  lastmod: '2026-01-01', changefreq: 'yearly',  priority: 0.3 },

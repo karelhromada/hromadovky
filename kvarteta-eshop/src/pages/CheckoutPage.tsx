@@ -19,6 +19,7 @@ import { supabase } from '../lib/supabase';
 import { resetDraftRef } from '../lib/storage';
 import { randomUUID } from '../lib/browserCompat';
 import { isValidIco, lookupAres } from '../lib/ares';
+import { trackPurchase } from '../lib/analytics';
 import { User, LogIn } from 'lucide-react';
 
 
@@ -394,6 +395,13 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
                     console.error('Chyba při ukládání do historie objednávek:', orderError);
                 }
             }
+
+            // Konverze až po durable uložení (VS od serveru) — ne při selhání RPC
+            trackPurchase({
+                transactionId: serverVS,
+                value: total,
+                items: items.map((item) => ({ id: item.id, name: item.name, price: item.price, quantity: item.quantity })),
+            });
 
             setFinalTotal(totalToPay);
             setOrderVS(serverVS);

@@ -24,6 +24,7 @@ const Footer: React.FC = () => {
                             <li><Link to="/kvarteta">Kvarteta</Link></li>
                             <li><Link to="/karty">Hrací karty</Link></li>
                             <li><Link to="/pexeso">Pexesa</Link></li>
+                            <li><Link to="/vlastni-karty">Karty z vlastních fotek</Link></li>
                             <li><Link to="/faq">FAQ</Link></li>
                             <li><a href="/kvarteta#pravidla">Pravidla hry</a></li>
                             <li><Link to="/o-nas">O nás</Link></li>

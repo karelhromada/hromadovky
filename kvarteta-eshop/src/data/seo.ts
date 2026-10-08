@@ -7,6 +7,7 @@ import {
   type ProductCategory,
 } from './catalog';
 import { faqs } from './faq';
+import { customCardFaqs } from './customCards';
 
 export const SITE = {
   url: 'https://www.hromadovky.cz',
@@ -28,18 +29,54 @@ export interface PageSeo {
   jsonLd?: JsonLdSchema | JsonLdSchema[];
 }
 
+// Pozor: kopie žije i v index.html (globální fallback) — při změně upravit obojí.
 const organizationLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'Hromadovky',
+  legalName: 'Karel Hromada',
+  description:
+    'Rodinný český e-shop s ručně malovanými kvartety, pexesy a hracími kartami. Vyrábí i kvarteta, pexesa a hrací karty z vlastních fotografií zákazníka.',
   url: `${SITE.url}/`,
   logo: `${SITE.url}/logo.webp`,
   email: 'info@hromadovky.cz',
-  address: { '@type': 'PostalAddress', addressCountry: 'CZ' },
+  identifier: { '@type': 'PropertyValue', propertyID: 'IČO', value: '76137767' },
+  address: { '@type': 'PostalAddress', addressLocality: 'Praha', addressCountry: 'CZ' },
+  areaServed: 'CZ',
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer service',
+    email: 'info@hromadovky.cz',
+    availableLanguage: 'cs',
+  },
   sameAs: ['https://www.instagram.com/hromadovky/'],
 };
 
 const SELLER = { '@type': 'Organization', name: 'Hromadovky' } as const;
+
+// Doprava a vrácení pro Product schéma (Google je ukazuje u produktu ve výsledcích
+// i v Nákupech). Ceny dopravy drž v sync s CheckoutPage + scripts/generate-feeds.mjs.
+const deliveryTime = {
+  '@type': 'ShippingDeliveryTime',
+  handlingTime: { '@type': 'QuantitativeValue', minValue: 1, maxValue: 3, unitCode: 'DAY' },
+  transitTime: { '@type': 'QuantitativeValue', minValue: 1, maxValue: 2, unitCode: 'DAY' },
+} as const;
+const SHIPPING_DETAILS = [79, 99].map((price) => ({
+  '@type': 'OfferShippingDetails',
+  shippingRate: { '@type': 'MonetaryAmount', value: price, currency: 'CZK' },
+  shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'CZ' },
+  deliveryTime,
+})); // Zásilkovna 79 Kč, PPL 99 Kč
+
+// 14 dní na odstoupení, vrácení poštou na náklady kupujícího (viz TermsPage).
+const RETURN_POLICY = {
+  '@type': 'MerchantReturnPolicy',
+  applicableCountry: 'CZ',
+  returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+  merchantReturnDays: 14,
+  returnMethod: 'https://schema.org/ReturnByMail',
+  returnFees: 'https://schema.org/ReturnFeesCustomerResponsibility',
+} as const;
 
 // Kategorie = ItemList odkazující na produktové stránky; Product schéma žije na detailech.
 const categoryItemListLd = (category: ProductCategory) => ({
@@ -57,6 +94,16 @@ const faqPageLd = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
   mainEntity: faqs.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+};
+
+const customCardsFaqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: customCardFaqs.map((item) => ({
     '@type': 'Question',
     name: item.question,
     acceptedAnswer: { '@type': 'Answer', text: item.answer },
@@ -82,13 +129,17 @@ export const productPageSeo = (category: ProductCategory, product: CatalogProduc
           highPrice: PEXESO_PRICE_RANGE.high,
           availability: 'https://schema.org/InStock',
           seller: SELLER,
+          // shippingDetails/hasMerchantReturnPolicy Google podporuje jen na Offer, ne AggregateOffer
         }
       : {
           '@type': 'Offer',
           priceCurrency: 'CZK',
           price: product.price,
           availability: 'https://schema.org/InStock',
+          itemCondition: 'https://schema.org/NewCondition',
           seller: SELLER,
+          shippingDetails: SHIPPING_DETAILS,
+          hasMerchantReturnPolicy: RETURN_POLICY,
         };
   return {
     title: `${product.name} | Hromadovky`,
@@ -104,6 +155,8 @@ export const productPageSeo = (category: ProductCategory, product: CatalogProduc
         '@type': 'Product',
         name: product.name,
         description: product.description,
+        // sku = ID ve feedech (heureka/zbozi/google.xml) → Merchant Center spáruje stránku s položkou
+        sku: product.id,
         image: product.gallery.slice(0, 4).map((img) => `${SITE.url}${encodeURI(img)}`),
         url: `${SITE.url}${path}`,
         brand: { '@type': 'Brand', name: 'Hromadovky' },
@@ -174,6 +227,19 @@ export const SEO = {
       breadcrumbLd([
         { name: 'Domů', path: '/' },
         { name: 'Hrací karty', path: '/karty' },
+      ]),
+    ],
+  },
+  customCards: {
+    title: 'Pexeso, kvarteto a hrací karty z vlastních fotek | Hromadovky',
+    description:
+      'Vytvořte si pexeso, kvarteto nebo hrací karty z vlastních fotografií. Online editor s náhledem, tisk na fotopapír s laminací, doručení do 5 pracovních dnů.',
+    path: '/vlastni-karty',
+    jsonLd: [
+      customCardsFaqLd,
+      breadcrumbLd([
+        { name: 'Domů', path: '/' },
+        { name: 'Karty z vlastních fotek', path: '/vlastni-karty' },
       ]),
     ],
   },

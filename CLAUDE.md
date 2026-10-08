@@ -84,7 +84,11 @@ Každý produkt má vlastní indexovatelnou URL `/kvarteta|/karty|/pexeso/<slug>
    (`/heureka.xml`, `/zbozi.xml`, generátor `scripts/generate-feeds.mjs` v prebuildu)
    se vygenerují automaticky (čtou slugy/data z products.ts). Pexeso produkty žijí
    taky v products.ts (`pexesoProducts`) — NE inline v komponentě.
-   Při změně cen dopravy v checkoutu aktualizovat i DELIVERIES v generate-feeds.mjs.
+   Při změně cen dopravy v checkoutu aktualizovat i DELIVERIES v generate-feeds.mjs
+   (a SHIPPING_DETAILS v `src/data/seo.ts`). Stejný skript generuje i `/google.xml`
+   (Google Merchant Center) a `/llms.txt` (GEO). **Produkty odkazující na cizí značky**
+   (Minecraft, Star Wars, Harry Potter, Frozen…) přidej do `GOOGLE_EXCLUDED_IDS` — jinak
+   hrozí suspendace Merchant Center účtu.
 4. SEO ověření po deployi: `curl -sL https://www.hromadovky.cz/<kategorie>/<slug> | grep '<title>'`
    → musí vrátit title produktu (ne prázdnou SPA slupku).
 
@@ -94,6 +98,12 @@ Deep-link do košíku: `/<kategorie>?pridat=<product-id>#products` otevře back-
 **SPA fallback:** Vercel rewrite míří na `/spa-fallback.html` (NE na `/` — index.html je po
 prerenderu snapshot homepage). Fallback generuje `postbuild` skript `write-spa-fallback.mjs`
 (noindex, bez canonical) a slouží JEN pro neprerenderované routy (/checkout, /login, 404…).
+
+**Měření (Google Ads + GA4):** `src/lib/analytics.ts`, ID v `src/config/tracking.ts` (prázdné =
+vypnuto). Consent Mode v2 **basic** — gtag.js se načte až po „Přijmout vše" v cookie liště.
+Konverze Nákup = `trackPurchase` v CheckoutPage po uložení objednávky (VS = transaction_id,
+hodnota bez dopravy). Prerender tag přeskakuje (`navigator.webdriver`). Nové Google domény →
+upravit CSP ve `vercel.json`.
 
 ---
 

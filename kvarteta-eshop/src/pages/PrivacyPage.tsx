@@ -86,6 +86,7 @@ const PrivacyPage: React.FC = () => {
                 <li><strong>Přepravním společnostem</strong> — pro doručení zboží (např. Česká pošta, Zásilkovna, PPL);</li>
                 <li><strong>Provozovatelům platebních bran</strong> — pro zpracování plateb;</li>
                 <li><strong>Poskytovatelům IT služeb</strong> — provozovatelé hostingu, e-mailových a cloudových služeb;</li>
+                <li><strong>Google Ireland Limited</strong> — měření návštěvnosti (Google Analytics) a účinnosti reklam (Google Ads), pouze s Vaším souhlasem s cookies;</li>
                 <li><strong>Daňovým a účetním poradcům</strong> — v rozsahu nezbytném pro vedení účetnictví;</li>
                 <li><strong>Orgánům veřejné moci</strong> — pokud to vyžaduje právní povinnost (Finanční úřad, ČOI, Policie ČR).</li>
             </ul>
@@ -131,11 +132,14 @@ const PrivacyPage: React.FC = () => {
             <ul>
                 <li><strong>Nezbytné cookies</strong> — nutné pro fungování e-shopu (přihlášení, košík). Tyto cookies nelze odmítnout;</li>
                 <li><strong>Analytické cookies</strong> — pomáhají nám pochopit, jak návštěvníci e-shop používají (např. Google Analytics);</li>
-                <li><strong>Marketingové cookies</strong> — pro cílení reklamy a měření její účinnosti.</li>
+                <li><strong>Marketingové cookies</strong> — pro cílení reklamy a měření její účinnosti (Google Ads).</li>
             </ul>
             <p>
                 Analytické a marketingové cookies používáme pouze s Vaším souhlasem, který jste nám udělili
-                v cookie banneru při první návštěvě. Svůj souhlas můžete kdykoli změnit nebo odvolat
+                v cookie banneru při první návštěvě. Pro měření účinnosti reklam používáme službu Google Ads
+                (Google Ireland Limited): po udělení souhlasu se Googlu předá informace o dokončené objednávce
+                (číslo objednávky a její hodnota) a o tom, z jaké reklamy jste na web přišli. Skripty Googlu se
+                bez Vašeho souhlasu nenačítají. Svůj souhlas můžete kdykoli změnit nebo odvolat
                 pomocí tlačítka níže — po kliknutí se znovu zobrazí cookie banner s aktuální volbou.
             </p>
 

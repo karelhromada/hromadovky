@@ -310,6 +310,12 @@ export const SEO = {
     path: '/admin/objednavky',
     noindex: true,
   },
+  adminAnalytics: {
+    title: 'Analytika | Hromadovky',
+    description: 'Statistiky návštěvnosti a prodejů.',
+    path: '/admin/analytika',
+    noindex: true,
+  },
   notFound: {
     title: 'Stránka nenalezena (404) | Hromadovky',
     description: 'Požadovaná stránka neexistuje nebo byla přesunuta.',

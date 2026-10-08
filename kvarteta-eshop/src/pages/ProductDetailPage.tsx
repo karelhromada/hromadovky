@@ -12,6 +12,7 @@ import {
 } from '../data/catalog';
 import NotFoundPage from './NotFoundPage';
 import './ProductDetailPage.css';
+import { trackSiteEvent } from '../lib/siteAnalytics';
 
 const MAX_THUMBS = 11;
 const MAX_RELATED = 4;
@@ -36,6 +37,11 @@ const ProductDetailPage = ({ category }: ProductDetailPageProps) => {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [category, slug]);
+
+    const productId = product?.id;
+    useEffect(() => {
+        if (productId) trackSiteEvent('view_item', { productId });
+    }, [productId]);
 
     if (!product) return <NotFoundPage />;
 

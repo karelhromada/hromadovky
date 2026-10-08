@@ -6,6 +6,7 @@ import { uploadOrderPhoto } from '../lib/storage';
 import { renderAndUploadBatch, type RenderTask } from '../lib/cardExporter';
 import PackagingSelector from './PackagingSelector';
 import { packagingSurcharge, type PackagingType } from '../data/packaging';
+import { trackConfiguratorStart } from '../lib/siteAnalytics';
 
 const FAMILY_BASE_PRICE = 299;
 
@@ -170,6 +171,7 @@ const FamilyCardConfigurator: React.FC<FamilyCardConfiguratorProps> = ({ onAddTo
         const file = e.target.files?.[0];
         if (!file) return;
         e.target.value = '';
+        trackConfiguratorStart('custom-karty');
 
         if (selectedCard.imageUrl && selectedCard.imageUrl.startsWith('blob:')) {
             URL.revokeObjectURL(selectedCard.imageUrl);

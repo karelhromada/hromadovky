@@ -6,6 +6,8 @@ import Cart from './components/Cart'
 import Footer from './components/Footer'
 import CookieBanner, { getCookieConsent } from './components/CookieBanner'
 import { initAnalytics } from './lib/analytics'
+import { normalizeProductId, trackSiteEvent } from './lib/siteAnalytics'
+import { SiteAnalyticsTracker } from './components/SiteAnalyticsTracker'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import HomePage from './pages/HomePage'
 import NotFoundPage from './pages/NotFoundPage'
@@ -30,6 +32,7 @@ const AdminInvoicesPage = lazy(() => import('./pages/AdminInvoicesPage'))
 const AdminOrdersPage = lazy(() => import('./pages/AdminOrdersPage'))
 const SurveyPage = lazy(() => import('./pages/SurveyPage'))
 const CustomCardsPage = lazy(() => import('./pages/CustomCardsPage'))
+const AdminAnalyticsPage = lazy(() => import('./pages/AdminAnalyticsPage'))
 
 const RouteFallback = () => (
   <div
@@ -104,6 +107,7 @@ function App() {
   const toggleCart = () => setIsCartOpen(!isCartOpen);
 
   const addToCart = (product: Omit<CartItem, 'quantity'>) => {
+    trackSiteEvent('add_to_cart', { productId: normalizeProductId(product.id) });
     setCartItems(prev => {
       // Find matching item by id, selectedBack, size AND packaging
       const sameLine = (item: CartItem) =>
@@ -142,6 +146,7 @@ function App() {
     <HelmetProvider>
       <AuthProvider>
         <Router>
+          <SiteAnalyticsTracker />
           <div className="app-container">
           {/* Animated Pastel Mesh Background */}
           <div className="pastel-mesh-bg">
@@ -184,6 +189,14 @@ function App() {
                   element={
                     <RequireAdmin>
                       <AdminOrdersPage />
+                    </RequireAdmin>
+                  }
+                />
+                <Route
+                  path="/admin/analytika"
+                  element={
+                    <RequireAdmin>
+                      <AdminAnalyticsPage />
                     </RequireAdmin>
                   }
                 />

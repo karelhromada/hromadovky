@@ -145,6 +145,21 @@ const PrivacyPage: React.FC = () => {
 
             <CookieResetButton />
 
+            <h3>Vlastní měření návštěvnosti (bez cookies)</h3>
+            <p>
+                Návštěvnost měříme také vlastním nástrojem, který do Vašeho zařízení nic neukládá (nepoužívá
+                cookies ani jiné úložiště prohlížeče). Při zobrazení stránky zpracujeme adresu stránky, odkud jste
+                přišli (např. vyhledávač nebo reklama), typ zařízení a z IP adresy a identifikace prohlížeče
+                vypočteme pseudonymní kód návštěvy. IP adresu ani identifikaci prohlížeče neukládáme — slouží jen
+                k výpočtu kódu, který se každý den mění, takže návštěvy z různých dnů nelze propojit.
+            </p>
+            <p>
+                Data slouží výhradně ke zlepšování e-shopu a vyhodnocení reklamy, zpracovává je pro nás
+                poskytovatel databáze Supabase, nikomu dalšímu je nepředáváme a po 400 dnech je
+                mažeme. Právním základem je náš oprávněný zájem na měření návštěvnosti (čl. 6 odst. 1 písm. f)
+                GDPR); proti tomuto zpracování můžete vznést námitku na info@hromadovky.cz.
+            </p>
+
             <h2>9. Zabezpečení údajů</h2>
             <p>
                 Vaše osobní údaje chráníme přiměřenými technickými a organizačními opatřeními — komunikace

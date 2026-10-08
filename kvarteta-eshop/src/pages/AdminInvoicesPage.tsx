@@ -8,6 +8,7 @@ import {
   type InvoiceFilters,
 } from '../lib/invoices';
 import { CreditNoteModal } from '../components/admin/CreditNoteModal';
+import { AdminNav } from '../components/admin/AdminNav';
 import { PageHead } from '../components/seo/PageHead';
 import { SEO } from '../data/seo';
 import './AdminInvoicesPage.css';
@@ -106,6 +107,7 @@ export default function AdminInvoicesPage() {
   return (
     <div className="admin-invoices-container">
       <PageHead {...SEO.adminInvoices} />
+      <AdminNav />
       <header className="admin-invoices-header">
         <h1>Faktury a dobropisy</h1>
         <div className="admin-stats-grid">

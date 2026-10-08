@@ -107,7 +107,22 @@ upravit CSP ve `vercel.json`.
 
 ---
 
-## ★ Doručení & dotazník spokojenosti (od 2026-10)
+## ★ Vlastní analytika `/admin/analytika` (od 2026-10)
+
+Cookieless měření (běží bez souhlasu, počítá všechny návštěvy): `src/lib/siteAnalytics.ts` →
+RPC `track_event` (anon) → tabulka `analytics_events`; dashboard volá `admin_analytics_report`
+(jen admin, max 120 dní). Migrace `supabase/migrations/20261008120000_site_analytics.sql`,
+SQL testy `supabase/tests/security/analytics.sql` (transakce + ROLLBACK).
+- Návštěvník = hash(denní sůl | `cf-connecting-ip` | UA), sůl se denně mění a maže; IP/UA se neukládá.
+  `x-forwarded-for` NEPOUŽÍVAT (podvrhnutelné → obejití limitů).
+- Měřicí body: pageview (`SiteAnalyticsTracker` v App), `view_item` (detail produktu), `add_to_cart`
+  (App.addToCart, ID zakázkových sad přes `normalizeProductId`), `begin_checkout`, `purchase`
+  (posílá **UUID objednávky**, ne VS), `configurator_start` (první nahraná fotka v konfigurátoru).
+- Tržby v reportu jsou z `order_submissions` (subtotal), události je jen párují se zdrojem.
+- Nová routa / slug: server bere jen cesty `^/[a-z0-9-]+(/[a-z0-9-]+)?$`, jinak `/jina-stranka`.
+- Neměří se: prerender (`navigator.webdriver`), `/admin`, dev server (`VITE_ANALYTICS_DEV=1` zapne).
+
+ (od 2026-10)
 
 Tok: admin v `/admin/objednavky` klikne **„Označit jako doručeno"** (`DeliveryPanel.tsx` → RPC
 `mark_order_delivered`) → n8n workflow „Hromadovky – Dotazník spokojenosti" (denně 9:30) zavolá

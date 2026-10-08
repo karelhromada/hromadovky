@@ -1,0 +1,293 @@
+/* /admin/analytika — vlastní CSS, nesdílí třídy s jinými lazy stránkami (Past #3). */
+.an-page {
+    --an-bar: var(--accent-gold);
+    --an-bar-active: var(--accent-gold-dark);
+    --an-grid-line: rgba(18, 24, 38, 0.08);
+    --an-surface: #fff;
+    --an-border: rgba(197, 155, 39, 0.22);
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: calc(var(--nav-height) + 32px) 16px 80px;
+    display: grid;
+    gap: 20px;
+}
+
+.an-page h1 {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    margin: 0 0 4px;
+}
+
+.an-page h2 {
+    font-size: 1.15rem;
+    margin: 0 0 12px;
+}
+
+.an-muted {
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    margin: 0 0 12px;
+}
+
+.an-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+}
+
+.an-range {
+    display: inline-flex;
+    border: 1px solid var(--an-border);
+    border-radius: 999px;
+    overflow: hidden;
+    background: var(--an-surface);
+}
+
+.an-range-btn {
+    font: inherit;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: 0;
+    background: transparent;
+    color: var(--text-secondary);
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.an-range-btn.is-active {
+    background: var(--accent-gold);
+    color: #fff;
+}
+
+.an-range-btn:focus-visible {
+    outline: 2px solid var(--accent-gold-dark);
+    outline-offset: -2px;
+}
+
+.an-kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 12px;
+}
+
+.an-kpi {
+    background: var(--an-surface);
+    border: 1px solid var(--an-border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: grid;
+    gap: 4px;
+}
+
+.an-kpi-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-secondary);
+}
+
+.an-kpi-value {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.an-card {
+    background: var(--an-surface);
+    border: 1px solid var(--an-border);
+    border-radius: 14px;
+    padding: 20px;
+    min-width: 0;
+}
+
+.an-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: 20px;
+}
+
+.an-empty,
+.an-error {
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.an-error {
+    color: #9a2b14;
+}
+
+/* Graf po dnech */
+.an-chart {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.an-chart svg {
+    display: block;
+}
+
+.an-grid {
+    stroke: var(--an-grid-line);
+    stroke-width: 1;
+}
+
+.an-baseline {
+    stroke: rgba(18, 24, 38, 0.25);
+    stroke-width: 1;
+}
+
+.an-axis {
+    font-size: 11px;
+    fill: var(--text-secondary);
+    font-variant-numeric: tabular-nums;
+}
+
+.an-bar {
+    fill: var(--an-bar);
+}
+
+.an-bar.is-active {
+    fill: var(--an-bar-active);
+}
+
+.an-hit {
+    fill: transparent;
+    cursor: default;
+}
+
+.an-hit:focus-visible {
+    outline: none;
+    fill: rgba(197, 155, 39, 0.08);
+}
+
+.an-tooltip {
+    position: absolute;
+    transform: translateX(-50%);
+    pointer-events: none;
+    background: var(--text-primary);
+    color: #fff;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.82rem;
+    display: grid;
+    gap: 2px;
+    white-space: nowrap;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    font-variant-numeric: tabular-nums;
+}
+
+.an-details {
+    margin-top: 12px;
+}
+
+.an-details summary {
+    cursor: pointer;
+    color: var(--accent-gold-dark);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Vodorovné pruhy */
+.an-bars {
+    display: grid;
+    gap: 10px;
+}
+
+.an-barrow {
+    display: grid;
+    grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
+    gap: 12px;
+    align-items: center;
+    font-size: 0.9rem;
+}
+
+.an-barrow-label {
+    color: var(--text-primary);
+    overflow-wrap: anywhere;
+}
+
+.an-barrow-label:empty {
+    display: none;
+}
+
+.an-barrow:has(.an-barrow-label:empty) {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.an-barrow-track {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.an-barrow-fill {
+    height: 14px;
+    background: var(--an-bar);
+    border-radius: 0 4px 4px 0;
+    flex: none;
+    max-width: calc(100% - 7rem);
+}
+
+.an-barrow-value {
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+/* Tabulky */
+.an-table-wrap {
+    overflow-x: auto;
+}
+
+.an-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.an-table th,
+.an-table td {
+    text-align: left;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--an-grid-line);
+    vertical-align: middle;
+}
+
+.an-table th {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-secondary);
+    font-weight: 700;
+}
+
+.an-table .an-num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.an-table .an-wide {
+    min-width: 180px;
+}
+
+.an-table td.an-muted {
+    margin: 0;
+}
+
+@media (max-width: 600px) {
+    .an-page {
+        padding-top: calc(var(--nav-height) + 16px);
+    }
+
+    .an-barrow {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 4px;
+    }
+}

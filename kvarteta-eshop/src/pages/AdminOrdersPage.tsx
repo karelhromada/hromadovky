@@ -12,6 +12,7 @@ import { SEO } from '../data/seo';
 import { buildCardBackRef, resolveBackName } from '../data/backgrounds';
 import { listProducts } from '../data/catalog';
 import { DeliveryPanel } from '../components/admin/DeliveryPanel';
+import { AdminNav } from '../components/admin/AdminNav';
 import './AdminOrdersPage.css';
 
 // Líc hotových sad se dohledává z katalogu podle id položky (custom položky v katalogu nejsou —
@@ -377,6 +378,7 @@ export default function AdminOrdersPage() {
   return (
     <div className="admin-orders-container">
       <PageHead {...SEO.adminOrders} />
+      <AdminNav />
       <header className="admin-orders-header">
         <h1>Objednávky</h1>
         <div className="admin-stats-grid">

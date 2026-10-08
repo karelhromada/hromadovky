@@ -1,0 +1,29 @@
+.admin-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 20px;
+}
+
+.admin-nav-link {
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(197, 155, 39, 0.35);
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.92rem;
+}
+
+.admin-nav-link:hover,
+.admin-nav-link:focus-visible {
+    color: var(--text-primary);
+    border-color: var(--accent-gold);
+    outline: none;
+}
+
+.admin-nav-link.is-active {
+    background: var(--accent-gold);
+    border-color: var(--accent-gold);
+    color: #fff;
+}

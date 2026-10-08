@@ -20,6 +20,7 @@ import { resetDraftRef } from '../lib/storage';
 import { randomUUID } from '../lib/browserCompat';
 import { isValidIco, lookupAres } from '../lib/ares';
 import { trackPurchase } from '../lib/analytics';
+import { trackSiteEvent } from '../lib/siteAnalytics';
 import { User, LogIn } from 'lucide-react';
 
 
@@ -63,6 +64,13 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
     const [finalTotal, setFinalTotal] = useState(0);
     const [orderVS, setOrderVS] = useState<string>('');
     const [isSuccess, setIsSuccess] = useState(false);
+
+    // Krok trychtýře „pokladna" — jen při vstupu s plným košíkem (prázdný košík není záměr koupit)
+    const hasItemsOnEnter = useRef(items.length > 0);
+    useEffect(() => {
+        if (hasItemsOnEnter.current) trackSiteEvent('begin_checkout');
+    }, []);
+
     // n8n neodbavilo objednávku (e-mail + faktura) → nesmíme tvrdit, že potvrzení odešlo
     const [notificationDelayed, setNotificationDelayed] = useState(false);
     const { profile, user } = useAuth();
@@ -397,6 +405,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ items, onClearCart }) => {
             }
 
             // Konverze až po durable uložení (VS od serveru) — ne při selhání RPC
+            trackSiteEvent('purchase', { orderId: submissionRows?.[0]?.id });
             trackPurchase({
                 transactionId: serverVS,
                 value: total,

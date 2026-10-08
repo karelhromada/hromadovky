@@ -11,6 +11,7 @@ interface PexesoCreatorProps {
 }
 
 import { backgrounds, getBackgroundsForGame } from '../data/backgrounds';
+import { trackConfiguratorStart } from '../lib/siteAnalytics';
 
 const PEXESO_BACKS = getBackgroundsForGame('pexeso');
 
@@ -57,6 +58,7 @@ const PexesoCreator: React.FC<PexesoCreatorProps> = ({ onAddToCart }) => {
 
     const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files || !e.target.files[0]) return;
+        trackConfiguratorStart('custom-pexeso');
         if (photos.length >= requiredPairs) {
             alert(`Už máte nahráno všech ${requiredPairs} potřebných fotografií.`);
             return;

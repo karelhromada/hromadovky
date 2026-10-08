@@ -6,6 +6,7 @@ import { getBackgroundsForGame } from '../data/backgrounds';
 import { renderAndUploadBatch, type RenderTask } from '../lib/cardExporter';
 import PackagingSelector from './PackagingSelector';
 import { packagingSurcharge, type PackagingType } from '../data/packaging';
+import { trackConfiguratorStart } from '../lib/siteAnalytics';
 
 const QUARTET_BASE_PRICE = 599;
 
@@ -296,6 +297,7 @@ const CardCreator: React.FC<CardCreatorProps> = ({ onAddToCart }) => {
     }, []);
 
     const handlePhotoUpload = useCallback(async (slot: string, file: File) => {
+        trackConfiguratorStart('custom-kvarteto');
         const optimisticUrl = URL.createObjectURL(file);
         setCustomPhotoPreviews(prev => ({ ...prev, [slot]: optimisticUrl }));
         setPreviewSlot(slot);
